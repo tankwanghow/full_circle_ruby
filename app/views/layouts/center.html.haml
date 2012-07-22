@@ -1,0 +1,11 @@
+!!!
+%html
+  %head
+    = stylesheet_link_tag "application"
+    = javascript_include_tag "application"
+    %title FullCircle
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+    = csrf_meta_tag
+  %body#center
+    .contianer-fliud
+      = yield

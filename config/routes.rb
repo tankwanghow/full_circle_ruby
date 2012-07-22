@@ -1,4 +1,8 @@
 FullCircle::Application.routes.draw do
+  match 'login' => 'sessions#new', as: :login
+  match 'signup' => 'users#new', as: :signup
+  root to: 'welcome#index'
+  resources :users
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

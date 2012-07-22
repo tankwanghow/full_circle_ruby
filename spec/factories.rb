@@ -8,6 +8,10 @@ FactoryGirl.define do
     name { Faker::Name.name }
     password "secret"
     password_confirmation "secret"
-    status { 'active' }
+
+    factory :invalid_user do
+      password_confirmation { 'mama' }
+      password { 'papa' }
+    end
   end
 end

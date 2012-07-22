@@ -5,6 +5,7 @@ gem 'pg'
 gem 'jquery-rails'
 
 gem 'dynamic_form'
+gem 'strong_parameters'
 gem 'kaminari'
 gem "acts-as-taggable-on"
 gem "acts_as_commentable"
@@ -21,7 +22,9 @@ gem 'prawn'
 gem 'simple_form'
 gem 'haml-rails'
 gem 'tinymce-rails'
-gem 'sorcery'
+
+# To use ActiveModel has_secure_password
+gem 'bcrypt-ruby', '~> 3.0.0'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
