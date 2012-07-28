@@ -1,7 +1,7 @@
 = simple_form_for @user, html: { class: 'form-horizontal span7 offset2 well' } do |f|
   %legend
     %h2= CompanyName
-    Sign for an Account
+    User Registration
   = f.input :username
   = f.input :name
   = f.input :password
@@ -9,4 +9,3 @@
   .form-actions
     = f.button :submit, 'Sign up', class: 'btn btn-primary'
     = link_to 'Already have an account, go back to Login', login_path, class: 'btn btn-success'
-

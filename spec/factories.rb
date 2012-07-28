@@ -13,5 +13,10 @@ FactoryGirl.define do
       password_confirmation { 'mama' }
       password { 'papa' }
     end
+
+    factory :active_user do
+      status { 'active' }
+    end
+
   end
 end

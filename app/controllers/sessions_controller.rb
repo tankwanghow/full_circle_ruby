@@ -4,22 +4,23 @@ class SessionsController < ApplicationController
 
   def new
     if logged_in?
-      flash[:notice] = "Already logged in!"
-      redirect_back_ot_to '/'
+      redirect_to :back, notice: "Already logged in!"
     end
   end
 
   def create
-    @user = login params[:username], params[:password]
-    if @user && @user.aasm_current_state == :active
-      session[:user_id] = @user.id
-      flash[:success] = "Logged in successfully."
-      redirect_to_target_or_default '/'
-    elsif @user && @user.status != "active"
-      flash[:info] = "Pending Account Activation."
-      render :new
+    @user = User.find_by_username params[:session][:username]
+    if @user && @user.authenticate(params[:session][:password])
+      if @user.aasm_current_state == :active
+        session[:user_id] = @user.id
+        flash[:success] = "Logged in successfully."
+        redirect_to_target_or_default '/'
+      else
+        flash.now[:notice] = "Pending Account Activation."
+        render :new
+      end
     else
-      flash[:error] = "Invalid username or password!"
+      flash.now[:error] = "Invalid username or password!"
       render :new
     end
   end

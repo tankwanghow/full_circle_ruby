@@ -1,0 +1,12 @@
+= simple_form_for :session, url: sessions_path, html: { class: 'form-horizontal span7 offset2 well' } do |f|
+  %legend
+    %h2= CompanyName
+    Login
+  = render partial: 'layouts/messages'
+  = f.error_messages
+  = f.input :username
+  = f.input :password
+  .form-actions
+    = f.button :submit, 'Login', class: 'btn btn-primary'
+    = link_to 'Register as New User', signup_path, class: 'btn btn-success'
+

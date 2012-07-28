@@ -9,11 +9,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new params[:user]
     if @user.save
-      flash[:success] = 'Yeah! Signed up successfully.<br/>Pending approval by System Administrator'
+      flash[:success] = 'Yeah! Signed up successfully. Pending approval by System Administrator'
       redirect_to login_path
     else
       flash[:error] = 'Ooppps! Failed to signup'
-      render :new, layout: 'center'
+      render :new
     end
   end
 end
