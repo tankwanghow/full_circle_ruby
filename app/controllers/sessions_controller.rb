@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
         flash[:success] = "Logged in successfully."
         redirect_to_target_or_default '/'
       else
-        flash.now[:notice] = "Pending Account Activation."
+        flash.now[:notice] = "Account is #{@user.aasm_current_state.to_s.capitalize}."
         render :new
       end
     else

@@ -25,7 +25,7 @@ describe SessionsController do
           inactive_user.should_receive(:authenticate).and_return true
         end
         it { post_create; expect(session[:user_id]).to be nil }
-        it { post_create; expect(flash[:notice]).to include 'Pending' }
+        it { post_create; expect(flash[:notice]).to include inactive_user.aasm_current_state.to_s.capitalize }
         it { post_create; expect(response).to render_template :new }
       end
     end
