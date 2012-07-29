@@ -5,7 +5,7 @@ gem 'pg'
 gem 'jquery-rails'
 
 gem 'dynamic_form'
-gem 'strong_parameters'
+# gem 'strong_parameters'
 gem 'kaminari'
 gem "acts-as-taggable-on"
 gem "acts_as_commentable"

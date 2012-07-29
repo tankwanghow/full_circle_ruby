@@ -9,6 +9,14 @@ class User < ActiveRecord::Base
   validates :username, uniqueness: true
   validates :name, :username, presence: true
 
+  simple_audit username_method: :username do |r|
+    {
+      username: r.username,
+      name: r.name,
+      status: r.status
+    }
+  end
+
   include AASM
   aasm column: :status do
     state :pending, initial: true
