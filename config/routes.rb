@@ -1,5 +1,6 @@
 FullCircle::Application.routes.draw do
   match 'login' => 'sessions#new', as: :login
+  match 'logout' => 'sessions#destroy', as: :logout
   match 'signup' => 'users#new', as: :signup
   root to: 'welcome#index'
   resources :users
