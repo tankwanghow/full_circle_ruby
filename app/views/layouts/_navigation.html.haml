@@ -1,4 +1,0 @@
-%ul.nav.pull-right
-  - if logged_in?
-    %li= link_to "#{current_user.name}", edit_user_path(current_user)
-    %li= link_to 'Logout', logout_path
