@@ -45,8 +45,11 @@ group :test do
 end
 
 group :development, :test do
+  gem 'capybara'
+  gem 'capybara-webkit'
   gem 'jasminerice'
   gem 'guard-jasmine'
+  gem 'launchy'
 end
 
 group :development do

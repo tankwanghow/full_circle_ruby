@@ -2,7 +2,7 @@ FullCircle::Application.routes.draw do
   match 'login' => 'sessions#new', as: :login
   match 'logout' => 'sessions#destroy', as: :logout
   match 'signup' => 'users#new', as: :signup
-  root to: 'welcome#index'
+  root to: 'main#index'
   resources :users
   resource :sessions, only: [:new, :create, :destroy]
   # The priority is based upon order of creation:
