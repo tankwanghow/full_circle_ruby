@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require jquery_nested_form
 //= require bootstrap-alert
+//= require bootstrap-dropdown
 //= require_tree .
