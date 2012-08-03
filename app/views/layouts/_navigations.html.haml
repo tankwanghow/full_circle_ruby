@@ -1,0 +1,13 @@
+%ul.nav.pull-right
+  = menu 'Accounting' do
+    = menu_child 'Chart of Account', '#'
+  = menu 'Sales'
+  = menu 'Purchases'
+  = menu 'Bank'
+  = menu "Payroll"
+  = simple_form_for :search, url: '#', html: { class: 'navbar-search pull-left' } do |f|
+    = f.input_field :search, class: 'search-query span2', placeholder: 'search...'
+  - if logged_in?
+    = menu current_user.name do
+      = menu_child 'Edit Profile', edit_user_path(current_user)
+      = menu_child 'Logout', logout_path
