@@ -1,0 +1,16 @@
+- if @docs.length == 0
+  %h1 No record found!
+
+
+- for doc in @docs
+  .row.searchable
+    .span3
+      = link_to doc.searchable_type, polymorphic_path(doc.searchable), class: 'btn btn-info'
+      %div
+        %span.label.label-success= doc.created_at.to_s(:db)
+      - if doc.created_at != doc.updated_at
+        %div
+          %span.label.label-warning= doc.updated_at.to_s(:db)
+    .span9= doc.content
+
+
