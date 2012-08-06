@@ -12,16 +12,22 @@
     = csrf_meta_tags
     = yield(:head)
   %body
-    %header.navbar.navbar-fixed-top
-      %nav.navbar-inner
+    .navbar.navbar-fixed-top
+      .navbar-inner
         .container
-          .brand= CompanyName
-          = render 'layouts/navigations'
-    #main{:role => "main"}
+          = link_to CompanyName, root_path, class: 'brand'
+          %ul.nav.pull-right
+            = simple_form_for :search, url: search_path, html: { class: 'navbar-search' } do |f|
+              = f.input_field :terms, class: 'search-query span3', placeholder: 'search...', value: params[:search] ? params[:search][:terms] : nil
+            - if logged_in?
+              = menu current_user.name do
+                = menu_child 'Edit Profile', edit_user_path(current_user)
+                = menu_child 'Logout', logout_path
+      = render 'layouts/navigations'
+    #main{role: "main"}
       .container
         .content
           .row
             .span12
               = render 'layouts/messages'
               = yield
-          %footer
