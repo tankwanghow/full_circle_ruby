@@ -1,16 +1,6 @@
-// Set the correct sprite paths
-//$iconSpritePath: image-path('glyphicons-halflings.png');
-//$iconWhiteSpritePath: image-path('glyphicons-halflings-white.png');
-
-$navbarBackground: #020052;
-$navbarBackgroundHighlight: #0500DA;
-$navbarText: #BEFFBD;
-$navbarLinkColor: #BEFFBD;
-$navbarSearchBackground: white;
-$navbarSearchPlaceholderColor: gray;
 @import "bootstrap";
 
-body { padding-top: 60px; }
+body { padding-top: 100px; }
 
 @import "bootstrap-responsive";
 
@@ -22,6 +12,13 @@ body#center {
   height: auto;
 }
 
-.navbar .brand {
- color: #BEFFBD;
+.row.searchable {
+  height: 70px;
+  border-bottom: 1px solid lightgray;
+  overflow: hidden;
+  vertical-align: middle;
+  text-align: center;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
 }
+
