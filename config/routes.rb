@@ -2,6 +2,7 @@ FullCircle::Application.routes.draw do
   match 'login' => 'sessions#new', as: :login
   match 'logout' => 'sessions#destroy', as: :logout
   match 'signup' => 'users#new', as: :signup
+  match 'search' => 'main#index', as: :search
   root to: 'main#index'
   resources :users
   resource :sessions, only: [:new, :create, :destroy]

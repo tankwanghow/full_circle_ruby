@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
   validates :username, uniqueness: true
   validates :name, :username, presence: true
 
+  include PgSearch
+  multisearchable against: [:name, :status]
+
   include AASM
   aasm column: :status do
     state :pending, initial: true
