@@ -1,0 +1,53 @@
+@import 'bootstrap/mixins';
+
+.css-treeview ul, .css-treeview li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.css-treeview input {
+  position: absolute;
+  opacity: 0;
+}
+
+.css-treeview {
+  @include user-select(none);
+}
+
+.css-treeview input + label + ul {
+  margin: 0 0 0 10px;
+}
+
+.css-treeview input ~ ul {
+  display: none;
+}
+
+.css-treeview label, .css-treeview label::before {
+  cursor: pointer;
+}
+
+.css-treeview input:disabled + label {
+  cursor: default;
+  opacity: .6;
+}
+
+.css-treeview input:checked:not(:disabled) ~ ul {
+  display: block;
+}
+
+.css-treeview label, .css-treeview a {
+  margin-bottom: 1px;
+}
+
+.css-treeview label, .css-treeview a, .css-treeview label::before {
+  display: inline-block;
+  height: 16px;
+  line-height: 16px;
+  vertical-align: middle;
+}
+
+.css-treeview label::before {
+  margin: 0 10px 0 0;
+  vertical-align: middle;
+}
