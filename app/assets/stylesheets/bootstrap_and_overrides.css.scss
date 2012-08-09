@@ -4,6 +4,10 @@ body { padding-top: 100px; }
 
 @import "bootstrap-responsive";
 
+.alert {
+  text-align: center;
+}
+
 body#center {
   padding-top: 80px;
   background-color: black;

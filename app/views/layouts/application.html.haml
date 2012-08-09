@@ -18,7 +18,7 @@
           = link_to CompanyName, root_path, class: 'brand'
           %ul.nav.pull-right
             = simple_form_for :search, url: search_path, html: { class: 'navbar-search' } do |f|
-              = f.input_field :terms, class: 'search-query span3', placeholder: 'search...', value: params[:search] ? params[:search][:terms] : nil
+              = f.input_field :terms, class: 'search-query span3', placeholder: 'search...', value: session[:searchable_term]
             - if logged_in?
               = menu current_user.name do
                 = menu_child 'Edit Profile', edit_user_path(current_user)

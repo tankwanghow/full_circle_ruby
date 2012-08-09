@@ -9,7 +9,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new params[:user]
     if @user.save
-      flash[:success] = 'Yeah! Signed up successfully. Pending approval by System Administrator'
+      msg = !@user.is_admin ? ' Pending approval by System Administrator' : ''
+      flash[:success] = 'Yeah! Signed up successfully.' + msg
       redirect_to login_path
     else
       flash.now[:error] = 'Ooppps! Failed to signup'
@@ -23,8 +24,12 @@ class UsersController < ApplicationController
 
   def update
     @user = find_user
+    if current_user.is_admin
+      @user.is_admin = params[:user].delete :is_admin
+      @user.status = params[:user].delete :status
+    end
     if @user.update_attributes params[:user]
-      flash[:success] = "User '#{@user.name}' Profile updated successfully. Will be reflect next login."
+      flash[:success] = "#{@user.name} Profile updated successfully. Will be reflect next login."
       redirect_to root_path
     else
       flash[:error] = "Failed to updated User Profile."
@@ -35,7 +40,7 @@ class UsersController < ApplicationController
 private
 
   def find_user
-    if current_user.id == params[:id] || current_user.is_admin
+    if current_user.id == params[:id].to_i || current_user.is_admin
       return User.find params[:id]
     else
       flash[:error] = 'Access denied!'
