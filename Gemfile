@@ -14,14 +14,13 @@ gem "money"
 gem 'simple_audit', git: 'git://github.com/tankwanghow/simple_audit.git'
 gem "sentient_user"
 gem 'aasm'
-gem 'search_fu', path: '~/projects/search_fu'
 gem 'nested_form', git: 'git://github.com/ryanb/nested_form.git'
-gem 'cancan'
-gem 'coffeebeans'
+#gem 'cancan'
+#gem 'coffeebeans'
 gem 'prawn'
 gem 'simple_form'
 gem 'haml-rails'
-gem 'tinymce-rails'
+#gem 'tinymce-rails'
 gem 'pg_search'
 
 # To use ActiveModel has_secure_password
@@ -33,6 +32,7 @@ group :assets do
   gem 'therubyracer', :platforms => :ruby
   gem 'bootstrap-sass'
   gem 'uglifier', '>= 1.0.3'
+  gem 'jquery-ui-rails'
 end
 
 group :test do
