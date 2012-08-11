@@ -5,8 +5,6 @@ class AccountType < ActiveRecord::Base
   validates_uniqueness_of :name
   acts_as_tree_with_dotted_ids order: :name
   has_many :accounts, dependent: :destroy
-
-  include PgSearch
   
   include Searchable
   searchable content: [:parent_name, :name, :bf_balance, :normal_balance, :description]

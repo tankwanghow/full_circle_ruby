@@ -26,3 +26,13 @@ body#center {
   padding-bottom: 5px;
 }
 
+.accordion-heading {
+  background: lightgray;
+  a { text-decoration: none; }
+}
+
+.tiny {
+  font-size: 10px;
+  color: gray;
+}
+

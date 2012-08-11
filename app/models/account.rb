@@ -3,8 +3,6 @@ class Account < ActiveRecord::Base
   belongs_to :account_type
   validates_presence_of :name1, :account_type_id
   validates_uniqueness_of :name1
-
-  include PgSearch
   
   include Searchable
   searchable content: [:type_name, :name1, :name2, :description, :status]

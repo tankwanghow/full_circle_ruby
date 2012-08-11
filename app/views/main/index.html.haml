@@ -1,5 +1,32 @@
+.accordion#accordion1
+  .accordion-group
+    .accordion-heading
+      %a.accordion-toggle{data: { toggle: 'collapse', parent: '#accordion1' }, href: '#advance-search-form' }
+        Advance Search
+    .accordion-body.collapse#advance-search-form
+      .accordion-inner
+        = simple_form_for :search, url: search_path, html: { class: 'form-search span12' } do |f|
+          .row  
+            = f.input_field :terms, class: 'span3', placeholder: 'search...', value: session[:search_term]
+            = f.input_field :date_from, class: 'datepicker span2', placeholder: 'date from...', value: session[:search_date_form]
+            = f.input_field :date_to, class: 'datepicker span2', placeholder: 'date to...', value: session[:search_date_to]
+            = f.input_field :amount_larger, class: 'span2', placeholder: 'amount larger...', value: session[:search_amount_larger]
+            = f.input_field :amount_less, class: 'span2', placeholder: 'amount smaller  ...', value: session[:search_amount_less]
+            = f.button :submit, 'Search', class: 'btn btn-primary'
+            = link_to 'Clear', '#', class: 'btn btn-danger', id: 'clear-advance-search-form'
+            .span3.offset3.tiny
+              Enter only
+              %strong date from
+              to search for equal
+            .span3.tiny
+              Enter only
+              %strong amount larger
+              to search for equal
+
 - if @docs.length == 0
   %h1 No record found!
+- else
+  = paginate @docs
 - for doc in @docs
   .row.searchable
     .span3
@@ -13,3 +40,6 @@
     -if doc.doc_amount
       %span.label.label-inverse= doc.doc_amount.to_money.format
     .span9= doc.content
+- if @docs.length > 8
+  = paginate @docs
+  

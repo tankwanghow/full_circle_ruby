@@ -8,8 +8,6 @@ class User < ActiveRecord::Base
   validates :password, on: :create, presence: true
   validates :username, uniqueness: true
   validates :name, :username, presence: true
-
-  include PgSearch
   
   include Searchable
   searchable content: [:name, :status]

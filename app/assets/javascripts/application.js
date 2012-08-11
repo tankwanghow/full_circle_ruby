@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery_nested_form
+//= require jquery.ui.datepicker
 //= require bootstrap-alert
 //= require bootstrap-dropdown
+//= require bootstrap-collapse
 //= require_tree .
