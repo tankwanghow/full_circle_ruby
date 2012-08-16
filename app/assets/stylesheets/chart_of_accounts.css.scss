@@ -1,5 +1,19 @@
 @import 'bootstrap/mixins';
 
+.css-treeview {
+  margin-top: 5px;
+  max-height: 478px;
+  overflow: auto;
+  background-color: #F5F5F5;
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  @include border-radius(4px);
+}
+
+.css-treeview a.btn {
+  margin-bottom: 5px;
+}
+
 .css-treeview ul, .css-treeview li {
   padding: 0;
   margin: 0;
@@ -15,7 +29,7 @@
   @include user-select(none);
 }
 
-.css-treeview input + label + ul {
+.css-treeview input + span + label + ul, .css-treeview input + span + label + ul a {
   margin: 0 0 0 10px;
 }
 
@@ -36,7 +50,7 @@
   display: block;
 }
 
-.css-treeview label, .css-treeview a {
+.css-treeview label, .css-treeview ul li {
   margin-bottom: 1px;
 }
 
@@ -50,4 +64,12 @@
 .css-treeview label::before {
   margin: 0 10px 0 0;
   vertical-align: middle;
+}
+
+.css-treeview span.badge, .css-treeview span::before {
+  content: ' + ';
+}
+
+.css-treeview input:checked + span::before {
+  content: ' - ';
 }

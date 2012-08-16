@@ -1,0 +1,5 @@
+= f.association :parent, collection: AccountType.order(:name), prompt: 'Select Account Type...'
+= f.input :name
+= f.input :normal_balance
+= f.input :bf_balance, label: 'Brought Forward Balance'
+= f.input :description, input_html: { rows: 6 }

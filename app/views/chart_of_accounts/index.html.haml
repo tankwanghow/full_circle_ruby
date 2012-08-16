@@ -1,0 +1,11 @@
+#chart-of-accounts
+  .row
+    .span3
+      %a#new-account-type.btn.btn-info{ data: { url: new_account_type_path } }New Account Type
+      %a#new-account.btn.btn-info{ data: { url: new_account_path } }New Account
+  .row
+    .css-treeview.span3
+      %a{href: '#', id: 'css-treeview-expand', class: 'btn btn-success'}Expand
+      %a{href: '#', id: 'css-treeview-collapse', class: 'btn btn-danger'}Collapse
+      = render_chart_of_account
+    .span7#form-area

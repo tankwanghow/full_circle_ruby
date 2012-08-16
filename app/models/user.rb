@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
   has_secure_password
   include SentientUser
+  include ActiveModel::ForbiddenAttributesProtection
   before_save :first_user_set_is_admin
 
-  attr_accessible :username, :name, :password, :password_confirmation
   validates :password, confirmation: true, on: :create
   validates :password, on: :create, presence: true
   validates :username, uniqueness: true

@@ -1,8 +1,11 @@
 FullCircle::Application.routes.draw do
+  get "chart_of_accounts/index"
+
   match 'login' => 'sessions#new', as: :login
   match 'logout' => 'sessions#destroy', as: :logout
   match 'signup' => 'users#new', as: :signup
   match 'search' => 'main#index', as: :search
+  match 'chart_of_accounts' => 'chart_of_accounts#index'
   root to: 'main#index'
   resources :users
   resources :accounts, only: [:new, :edit, :update, :create, :destroy]

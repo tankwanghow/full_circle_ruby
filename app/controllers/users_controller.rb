@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new params[:user]
+    @user = User.new user_params
     if @user.save
       msg = !@user.is_admin ? ' Pending approval by System Administrator' : ''
       flash[:success] = 'Yeah! Signed up successfully.' + msg
@@ -24,11 +24,7 @@ class UsersController < ApplicationController
 
   def update
     @user = find_user
-    if current_user.is_admin
-      @user.is_admin = params[:user].delete :is_admin
-      @user.status = params[:user].delete :status
-    end
-    if @user.update_attributes params[:user]
+    if @user.update_attributes user_params
       flash[:success] = "#{@user.name} Profile updated successfully. Will be reflect next login."
       redirect_to root_path
     else
@@ -45,6 +41,14 @@ private
     else
       flash[:error] = 'Access denied!'
       redirect_to root_path
+    end
+  end
+
+  def user_params
+    if (current_user and !current_user.is_admin) or !current_user
+      params.require(:user).permit(:username, :name, :password, :password_confirmation)
+    else
+      params.require(:user).permit(:username, :name, :password, :password_confirmation, :status, :is_admin)
     end
   end
 

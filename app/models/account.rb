@@ -1,5 +1,4 @@
 class Account < ActiveRecord::Base
-  attr_accessible :account_type_id, :lock_version, :name1, :name2, :status, :description
   belongs_to :account_type
   validates_presence_of :name1, :account_type_id
   validates_uniqueness_of :name1

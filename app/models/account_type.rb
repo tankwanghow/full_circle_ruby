@@ -1,5 +1,4 @@
 class AccountType < ActiveRecord::Base
-  attr_accessible :bf_balance, :dotted_ids, :lock_version, :name, :normal_balance, :parent_id, :description
   validate :parent?
   validates_presence_of :name
   validates_uniqueness_of :name
