@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   private
 
   def is_first_user?
-    User.count == 0 ? true : false
+    User.count == 0 ? true  : false
   end
 
   def first_user_set_is_admin

@@ -1,6 +1,11 @@
-= simple_form_for @account, html: { class: 'form-horizontal well' } do |f|
-  %legend
-    Account
-  = render 'fields', f: f
-  .form-actions
-    = f.button :submit, 'Save', class: 'btn btn-primary'
+.span3
+  = render 'layouts/chart_of_accounts'
+.span7
+  = simple_form_for @account, html: { class: 'form-horizontal well', admin_lock: @account.admin_lock } do |f|
+    %legend
+      Account
+    = render 'fields', f: f
+    .form-actions
+      = f.button :submit, 'Save', class: 'btn btn-primary'
+      - if !@account.admin_lock
+        = link_to 'Delete', @account, method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger'

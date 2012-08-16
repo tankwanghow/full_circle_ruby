@@ -1,7 +1,7 @@
 module ChartOfAccountsHelper
 
   def render_chart_of_account
-    account_types = AccountType.includes(:accounts)
+    account_types = AccountType.includes(:accounts).order(:name)
     all_roots(account_types).map do |account_type|
       content_tag :ul do
         render_account_types account_type, account_types
@@ -11,11 +11,10 @@ module ChartOfAccountsHelper
 
   def render_account_types account_type, account_types
       content_tag :li do
-        check_box_tag('account_type_' + account_type.id.to_s) +
+        check_box_tag('account_type_' + account_type.id.to_s, '1', checked: true) +
         content_tag(:span, '') +
-        label_tag('', account_type.name, class: 'label label-info account_type',
-                  data: { url: edit_account_type_path(account_type), 
-                          id: account_type.id, selected: params_select_is?(account_type) }) +
+        link_to(account_type.name, edit_account_type_path(account_type) + "##{edit_account_type_path(account_type)}", 
+          name: edit_account_type_path(account_type), class: "label #{account_type_label(account_type)}") +
         content_tag(:ul) do
           children(account_type, account_types).map do |child|
             render_account_types(child, account_types)
@@ -27,11 +26,12 @@ module ChartOfAccountsHelper
 
   def render_accounts_for account_type
     if account_type.accounts.length > 0
-      content_tag :ul do
-        account_type.accounts.map do |account|
+      content_tag :ul, class: :account do
+        account_type.accounts.order(:name1).map do |account|
           content_tag :li do
-            link_to(account.name1, '#', class: 'label label-success account',
-                    data: { url: edit_account_path(account), parent_id: account_type.id, selected: params_select_is?(account) })
+            link_to(account.name1, edit_account_path(account) + "##{edit_account_path(account)}", 
+              name: edit_account_path(account), class: "label #{account_label(account)}",
+                    data: { parent_id: account_type.id })
           end
         end.join('').html_safe
       end
@@ -40,8 +40,24 @@ module ChartOfAccountsHelper
     end
   end
 
-  def params_select_is? obj
-    params[:klass] == obj.class.name && params[:id].to_i == obj.id
+  def account_type_label rendering_account_type
+    if @account_type == rendering_account_type
+      'label-warning'
+    else
+      'label-info'
+    end
+  end
+
+    def account_label rendering_account
+    if @account == rendering_account
+      'label-warning'
+    else
+      'label-success' if rendering_account.status == 'Active'
+    end
+  end
+
+  def selected_account_type_id
+    @account.try(:account_type).try(:id) || @account_type.try(:id)
   end
 
   # Start - Make rendering the account_types_tree faster, one query for the entire tree.

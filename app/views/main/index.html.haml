@@ -30,10 +30,7 @@
 - for doc in @docs
   .row.searchable
     .span3
-      - if doc.searchable.class == AccountType or doc.searchable.class == Account
-        = link_to doc.searchable_type, chart_of_accounts_path(klass: doc.searchable.class.name, id: doc.searchable.id), class: 'btn btn-info'
-      - else
-        = link_to doc.searchable_type, polymorphic_path(doc.searchable, action: :edit), class: 'btn btn-info'
+      = link_to doc.searchable_type, polymorphic_path(doc.searchable, action: :edit), class: 'btn btn-info'
       %div
         %span.label.label-success= doc.created_at.to_s(:db)
       - if doc.created_at != doc.updated_at

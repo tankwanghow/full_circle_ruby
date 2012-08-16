@@ -2,7 +2,7 @@
   .container
     %ul.nav
       = menu 'Accounting' do
-        = menu_child 'Chart of Account', chart_of_accounts_path
+        = menu_child 'Chart of Account', edit_account_type_path(AccountType.first)
       = menu 'Sales'
       = menu 'Purchases'
       = menu 'Bank'

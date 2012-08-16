@@ -1,16 +1,17 @@
 class Account < ActiveRecord::Base
   belongs_to :account_type
-  validates_presence_of :name1, :account_type_id
-  validates_uniqueness_of :name1
+  validates :account_type_id, presence: true
+  validates :name1, presence: true, uniqueness: true
   
   include Searchable
-  searchable content: [:type_name, :name1, :name2, :description, :status]
+  searchable content: [:name1, :name2, :type_name, :description, :status]
 
   simple_audit username_method: :username do |r|
     {
-      account_type: r.account_type.name,
+      account_type: r.type_name,
       name1: r.name1,
       name2: r.name2,
+      admin_lock: r.admin_lock,
       description: r.description
     }
   end

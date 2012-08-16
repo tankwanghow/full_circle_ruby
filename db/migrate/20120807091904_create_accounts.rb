@@ -6,8 +6,11 @@ class CreateAccounts < ActiveRecord::Migration
       t.belongs_to :account_type, null: false
       t.text       :description
       t.string     :status,       default: 'active', null: false
+      t.boolean    :admin_lock,   default: false
       t.integer    :lock_version, default: 0
       t.timestamps
     end
+
+    add_index :accounts, :name1, unique: true
   end
 end

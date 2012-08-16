@@ -31,7 +31,7 @@ class UsersController < ApplicationController
       flash[:error] = "Failed to updated User Profile."
       render :edit
     end
- end
+  end
 
 private
 

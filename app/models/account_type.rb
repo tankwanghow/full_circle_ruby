@@ -1,12 +1,11 @@
 class AccountType < ActiveRecord::Base
   validate :parent?
-  validates_presence_of :name
-  validates_uniqueness_of :name
+  validates :name, presence: true, uniqueness: true
   acts_as_tree_with_dotted_ids order: :name
   has_many :accounts, dependent: :destroy
   
   include Searchable
-  searchable content: [:parent_name, :name, :bf_balance, :normal_balance, :description]
+  searchable content: [:name, :parent_name, :bf_balance, :normal_balance, :description]
 
   simple_audit username_method: :username do |r|
     {
@@ -14,7 +13,8 @@ class AccountType < ActiveRecord::Base
       name: r.name,
       balance_bf: r.bf_balance,
       normal_balance: r.normal_balance,
-      description: r.description
+      admin_lock: r.admin_lock,
+      description: r.description  
     }
   end
 

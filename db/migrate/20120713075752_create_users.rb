@@ -9,5 +9,7 @@ class CreateUsers < ActiveRecord::Migration
       t.integer    :lock_version,    default: 0
       t.timestamps
      end
+
+     add_index :users, :username, unique: true
   end
 end

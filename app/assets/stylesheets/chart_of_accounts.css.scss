@@ -29,8 +29,12 @@
   @include user-select(none);
 }
 
-.css-treeview input + span + label + ul, .css-treeview input + span + label + ul a {
+.css-treeview input + span + a + ul {
   margin: 0 0 0 10px;
+}
+
+.css-treeview ul.account {
+  margin: 0 0 0 20px;
 }
 
 .css-treeview input ~ ul {
@@ -50,7 +54,7 @@
   display: block;
 }
 
-.css-treeview label, .css-treeview ul li {
+.css-treeview a, .css-treeview ul li {
   margin-bottom: 1px;
 }
 
