@@ -6,6 +6,7 @@
       Account
     = render 'fields', f: f
     .form-actions
-      = f.button :submit, 'Save', class: 'btn btn-primary'
       - if !@account.admin_lock
+        = f.button :submit, 'Save', class: 'btn btn-primary'
+        = link_to 'Cancel', edit_account_path(@account), class: 'btn btn-warning'
         = link_to 'Delete', @account, method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger'

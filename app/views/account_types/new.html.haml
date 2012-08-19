@@ -7,3 +7,4 @@
     = render 'fields', f: f
     .form-actions
       = f.button :submit, 'Save', class: 'btn btn-primary'
+      = link_to 'Cancel', edit_account_type_path(@account_type.parent || AccountType.first), class: 'btn btn-warning'

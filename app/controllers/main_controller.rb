@@ -1,6 +1,6 @@
 class MainController < ApplicationController
   def index
-    @docs = (current_user.is_admin ? search_documents : search_documents.where("searchable_type <> 'User'")).page(params[:page]).per(25)
+    @docs = (current_user.is_admin ? search_documents : search_documents.where("searchable_type <> 'User'")).page(params[:page]).per(25).order('updated_at desc')
   end
 
 private
@@ -19,7 +19,7 @@ private
   def searchable_with_types
     types = []
     types = search_term.scan(/\@[a-zA-Z]+/).each { |t| t.gsub!('@', '').capitalize! } if search_term
-    types.length > 0 ? Document.where(searchable_type: types) : Document.where('1=1')
+    types.length > 0 ? Document.where('searchable_type ilike ?', types) : Document.where('1=1')
   end
 
   def searchable_with_dates

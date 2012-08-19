@@ -1,13 +1,18 @@
 FullCircle::Application.routes.draw do
+
   match 'login' => 'sessions#new', as: :login
   match 'logout' => 'sessions#destroy', as: :logout
   match 'signup' => 'users#new', as: :signup
   match 'search' => 'main#index', as: :search
   root to: 'main#index'
-  resources :users
+  
+  resources :particular_types, only: [:new, :edit, :update, :create, :destroy]
+  match 'particular_types/new_or_edit' => 'particular_types#new_or_edit'
+
+  resources :users, only: [:new, :edit, :update, :create, :destroy]
   resources :accounts, only: [:new, :edit, :update, :create, :destroy]
   resources :account_types, only: [:new, :edit, :update, :create, :destroy]
-  resource :sessions, only: [:new, :create, :destroy]
+  resource  :sessions, only: [:new, :create, :destroy]
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

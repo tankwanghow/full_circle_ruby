@@ -10,7 +10,7 @@ class AccountTypesController < ApplicationController
       flash[:success] = "Account Type '#{@account_type.name}' updated successfully."
       redirect_to edit_account_type_path(@account_type) + "##{edit_account_type_path(@account_type)}"
     else
-      flash[:error] = "Failed to updated Account Type."
+      flash.now[:error] = "Failed to updated Account Type."
       render :edit
     end
   end
@@ -25,8 +25,8 @@ class AccountTypesController < ApplicationController
       flash[:success] = "Account Type '#{@account_type.name}' created successfully."
       redirect_to edit_account_type_path(@account_type) + "##{edit_account_type_path(@account_type)}"
     else
-      flash[:error] = "Failed to create Account Type."
-      render :edit
+      flash.now[:error] = "Failed to create Account Type."
+      render :new
     end
   end
 
