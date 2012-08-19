@@ -33,12 +33,12 @@ class ParticularTypesController < ApplicationController
     @particular_type = ParticularType.find(params[:id])
     @particular_type.destroy
     flash[:success] = "Successfully deleted '#{@particular_type.name}'."
-    redirect_to particular_types_new_or_edit_path
+    redirect_to particular_type_new_or_edit_path
   end
 
   def new_or_edit
     if ParticularType.count > 0
-      redirect_to edit_particular_type_path(ParticularType.first)
+      redirect_to edit_particular_type_path(ParticularType.last)
     else
       redirect_to new_particular_type_path
     end

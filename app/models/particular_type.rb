@@ -2,10 +2,7 @@ class ParticularType < ActiveRecord::Base
   belongs_to :account
   has_many :particulars
   validates_uniqueness_of :name
-  validates_presence_of :party_type, :name, :account_id
-
-  def account_type_id
-  end
+  validates_presence_of :party_type, :name, :account_name
   
   include Searchable
   searchable content: [:party_type, :name, :account_name]
@@ -19,6 +16,11 @@ class ParticularType < ActiveRecord::Base
   end
 
   def account_name
-    account.name1
+    account ? account.name1 : nil
   end
+
+  def account_name= val
+    self.account_id = Account.find_by_name1(val).id
+  end
+
 end

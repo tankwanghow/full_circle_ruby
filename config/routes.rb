@@ -7,12 +7,14 @@ FullCircle::Application.routes.draw do
   root to: 'main#index'
   
   resources :particular_types, only: [:new, :edit, :update, :create, :destroy]
-  match 'particular_types/new_or_edit' => 'particular_types#new_or_edit'
+  get 'particular_type/new_or_edit' => 'particular_types#new_or_edit'
 
   resources :users, only: [:new, :edit, :update, :create, :destroy]
   resources :accounts, only: [:new, :edit, :update, :create, :destroy]
   resources :account_types, only: [:new, :edit, :update, :create, :destroy]
-  resource  :sessions, only: [:new, :create, :destroy]
+  resource :sessions, only: [:new, :create, :destroy]
+  resources :payments, only: [:new, :edit, :update, :create]
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

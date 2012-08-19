@@ -5,9 +5,13 @@ class Particular < ActiveRecord::Base
   validates_numericality_of :quantity, :unit_price
   
   def simple_audit_string
+    searchable_string
   end
 
   def searchable_string
+    [ party_type.name, note, quantity.to_s, 
+      unit, unit_price.to_money.format ].join ' '
+
   end
 
   def amount

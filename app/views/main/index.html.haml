@@ -32,11 +32,11 @@
     .span3
       = link_to doc.searchable_type, polymorphic_path(doc.searchable, action: :edit), class: 'btn btn-info'
       %div
-        %span.label.label-success= doc.created_at.to_s(:db)
+        %span.label.label-success= doc.created_at.to_s(:long)
       - if doc.created_at != doc.updated_at
         %div
-          %span.label.label-warning= doc.updated_at.to_s(:db)
-    %span.label= doc.doc_date.to_s(:db)
+          %span.label.label-warning= doc.updated_at.to_s(:long)
+    %span.label= doc.doc_date.to_s
     -if doc.doc_amount
       %span.label.label-inverse= doc.doc_amount.to_money.format
     .span9= doc.content

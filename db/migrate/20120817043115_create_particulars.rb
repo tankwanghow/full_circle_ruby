@@ -2,6 +2,7 @@ class CreateParticulars < ActiveRecord::Migration
   def change
     create_table :particulars do |t|
       t.references :docable,      polymorphic: true
+      t.string     :flag
       t.belongs_to :party_type,   null: false
       t.text       :note
       t.decimal    :quantity,     precision: 12,  scale: 4, default: 0, null: false

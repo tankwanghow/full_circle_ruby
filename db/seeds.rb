@@ -51,7 +51,7 @@ ac_rec = AccountType.create!(
 )
 Account.create!(
   account_type_id: ac_rec.id,
-  name1: 'Posted Dated Cheques',
+  name1: 'Post Dated Cheques',
   description: 'Cheques receive from customer, which will be deposited in the future',
   admin_lock: true,
   status: 'Active'
