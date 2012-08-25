@@ -1,4 +1,4 @@
-class PaymentsController < SubDomainController
+class PaymentsController < ApplicationController
 
   def edit
     @payment = Payment.find(params[:id])
@@ -27,6 +27,14 @@ class PaymentsController < SubDomainController
     else
       flash[:error] = "Failed to update Payment."
       render :edit
+    end
+  end
+
+  def new_or_edit
+    if Payment.count > 0
+      redirect_to edit_payment_path(Payment.last)
+    else
+      redirect_to new_payment_path
     end
   end
 

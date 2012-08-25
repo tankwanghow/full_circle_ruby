@@ -36,3 +36,37 @@ body#center {
   color: gray;
 }
 
+a.add_nested_fields {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+input.numeric, input.datepicker {
+  text-align: right;
+}
+
+span.table-header {
+  margin-left: 0px;
+  margin-right: 5px;
+}
+
+.offset6.show-hide {
+  margin-top: 3px;
+}
+
+.pay-to {
+  padding: 5px;
+  background-color: #FAF7A9;
+  .row { margin-left: 0px; }
+  margin-bottom: 5px;
+  @include border-radius(5px);
+  border: 2px solid lightgray;
+}
+
+.pay-from {
+  padding: 5px;
+  background-color: #FFCFCF;
+  .row { margin-left: 0px; }
+  @include border-radius(5px);
+  border: 2px solid lightgray;
+}

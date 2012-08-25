@@ -1,6 +1,6 @@
 class Payment < ActiveRecord::Base
   belongs_to :pay_to, class_name: "Account", foreign_key: "pay_to_id"
-  belongs_to :pay_form, class_name: "Account", foreign_key: "pay_form_id"
+  belongs_to :pay_from, class_name: "Account", foreign_key: "pay_from_id"
   has_many :pay_to_particulars, class_name: "Particular", as: :doc, conditions: { flag: "pay_to" }
   has_many :pay_from_particulars, class_name: "Particular", as: :doc, conditions: { flag: "pay_from" }
 
@@ -13,7 +13,7 @@ class Payment < ActiveRecord::Base
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :actual_debit_amount, 
              content: [:pay_to_name, :collector, :note, :pay_amount, 
-              :actual_credit_amount, :cheque_date, :cheque_no, :status,
+              :actual_credit_amount, :pay_from_name, :cheque_date, :cheque_no, :status,
               :pay_to_particulars, :pay_from_particulars]
 
   simple_audit username_method: :username do |r|
@@ -25,6 +25,7 @@ class Payment < ActiveRecord::Base
       pay_amount: r.pay_amount.to_money.format,
       pay_to_particulars: r.pay_to_particulars_string,
       actual_debit_amount: r.actual_debit_amount.to_money.format,
+      pay_from: r.pay_from_name,
       pay_from_particulars: r.pay_from_particulars_string,
       cheque_no: r.cheque_no,
       cheque_date: r.cheque_date,

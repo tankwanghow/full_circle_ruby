@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery_nested_form
+//= require jquery.pjax
 //= require jquery.ui.datepicker
 //= require bootstrap-alert
 //= require bootstrap-typeahead

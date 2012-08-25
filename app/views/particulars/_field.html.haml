@@ -1,0 +1,7 @@
+= f.input_field :party_type_name, class: 'span2', data: { source: Account.pluck(:name1), provide: 'typeahead' }
+= f.input_field :note, class: 'span3'
+= f.input_field :quantity, class: 'span1 quantity'
+= f.input_field :unit, class: 'span1'
+= f.input_field :unit_price, class: 'span1 unit-price'
+= f.input_field :total, readOnly: true, class: 'span2 numeric row_total'
+= f.link_to_remove "X", class: "btn btn-danger"

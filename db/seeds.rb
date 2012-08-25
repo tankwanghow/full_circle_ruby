@@ -1,7 +1,7 @@
 assets = AccountType.create!(
-  name: 'Assets', 
-  description: 'Resources owned by the Business Entity', 
-  normal_balance: 'Debit', 
+  name: 'Assets',
+  description: 'Resources owned by the Business Entity',
+  normal_balance: 'Debit',
   admin_lock: true,
   bf_balance: true)
 current_assets = AccountType.create!(
@@ -166,4 +166,16 @@ Account.create!(
   description: 'Uncategorize Goods or Services consumed from supplier',
   admin_lock: true,
   status: 'Active'
+)
+Account.create!(
+  account_type_id: AccountType.find_by_name('Expenses'),
+  name1: 'Bank Charges',
+  description: 'Charges by Bank, due to services provided',
+  admin_lock: true,
+  status: 'Active'
+)
+ParticularType.create!(
+  party_type: 'Expenses',
+  name: 'Bank Charges',
+  account_id: Account.find_by_name1('Bank Charges').id
 )

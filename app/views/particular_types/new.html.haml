@@ -4,4 +4,4 @@
   = render 'fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
-    = link_to 'Cancel', new_particular_type_path, class: 'btn btn-warning'
+    = link_to 'Cancel', edit_particular_type_path(ParticularType.last), class: 'btn btn-warning'

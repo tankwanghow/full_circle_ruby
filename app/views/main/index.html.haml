@@ -1,7 +1,7 @@
 .accordion#accordion1
   .accordion-group
     .accordion-heading
-      %a.accordion-toggle{data: { toggle: 'collapse', parent: '#accordion1' }, href: '#advance-search-form' }
+      %a.accordion-toggle{data: { toggle: 'collapse', parent: '#accordion1' }, href: '#advance-search-form', 'data-skip-pjax' => true }
         Advance Search
     .accordion-body.collapse#advance-search-form
       .accordion-inner
@@ -13,7 +13,7 @@
             = f.input_field :amount_larger, class: 'span2', placeholder: 'amount larger...', value: session[:search_amount_larger]
             = f.input_field :amount_less, class: 'span2', placeholder: 'amount smaller  ...', value: session[:search_amount_less]
             = f.button :submit, 'Search', class: 'btn btn-primary'
-            = link_to 'Clear', '#', class: 'btn btn-danger', id: 'clear-advance-search-form'
+            = link_to 'Clear', '#', class: 'btn btn-danger', id: 'clear-advance-search-form', 'data-skip-pjax' => true
             .span3.offset3.tiny
               Enter only
               %strong date from
@@ -43,3 +43,7 @@
 - if @docs.length > 8
   = paginate @docs
   
+:javascript
+  $(document).ready(function() {
+    main.init();
+  });
