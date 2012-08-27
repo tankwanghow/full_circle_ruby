@@ -14,11 +14,12 @@
             = f.input_field :amount_less, class: 'span2', placeholder: 'amount smaller  ...', value: session[:search_amount_less]
             = f.button :submit, 'Search', class: 'btn btn-primary'
             = link_to 'Clear', '#', class: 'btn btn-danger', id: 'clear-advance-search-form', 'data-skip-pjax' => true
+          .row  
             .span3.offset3.tiny
               Enter only
               %strong date from
               to search for equal
-            .span3.tiny
+            .span3.offset1.tiny
               Enter only
               %strong amount larger
               to search for equal
@@ -30,7 +31,8 @@
 - for doc in @docs
   .row.searchable
     .span3
-      = link_to doc.searchable_type, polymorphic_path(doc.searchable, action: :edit), class: 'btn btn-info'
+    =# did not use polymorphic_path to avoid n+1 issue
+      = link_to doc.searchable_type, url_for(controller: doc.searchable_type.pluralize.underscore, action: :edit, id: doc.searchable_id), class: 'btn btn-info'
       %div
         %span.label.label-success= doc.created_at.to_s(:long)
       - if doc.created_at != doc.updated_at
