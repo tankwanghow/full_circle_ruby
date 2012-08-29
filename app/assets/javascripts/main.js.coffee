@@ -1,11 +1,14 @@
 $ ->
   ($ 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax])').pjax('[data-pjax-container]')
+  app.standardInit()
+  ($ '[data-pjax-container]').on 'pjax:end', ->
+    app.standardInit()
 
 window.math = {
 
-  rowTotal: (qtyCls, priceCls, rowCls, totalCls) ->    
-    ($ 'form#payment_form').on 'change', qtyCls, -> calRowTotal(this)
-    ($ 'form#payment_form').on 'change', priceCls, -> calRowTotal(this)
+  rowTotal: (qtyCls, priceCls, totalCls, rowCls, evtBubbleCls) ->    
+    ($ evtBubbleCls).on 'change', qtyCls, -> calRowTotal(this)
+    ($ evtBubbleCls).on 'change', priceCls, -> calRowTotal(this)
 
     calRowTotal = (elm) ->
       row_total = ($ elm).closest(rowCls).find(totalCls)
@@ -15,10 +18,10 @@ window.math = {
       row_total.trigger "change"
 
 
-  sum: (elements, totalElm, checkVisible=true) ->
-    ($ elements).on 'change', ->
+  sum: (elements, totalElm, evtBubbleCls, checkVisible=true) ->
+    ($ evtBubbleCls).on 'change', elements, ->
       total = 0
-      _.each ($ elements), (elm)->
+      ($ elements).each (index, elm) ->
         if checkVisible
           val = if ($ elm).is(":visible") then ($ elm).val() else 0
         else
@@ -37,15 +40,24 @@ window.main = {
       ($ 'input#search_date_to').val('')
       ($ 'input#search_amount_larger').val('')
       ($ 'input#search_amount_less').val('')
-
-    app.initDatepicker()
+      ($ '#advance-search-form .simple_form').submit()
 
     if ($ '#search_date_from').val() isnt "" or ($ '#search_date_to').val() isnt "" or ($ '#search_amount_larger').val() isnt "" or ($ '#search_amount_less').val() isnt ""
       ($ '#advance-search-form').collapse('show')
-
 }
 
 window.app = {
+  standardInit: ->
+    app.initDatepicker()
+    app.initNumeric()
+    app.avoidAutocompleteForTypeahead()
+
+  avoidAutocompleteForTypeahead: ->
+    ($ 'input[data-provide="typeahead"]').attr('autocomplete', 'off')
+
+  initNumeric: ->
+    ($ 'input.numeric').numeric()
+
   initDatepicker: ->
     ($ 'input.datepicker').datepicker
       dateFormat: 'dd-mm-yy'

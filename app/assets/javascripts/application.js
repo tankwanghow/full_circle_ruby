@@ -15,8 +15,9 @@
 //= require jquery_nested_form
 //= require jquery.pjax
 //= require jquery.ui.datepicker
-//= require bootstrap-alert
-//= require bootstrap-typeahead
-//= require bootstrap-dropdown
-//= require bootstrap-collapse
+//= require jquery.numeric
+//= require twitter/bootstrap/alert
+//= require twitter/bootstrap/typeahead
+//= require twitter/bootstrap/dropdown
+//= require twitter/bootstrap/collapse
 //= require_tree .

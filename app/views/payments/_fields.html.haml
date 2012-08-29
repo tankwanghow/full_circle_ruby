@@ -7,7 +7,7 @@
     = f.input :doc_date, as: :datepicker, wrapper_html: { class: 'span3' }, input_html: { class: 'span2' }
   .row
     = f.input :note, input_html: { rows: 3, class: 'span3' }, wrapper_html: { class: 'span3' }
-    = f.input :pay_amount, wrapper_html: { class: 'span2' }, input_html: { class: 'span2' }
+    = f.input :pay_amount, wrapper_html: { class: 'span2' }, input_html: { class: 'span2', type: :text }
   .row.nested
     = render 'particulars/fields', f: f, xies_name: :pay_to_particulars
   .offset3

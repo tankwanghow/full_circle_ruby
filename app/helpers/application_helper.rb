@@ -15,4 +15,8 @@ module ApplicationHelper
     end
   end
 
+  def link_to_index obj
+    link_to 'Index', search_path(search: { terms: "@#{obj.class.name}" }), class: 'btn btn-info'
+  end
+
 end

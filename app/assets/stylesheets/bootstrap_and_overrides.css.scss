@@ -1,8 +1,8 @@
-@import "bootstrap";
+@import "twitter/bootstrap";
 
 body { padding-top: 100px; }
 
-@import "bootstrap-responsive";
+@import "twitter/bootstrap/responsive";
 
 .alert {
   text-align: center;
@@ -69,4 +69,8 @@ span.table-header {
   .row { margin-left: 0px; }
   @include border-radius(5px);
   border: 2px solid lightgray;
+}
+
+textarea {
+  resize: none;
 }
