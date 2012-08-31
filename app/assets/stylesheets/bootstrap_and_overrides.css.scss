@@ -1,8 +1,15 @@
-@import "twitter/bootstrap";
+$gridGutterWidth: 3px;
+$gridColumnWidth: 77px;
+
+@import "bootstrap";
 
 body { padding-top: 100px; }
 
-@import "twitter/bootstrap/responsive";
+// @import "bootstrap-responsive";
+
+.dropdown-menu {
+  margin-top: 0px;
+}
 
 .alert {
   text-align: center;
@@ -54,23 +61,14 @@ span.table-header {
   margin-top: 3px;
 }
 
-.pay-to {
-  padding: 5px;
-  background-color: #FAF7A9;
-  .row { margin-left: 0px; }
-  margin-bottom: 5px;
-  @include border-radius(5px);
-  border: 2px solid lightgray;
-}
-
-.pay-from {
-  padding: 5px;
-  background-color: #FFCFCF;
-  .row { margin-left: 0px; }
-  @include border-radius(5px);
-  border: 2px solid lightgray;
-}
-
 textarea {
   resize: none;
+}
+
+ul.nav li.dropdown:hover > ul.dropdown-menu {
+  display: block;
+}
+
+.bold {
+  font-weight: bold;
 }

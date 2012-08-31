@@ -9,7 +9,7 @@ class Particular < ActiveRecord::Base
   end
 
   def party_type_name= val
-    self.particular_type_id = ParticularType.find_by_name(val).id
+    self.particular_type_id = ParticularType.find_by_name(val).try(:id)
   end
 
   def simple_audit_string
@@ -17,7 +17,7 @@ class Particular < ActiveRecord::Base
   end
 
   def searchable_string
-    [ party_type.name, note, quantity.to_s, 
+    [ particular_type.name, note, quantity.to_s, 
       unit, unit_price.to_money.format ].join ' '
 
   end

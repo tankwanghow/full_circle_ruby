@@ -8,10 +8,10 @@
         = simple_form_for :search, url: search_path, html: { class: 'form-search span12' } do |f|
           .row  
             = f.input_field :terms, class: 'span3', placeholder: 'search...', value: session[:search_term]
-            = f.input_field :date_from, class: 'datepicker span2', placeholder: 'date from...', value: session[:search_date_form]
-            = f.input_field :date_to, class: 'datepicker span2', placeholder: 'date to...', value: session[:search_date_to]
-            = f.input_field :amount_larger, class: 'span2', placeholder: 'amount larger...', value: session[:search_amount_larger]
-            = f.input_field :amount_less, class: 'span2', placeholder: 'amount smaller  ...', value: session[:search_amount_less]
+            = f.input_field :date_from, class: 'datepicker input-small', placeholder: 'date from...', value: session[:search_date_form]
+            = f.input_field :date_to, class: 'datepicker input-small', placeholder: 'date to...', value: session[:search_date_to]
+            = f.input_field :amount_larger, class: 'numeric span2', placeholder: 'amount larger...', value: session[:search_amount_larger]
+            = f.input_field :amount_less, class: 'numeric span2', placeholder: 'amount smaller...', value: session[:search_amount_less]
             = f.button :submit, 'Search', class: 'btn btn-primary'
             = link_to 'Clear', '#', class: 'btn btn-danger', id: 'clear-advance-search-form', 'data-skip-pjax' => true
           .row  

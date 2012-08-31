@@ -20,7 +20,7 @@ class ParticularType < ActiveRecord::Base
   end
 
   def account_name= val
-    self.account_id = Account.find_by_name1(val).id
+    self.account_id = Account.find_by_name1(val).try(:id)
   end
 
 end

@@ -1,6 +1,11 @@
 $ ->
-  ($ 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax])').pjax('[data-pjax-container]')
   app.standardInit()
+  ($ 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax]):not([data-method="delete"])').pjax('[data-pjax-container]')
+    
+  $(document).on 'submit', 'form', (event) ->
+    container = ($ '[data-pjax-container]')
+    $.pjax.submit(event, container)
+  
   ($ '[data-pjax-container]').on 'pjax:end', ->
     app.standardInit()
 
@@ -42,7 +47,9 @@ window.main = {
       ($ 'input#search_amount_less').val('')
       ($ '#advance-search-form .simple_form').submit()
 
-    if ($ '#search_date_from').val() isnt "" or ($ '#search_date_to').val() isnt "" or ($ '#search_amount_larger').val() isnt "" or ($ '#search_amount_less').val() isnt ""
+    if ($ 'input#search_terms:last').val() + ($ '#search_date_from').val() + 
+       ($ '#search_date_to').val() + ($ '#search_amount_larger').val() + 
+       ($ '#search_amount_less').val() isnt ""
       ($ '#advance-search-form').collapse('show')
 }
 

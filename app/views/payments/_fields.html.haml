@@ -1,31 +1,25 @@
 .pay-to
   .row
-    = f.input :pay_to_name, input_html: { class: 'span3', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, |
-              wrapper_html: { class: 'span3' }, label: 'Pay To'
-    = f.input :collector, input_html: { class: 'span3', data: Payment.order(:collector).uniq.pluck(:collector), provide: 'typeahead' }, |
-              wrapper_html: { class: 'span3' }
+    = f.input :pay_to_name, input_html: { class: 'span3', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, label: 'Pay To', wrapper_html: { class: 'span3' }
+    = f.input :collector, input_html: { class: 'span3', data: { source: Payment.order(:collector).uniq.pluck(:collector), provide: 'typeahead' } }, wrapper_html: { class: 'span3' }
     = f.input :doc_date, as: :datepicker, wrapper_html: { class: 'span3' }, input_html: { class: 'span2' }
   .row
     = f.input :note, input_html: { rows: 3, class: 'span3' }, wrapper_html: { class: 'span3' }
-    = f.input :pay_amount, wrapper_html: { class: 'span2' }, input_html: { class: 'span2', type: :text }
-  .row.nested
-    = render 'particulars/fields', f: f, xies_name: :pay_to_particulars
-  .offset3
-    %strong Actual Debit Amount
-    = f.input_field :actual_debit_amount, class: 'span2', readonly: true
+    = f.input :pay_amount, wrapper_html: { class: 'span2' }, input_html: { class: 'bold', type: :text }, label_html: { class: 'bold' }
 .pay-from
   .row
-    = f.input :pay_from_name, input_html: { class: 'span3', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, |
-              wrapper_html: { class: 'span3' }, label: 'Pay From'
-    = f.input :cheque_no, input_html: { class: 'span2' }, wrapper_html: { class: 'span2' }
+    = f.input :pay_from_name, input_html: { class: 'span3', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, wrapper_html: { class: 'span3' }, label: 'Pay From'
+    = f.input :cheque_no, wrapper_html: { class: 'span2' }, input_html: { class: 'span2' }
     = f.input :cheque_date, as: :datepicker, wrapper_html: { class: 'span3' }, input_html: { class: 'span2' }
   .row.nested
     = render 'particulars/fields', f: f, xies_name: :pay_from_particulars
-  .offset3
+  .row.offset3
     %strong Actual Credit Amount
-    = f.input_field :actual_credit_amount, class: 'span2', readonly: true
+    = f.input_field :actual_credit_amount, class: 'span2 bold', readonly: true
 
 :javascript
   $(document).ready(function() {
     payment.init();
-  });    
+    $('.row-total').trigger('change'); // to update total_pay_from_particulars
+    $('#payment_pay_from_name').trigger('blur'); // toggle cheque info
+  });

@@ -13,7 +13,7 @@ module ChartOfAccountsHelper
       content_tag :li do
         check_box_tag('account_type_' + account_type.id.to_s, '1', checked: true) +
         content_tag(:span, '') +
-        link_to(account_type.name, edit_account_type_path(account_type) + "##{edit_account_type_path(account_type)}", 
+        link_to(account_type.name, edit_account_type_path(account_type), 
           name: edit_account_type_path(account_type), class: "label #{account_type_label(account_type)}") +
         content_tag(:ul) do
           children(account_type, account_types).map do |child|
@@ -29,7 +29,7 @@ module ChartOfAccountsHelper
       content_tag :ul, class: :account do
         account_type.accounts.order(:name1).map do |account|
           content_tag :li do
-            link_to(account.name1, edit_account_path(account) + "##{edit_account_path(account)}", 
+            link_to(account.name1, edit_account_path(account), 
               name: edit_account_path(account), class: "label #{account_label(account)}",
                     data: { parent_id: account_type.id })
           end

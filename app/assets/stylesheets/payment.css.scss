@@ -1,0 +1,21 @@
+@import 'bootstrap/mixins';
+
+.pay-to {
+  padding: 5px 5px 5px 20px;
+  background-color: #FAF7A9;
+  margin-bottom: 5px;
+  @include border-radius(5px);
+  border: 2px solid lightgray;
+}
+
+.pay-from {
+  padding: 5px 5px 5px 20px;
+  background-color: #FFCFCF;
+  @include border-radius(5px);
+  border: 2px solid lightgray;
+}
+
+.row.nested .table-header { 
+  margin-left: 0px;
+  margin-right: 5px;
+}
