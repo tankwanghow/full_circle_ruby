@@ -1,13 +1,12 @@
-.span12.show-hide{style: "display: #{f.object.send(xies_name).size == 0 ? 'none' : ''}"}
+.span12.show-hide
   .table-header.span2 Type
   .table-header.span3 Note
   .table-header.span1 Quantity
   .table-header.span1 Unit
   .table-header.span1 Unit Price
   .table-header.span2 Amount
-%div
-  = f.fields_for xies_name do |builder|
-    = render 'particulars/field', f: builder
-  = f.link_to_add "Add #{xies_name.to_s.humanize}", xies_name, class: 'btn btn-success span3'
-  .offset4.span2.show-hide{style: "display: #{f.object.send(xies_name).size == 0 ? 'none' : ''}"}
-    %input.bold.span2.numeric{id: 'total_' + xies_name.to_s, type: 'text', readonly: true, style: 'margin-left: 64px;' }
+= f.fields_for xies_name do |builder|
+  = render 'particulars/field', f: builder
+= f.link_to_add "Add #{xies_name.to_s.humanize}", xies_name, class: 'btn btn-success span3'
+.offset4.span2
+  %input.bold.show-hide.span2.numeric{value: 0.00, id: 'total_' + xies_name.to_s, type: 'text', readonly: true, style: 'margin-left: 60px;' }

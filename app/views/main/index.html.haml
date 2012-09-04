@@ -38,7 +38,7 @@
       - if doc.created_at != doc.updated_at
         %div
           %span.label.label-warning= doc.updated_at.to_s(:long)
-    %span.label= doc.doc_date.to_s
+    %span.label= doc.doc_date
     -if doc.doc_amount
       %span.label.label-inverse= doc.doc_amount.to_money.format
     .span9= doc.content

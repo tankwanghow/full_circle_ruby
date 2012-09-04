@@ -5,4 +5,4 @@
   = render 'fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
-    = link_to 'Cancel', new_payment_path, class: 'btn btn-warning'
+    = link_to 'Cancel', edit_payment_path(Payment.last), class: 'btn btn-warning'

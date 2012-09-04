@@ -4,7 +4,7 @@
     Login
   = render partial: 'layouts/messages'
   = f.error_messages
-  = f.input :username
+  = f.input :username, autofocus: true
   = f.input :password
   .form-actions
     = f.button :submit, 'Login', class: 'btn btn-primary'
