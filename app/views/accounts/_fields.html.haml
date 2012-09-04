@@ -1,5 +1,5 @@
 = f.association :account_type, collection: AccountType.order(:name), prompt: 'Select Account Type...'
-= f.input :name1
+= f.input :name1, autofocus: true
 = f.input :name2
 = f.input :status, collection: ['Active', 'Dormant'], include_blank: false
 = f.input :description, input_html: { rows: 6 }

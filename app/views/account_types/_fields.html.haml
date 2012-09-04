@@ -1,5 +1,5 @@
-= f.association :parent, collection: AccountType.order(:name), prompt: 'Select Account Type...'
-= f.input :name
+= f.association :parent, collection: AccountType.order(:name), prompt: 'Select Account Type...' 
+= f.input :name, autofocus: true
 = f.input :normal_balance, collection: ['Debit', 'Credit'], include_blank: false
 = f.input :bf_balance, label: 'Brought Forward Balance'
 = f.input :description, input_html: { rows: 6 }

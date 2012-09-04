@@ -1,8 +1,13 @@
-.span12
-  = f.input_field :party_type_name, class: 'span2', data: { source: ParticularType.pluck(:name), provide: 'typeahead' }
-  = f.input_field :note, class: 'span3'
-  = f.input_field :quantity, class: 'quantity numeric span1'
-  = f.input_field :unit, class: 'span1'
-  = f.input_field :unit_price, class: 'unit-price numeric span1'
-  = f.input_field :total, readOnly: true, class: 'numeric row-total span2', name: 'row_total'
-  = f.link_to_remove "X", class: "btn btn-danger"
+.span2
+  = f.input :particular_type_name, input_html: { class: 'span2' }, data: { source: ParticularType.pluck(:name), provide: 'typeahead' }, wrapper: :table_field
+.span3
+  = f.input :note, input_html: { class: 'span3' }, wrapper: :table_field
+.span1
+  = f.input :quantity, input_html: { class: 'quantity span1', type: :text }, wrapper: :table_field
+.span1
+  = f.input :unit, input_html: { class: 'span1' }, wrapper: :table_field
+.span1
+  = f.input :unit_price, input_html: { class: 'unit-price numeric span1', type: :text }, wrapper: :table_field
+.span2  
+  = f.input :total, readOnly: true, input_html: { class: 'numeric row-total span2', name: 'row_total', type: :text }, wrapper: :table_field
+= f.link_to_remove "X", class: "btn btn-danger"
