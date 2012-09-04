@@ -16,7 +16,7 @@ if defined?(Bundler)
 end
 
 CompanyName = 'Kim Poh Sitt Tat Feedmill Sdn. Bhd.'
-DateTime::DATE_FORMATS[:default] = '%d-%m-%Y'
+Date::DATE_FORMATS[:default] = '%d-%m-%Y'
 Money.default_currency = Money::Currency.new('MYR')
 
 module FullCircle
