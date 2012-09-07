@@ -8,6 +8,14 @@ class PaymentsController < ApplicationController
     @payment = Payment.new(doc_date: Date.today)
   end
 
+  def show
+    @payment = Payment.find(params[:id])
+    @static_content = params[:static_content]
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
   def create
     @payment = Payment.new(params[:payment])
     if @payment.save
