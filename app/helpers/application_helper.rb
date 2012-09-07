@@ -19,4 +19,10 @@ module ApplicationHelper
     link_to 'Index', search_path(search: { terms: "@#{obj.class.name}" }), class: 'btn btn-info'
   end
 
+  def link_to_print_buttons object
+    url_options = { controller: object.class.name.underscore.pluralize, action: 'show', format: 'pdf', id: object.id }
+    link_to("Print with Form", url_for(url_options), class: 'btn btn-success', target: '_blank', data: { 'skip-pjax' => true }) + ' ' +
+    link_to("Print", url_for(url_options.merge(static_content: true)), class: 'btn btn-inverse', target: '_blank', data: { 'skip-pjax' => true })
+  end
+
 end
