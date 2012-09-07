@@ -14,7 +14,7 @@ FullCircle::Application.routes.draw do
   resources :account_types, only: [:new, :edit, :update, :create, :destroy]
   resource :sessions, only: [:new, :create, :destroy]
 
-  resources :payments, only: [:new, :edit, :update, :create]
+  resources :payments, only: [:new, :edit, :update, :create, :show]
   get 'payment/new_or_edit' => 'payments#new_or_edit'
 
   # The priority is based upon order of creation:
