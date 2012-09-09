@@ -23,7 +23,7 @@
               = menu current_user.name do
                 = menu_child 'Edit Profile', edit_user_path(current_user)
                 = menu_child 'Logout', logout_path
-      = render 'layouts/navigations'
+      = render 'share/navigations'
     #main{role: "main"}
       .container
         .content
