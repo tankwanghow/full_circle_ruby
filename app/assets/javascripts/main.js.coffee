@@ -1,17 +1,17 @@
 $ ->
   app.standardInit()
   ($ 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax]):not([data-method="delete"])').pjax('[data-pjax-container]')
-    
+
   $(document).on 'submit', 'form', (event) ->
     container = ($ '[data-pjax-container]')
     $.pjax.submit(event, container)
-  
+
   ($ '[data-pjax-container]').on 'pjax:end', ->
     app.standardInit()
 
 window.math = {
 
-  rowTotal: (qtyCls, priceCls, totalCls, rowCls, evtBubbleCls) ->    
+  rowTotal: (qtyCls, priceCls, totalCls, rowCls, evtBubbleCls) ->
     ($ evtBubbleCls).on 'change', qtyCls, -> calRowTotal(this)
     ($ evtBubbleCls).on 'change', priceCls, -> calRowTotal(this)
 
@@ -47,8 +47,8 @@ window.main = {
       ($ 'input#search_amount_less').val('')
       ($ '#advance-search-form .simple_form').submit()
 
-    if ($ 'input#search_terms:last').val() + ($ '#search_date_from').val() + 
-       ($ '#search_date_to').val() + ($ '#search_amount_larger').val() + 
+    if ($ 'input#search_terms:last').val() + ($ '#search_date_from').val() +
+       ($ '#search_date_to').val() + ($ '#search_amount_larger').val() +
        ($ '#search_amount_less').val() isnt ""
       ($ '#advance-search-form').collapse('show')
 }
@@ -70,5 +70,5 @@ window.app = {
       dateFormat: 'dd-mm-yy'
       buttonImage: '/assets/calendar-select.png'
       showOn: "button"
-      buttonImageOnly: true  
+      buttonImageOnly: true
 }

@@ -1,8 +1,9 @@
-= render 'layouts/messages'
+= render 'share/messages'
 = simple_nested_form_for @payment, html: { class: 'form-inline well', id: 'payment_form' } do |f|
   %legend
     New Payment
   = render 'fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
-    = link_to 'Cancel', edit_payment_path(Payment.last), class: 'btn btn-warning'
+    = link_to 'Cancel', Payment.last ? edit_payment_path(Payment.last) : root_path, class: 'btn btn-warning'
+

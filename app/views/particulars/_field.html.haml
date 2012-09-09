@@ -1,5 +1,5 @@
 .span2
-  = f.input :particular_type_name, input_html: { class: 'span2' }, data: { source: ParticularType.pluck(:name), provide: 'typeahead' }, wrapper: :table_field
+  = f.input :particular_type_name, input_html: { class: 'span2', data: { source: ParticularType.pluck(:name), provide: 'typeahead' } }, wrapper: :table_field
 .span3
   = f.input :note, input_html: { class: 'span3' }, wrapper: :table_field
 .span1
@@ -8,6 +8,6 @@
   = f.input :unit, input_html: { class: 'span1' }, wrapper: :table_field
 .span1
   = f.input :unit_price, input_html: { class: 'unit-price numeric span1', type: :text }, wrapper: :table_field
-.span2  
+.span2
   = f.input :total, readOnly: true, input_html: { class: 'numeric row-total span2', name: 'row_total', type: :text }, wrapper: :table_field
 = f.link_to_remove "X", class: "btn btn-danger"

@@ -4,7 +4,7 @@ class Particular < ActiveRecord::Base
   validates_presence_of :particular_type_name, :note, :unit
   validates_numericality_of :quantity, :unit_price
 
-  include ValidateBelongsTo 
+  include ValidateBelongsTo
   validate_belongs_to :particular_type, :name
 
   def simple_audit_string
