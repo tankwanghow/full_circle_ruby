@@ -15,14 +15,18 @@ module ApplicationHelper
     end
   end
 
-  def link_to_index obj
-    link_to 'Index', search_path(search: { terms: "@#{obj.class.name}" }), class: 'btn btn-info'
+  def link_to_index klass
+    link_to 'Index', search_path(search: { terms: "@#{klass.name}" }), class: 'btn btn-info'
   end
 
   def link_to_print_buttons object
     url_options = { controller: object.class.name.underscore.pluralize, action: 'show', format: 'pdf', id: object.id }
     link_to("Print with Form", url_for(url_options), class: 'btn btn-success', target: '_blank', data: { 'skip-pjax' => true }) + ' ' +
     link_to("Print", url_for(url_options.merge(static_content: true)), class: 'btn btn-inverse', target: '_blank', data: { 'skip-pjax' => true })
+  end
+
+  def link_to_audits_log(object)
+    link_to "Show Audits Log", audit_logs_path(klass: object.class.name, id: object.id), class: 'btn btn-info' if current_user.is_admin?
   end
 
 end

@@ -1,0 +1,27 @@
+@import 'bootstrap/mixins';
+
+.audit {
+  border: 2px solid #7f7f7f;
+  background: #cbc8c8;
+  @include border-radius(20px);
+  padding: 10px;
+  margin-bottom: 2px;
+  .user, .action {
+    margin-right: 5px;
+  }
+  .action {
+    font-weight: bold;
+  }
+  .changes {
+    margin-top: 5px;
+    .current {
+      margin-left: 5px;
+      margin-right: 5px;
+      color: #0e9d04;
+    }
+    .previous {
+      text-decoration: line-through;
+      color: red;
+    }
+  }
+}
