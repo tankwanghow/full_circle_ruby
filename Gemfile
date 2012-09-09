@@ -14,7 +14,7 @@ gem "money"
 gem 'simple_audit', git: 'git://github.com/tankwanghow/simple_audit.git'
 gem "sentient_user"
 gem 'aasm'
-gem 'nested_form', git: 'git://github.com/ryanb/nested_form.git'
+gem 'nested_form'
 #gem 'cancan'
 #gem 'coffeebeans'
 gem 'prawn'
