@@ -5,7 +5,7 @@ FullCircle::Application.routes.draw do
   match 'signup' => 'users#new', as: :signup
   match 'search' => 'main#index', as: :search
   root to: 'main#index'
-  
+  resources :audit_logs, only: :index
   resources :particular_types, only: [:new, :edit, :update, :create, :destroy]
   get 'particular_type/new_or_edit' => 'particular_types#new_or_edit'
 
