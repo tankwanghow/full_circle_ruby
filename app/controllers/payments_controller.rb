@@ -11,9 +11,6 @@ class PaymentsController < ApplicationController
   def show
     @payment = Payment.find(params[:id])
     @static_content = params[:static_content]
-    respond_to do |format|
-      format.pdf
-    end
   end
 
   def create
@@ -22,7 +19,7 @@ class PaymentsController < ApplicationController
       flash[:success] = "Payment '##{@payment.id}' created successfully."
       redirect_to edit_payment_path(@payment)
     else
-      flash[:error] = "Failed to create Payment."
+      flash.now[:error] = "Failed to create Payment."
       render :new
     end
   end
@@ -33,7 +30,7 @@ class PaymentsController < ApplicationController
       flash[:success] = "Payment '##{@payment.id}' updated successfully."
       redirect_to edit_payment_path(@payment)
     else
-      flash[:error] = "Failed to update Payment."
+      flash.now[:error] = "Failed to update Payment."
       render :edit
     end
   end
