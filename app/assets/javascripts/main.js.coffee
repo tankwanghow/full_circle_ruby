@@ -71,4 +71,5 @@ window.app = {
       buttonImage: '/assets/calendar-select.png'
       showOn: "button"
       buttonImageOnly: true
+
 }

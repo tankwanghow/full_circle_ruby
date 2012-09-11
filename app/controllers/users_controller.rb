@@ -28,7 +28,7 @@ class UsersController < ApplicationController
       flash[:success] = "#{@user.name} Profile updated successfully. Will be reflect next login."
       redirect_to root_path
     else
-      flash[:error] = "Failed to updated User Profile."
+      flash.now[:error] = "Failed to updated User Profile."
       render :edit
     end
   end
@@ -39,7 +39,7 @@ private
     if current_user.id == params[:id].to_i || current_user.is_admin
       return User.find params[:id]
     else
-      flash[:error] = 'Access denied!'
+      flash.now[:error] = 'Access denied!'
       redirect_to root_path
     end
   end

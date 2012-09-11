@@ -10,7 +10,7 @@ class Payment < ActiveRecord::Base
   accepts_nested_attributes_for :pay_to_particulars, allow_destroy: true
   accepts_nested_attributes_for :pay_from_particulars, allow_destroy: true
 
-#  before_save :build_transaction
+  before_save :build_transaction
 
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :pay_amount,
@@ -50,15 +50,21 @@ class Payment < ActiveRecord::Base
 
 private
 
+  def build_transaction
+    transactions.destroy_all
+    transactions.build credit_transaction
+    transactions.build debit_transaction
+  end
+
   def credit_transaction
     {
       doc: self,
       transaction_date: doc_date,
-      terms: nil,
+      terms: 0,
       account: pay_from,
-      particulars: [cheque_no, pay_to.name1].keep_if { |t| !t.blank? }.join(" ").slice(0..50),
+      note: [cheque_no, pay_to.name1].keep_if { |t| !t.blank? }.join(" ").slice(0..50),
       debit: 0,
-      credit: pay_amount,
+      credit: actual_credit_amount,
       user: User.current
     }
   end
@@ -67,9 +73,10 @@ private
     {
       doc: self,
       transaction_date: doc_date,
+      terms: 0,
       account: pay_to,
-      particulars: [pay_from.name1.slice(0..20), cheque_no].keep_if { |t| !t.blank? }.join(" "),
-      debit: pay_amount,
+      note: [pay_from.name1.slice(0..20), cheque_no].keep_if { |t| !t.blank? }.join(" "),
+      debit: actual_debit_amount,
       credit: 0,
       user: User.current
     }

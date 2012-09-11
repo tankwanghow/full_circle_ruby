@@ -17,6 +17,7 @@ FullCircle::Application.routes.draw do
   resources :payments, only: [:new, :edit, :update, :create, :show]
   get 'payment/new_or_edit' => 'payments#new_or_edit'
 
+  resources :transactions, only: [:edit]
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

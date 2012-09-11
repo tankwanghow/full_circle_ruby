@@ -35,7 +35,7 @@ describe SessionsController do
         User.should_receive(:find_by_username).and_return nil
         post_create
       end
-      it { expect(flash[:error]).to include 'Invalid', 'username', 'password' }
+      it { expect(flash.now[:error]).to include 'Invalid', 'username', 'password' }
     end
 
   end

@@ -38,6 +38,7 @@ class ParticularTypesController < ApplicationController
 
   def new_or_edit
     if ParticularType.first
+      flash.keep
       redirect_to edit_particular_type_path(ParticularType.last)
     else
       redirect_to new_particular_type_path

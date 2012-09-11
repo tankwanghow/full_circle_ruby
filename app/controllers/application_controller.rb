@@ -6,6 +6,13 @@ class ApplicationController < ActionController::Base
   before_filter :login_required
   before_filter :save_search_params_to_session
 
+  rescue_from Exception do |e|
+    msg = "#{e.class.name}"
+    msg += "<br/>#{e.message}"
+    flash.now[:error] = msg.html_safe
+    redirect_to :back 
+  end 
+
 private
 
   def search_term

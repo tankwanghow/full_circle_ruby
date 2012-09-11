@@ -70,5 +70,3 @@ module FullCircle
     config.assets.version = '1.0'
   end
 end
-
-require "pdf_renderer"
