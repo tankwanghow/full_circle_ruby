@@ -1,5 +1,17 @@
 module ApplicationHelper
 
+  def render_flash
+    a = ''
+    flash.each do |name, msg|
+      a << content_tag(:div, class: "alert alert-#{name}") do
+        content_tag(:a, 'x', class: 'close', data: { dismiss: 'alert' }) +  
+        content_tag(:div, msg, id: "flash_#{name}") if msg.is_a?(String)
+      end
+    end
+    flash.clear
+    a.html_safe
+  end
+
   def menu text, &block
     a_text = text.html_safe + content_tag(:b, nil, class: 'caret')
     child = block_given? ? capture(&block) : nil
