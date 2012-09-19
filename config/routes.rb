@@ -4,6 +4,8 @@ FullCircle::Application.routes.draw do
   match 'logout' => 'sessions#destroy', as: :logout
   match 'signup' => 'users#new', as: :signup
   match 'search' => 'main#index', as: :search
+  match 'transactions' => 'transactions#index', as: :transactions
+  
   root to: 'main#index'
   resources :audit_logs, only: :index
   resources :particular_types, only: [:new, :edit, :update, :create, :destroy]
@@ -17,7 +19,6 @@ FullCircle::Application.routes.draw do
   resources :payments, only: [:new, :edit, :update, :create, :show]
   get 'payment/new_or_edit' => 'payments#new_or_edit'
 
-  resources :transactions, only: [:edit]
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
