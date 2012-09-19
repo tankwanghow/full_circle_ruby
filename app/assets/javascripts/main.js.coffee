@@ -1,5 +1,6 @@
 $ ->
   app.standardInit()
+
   ($ 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax]):not([data-method="delete"])').pjax('[data-pjax-container]')
 
   $(document).on 'submit', 'form', (event) ->

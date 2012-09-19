@@ -21,9 +21,9 @@ module ApplicationHelper
     end
   end
 
-  def menu_child text, url
+  def menu_child text, url, options={}
     content_tag :li do
-      link_to text, url
+      link_to text, url, options
     end
   end
 

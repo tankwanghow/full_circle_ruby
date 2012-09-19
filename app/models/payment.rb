@@ -47,24 +47,23 @@ class Payment < ActiveRecord::Base
     pay_from_particulars.map{ |t| t.simple_audit_string }.join('::')
   end
 
-
 private
 
   def build_transaction
     transactions.destroy_all
     transactions.build credit_transaction
     transactions.build debit_transaction
+    build_particulars_transactions
   end
 
   def credit_transaction
     {
       doc: self,
       transaction_date: doc_date,
-      terms: 0,
       account: pay_from,
       note: [cheque_no, pay_to.name1].keep_if { |t| !t.blank? }.join(" ").slice(0..50),
       debit: 0,
-      credit: actual_credit_amount,
+      credit: actual_debit_amount,
       user: User.current
     }
   end
@@ -73,7 +72,6 @@ private
     {
       doc: self,
       transaction_date: doc_date,
-      terms: 0,
       account: pay_to,
       note: [pay_from.name1.slice(0..20), cheque_no].keep_if { |t| !t.blank? }.join(" "),
       debit: actual_debit_amount,
@@ -82,13 +80,13 @@ private
     }
   end
 
-  def particulars_transaction
+  def build_particulars_transactions
     pay_to_particulars.each do |p|
-      transactions.build p.transaction
+      p.build_transactions(pay_to).each { |t| transactions.build t }
     end
 
     pay_from_particulars.each do |p|
-      transaction.build p.transaction
+      p.build_transactions(pay_from).each { |t| transactions.build t }
     end
   end
 

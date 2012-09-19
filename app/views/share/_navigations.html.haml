@@ -8,4 +8,5 @@
       = menu 'Sales'
       = menu 'Purchases'
       = menu 'Bank'
-      = menu "Payroll"
+      = menu 'Payroll'
+      = menu_child 'Transactions', transactions_path, class: 'bold', id: 'nav-transactions'

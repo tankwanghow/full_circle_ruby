@@ -1,4 +1,6 @@
 class MainController < ApplicationController
+  include StoreSearchParamsSession  
+
   def index
     @docs = (current_user.is_admin ? search_documents : search_documents.where("searchable_type <> 'User'")).page(params[:page]).per(25).order('updated_at desc')
   end

@@ -1,15 +1,16 @@
-$gridGutterWidth: 3px;
-$gridColumnWidth: 77px;
+//$baseFontSize: 12px;
 
 @import "bootstrap";
 
 body { padding-top: 100px; }
 
-// @import "bootstrap-responsive";
+@import "bootstrap-responsive";
 
 .dropdown-menu {
   margin-top: 0px;
 }
+
+ul.nav li a#nav-transactions { color: red; }
 
 .alert {
   text-align: center;
@@ -22,6 +23,8 @@ body#center {
   padding-bottom: 80px;
   height: auto;
 }
+
+label { margin-bottom: 0px; }
 
 .row.searchable {
   height: 70px;

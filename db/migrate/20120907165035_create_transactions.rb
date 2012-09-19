@@ -4,7 +4,7 @@ class CreateTransactions < ActiveRecord::Migration
       t.date       :transaction_date
       t.belongs_to :doc,            null: false, polymorphic: true
       t.belongs_to :account,        null: false
-      t.integer    :terms,          null: false
+      t.integer    :terms
       t.string     :note,           null: false
       t.decimal    :debit ,         default: 0, precision: 12, scale: 2
       t.decimal    :credit,         default: 0, precision:  12, scale: 2
