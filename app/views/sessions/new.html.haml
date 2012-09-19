@@ -2,7 +2,7 @@
   %legend
     %h2= CompanyName
     Login
-  = render partial: 'share/messages'
+  = render_flash
   = f.error_messages
   = f.input :username, autofocus: true
   = f.input :password
