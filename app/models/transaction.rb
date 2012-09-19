@@ -4,16 +4,20 @@ class Transaction < ActiveRecord::Base
   belongs_to :user
   validates_numericality_of :debit, :credit
   validates_presence_of :transaction_date, :account, :note, :debit, :credit, :user, :doc
-
+  
+  include ValidateBelongsTo
+  validate_belongs_to :account, :name1
+  
   before_destroy :closed?
 
-  include Searchable
-  searchable doc_date: :transaction_date, doc_amount: :transaction_amount,
-             content: [:account_name, :doc_type, :doc_id, :terms, :note,
-                       :debit, :credit, :closed, :reconciled]
+  scope :account, ->(val) { joins(:account).where('accounts.name1 = ?', val) }
+  scope :bigger_eq,  ->(val) { where('transaction_date >= ?', val.to_date) }
+  scope :smaller_eq,  ->(val) { where('transaction_date <= ?', val.to_date) }
+  scope :bigger,  ->(val) { where('transaction_date > ?', val.to_date) }
+  scope :smaller,  ->(val) { where('transaction_date < ?', val.to_date) }
 
   def terms_string
-    return nil unless terms
+    return '-' unless terms
     return "#{t} days" if terms >= 2
     return "#{t} day" if terms == 1
     return "C.O.D." if terms == 0
