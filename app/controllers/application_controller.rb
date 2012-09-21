@@ -12,7 +12,15 @@ class ApplicationController < ActionController::Base
   #   redirect_to exception_redirection_path
   # end
 
-  private
+private
+
+  def store_param name
+    if params[name]
+      params[name].each do |k,v|
+        session["#{name.to_s}_#{k.to_s}"] = v
+      end
+    end
+  end
 
   def exception_redirection_path
     if !request.env['HTTP_REFERER'].blank?
