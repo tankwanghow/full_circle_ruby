@@ -12,7 +12,13 @@ class Document < ActiveRecord::Base
                     trigram: {}
                   }
 
-  private
+  scope :type_like, ->(val) { where('searchable_type ilike ?', val) }
+  scope :date_between, ->(from, to) { where('doc_date >= ? AND doc_date <= ?', from.to_date, to.to_date) }
+  scope :amount_between, ->(from, to) { where('doc_amount >= ? AND doc_amount <= ?', from, to) }
+  scope :date_is, ->(val) { where('doc_date = ?', val.to_date) }
+  scope :amount_is, ->(val) { where('doc_amount = ?', val) }
+
+private
 
   def update_record_value
     if searchable.searchable_options[:doc_date]
