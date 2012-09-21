@@ -8,8 +8,8 @@
       .accordion-inner
         = simple_form_for :search, url: search_path, html: { class: 'form-search span12' } do |f|
           .row  
-            = f.input_field :terms, class: 'span3', placeholder: 'search...', value: session[:search_term]
-            = f.input_field :date_from, class: 'datepicker input-small', placeholder: 'date from...', value: session[:search_date_form]
+            = f.input_field :terms, class: 'span3', placeholder: 'search...', value: session[:search_terms]
+            = f.input_field :date_from, class: 'datepicker input-small', placeholder: 'date from...', value: session[:search_date_from]
             = f.input_field :date_to, class: 'datepicker input-small', placeholder: 'date to...', value: session[:search_date_to]
             = f.input_field :amount_larger, class: 'numeric span2', placeholder: 'amount larger...', value: session[:search_amount_larger]
             = f.input_field :amount_less, class: 'numeric span2', placeholder: 'amount smaller...', value: session[:search_amount_less]
