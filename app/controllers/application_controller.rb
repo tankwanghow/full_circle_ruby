@@ -17,7 +17,7 @@ private
   def store_param name
     if params[name]
       params[name].each do |k,v|
-        session["#{name.to_s}_#{k.to_s}"] = v
+        session["#{name.to_s}_#{k.to_s}"] = v.blank? ? nil : v
       end
     end
   end
