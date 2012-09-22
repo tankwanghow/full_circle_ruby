@@ -12,19 +12,9 @@
             = f.input_field :date_from, class: 'datepicker input-small', placeholder: 'date from...', value: session[:search_date_from]
             = f.input_field :date_to, class: 'datepicker input-small', placeholder: 'date to...', value: session[:search_date_to]
             = f.input_field :amount_larger, class: 'numeric span2', placeholder: 'amount larger...', value: session[:search_amount_larger]
-            = f.input_field :amount_less, class: 'numeric span2', placeholder: 'amount smaller...', value: session[:search_amount_less]
+            = f.input_field :amount_smaller , class: 'numeric span2', placeholder: 'amount smaller...', value: session[:search_amount_smaller]
             = f.button :submit, 'Search', class: 'btn btn-primary'
             = link_to 'Clear', '#', class: 'btn btn-danger', id: 'clear-advance-search-form', 'data-skip-pjax' => true
-          .row  
-            .span3.offset3.tiny
-              Enter only
-              %strong date from
-              to search for equal
-            .span3.offset1.tiny
-              Enter only
-              %strong amount larger
-              to search for equal
-
 - if @docs.length == 0
   %h1 No record found!
 - else

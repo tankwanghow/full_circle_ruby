@@ -1,4 +1,5 @@
 class Document < ActiveRecord::Base
+  
   self.table_name = 'search_documents'
   belongs_to :searchable, polymorphic: true
 
@@ -12,11 +13,56 @@ class Document < ActiveRecord::Base
                     trigram: {}
                   }
 
-  scope :type_like, ->(val) { where('searchable_type ilike ?', val) }
-  scope :date_between, ->(from, to) { where('doc_date >= ? AND doc_date <= ?', from.to_date, to.to_date) }
-  scope :amount_between, ->(from, to) { where('doc_amount >= ? AND doc_amount <= ?', from, to) }
-  scope :date_is, ->(val) { where('doc_date = ?', val.to_date) }
-  scope :amount_is, ->(val) { where('doc_amount = ?', val) }
+  scope :type_in, ->(values) { where(searchable_type: values) }
+  scope :amount_between, ->(larger, smaller) { amount_larger_eq(larger).amount_smaller(smaller) }
+  scope :amount_larger_eq, ->(val) { where('doc_amount >= ?', val) }
+  scope :amount_smaller_eq, ->(val) { where('doc_amount <= ?', val) }
+  scope :date_between, ->(from, to) { date_larger_eq(from.to_date).date_smaller_eq(to.to_date) }
+  scope :date_larger_eq, ->(val) { where('doc_date >= ?', val.to_date) }
+  scope :date_smaller_eq, ->(val) { where('doc_date <= ?', val.to_date) }
+
+  def self.searchable_by query, start_date, end_date, amount_larger, amount_smaller
+    by_types(query).
+      merge(by_term query).
+      merge(by_date start_date, end_date).
+      merge(by_amount amount_larger, amount_smaller)
+  end
+
+  def self.by_date start_date, end_date
+    if start_date and end_date
+      date_between start_date, end_date
+    elsif start_date and !end_date
+      date_larger_eq start_date
+    elsif !start_date and end_date
+      date_smaller_eq end_date
+    else
+      where('0=0')
+    end
+  end
+
+  def self.by_amount larger, smaller
+    if larger and smaller
+      amount_between larger, smaller
+    elsif larger and !smaller
+      amount_larger_eq larger
+    elsif !larger and smaller
+      amount_smaller_eq smaller
+    else
+      where('0=0')
+    end
+  end
+
+  def self.by_types query
+    query ||= ''
+    types = query.scan(/\@[a-zA-Z]+/).each { |t| t.gsub!('@', '').capitalize! }
+    types.length > 0 ? type_in(types) : where('0=0')
+  end
+
+  def self.by_term query
+    query ||= ''
+    term = query.gsub(/\@[a-zA-Z]+/, '').strip
+    !term.blank? ? search(term) : where('0=0')
+  end
 
 private
 
