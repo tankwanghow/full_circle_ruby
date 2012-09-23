@@ -6,8 +6,8 @@
         .bold Advance Search
     .accordion-body.collapse#advance-search-form
       .accordion-inner
-        = simple_form_for :search, url: search_path, html: { class: 'form-search span12' } do |f|
-          .row  
+        = simple_form_for :search, url: search_path, html: { class: 'form-search' } do |f|
+          .row
             = f.input_field :terms, class: 'span3', placeholder: 'search...', value: session[:search][:terms]
             = f.input_field :date_from, class: 'datepicker input-small', placeholder: 'date from...', value: session[:search][:date_from]
             = f.input_field :date_to, class: 'datepicker input-small', placeholder: 'date to...', value: session[:search][:date_to]
