@@ -1,5 +1,5 @@
 class Document < ActiveRecord::Base
-  
+  include SentientUser
   self.table_name = 'search_documents'
   belongs_to :searchable, polymorphic: true
 
@@ -13,7 +13,7 @@ class Document < ActiveRecord::Base
                     trigram: {}
                   }
 
-  scope :type_in, ->(values) { where(searchable_type: values) }
+  scope :type_in, ->(values) { where('searchable_type ~* ?', values.join('|')) }
   scope :amount_between, ->(larger, smaller) { amount_larger_eq(larger).amount_smaller(smaller) }
   scope :amount_larger_eq, ->(val) { where('doc_amount >= ?', val) }
   scope :amount_smaller_eq, ->(val) { where('doc_amount <= ?', val) }
@@ -21,11 +21,27 @@ class Document < ActiveRecord::Base
   scope :date_larger_eq, ->(val) { where('doc_date >= ?', val.to_date) }
   scope :date_smaller_eq, ->(val) { where('doc_date <= ?', val.to_date) }
 
-  def self.searchable_by query, start_date, end_date, amount_larger, amount_smaller
-    by_types(query).
-      merge(by_term query).
-      merge(by_date start_date, end_date).
-      merge(by_amount amount_larger, amount_smaller)
+  def self.searchable_by hash
+    if User.current.is_admin
+      searchable_by_all_types hash
+    else
+      searchable_by_no_user_type hash
+    end
+  end
+
+  def self.searchable_by_no_user_type hash
+    by_types(hash[:terms]).
+      merge(by_term hash[:terms]).
+      merge(by_date hash[:date_from], hash[:date_to]).
+      merge(by_amount hash[:amount_larger], hash[:amount_smaller]).
+      where('searchable_type <> ?', 'User')
+  end
+
+  def self.searchable_by_all_types hash
+    by_types(hash[:terms]).
+      merge(by_term hash[:terms]).
+      merge(by_date hash[:date_from], hash[:date_to]).
+      merge(by_amount hash[:amount_larger], hash[:amount_smaller])
   end
 
   def self.by_date start_date, end_date
