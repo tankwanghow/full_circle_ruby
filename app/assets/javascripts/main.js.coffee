@@ -13,19 +13,19 @@ $ ->
 window.math = {
 
   rowTotal: (qtyCls, priceCls, totalCls, rowCls, evtBubbleCls) ->
-    ($ evtBubbleCls).on 'change', qtyCls, -> calRowTotal(this)
-    ($ evtBubbleCls).on 'change', priceCls, -> calRowTotal(this)
+    ($ evtBubbleCls).on 'blur', qtyCls, -> calRowTotal(this) # should use 'change' event but not all browser support it
+    ($ evtBubbleCls).on 'blur', priceCls, -> calRowTotal(this) # should use 'change' event but not all browser support it
 
     calRowTotal = (elm) ->
       row_total = ($ elm).closest(rowCls).find(totalCls)
       qty = ($ elm).closest(rowCls).find(qtyCls).val()
       price = ($ elm).closest(rowCls).find(priceCls).val()
       row_total.val (qty * price).toFixed(2)
-      row_total.trigger "change"
+      row_total.trigger 'blur' # should use 'change' event but not all browser support it
 
 
   sum: (elements, totalElm, evtBubbleCls, checkVisible=true) ->
-    ($ evtBubbleCls).on 'change', elements, ->
+    ($ evtBubbleCls).on 'blur', elements, -> # should use 'change' event but not all browser support it
       total = 0
       ($ elements).each (index, elm) ->
         if checkVisible
@@ -34,7 +34,7 @@ window.math = {
           val = ($ elm).val()
         total = total + +val
       ($ totalElm).val total.toFixed(2)
-      ($ totalElm).trigger "change"
+      ($ totalElm).trigger 'blur' # should use 'change' event but not all browser support it
 }
 
 window.main = {
