@@ -1,4 +1,4 @@
-$baseFontSize: 12px;
+$baseFontSize: 13px;
 
 @import "bootstrap";
 
@@ -27,7 +27,7 @@ body#center {
 label { margin-bottom: 0px; }
 
 .row.searchable {
-  height: 70px;
+  height: 75px;
   border-bottom: 1px solid lightgray;
   overflow: hidden;
   vertical-align: middle;
