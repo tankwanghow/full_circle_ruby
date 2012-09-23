@@ -1,4 +1,4 @@
-//$baseFontSize: 12px;
+$baseFontSize: 12px;
 
 @import "bootstrap";
 
@@ -12,7 +12,7 @@ body { padding-top: 100px; }
 
 ul.nav li a#nav-transactions { color: red; }
 
-.alert {
+.alert, .center-text {
   text-align: center;
 }
 
