@@ -1,3 +1,4 @@
+- total = 0
 = render_flash
 .accordion#accordion1.center-text
   .accordion-group
@@ -23,6 +24,7 @@
       %th.span2 Credit
   %tbody 
     - for t in @transactions
+      - total += t.debit - t.credit
       %tr.transaction
         %td.transaction_date= t.transaction_date
         %td.doc_type
@@ -35,9 +37,15 @@
         %td.note= t.note
         %td.debit= t.debit.to_money
         %td.credit= t.credit.to_money
-
-- if @transactions.length == 0
-  %h1 No Record found!
+    - if @transactions.length == 0
+      %tr
+        %td{colspan: 6}
+          %h3 No Record found!
+  %tfoot
+    %tr
+      %td.bold{colspan: 4} Total
+      %td.bold= total.to_money.format if total >= 0
+      %td.bold= total.abs.to_money.format if total <= 0
   
 :javascript
   $(document).ready(function() {

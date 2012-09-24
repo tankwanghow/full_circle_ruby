@@ -1,10 +1,9 @@
 table#transactions {
   td { vertical-align: middle; padding: 3px; }
-  th { 
-    text-align: center; 
-    background-color: lightgray;
-  }
-  tr.transaction {
+  th { text-align: center; }
+  tfoot tr, th { background-color: lightgray; }
+  tfoot tr td { text-align: right; }
+  tr {
     .transaction_date, .terms, .doc_type { text-align: center; }
     .debit, .credit { text-align: right; }
   }
