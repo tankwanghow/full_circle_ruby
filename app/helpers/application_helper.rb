@@ -27,6 +27,15 @@ module ApplicationHelper
     end
   end
 
+  def link_to_searchable doc
+    url = url_for(controller: doc.searchable_type.pluralize.underscore, action: :edit, id: doc.searchable_id)
+    if doc.searchable_type == 'User'
+      link_to doc.searchable_type, url, class: 'btn btn-info', 'data-skip-pjax' => true
+    else
+      link_to doc.searchable_type, url, class: 'btn btn-info'
+    end
+  end
+
   def link_to_index klass
     link_to 'Index', search_path(search: { terms: "@#{klass.name}" }), class: 'btn btn-info'
   end

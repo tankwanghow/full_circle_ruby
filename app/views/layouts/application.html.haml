@@ -21,10 +21,10 @@
               = f.input_field :terms, class: 'search-query span3', placeholder: 'search...', value: session[:search_term]
             - if logged_in?
               = menu current_user.name do
-                = menu_child 'Edit Profile', edit_user_path(current_user)
-                = menu_child 'Logout', logout_path
+                = menu_child 'Edit Profile', edit_user_path(current_user), 'data-skip-pjax' => true
+                = menu_child 'Logout', logout_path, 'data-skip-pjax' => true
       = render 'share/navigations'
-    #main{role: "main"}
+    #main
       .container
         .content
           .row

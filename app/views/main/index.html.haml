@@ -23,7 +23,7 @@
   .row.searchable
     .span3
       =#did not use polymorphic_path to avoid n+1 issue
-      = link_to doc.searchable_type, url_for(controller: doc.searchable_type.pluralize.underscore, action: :edit, id: doc.searchable_id), class: 'btn btn-info'
+      = link_to_searchable doc
       %div
         %span.label.label-success= doc.created_at.to_s(:long)
       - if doc.created_at != doc.updated_at
