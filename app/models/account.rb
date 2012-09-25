@@ -1,6 +1,7 @@
 class Account < ActiveRecord::Base
   belongs_to :account_type
   has_many :transactions
+  has_many :addresses, as: :addressable, dependent: :destroy
   validates :account_type_id, presence: true
   validates :name1, presence: true, uniqueness: true
 

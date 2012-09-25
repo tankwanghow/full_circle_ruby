@@ -15,7 +15,7 @@ FullCircle::Application.routes.draw do
   resources :accounts, only: [:new, :edit, :update, :create, :destroy]
   resources :account_types, only: [:new, :edit, :update, :create, :destroy]
   resource :sessions, only: [:new, :create, :destroy]
-
+  resources :addresses, only: [:new, :edit, :update, :create, :destroy]
   resources :payments, only: [:new, :edit, :update, :create, :show]
   get 'payment/new_or_edit' => 'payments#new_or_edit'
 
