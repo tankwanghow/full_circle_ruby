@@ -9,7 +9,7 @@ class CreateTransactions < ActiveRecord::Migration
       t.decimal    :debit ,         default: 0, precision: 12, scale: 2
       t.decimal    :credit,         default: 0, precision:  12, scale: 2
       t.boolean    :closed,         null: false, default: false
-      t.boolean    :reconciled,     null: false, defautl: false
+      t.boolean    :reconciled,     null: false, default: false
       t.belongs_to :user,           null: false
       t.integer    :lock_version,   default: 0
       t.timestamps
