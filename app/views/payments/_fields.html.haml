@@ -9,8 +9,7 @@
   .row.nested
     = render 'particulars/fields', f: f, xies_name: :pay_to_particulars
   .row.offset3
-    %strong Actual Debit Amount
-    = f.input_field :actual_debit_amount, class: 'span2 bold', readonly: true
+    = f.input :actual_debit_amount, wrapper_html: { class: 'span2' }, input_html: { class: 'bold', type: :text }, label_html: { class: 'bold' }, readonly: true
 .pay-from
   .row
     = f.input :pay_from_name1, input_html: { class: 'span3', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, wrapper_html: { class: 'span3' }, label: 'Pay From'
@@ -19,11 +18,10 @@
   .row.nested
     = render 'particulars/fields', f: f, xies_name: :pay_from_particulars
   .row.offset3
-    %strong Actual Credit Amount
-    = f.input_field :actual_credit_amount, class: 'span2 bold', readonly: true
+    = f.input :actual_credit_amount, wrapper_html: { class: 'span2' }, input_html: { class: 'bold', type: :text }, label_html: { class: 'bold' }, readonly: true
 
 :javascript
   $(document).ready(function() {
     payment.init();
-    $('.row-total').trigger('change');
+    $('.row-total').trigger('blur');
   });
