@@ -5,8 +5,11 @@ class Payment < ActiveRecord::Base
   has_many :pay_from_particulars, as: :doc, class_name: "Particular", conditions: { flag: "pay_from" }
   has_many :transactions, as: :doc
 
-  validates_presence_of :collector, :pay_to_name1, :pay_from_name1, :note, :pay_amount, :doc_date
-  validates_numericality_of :pay_amount, :actual_credit_amount, :actual_debit_amount
+  validates_presence_of :collector, :pay_to_name1, :pay_from_name1, :pay_amount, :doc_date
+  validates_presence_of :note, if: Proc.new { |r| r.pay_amount > 0 }
+  validates_numericality_of :pay_amount
+  validates_numericality_of :actual_credit_amount, greater_than: 0
+  validates_numericality_of :actual_debit_amount, greater_than: 0
   accepts_nested_attributes_for :pay_to_particulars, allow_destroy: true
   accepts_nested_attributes_for :pay_from_particulars, allow_destroy: true
 
@@ -82,10 +85,12 @@ private
 
   def build_particulars_transactions
     pay_to_particulars.each do |p|
+      p.doc = self
       p.build_transactions(pay_to).each { |t| transactions.build t }
     end
 
     pay_from_particulars.each do |p|
+      p.doc = self
       p.build_transactions(pay_from).each { |t| transactions.build t }
     end
   end
