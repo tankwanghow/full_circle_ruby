@@ -32,7 +32,7 @@ class Particular < ActiveRecord::Base
 
   private
 
-    def default_transaction main_account 
+    def default_transaction main_account
       fill_db_cr( 
         transaction_date: doc.doc_date, 
         account: main_account, 
