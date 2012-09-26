@@ -4,6 +4,7 @@ class Account < ActiveRecord::Base
   has_many :addresses, as: :addressable, dependent: :destroy
   validates :account_type_id, presence: true
   validates :name1, presence: true, uniqueness: true
+  has_one :mailing_address, as: :addressable, conditions: ["addresses.address_type ~* ?", "mailing|both"], class_name: "Address"
 
   include Searchable
   searchable content: [:name1, :name2, :type_name, :description, :status]
