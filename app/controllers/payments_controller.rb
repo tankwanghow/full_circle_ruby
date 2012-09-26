@@ -1,11 +1,15 @@
 class PaymentsController < ApplicationController
 
+  def index
+    @payments = Payment.order(:id)
+  end
+
   def edit
     @payment = Payment.find(params[:id])
   end
 
   def new
-    @payment = Payment.new(doc_date: Date.today)
+    @payment = Payment.new(doc_date: Date.today, pay_from_name1: 'Cash in Hand')
   end
 
   def show

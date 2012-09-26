@@ -1,3 +1,2 @@
-a = Prawn::Document.new
-a.text "Payment ##{@payment.id}"
-a
+require './app/views/payments/payment_pdf'
+PaymentPdf.new([@payment], self, @static_content)
