@@ -15,12 +15,6 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-CompanyName = 'Kim Poh Sitt Tat Feedmill Sdn. Bhd.'
-ClosingDay = 31
-ClosingMonth = 12
-Date::DATE_FORMATS[:default] = '%d-%m-%Y'
-Money.default_currency = Money::Currency.new('MYR')
-
 module FullCircle
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
