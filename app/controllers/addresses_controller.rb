@@ -2,7 +2,7 @@ class AddressesController < ApplicationController
   before_filter :load_parent, only: [:create, :new]
 
   def new
-    @address = Address.new(addressable: @parent)
+    @address = Address.new(addressable: @parent, country: 'Malaysia')
   end
 
   def edit
