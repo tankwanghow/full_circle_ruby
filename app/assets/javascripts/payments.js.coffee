@@ -26,8 +26,7 @@ window.payment = {
     math.sum '.pay-to .row-total', '#total_pay_to_particulars', 'form#payment_form'
     math.sum '.pay-from .row-total', '#total_pay_from_particulars', 'form#payment_form'
 
-    if ($ '.fields:visible').size() > 0
-      ($ '.show-hide').show()
-    else
-      ($ '.show-hide').hide()
+    app.showHide '.pay-to .fields:visible', '.pay-to .show-hide'
+    app.showHide '.pay-from .fields:visible', '.pay-from .show-hide'
 }
+

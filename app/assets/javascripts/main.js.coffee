@@ -73,4 +73,10 @@ window.app = {
       showOn: "button"
       buttonImageOnly: true
 
+  showHide: (field_selector, showhide_selector) ->
+    if ($ field_selector).size() > 0 
+      ($ showhide_selector).show() 
+    else
+      ($ showhide_selector).hide()
+
 }
