@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require select2
 //= require jquery_nested_form
 //= require jquery.pjax
 //= require jquery.ui.datepicker
