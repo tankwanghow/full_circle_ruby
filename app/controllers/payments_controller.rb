@@ -1,9 +1,5 @@
 class PaymentsController < ApplicationController
 
-  def index
-    @payments = Payment.order(:id)
-  end
-
   def edit
     @payment = Payment.find(params[:id])
   end
