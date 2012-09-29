@@ -14,8 +14,7 @@ module Searchable
   included do
     has_one :search_document, as: :searchable, class_name: "Document", dependent: :delete
 
-    after_create :create_search_document
-    after_update :update_search_document
+    after_save :update_search_document
   end
 
   def update_search_document
