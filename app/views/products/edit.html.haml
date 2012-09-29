@@ -1,0 +1,12 @@
+= render_flash
+= simple_form_for @product, html: { class: 'form-horizontal well span7 offset2' } do |f|
+  %legend
+    Product
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', edit_product_path(@product), class: 'btn btn-warning'
+    = link_to 'Delete', @product, method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger'
+    = link_to 'New', new_product_path, class: 'btn btn-info'
+    = link_to_index Product
+    = link_to_audits_log @product

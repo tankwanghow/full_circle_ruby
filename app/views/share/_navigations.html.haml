@@ -5,8 +5,10 @@
         = menu_child 'Chart of Account', edit_account_type_path(AccountType.first)
         = menu_child 'Particular Type', particular_type_new_or_edit_path
         = menu_child 'Payment', payment_new_or_edit_path
-      = menu 'Sales'
-      = menu 'Purchases'
+      = menu 'Sales' do
+        = menu_child 'Product', product_new_or_edit_path
+      = menu 'Purchases' do
+        = menu_child 'Product', product_new_or_edit_path
       = menu 'Bank'
       = menu 'Payroll'
       = menu_child 'Transactions', transactions_path, class: 'bold', id: 'nav-transactions'
