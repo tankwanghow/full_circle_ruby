@@ -5,8 +5,8 @@ class Transaction < ActiveRecord::Base
   validates_numericality_of :debit, :credit
   validates_presence_of :transaction_date, :account, :note, :debit, :credit, :user, :doc
   
-  include ValidateBelongsTo
-  validate_belongs_to :account, :name1
+  # include ValidateBelongsTo
+  # validate_belongs_to :account, :name1
   
   before_destroy :closed?
 
@@ -15,6 +15,7 @@ class Transaction < ActiveRecord::Base
   scope :smaller_eq,  ->(val) { where('transaction_date <= ?', val.to_date) }
   scope :bigger,  ->(val) { where('transaction_date > ?', val.to_date) }
   scope :smaller,  ->(val) { where('transaction_date < ?', val.to_date) }
+  scope :doc, ->(doc_type, doc_id) { where(doc_type: doc_type, doc_id: doc_id) }
 
   def terms_string
     return '-' unless terms
@@ -24,13 +25,13 @@ class Transaction < ActiveRecord::Base
     return "C.B.D." if terms == -1
   end
 
-  def account_name
-    account.name1
-  end
+  # def account_name
+  #   account.name1
+  # end
 
-  def transaction_amount
-    debit > 0 ? debit : credit
-  end
+  # def transaction_amount
+  #   debit > 0 ? debit : credit
+  # end
 
   private
 
