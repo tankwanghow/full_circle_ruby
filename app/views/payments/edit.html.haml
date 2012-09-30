@@ -9,4 +9,5 @@
     = link_to 'New', new_payment_path, class: 'btn btn-info'
     = link_to_index Payment
     = link_to_print_buttons @payment
+    = link_to 'Transactions', payment_transactions_path(@payment), class: 'btn btn-info'
     = link_to_audits_log @payment
