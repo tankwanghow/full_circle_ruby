@@ -16,9 +16,9 @@ class Payment < ActiveRecord::Base
   before_save :build_transaction
 
   include Searchable
-  searchable doc_date: :doc_date, doc_amount: :pay_amount,
+  searchable doc_date: :doc_date, doc_amount: :actual_debit_amount,
              content: [:pay_to_name1, :collector, :note, :pay_amount, :pay_to_particulars_string, :actual_debit_amount,
-                       :pay_from_name1, :cheque_date, :cheque_no, :pay_from_particulars_string, :actual_credit_amount, :status]
+                       :pay_from_name1, :cheque_date, :cheque_no, :pay_from_particulars_string, :actual_credit_amount]
 
   simple_audit username_method: :username do |r|
     {
@@ -33,8 +33,7 @@ class Payment < ActiveRecord::Base
       cheque_no: r.cheque_no,
       cheque_date: r.cheque_date,
       pay_from_particulars: r.pay_from_particulars_string,
-      actual_credit_amount: r.actual_credit_amount.to_money.format,
-      status: r.status
+      actual_credit_amount: r.actual_credit_amount.to_money.format
     }
   end
 
@@ -43,11 +42,11 @@ class Payment < ActiveRecord::Base
   validate_belongs_to :pay_from, :name1
 
   def pay_to_particulars_string
-    pay_to_particulars.map{ |t| t.simple_audit_string }.join('::')
+    pay_to_particulars.map{ |t| t.simple_audit_string }.join(' ')
   end
 
   def pay_from_particulars_string
-    pay_from_particulars.map{ |t| t.simple_audit_string }.join('::')
+    pay_from_particulars.map{ |t| t.simple_audit_string }.join(' ')
   end
 
 private
