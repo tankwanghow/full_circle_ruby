@@ -1,7 +1,8 @@
 = f.input :name1, autofocus: true
 = f.input :name2
 = f.input :unit
-= f.input :account_name1, label: 'Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } }
+= f.input :sale_account_name1, label: 'Sale Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } }
+= f.input :purchase_account_name1, label: 'Purchase Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } }
 = f.input :description, input_html: { rows: 4 }
 = f.input :category_list, input_html: { data: { tags: Product.tag_counts_on(:categories).map {|t| t.name } } }
 
