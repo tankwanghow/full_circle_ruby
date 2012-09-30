@@ -12,3 +12,4 @@ doc/app
 .sass-cache/
 .DS_Store
 .tags
+zeus.json
