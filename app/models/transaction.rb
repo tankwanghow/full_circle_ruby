@@ -15,7 +15,6 @@ class Transaction < ActiveRecord::Base
   scope :smaller_eq,  ->(val) { where('transaction_date <= ?', val.to_date) }
   scope :bigger,  ->(val) { where('transaction_date > ?', val.to_date) }
   scope :smaller,  ->(val) { where('transaction_date < ?', val.to_date) }
-  scope :doc, ->(doc_type, doc_id) { where(doc_type: doc_type, doc_id: doc_id) }
 
   def terms_string
     return '-' unless terms

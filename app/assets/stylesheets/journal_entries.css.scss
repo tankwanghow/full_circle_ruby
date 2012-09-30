@@ -1,0 +1,8 @@
+table#journal_entries {
+  td { vertical-align: middle; padding: 3px; }
+  th { text-align: center; background-color: lightgray; }
+  tr {
+    .transaction_date, .terms, .account { text-align: center; }
+    .debit, .credit { text-align: right; }
+  }
+}

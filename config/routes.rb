@@ -22,7 +22,7 @@ FullCircle::Application.routes.draw do
   resources :addresses, only: [:new, :edit, :update, :create, :destroy]
 
   resources :payments, only: [:new, :edit, :update, :create, :show] do
-    resources :transactions, only: [:index]
+    resources :journal_entries, only: [:index]
   end
   get 'payment/new_or_edit' => 'payments#new_or_edit'
 
