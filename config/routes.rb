@@ -13,6 +13,7 @@ FullCircle::Application.routes.draw do
   get 'particular_type/new_or_edit' => 'particular_types#new_or_edit'
 
   resources :products, only: [:new, :edit, :update, :create, :destroy]
+  get 'product/get_unit' => 'products#get_unit'
   get 'product/new_or_edit' => 'products#new_or_edit'
 
   resources :users, only: [:new, :edit, :update, :create, :destroy]
@@ -26,6 +27,10 @@ FullCircle::Application.routes.draw do
   end
   get 'payment/new_or_edit' => 'payments#new_or_edit'
 
+  resources :invoices, only: [:new, :edit, :update, :create, :show] do
+    resources :journal_entries, only: [:index]
+  end
+  get 'invoice/new_or_edit' => 'invoices#new_or_edit'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
