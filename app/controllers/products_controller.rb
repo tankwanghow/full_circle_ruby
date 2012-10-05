@@ -43,4 +43,8 @@ class ProductsController < ApplicationController
       redirect_to new_product_path
     end
   end
+
+  def get_unit
+    render text: Product.where(name1: params[:name1]).try(:first).try(:unit) || 'Not Found!'
+  end
 end
