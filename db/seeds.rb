@@ -168,7 +168,7 @@ Account.create!(
   status: 'Active'
 )
 Account.create!(
-  account_type_id: AccountType.find_by_name('Expenses'),
+  account_type_id: AccountType.find_by_name('Expenses').id,
   name1: 'Bank Charges',
   description: 'Charges by Bank, due to services provided',
   admin_lock: true,
