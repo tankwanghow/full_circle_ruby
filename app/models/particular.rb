@@ -26,34 +26,34 @@ class Particular < ActiveRecord::Base
     [def_trans, opp_trans]
   end
 
-  private
+private
 
-    def default_transaction main_account
-      fill_db_cr( 
-        transaction_date: doc.doc_date, 
-        account: main_account, 
-        note: [particular_type.name, note].join(' '), 
-        user: User.current)
-    end
+  def default_transaction main_account
+    fill_db_cr( 
+      transaction_date: doc.doc_date, 
+      account: main_account, 
+      note: [particular_type.name, note].join(' '), 
+      user: User.current)
+  end
 
-    def oppsite_transaction(main_account)
-      def_trans = default_transaction(main_account)
-      {
-        transaction_date: doc.doc_date,
-        account: particular_type.account || main_account,
-        note: [particular_type.name, note].join(' '),
-        debit: def_trans[:debit] > 0 ? 0 : def_trans[:credit],
-        credit: def_trans[:credit] > 0 ? 0 : def_trans[:debit],
-        user: User.current
-      }
-    end
+  def oppsite_transaction(main_account)
+    def_trans = default_transaction(main_account)
+    {
+      transaction_date: doc.doc_date,
+      account: particular_type.account || main_account,
+      note: [particular_type.name, note].join(' '),
+      debit: def_trans[:debit] > 0 ? 0 : def_trans[:credit],
+      credit: def_trans[:credit] > 0 ? 0 : def_trans[:debit],
+      user: User.current
+    }
+  end
 
-    def fill_db_cr(hash)
-      if particular_type.party_type == 'Incomes'
-        hash.merge debit: total.abs, credit: 0
-      else
-        hash.merge debit: 0, credit: total.abs
-      end
+  def fill_db_cr(hash)
+    if particular_type.party_type == 'Incomes'
+      hash.merge debit: total.abs, credit: 0
+    else
+      hash.merge debit: 0, credit: total.abs
     end
+  end
 
 end
