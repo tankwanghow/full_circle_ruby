@@ -50,4 +50,13 @@ module ApplicationHelper
     link_to "Show Audits Log", audit_logs_path(klass: object.class.name, id: object.id), class: 'btn btn-info' if current_user.is_admin?
   end
 
+  def link_to_edit_action_buttons object, journal_url
+    [ link_to('Cancel', edit_polymorphic_path(object), class: 'btn btn-warning'),
+      link_to('New', new_polymorphic_path(object.class), class: 'btn btn-info'),
+      link_to_index(object.class),
+      link_to_print_buttons(object),
+      link_to('Journal Entries', journal_url, class: 'btn btn-info'),
+      link_to_audits_log(object) ].join(' ').html_safe
+  end
+
 end
