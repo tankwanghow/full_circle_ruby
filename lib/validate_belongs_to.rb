@@ -26,7 +26,7 @@ module ValidateBelongsTo
         end
       BOL
 
-      validate "#{association}_#{attribute}?"
+      validate "#{association}_#{attribute}?", if: Proc.new { |r| !r.instance_eval("#{association}_#{attribute}").blank? }
     end
   end
 
