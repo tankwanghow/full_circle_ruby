@@ -2,7 +2,9 @@ class ParticularType < ActiveRecord::Base
   belongs_to :account
   has_many :particulars
   validates_uniqueness_of :name
-  validates_presence_of :party_type, :name, :account_name1
+  validates :name, presence: true
+  validates :account_name1, presence: true, if: Proc.new { |r| !r.party_type.blank? }
+  validates :party_type, presence: true, if: Proc.new { |r| !r.account_name1.blank? }
 
   include ValidateBelongsTo
   validate_belongs_to :account, :name1
