@@ -175,7 +175,5 @@ Account.create!(
   status: 'Active'
 )
 ParticularType.create!(
-  party_type: 'Expenses',
-  name: 'Bank Charges',
-  account_id: Account.find_by_name1('Bank Charges').id
+  name: 'Note'
 )
