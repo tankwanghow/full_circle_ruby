@@ -6,6 +6,7 @@ class PaymentsController < ApplicationController
 
   def new
     @payment = Payment.new(doc_date: Date.today, pay_from_name1: 'Cash in Hand')
+    @payment.pay_to_particulars.build
   end
 
   def show
