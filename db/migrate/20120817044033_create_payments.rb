@@ -3,14 +3,13 @@ class CreatePayments < ActiveRecord::Migration
     create_table :payments do |t|
       t.date       :doc_date,             null: false
       t.belongs_to :pay_to,               references: :accounts, null: false
-      t.belongs_to :pay_from,             references: :accounts, null: false
       t.string     :collector,            null: false
-      t.text       :note,                 null: false
-      t.decimal    :pay_amount,           null: false, default: 0, precision: 12, scale: 2
       t.decimal    :actual_debit_amount,  null: false, default: 0, precision: 12, scale: 2
-      t.decimal    :actual_credit_amount, null: false, default: 0, precision: 12, scale: 2
+      t.belongs_to :pay_from,             references: :accounts, null: false
       t.date       :cheque_date
       t.string     :cheque_no
+      t.decimal    :actual_credit_amount, null: false, default: 0, precision: 12, scale: 2
+      t.text       :note,                 null: false
       t.integer    :lock_version,         default: 0
       t.timestamps
     end
