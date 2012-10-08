@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe SessionsController do
 
-  it "should destroy"
-
   describe 'POST create' do
     let(:active_user) { mock_model User, aasm_current_state: :active, id: 999 }
     let(:inactive_user) { mock_model User, aasm_current_state: :afdsa }

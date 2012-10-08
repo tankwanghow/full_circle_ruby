@@ -33,6 +33,4 @@ feature 'Login' do
     expect(page).to have_selector('a', text: 'Johnson Sue')
   end
 
-  scenario "Signing in correctly and return_to params is not root"
-
 end
