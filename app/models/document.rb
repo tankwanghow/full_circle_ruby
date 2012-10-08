@@ -13,7 +13,7 @@ class Document < ActiveRecord::Base
                     trigram: {}
                   }
 
-  scope :type_in, ->(values) { where('searchable_type ~* ?', values.join('|')) }
+  scope :type_in, ->(values) { where('searchable_type ~* ?', values.map { |t| '^' + t + '$' }.join('|')) }
   scope :amount_between, ->(larger, smaller) { amount_larger_eq(larger).amount_smaller(smaller) }
   scope :amount_larger_eq, ->(val) { where('doc_amount >= ?', val) }
   scope :amount_smaller_eq, ->(val) { where('doc_amount <= ?', val) }
