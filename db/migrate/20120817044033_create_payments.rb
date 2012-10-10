@@ -9,7 +9,6 @@ class CreatePayments < ActiveRecord::Migration
       t.date       :cheque_date
       t.string     :cheque_no
       t.decimal    :actual_credit_amount, null: false, default: 0, precision: 12, scale: 2
-      t.text       :note,                 null: false
       t.integer    :lock_version,         default: 0
       t.timestamps
     end
