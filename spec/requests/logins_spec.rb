@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature 'Login' do
   background do
-    create :user, username: 'first'
+    create :user, username: 'first' # Prevent first user default admin and active
     create :user, username: 'bob'
     create :active_user, username: 'john', name: 'Johnson Sue'
   end
