@@ -5,8 +5,8 @@
     = f.input :doc_date, as: :datepicker, wrapper_html: { class: 'span3' }, input_html: { class: 'span2' }
   .row.nested
     = render_particulars_fields f, :pay_to_particulars
-  .row.offset7
-    = f.input :actual_debit_amount, wrapper_html: { class: 'span2' }, input_html: { class: 'bold', type: :text }, label_html: { class: 'bold' }, readonly: true
+    .offset8
+      = f.input_field :actual_debit_amount, type: :text, readOnly: true, class: 'span2 bold'
 .pay-from
   .row
     = f.input :pay_from_name1, input_html: { class: 'span3', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, wrapper_html: { class: 'span3' }, label: 'Pay From'
@@ -14,9 +14,9 @@
     = f.input :cheque_date, as: :datepicker, wrapper_html: { class: 'span3', style: "display: #{f.object.pay_from_name1 == 'Cash in Hand' ? 'none' : ''}" }, input_html: { class: 'span2' }
   .row.nested
     = render_particulars_fields f, :pay_from_particulars
-  .row
-    = f.input :note, input_html: { rows: 3, class: 'span3' }, wrapper_html: { class: 'span3' }
-    .offset7
+    .offset8
+      %input.bold.show-hide.span2.numeric{value: 0.00, id: 'total_pay_from_particulars', type: 'text', readonly: true }
+    .offset5
       = f.input :actual_credit_amount, wrapper_html: { class: 'span2' }, input_html: { class: 'bold', type: :text }, label_html: { class: 'bold' }, readonly: true
 :javascript
   $(document).ready(function() {
