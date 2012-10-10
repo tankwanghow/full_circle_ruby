@@ -18,8 +18,8 @@ class Product < ActiveRecord::Base
       name1: r.name1,
       name2: r.name2,
       unit: r.unit,
-      sale_account: r.sale_account.name1,
-      purchase_account: r.purchase_account.name1,
+      sale_account: r.sale_account_name1,
+      purchase_account: r.purchase_account_name1,
       description: r.description,
       categories: r.category_list
     }
