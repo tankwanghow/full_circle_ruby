@@ -51,9 +51,6 @@ group :development, :test do
   gem 'jasminerice'
   gem 'guard-jasmine'
   gem 'launchy'
-end
-
-group :development do
   gem 'pry-rails'
   gem 'pry-debugger'
 end
