@@ -84,17 +84,6 @@ class PaymentPdf < Prawn::Document
   def draw_detail
     @detail_y = @detail_y_start_at
 
-    if @payment.pay_amount > 0
-      bounding_box [8.mm, @detail_y], height: @detail_height, width: 140.mm do
-        text_box @payment.note, overflow: :shrink_to_fit, valign: :bottom
-      end
-
-      bounding_box [155.mm, @detail_y], height: @detail_height, width: 50.mm do
-        text_box @payment.pay_amount.to_money.format, overflow: :shrink_to_fit, align: :center, valign: :bottom
-      end
-      @detail_y = @detail_y - @detail_height
-    end
-
     @payment.pay_to_particulars.each do |t|
       str = [t.particular_type.name, "-", t.note.strip == "-" ? nil : t.note,
              t.quantity, t.unit.strip == "-" ? nil : t.unit, "X", t.unit_price.to_money.format].compact.join(" ")

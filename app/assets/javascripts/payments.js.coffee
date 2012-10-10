@@ -14,10 +14,9 @@ window.payment = {
 
     math.rowTotal '.quantity', '.unit-price', '.row-total', '.fields', '.row.nested'
 
-    math.sum '#payment_pay_amount, #total_pay_to_particulars', '#payment_actual_debit_amount', 'form#payment_form'
     math.sum '#payment_actual_debit_amount, #total_pay_from_particulars', '#payment_actual_credit_amount', 'form#payment_form'
 
-    math.sum '.pay-to .row-total', '#total_pay_to_particulars', 'form#payment_form'
+    math.sum '.pay-to .row-total', '#payment_actual_debit_amount', 'form#payment_form'
     math.sum '.pay-from .row-total', '#total_pay_from_particulars', 'form#payment_form'
 
     app.showHide '.pay-to .fields:visible', '.pay-to .show-hide'
