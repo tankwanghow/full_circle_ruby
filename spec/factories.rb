@@ -46,10 +46,10 @@ FactoryGirl.define do
     party_type { [nil, 'Incomes', 'Expenses'].fetch rand(3) }
     name { Faker::Name.name }
     account
-    description { Faker::Lorem.sentence }
 
     factory :nil_particular_type do
       party_type nil
+      account nil
     end
 
     factory :incomes_particular_type do
@@ -68,5 +68,52 @@ FactoryGirl.define do
     unit { Faker::Internet.user_name.slice 3..5 } 
     sale_account { [create(:active_account), Account.first(order: 'random()')].fetch rand(2) }
     purchase_account { [create(:active_account), Account.first(order: 'random()')].fetch rand(2) }
+  end
+
+  factory :particular do
+    particular_type do 
+      [ create(:incomes_particular_type), 
+        create(:expenses_particular_type), 
+        create(:nil_particular_type), 
+        ParticularType.first(order: 'random()')].fetch rand(4) 
+    end
+    note { Faker::Lorem.sentence }
+    quantity { rand(10) * rand(10) }
+    unit { Faker::Internet.user_name.slice 3..5 }
+    unit_price { rand(10) * rand(10) }
+  end
+
+  factory :payment_particular do
+    flag { ['pay_to', 'pay_from'].fetch rand(2) }
+    particular_type do 
+      [ create(:incomes_particular_type), 
+        create(:expenses_particular_type), 
+        create(:nil_particular_type), 
+        ParticularType.first(order: 'random()')].fetch rand(4) 
+    end
+    note { Faker::Lorem.sentence }
+    quantity { rand(10) * rand(10) }
+    unit { Faker::Internet.user_name.slice 3..5 }
+    unit_price { rand(10) * rand(10) }
+
+    factory :payment_pay_from_particular do
+      flag 'pay_form'
+    end
+
+    factory :payment_pay_to_particular do
+      flag 'pay_to'
+    end
+  end
+
+  factory :payment do
+    pay_to { [create(:active_account), Account.first(order: 'random()')].fetch rand(2) }
+    pay_from { [create(:active_account), Account.first(order: 'random()')].fetch rand(2) }
+    doc_date { Date.current - rand(10) }
+    collector { Faker::Name.name }
+    actual_credit_amount 1
+    actual_debit_amount 1
+  end
+
+  factory :invoice do
   end
 end
