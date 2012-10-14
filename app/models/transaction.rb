@@ -16,7 +16,6 @@ class Transaction < ActiveRecord::Base
   def terms_string
     return '-' unless terms
     return "#{t} days" if terms >= 2
-    return "#{t} day" if terms == 1
     return "C.O.D." if terms == 0
     return "C.B.D." if terms == -1
   end
