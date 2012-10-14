@@ -5,6 +5,8 @@
     .span1
       = f.input :quantity, input_html: { class: 'quantity span1', type: :text }, wrapper: :table_field
     .span1
+      = f.input :unit, input_html: { class: 'span1', name: 'row_unit', readOnly: true}, wrapper: :table_field
+    .span1
       = f.input :cost, input_html: { class: 'cost span1', type: :text }, wrapper: :table_field
     .span1
       = f.link_to_remove "X", class: "btn btn-danger"

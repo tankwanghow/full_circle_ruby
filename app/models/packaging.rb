@@ -18,4 +18,5 @@ class Packaging < ActiveRecord::Base
   def products_string
     product_packagings.map{ |t| t.simple_audit_string }.join(' ')
   end
+
 end

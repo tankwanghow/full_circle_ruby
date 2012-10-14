@@ -11,4 +11,8 @@ class ProductPackaging < ActiveRecord::Base
   def simple_audit_string
     [ product.name1, packaging.name, quantity.to_s, cost.to_money.to_s].join " "
   end
+
+  def unit
+    product.unit if product
+  end
 end
