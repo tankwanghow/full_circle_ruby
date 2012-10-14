@@ -1,13 +1,18 @@
 class PaymentParticular < Particular
 
-  before_save :particular_type_transaction, :account_transaction, if: Proc.new { |r| r.particular_type.account }
+  def transactions
+    if particular_type.account
+      [ particular_type_transaction, account_transaction ]
+    else
+      []
+    end
+  end
 
 private
 
   def particular_type_transaction
-    Transaction.create!(
-      { 
-        doc: doc, account: particular_type.account, transaction_date: doc.doc_date, 
+    Transaction.new( 
+      { doc: doc, account: particular_type.account, transaction_date: doc.doc_date, 
         note: [current_account.name1, doc.collector].join(' - '),
         user: User.current 
       }.merge(debit_or_credit_amount(total < 0))
@@ -15,7 +20,7 @@ private
   end
 
   def account_transaction
-    Transaction.create!(
+    Transaction.new( 
       {
         doc: doc, account: current_account, transaction_date: doc.doc_date, 
         note: [particular_type.name, doc.collector].join(' - '),

@@ -51,6 +51,18 @@ private
     transactions.destroy_all
     pay_to_transaction
     pay_from_transaction
+    build_particulars_transactions
+  end
+
+  def build_particulars_transactions
+    pay_to_particulars.each do |t|
+      t.doc = self
+      transactions << t.transactions
+    end
+    pay_from_particulars.each do |t|
+      t.doc = self
+      transactions << t.transactions
+    end
   end
 
   def pay_from_transaction

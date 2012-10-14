@@ -8,9 +8,8 @@ describe PaymentParticular do
 
   context 'saving pay_to or pay_from with no_account_type particular' do
     let(:particular) { build :payment_pay_from_particular, particular_type: no_account_type, doc: payment }
-    it "should not touch any account" do
-      Transaction.should_not_receive(:create!)        
-      particular.save
+    it "should not have any transactions" do
+      particular.transactions.count.should == 0
     end
 
   end
@@ -29,18 +28,20 @@ describe PaymentParticular do
     context 'negative amount' do
       let(:particular) { build :payment_pay_from_particular, particular_type: particular_type, doc: payment, unit_price: -12 }
       it "should credit particular_type account & debit pay_from account" do
-        Transaction.should_receive(:create!).with(particular_type_transaction.merge(debit: 0, credit: particular.total.abs)).once
-        Transaction.should_receive(:create!).with(pay_from_transaction.merge(debit: particular.total.abs, credit: 0)).once
-        particular.save
+        particular.transactions.to_yaml.should == [
+          Transaction.new(particular_type_transaction.merge(debit: 0, credit: particular.total.abs)),
+          Transaction.new(pay_from_transaction.merge(debit: particular.total.abs, credit: 0)) 
+        ].to_yaml
       end
     end
 
     context 'positive amount' do
       let(:particular) { build :payment_pay_from_particular, particular_type: particular_type, doc: payment, unit_price: 2 }
       it "should debit particular_type account & credit pay_from account" do
-        Transaction.should_receive(:create!).with(particular_type_transaction.merge(debit: particular.total.abs, credit: 0)).once
-        Transaction.should_receive(:create!).with(pay_from_transaction.merge(debit: 0, credit: particular.total.abs)).once
-        particular.save
+        particular.transactions.to_yaml.should == [
+          Transaction.new(particular_type_transaction.merge(debit: particular.total.abs, credit: 0)),
+          Transaction.new(pay_from_transaction.merge(debit: 0, credit: particular.total.abs))
+        ].to_yaml
       end      
     end
   end
@@ -59,20 +60,22 @@ describe PaymentParticular do
     context 'negative amount' do
       let(:particular) { build :payment_pay_to_particular, particular_type: particular_type, doc: payment, unit_price: -12 }
       it "should credit particular_type account & debit pay_to account" do
-        Transaction.should_receive(:create!).with(particular_type_transaction.merge(debit: 0, credit: particular.total.abs)).once
-        Transaction.should_receive(:create!).with(pay_to_transaction.merge(debit: particular.total.abs, credit: 0)).once
-        particular.save
+        particular.transactions.to_yaml.should == [
+          Transaction.new(particular_type_transaction.merge(debit: 0, credit: particular.total.abs)),
+          Transaction.new(pay_to_transaction.merge(debit: particular.total.abs, credit: 0))
+        ].to_yaml
       end
     end
 
     context 'positive amount' do
       let(:particular) { build :payment_pay_to_particular, particular_type: particular_type, doc: payment, unit_price: 2 }
       it "should credit particular_type account & credit pay_to account" do
-        Transaction.should_receive(:create!).with(particular_type_transaction.merge(debit: particular.total.abs, credit: 0)).once
-        Transaction.should_receive(:create!).with(pay_to_transaction.merge(debit: 0, credit: particular.total.abs)).once
-        particular.save
+        particular.transactions.to_yaml.should == [ 
+          Transaction.new(particular_type_transaction.merge(debit: particular.total.abs, credit: 0)),
+          Transaction.new(pay_to_transaction.merge(debit: 0, credit: particular.total.abs))
+        ].to_yaml
       end      
     end
   end
 
-end
+end 
