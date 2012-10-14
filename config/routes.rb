@@ -31,6 +31,10 @@ FullCircle::Application.routes.draw do
     resources :journal_entries, only: [:index]
   end
   get 'invoice/new_or_edit' => 'invoices#new_or_edit'
+
+  resources :packagings, only: [:new, :edit, :update, :create, :destroy]
+  get 'packaging/new_or_edit' => 'packagings#new_or_edit'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -177,3 +177,52 @@ Account.create!(
 ParticularType.create!(
   name: 'Note'
 )
+%w(Bulk Trays Bags).each do |t|
+  Packaging.create!(
+    name: t
+  )
+end
+
+%w(AA A B C D E F G Crack Broken Dirty White).each do |t|
+  p = Product.create!(
+    name1: "Egg Grade #{t}",
+    unit: 'pcs',
+    sale_account_id: Account.find_by_name1('General Sales').id,
+    purchase_account_id: Account.find_by_name1('General Purchases').id,
+    category_list: 'eggs'
+  )
+    ProductPackaging.create!(
+    product_id: p.id,
+    packaging_id: Packaging.find_by_name("Trays").id,
+    quantity: 30,
+    cost: 0
+  )
+end
+
+[ 'Maize', 'Soyabean Meal', 'Wheat Pollard',
+  'Wheat Bran', 'Rice Bran', 'Full Fat Soyabean Meal'].each do |t|
+  Product.create!(
+    name1: "#{t}",
+    unit: 'Kg',
+    sale_account_id: Account.find_by_name1('General Sales').id,
+    purchase_account_id: Account.find_by_name1('General Purchases').id,
+    category_list: 'Grains'
+  )
+end
+
+[ 'Lime Stone Grit', 'Lime Stone Powder', 'Salt', 'MDCP'].each do |t|
+  Product.create!(
+    name1: "#{t}",
+    unit: 'Kg',
+    sale_account_id: Account.find_by_name1('General Sales').id,
+    purchase_account_id: Account.find_by_name1('General Purchases').id,
+    category_list: 'Minerals'
+  )
+end
+Product.create!(
+  name1: 'Fish Meal',
+  unit: 'Kg',
+  sale_account_id: Account.find_by_name1('General Sales').id,
+  purchase_account_id: Account.find_by_name1('General Purchases').id,
+  category_list: 'Meat_Meals'
+)

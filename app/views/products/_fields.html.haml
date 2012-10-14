@@ -1,10 +1,16 @@
-= f.input :name1, autofocus: true
-= f.input :name2
-= f.input :unit
-= f.input :sale_account_name1, label: 'Sale Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } }
-= f.input :purchase_account_name1, label: 'Purchase Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } }
-= f.input :description, input_html: { rows: 4 }
-= f.input :category_list, input_html: { data: { tags: Product.tag_counts_on(:categories).map {|t| t.name } } }
+.row
+  = f.input :name1, autofocus: true, wrapper_html: { class: 'span3' }
+  = f.input :name2, wrapper_html: { class: 'span3' }
+  = f.input :unit, wrapper_html: { class: 'span3' }
+.row
+  = f.input :sale_account_name1, label: 'Sale Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } }, wrapper_html: { class: 'span3' }
+  = f.input :purchase_account_name1, label: 'Purchase Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } }, wrapper_html: { class: 'span3' }
+  = f.input :category_list, input_html: { data: { tags: Product.tag_counts_on(:categories).map {|t| t.name } } }, wrapper_html: { class: 'span3' }
+#packages
+  .row.nested
+    = render_packagings_fields f, :product_packagings
+.row
+  = f.input :description, input_html: { rows: 4 }, wrapper_html: { class: 'span3' }
 
 :javascript
   $(document).ready(function() {

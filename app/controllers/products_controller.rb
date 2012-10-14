@@ -15,7 +15,7 @@ class ProductsController < ApplicationController
   end
 
   def new
-    @product = Product.new
+    @product = Product.new(sale_account_name1: 'General Sales', purchase_account_name1: 'General Purchases')
   end
 
   def create

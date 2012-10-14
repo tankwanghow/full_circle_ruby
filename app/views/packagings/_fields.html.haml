@@ -1,0 +1,5 @@
+.row
+  = f.input :name, autofocus: true, wrapper_html: { class: 'span3' }
+#product
+  .row.nested
+    = render_products_fields f, :product_packagings
