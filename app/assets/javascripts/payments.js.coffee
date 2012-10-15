@@ -1,8 +1,8 @@
 window.payment = {
   init: ->
 
-    app.nestedFormFieldAdded 'form', '.row.nested', '.show-hide'
-    app.nestedFormFieldRemoved 'form', '.row.nested', '.show-hide', '.fields:visible', '.row-total'
+    app.nestedFormFieldAdded 'form', '.row-fluid.nested', '.show-hide'
+    app.nestedFormFieldRemoved 'form', '.row-fluid.nested', '.show-hide', '.fields:visible', '.row-total'
 
     ($ 'form').on 'blur', '#payment_pay_from_name1', ->
       if ($ this).val() is 'Cash in Hand'
@@ -12,7 +12,7 @@ window.payment = {
         ($ '#payment_cheque_no, #payment_cheque_date').parents('.control-group').show()
         ($ '#payment_cheque_no').select()
 
-    math.rowTotal '.quantity', '.unit-price', '.row-total', '.fields', '.row.nested'
+    math.rowTotal '.quantity', '.unit-price', '.row-total', '.fields', '.row-fluid.nested'
 
     math.sum '#payment_actual_debit_amount, #total_pay_from_particulars', '#payment_actual_credit_amount', 'form#payment_form'
 

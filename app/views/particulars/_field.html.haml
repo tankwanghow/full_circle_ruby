@@ -1,14 +1,15 @@
-.span2
-  = f.input :particular_type_name, input_html: { class: 'span2', data: { source: ParticularType.pluck(:name), provide: 'typeahead' } }, wrapper: :table_field
-.span3
-  = f.input :note, input_html: { class: 'span3' }, wrapper: :table_field
-.span1
-  = f.input :quantity, input_html: { class: 'quantity span1', type: :text }, wrapper: :table_field
-.span1
-  = f.input :unit, input_html: { class: 'span1' }, wrapper: :table_field
-.span1
-  = f.input :unit_price, input_html: { class: 'unit-price numeric span1', type: :text }, wrapper: :table_field
-.span2
-  = f.input :total, input_html: { class: 'numeric row-total span2', name: 'row_total', type: :text, readOnly: true }, wrapper: :table_field
-.span1
-  = f.link_to_remove "X", class: "btn btn-danger"
+.row-fluid
+  .span5
+    = f.input :particular_type_name, input_html: { class: 'span', data: { source: ParticularType.pluck(:name), provide: 'typeahead' } }, wrapper: :table_field
+  .span5
+    = f.input :note, input_html: { class: 'span' }, wrapper: :table_field
+  .span3
+    = f.input :quantity, input_html: { class: 'quantity span', type: :text }, wrapper: :table_field
+  .span3
+    = f.input :unit, input_html: { class: 'span' }, wrapper: :table_field
+  .span3
+    = f.input :unit_price, input_html: { class: 'unit-price numeric span', type: :text }, wrapper: :table_field
+  .span3
+    = f.input :total, input_html: { class: 'numeric row-total span', name: 'row_total', type: :text, readOnly: true }, wrapper: :table_field
+  .span1
+    = f.link_to_remove "X", class: "btn btn-danger"

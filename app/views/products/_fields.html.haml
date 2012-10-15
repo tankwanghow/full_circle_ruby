@@ -1,16 +1,24 @@
-.row
-  = f.input :name1, autofocus: true, wrapper_html: { class: 'span3' }
-  = f.input :name2, wrapper_html: { class: 'span3' }
-  = f.input :unit, wrapper_html: { class: 'span3' }
-.row
-  = f.input :sale_account_name1, label: 'Sale Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } }, wrapper_html: { class: 'span3' }
-  = f.input :purchase_account_name1, label: 'Purchase Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } }, wrapper_html: { class: 'span3' }
-  = f.input :category_list, input_html: { data: { tags: Product.tag_counts_on(:categories).map {|t| t.name } } }, wrapper_html: { class: 'span3' }
+.row-fluid
+  .span5
+    = f.input :name1, autofocus: true, input_html: { class: 'span' }
+  .span5
+    = f.input :name2, input_html: { class: 'span' }
+  .span2
+    = f.input :unit, input_html: { class: 'span' }
+.row-fluid
+  .span5
+    = f.input :sale_account_name1, label: 'Sale Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' }, class: 'span' }
+  .span5
+    = f.input :purchase_account_name1, label: 'Purchase Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } , class: 'span' }
+  .span5
+    = f.input :category_list, input_html: { data: { tags: Product.tag_counts_on(:categories).map {|t| t.name } }, class: 'span' }
 #packages
-  .row.nested
-    = render_packagings_fields f, :product_packagings
-.row
-  = f.input :description, input_html: { rows: 4 }, wrapper_html: { class: 'span3' }
+  .row-fluid.nested
+    .span17
+      = render_packagings_fields f, :product_packagings
+.row-fluid
+  .span6
+    = f.input :description, input_html: { rows: 4, class: 'span' }
 
 :javascript
   $(document).ready(function() {

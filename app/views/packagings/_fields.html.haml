@@ -1,8 +1,9 @@
-.row
+.row-fluid
   = f.input :name, autofocus: true, wrapper_html: { class: 'span3' }
 #products
-  .row.nested
-    = render_products_fields f, :product_packagings
+  .row-fluid.nested
+    .span17
+      = render_products_fields f, :product_packagings
 
 :javascript
   $(document).ready(function() {

@@ -14,20 +14,20 @@
   %body
     .navbar.navbar-fixed-top.navbar-inverse
       .navbar-inner
-        .container
+        .container-fluid
           = link_to CompanyName, root_path, class: 'brand'
           %ul.nav.pull-right
             = simple_form_for :search, url: search_path, html: { class: 'navbar-search' } do |f|
-              = f.input_field :terms, class: 'search-query span3', placeholder: 'search...', value: session[:search_term]
+              = f.input_field :terms, class: 'search-query %span6', placeholder: 'search...', value: session[:search_term]
             - if logged_in?
               = menu current_user.name do
                 = menu_child 'Edit Profile', edit_user_path(current_user), 'data-skip-pjax' => true
                 = menu_child 'Logout', logout_path, 'data-skip-pjax' => true
       = render 'share/navigations'
     #main
-      .container
+      .container-fluid
         .content
-          .row
-            .span12
+          .row-fluid
+            .span24
               %div{'data-pjax-container' => true}
                 = yield

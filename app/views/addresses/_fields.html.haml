@@ -1,20 +1,33 @@
 = hidden_field_tag :account_id, f.object.addressable.id
 = f.input :address_type, label: 'Type', collection: ['Mailing', 'Shipping', 'Both'], include_blank: false, autofocus: true
-.row
-  = f.input :address1, wrapper_html: { class: 'span3' }
-  = f.input :address2, wrapper_html: { class: 'span3' }
-  = f.input :address3, wrapper_html: { class: 'span3' }
-.row
-  = f.input :area, wrapper_html: { class: 'span3' }
-  = f.input :city, wrapper_html: { class: 'span3' }
-  = f.input :zipcode, wrapper_html: { class: 'span3' }
-.row
-  = f.input :state, wrapper_html: { class: 'span3' }
-  = f.input :country, as: :string, wrapper_html: { class: 'span3' }
-  = f.input :tel_no, label: 'Phone No', wrapper_html: { class: 'span3' }
-.row
-  = f.input :fax_no, wrapper_html: { class: 'span3' }
-  = f.input :email, wrapper_html: { class: 'span3' }
-  = f.input :reg_no, label: 'Registration No', wrapper_html: { class: 'span3' }
-.row
-  = f.input :note, input_html: { rows: 4 }, wrapper_html: { class: 'span3' }
+.row-fluid
+  .span7
+    = f.input :address1, input_html: { class: 'span' }
+  .span7
+    = f.input :address2, input_html: { class: 'span' }
+  .span7
+    = f.input :address3, input_html: { class: 'span' }
+.row-fluid
+  .span7
+    = f.input :area, input_html: { class: 'span' }
+  .span7
+    = f.input :city, input_html: { class: 'span' }
+  .span7
+    = f.input :zipcode, input_html: { class: 'span' }
+.row-fluid
+  .span7
+    = f.input :state, input_html: { class: 'span' }
+  .span7
+    = f.input :country, as: :string, input_html: { class: 'span' }
+  .span7
+    = f.input :tel_no, label: 'Phone No', input_html: { class: 'span' }
+.row-fluid
+  .span7
+    = f.input :fax_no, input_html: { class: 'span' }
+  .span7
+    = f.input :email, input_html: { class: 'span' }
+  .span7
+    = f.input :reg_no, label: 'Registration No', input_html: { class: 'span' }
+.row-fluid
+  .span7
+    = f.input :note, input_html: { rows: 4, class: 'span' }

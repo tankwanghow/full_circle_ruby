@@ -1,10 +1,16 @@
 $baseFontSize: 13px;
+$gridColumns: 24;
+$gridColumnWidth: 35px;
+$gridGutterWidth: 5px;
+$gridColumnWidthLarge: 35px;
+$gridGutterWidthLarge: 5px;
+$gridRowWidth: ($gridColumns * $gridColumnWidth) + ($gridGutterWidth * ($gridColumns - 1));
 
 @import "bootstrap";
 
 body { padding-top: 100px; }
 
-@import "bootstrap-responsive";
+//@import "bootstrap-responsive";
 
 .dropdown-menu {
   margin-top: 0px;
@@ -14,6 +20,25 @@ ul.nav li a#nav-transactions { color: red; }
 
 .alert, .center-text {
   text-align: center;
+}
+
+.show-hide .row-fluid .table-header {
+  min-height: 0px;
+  text-align: center;
+}
+
+.row-fluid.nested .fields {
+  display: inline-block;
+}
+
+.row-fluid.nested .table-field {
+  margin-bottom: 0px;
+  line-height: 0px;
+}
+
+.row-fluid.nested .table-field.error {
+  margin-bottom: 0px;
+  line-height: 18px;
 }
 
 body#center {
@@ -26,7 +51,7 @@ body#center {
 
 label { margin-bottom: 0px; }
 
-.row.searchable {
+.row-fluid.searchable {
   height: 75px;
   border-bottom: 1px solid lightgray;
   overflow: hidden;
@@ -75,4 +100,9 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 
 .form-horizontal .form-actions {
   padding-left: 80px;
+}
+
+
+a.add_nested_fields {
+  float: left;
 }

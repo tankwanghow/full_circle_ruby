@@ -1,23 +1,30 @@
 .pay-to
-  .row
-    = f.input :pay_to_name1, input_html: { class: 'span3', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, label: 'Pay To', wrapper_html: { class: 'span3' }, autofocus: true
-    = f.input :collector, input_html: { class: 'span3', data: { source: Payment.order(:collector).uniq.pluck(:collector), provide: 'typeahead' } }, wrapper_html: { class: 'span3' }
-    = f.input :doc_date, as: :datepicker, wrapper_html: { class: 'span3' }, input_html: { class: 'span2' }
-  .row.nested
+  .row-fluid
+    .span6
+      = f.input :pay_to_name1, input_html: { class: 'span', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, label: 'Pay To', autofocus: true
+    .span6
+      = f.input :collector, input_html: { class: 'span', data: { source: Payment.order(:collector).uniq.pluck(:collector), provide: 'typeahead' } }
+    .span3
+      = f.input :doc_date, as: :datepicker, input_html: { class: 'span21' }
+  .row-fluid.nested
     = render_particulars_fields f, :pay_to_particulars
-    .offset8
-      = f.input_field :actual_debit_amount, type: :text, readOnly: true, class: 'span2 bold'
+    .offset17.span3
+      = f.input_field :actual_debit_amount, type: :text, readOnly: true, class: 'span bold'
 .pay-from
-  .row
-    = f.input :pay_from_name1, input_html: { class: 'span3', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, wrapper_html: { class: 'span3' }, label: 'Pay From'
-    = f.input :cheque_no, wrapper_html: { class: 'span2', style: "display: #{f.object.pay_from_name1 == 'Cash in Hand' ? 'none' : ''}" }, input_html: { class: 'span2' }
-    = f.input :cheque_date, as: :datepicker, wrapper_html: { class: 'span3', style: "display: #{f.object.pay_from_name1 == 'Cash in Hand' ? 'none' : ''}" }, input_html: { class: 'span2' }
-  .row.nested
+  .row-fluid
+    .span6
+      = f.input :pay_from_name1, input_html: { class: 'span', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, label: 'Pay From'
+    .span3
+      = f.input :cheque_no, wrapper_html: { style: "display: #{f.object.pay_from_name1 == 'Cash in Hand' ? 'none' : ''}" }, input_html: { class: 'span' }
+    .span3
+      = f.input :cheque_date, as: :datepicker, wrapper_html: { style: "display: #{f.object.pay_from_name1 == 'Cash in Hand' ? 'none' : ''}" }, input_html: { class: 'span21' }
+  .row-fluid.nested
     = render_particulars_fields f, :pay_from_particulars
-    .offset8
-      %input.bold.show-hide.span2.numeric{value: 0.00, id: 'total_pay_from_particulars', type: 'text', readonly: true }
-    .offset5
-      = f.input :actual_credit_amount, wrapper_html: { class: 'span2' }, input_html: { class: 'bold', type: :text }, label_html: { class: 'bold' }, readonly: true
+    .offset17.span3
+      %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_pay_from_particulars', type: 'text', readonly: true }
+    .offset10
+      .span9
+        = f.input :actual_credit_amount, input_html: { class: 'bold', type: :text }, label_html: { class: 'bold' }, readonly: true
 :javascript
   $(document).ready(function() {
     payment.init();

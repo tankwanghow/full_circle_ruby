@@ -1,12 +1,11 @@
 #chart-of-accounts
-  .row
-    %a#new-account-type.btn.btn-info{ href: new_account_type_path(parent_id: selected_account_type_id) }New Account Type
+  .css-treeview
+    %a#new-account-type.btn.btn-info{ href: new_account_type_path(parent_id: selected_account_type_id) }New Type
     %a#new-account.btn.btn-info{ href: new_account_path(account_type_id: selected_account_type_id) }New Account
-  .row
-    .css-treeview
-      %a{href: '#', id: 'css-treeview-expand', class: 'btn btn-success', 'data-skip-pjax' => true }Expand
-      %a{href: '#', id: 'css-treeview-collapse', class: 'btn btn-danger', 'data-skip-pjax' => true }Collapse
-      = render_chart_of_account
+
+    %a{href: '#', id: 'css-treeview-expand', class: 'btn btn-success', 'data-skip-pjax' => true }Expand
+    %a{href: '#', id: 'css-treeview-collapse', class: 'btn btn-danger', 'data-skip-pjax' => true }Collapse
+    = render_chart_of_account
 
 :javascript
   $(document).ready(function() {

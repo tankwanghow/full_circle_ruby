@@ -1,5 +1,5 @@
 .navbar-inner
-  .container
+  .container-fluid
     %ul.nav
       = menu 'Accounting' do
         = menu_child 'Chart of Account', edit_account_type_path(AccountType.first)

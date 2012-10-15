@@ -8,21 +8,20 @@
           .bold Transaction Query
       .accordion-body.collapse#transaction-search-form
         .accordion-inner
-          = simple_form_for :transactions_query, url: transactions_path, html: { class: 'form-search span12' } do |f|
-            .row
-              = f.input_field :name, class: 'span4', placeholder: 'account name...', data: { source: Account.pluck(:name1), provide: 'typeahead' }, autofocus: true, value: session[:transactions_query][:name]
-              = f.input_field :start_date, class: 'datepicker span2', placeholder: 'start date...', value: session[:transactions_query][:start_date]
-              = f.input_field :end_date, class: 'datepicker span2', placeholder: 'end date...', value: session[:transactions_query][:end_date]
-              = f.button :submit, 'Query', class: 'btn-primary' 
+          = simple_form_for :transactions_query, url: transactions_path, html: { class: 'form-search' } do |f|
+            = f.input_field :name, class: 'span8', placeholder: 'account name...', data: { source: Account.pluck(:name1), provide: 'typeahead' }, autofocus: true, value: session[:transactions_query][:name]
+            = f.input_field :start_date, class: 'datepicker span3', placeholder: 'start date...', value: session[:transactions_query][:start_date]
+            = f.input_field :end_date, class: 'datepicker span3', placeholder: 'end date...', value: session[:transactions_query][:end_date]
+            = f.button :submit, 'Query', class: 'btn-primary' 
 %table.table-bordered.table#transactions
   %thead
     %tr
-      %th.span1 Date
-      %th.span1 Doc Type
-      %th.span1 Terms
-      %th.span4 Partuculars
-      %th.span2 Debit
-      %th.span2 Credit
+      %th.span2 Date
+      %th.span2 Doc Type
+      %th.span2 Terms
+      %th.span10 Partuculars
+      %th.span3 Debit
+      %th.span3 Credit
   %tbody 
     - for t in @transactions
       - total += t.debit - t.credit
