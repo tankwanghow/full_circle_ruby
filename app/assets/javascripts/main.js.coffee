@@ -13,19 +13,19 @@ $ ->
 window.math = {
 
   rowTotal: (qtyCls, priceCls, totalCls, rowCls, evtBubbleCls) ->
-    ($ evtBubbleCls).on 'blur', qtyCls, -> calRowTotal(this) # should use 'change' event but not all browser support it
-    ($ evtBubbleCls).on 'blur', priceCls, -> calRowTotal(this) # should use 'change' event but not all browser support it
+    ($ evtBubbleCls).on 'change', qtyCls, -> calRowTotal(this) # should use 'change' event but not all browser support it
+    ($ evtBubbleCls).on 'change', priceCls, -> calRowTotal(this) # should use 'change' event but not all browser support it
 
     calRowTotal = (elm) ->
       row_total = ($ elm).closest(rowCls).find(totalCls)
       qty = ($ elm).closest(rowCls).find(qtyCls).val()
       price = ($ elm).closest(rowCls).find(priceCls).val()
       row_total.val (qty * price).toFixed(2)
-      row_total.trigger 'blur' # should use 'change' event but not all browser support it
+      row_total.trigger 'change' # should use 'change' event but not all browser support it
 
 
   sum: (elements, totalElm, evtBubbleCls, checkVisible=true) ->
-    ($ evtBubbleCls).on 'blur', elements, -> # should use 'change' event but not all browser support it
+    ($ evtBubbleCls).on 'change', elements, -> # should use 'change' event but not all browser support it
       total = 0
       ($ elements).each (index, elm) ->
         if checkVisible
@@ -34,7 +34,7 @@ window.math = {
           val = ($ elm).val()
         total = total + +val
       ($ totalElm).val total.toFixed(2)
-      ($ totalElm).trigger 'blur' # should use 'change' event but not all browser support it
+      ($ totalElm).trigger 'change' # should use 'change' event but not all browser support it
 }
 
 window.main = {
@@ -64,7 +64,14 @@ window.app = {
     ($ 'input[data-provide="typeahead"]').attr('autocomplete', 'off')
 
   initNumeric: ->
-    ($ 'input.numeric').numeric()
+    ($ 'input.numeric').on 'change', ->
+      unless /[a-zA-Z]+/.test(($ this).val())
+        try
+          val = eval ($ this).val()
+          ($ this).val(val)
+          ($ this).parents('.control-group').removeClass('error')
+        catch err
+          ($ this).parents('.control-group').addClass('error')
 
   initDatepicker: ->
     ($ 'input.datepicker').datepicker
@@ -73,10 +80,12 @@ window.app = {
       showOn: "button"
       buttonImageOnly: true
 
-  nestedFormFieldAdded: (form, fields_parent, show_hide_elm) ->
+  nestedFormFieldAdded: (form, fields_parent, show_hide_elm, func) ->
     ($ form).on "nested:fieldAdded", (event) ->
+      func(event.field)
       event.field.parents(fields_parent).find(show_hide_elm).show()
       event.field.find(':visible input:first').select()
+      app.standardInit()
 
   nestedFormFieldRemoved: (form, fields_parent, show_hide_elm, count_fields, trigger_blur_elements) ->
     ($ form).on "nested:fieldRemoved", (event) ->
@@ -91,4 +100,14 @@ window.app = {
     else
       ($ showhide_selector).hide()
 
+  typeahead_init: (selector, url, params_func= -> {}) ->
+    if selector.jquery
+      elms = selector
+    else
+      elms = $(selector)
+
+    ($ elms).each (index, elm) ->
+      ($ elm).typeahead
+        source: (q, p) -> $.get url, $.extend({ term: q }, params_func($ elm)), (data) -> p(data)
+        matcher: -> true
 }

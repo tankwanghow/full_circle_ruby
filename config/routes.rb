@@ -11,13 +11,17 @@ FullCircle::Application.routes.draw do
 
   resources :particular_types, only: [:new, :edit, :update, :create, :destroy]
   get 'particular_type/new_or_edit' => 'particular_types#new_or_edit'
+  get 'particular_type/typeahead_name' => 'particular_types#typeahead_name'
 
   resources :products, only: [:new, :edit, :update, :create, :destroy]
-  get 'product/get_unit' => 'products#get_unit'
+  get 'product/json' => 'products#json'
   get 'product/new_or_edit' => 'products#new_or_edit'
+  get 'product/typeahead_name1' => 'products#typeahead_name1'
 
   resources :users, only: [:new, :edit, :update, :create, :destroy]
   resources :accounts, only: [:new, :edit, :update, :create, :destroy]
+  get 'account/typeahead_name1' => 'accounts#typeahead_name1'
+
   resources :account_types, only: [:new, :edit, :update, :create, :destroy]
   resource :sessions, only: [:new, :create, :destroy]
   resources :addresses, only: [:new, :edit, :update, :create, :destroy]
@@ -26,6 +30,7 @@ FullCircle::Application.routes.draw do
     resources :journal_entries, only: [:index]
   end
   get 'payment/new_or_edit' => 'payments#new_or_edit'
+  get 'payment/typeahead_collector' => 'payments#typeahead_collector'
 
   resources :invoices, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]
@@ -34,6 +39,9 @@ FullCircle::Application.routes.draw do
 
   resources :packagings, only: [:new, :edit, :update, :create, :destroy]
   get 'packaging/new_or_edit' => 'packagings#new_or_edit'
+  get 'packaging/typeahead_product_package_name' => 'packagings#typeahead_product_package_name'
+  get 'packaging/typeahead_name' => 'packagings#typeahead_name'
+  get 'packaging/json' => 'packagings#json'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -12,7 +12,7 @@
       %tr.transaction
         %td.transaction_date= t.transaction_date
         %td.account= t.account.name1
-        %td.terms= t.terms_string
+        %td.terms= term_string t.terms
         %td.note= t.note
         %td.debit= t.debit.to_money
         %td.credit= t.credit.to_money

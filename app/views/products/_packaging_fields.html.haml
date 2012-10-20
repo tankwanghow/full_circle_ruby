@@ -1,9 +1,9 @@
 .row-fluid
-  .span8
-    = f.input :packaging_name, input_html: { class: 'span packaging', data: { source: Packaging.pluck(:name), provide: 'typeahead' } }, wrapper: :table_field
-  .span4
+  .span7
+    = f.input :packaging_name, input_html: { class: 'span packaging' }, wrapper: :table_field
+  .span3
     = f.input :quantity, input_html: { class: 'quantity span', type: :text }, wrapper: :table_field
-  .span4
+  .span3
     = f.input :cost, input_html: { class: 'cost span', type: :text }, wrapper: :table_field
   .span1
     = f.link_to_remove "X", class: "btn btn-danger"

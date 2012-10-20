@@ -33,7 +33,7 @@
             = link_to t.doc_type, url_for(controller: t.doc_type.pluralize.underscore, action: :edit, id: t.doc_id), class: 'btn btn-info'
           - else
             = t.doc_type
-        %td.terms= t.terms_string
+        %td.terms= term_string t.terms
         %td.note= t.note
         %td.debit= t.debit.to_money
         %td.credit= t.credit.to_money

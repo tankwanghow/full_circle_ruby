@@ -60,4 +60,12 @@ module ApplicationHelper
       link_to_audits_log(object) ].join(' ').html_safe
   end
 
+  def term_string term
+    return '-' unless term
+    return "#{term} days" if term >= 2
+    return "#{term} day" if term == 1
+    return "CASH" if term == 0
+    return "C.B.D." if term == -1
+  end
+
 end

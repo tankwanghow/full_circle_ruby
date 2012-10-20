@@ -1,5 +1,5 @@
 = render_flash
-= simple_form_for @packaging, html: { class: 'form-inline well' } do |f|
+= simple_nested_form_for @packaging, html: { class: 'form-inline well' } do |f|
   %legend
     New Packaging
   = render 'fields', f: f

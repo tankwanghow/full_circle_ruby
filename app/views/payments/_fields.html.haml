@@ -1,26 +1,26 @@
 .pay-to
   .row-fluid
     .span6
-      = f.input :pay_to_name1, input_html: { class: 'span', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, label: 'Pay To', autofocus: true
+      = f.input :pay_to_name1, input_html: { class: 'span' }, label: 'Pay To', autofocus: true
     .span6
-      = f.input :collector, input_html: { class: 'span', data: { source: Payment.order(:collector).uniq.pluck(:collector), provide: 'typeahead' } }
+      = f.input :collector, input_html: { class: 'span' }
     .span3
       = f.input :doc_date, as: :datepicker, input_html: { class: 'span21' }
   .row-fluid.nested
     = render_particulars_fields f, :pay_to_particulars
-    .offset17.span3
+    .offset18.span3
       = f.input_field :actual_debit_amount, type: :text, readOnly: true, class: 'span bold'
 .pay-from
   .row-fluid
     .span6
-      = f.input :pay_from_name1, input_html: { class: 'span', data: { source: Account.pluck(:name1), provide: 'typeahead' } }, label: 'Pay From'
+      = f.input :pay_from_name1, input_html: { class: 'span' }, label: 'Pay From'
     .span3
       = f.input :cheque_no, wrapper_html: { style: "display: #{f.object.pay_from_name1 == 'Cash in Hand' ? 'none' : ''}" }, input_html: { class: 'span' }
     .span3
       = f.input :cheque_date, as: :datepicker, wrapper_html: { style: "display: #{f.object.pay_from_name1 == 'Cash in Hand' ? 'none' : ''}" }, input_html: { class: 'span21' }
   .row-fluid.nested
     = render_particulars_fields f, :pay_from_particulars
-    .offset17.span3
+    .offset18.span3
       %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_pay_from_particulars', type: 'text', readonly: true }
     .offset10
       .span9
@@ -28,5 +28,5 @@
 :javascript
   $(document).ready(function() {
     payment.init();
-    $('.row-total').trigger('blur');
+    $('.row-total').trigger('change');
   });

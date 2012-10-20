@@ -7,9 +7,9 @@
     = f.input :unit, input_html: { class: 'span' }
 .row-fluid
   .span5
-    = f.input :sale_account_name1, label: 'Sale Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' }, class: 'span' }
+    = f.input :sale_account_name1, label: 'Sale Account', input_html: { class: 'span' }
   .span5
-    = f.input :purchase_account_name1, label: 'Purchase Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } , class: 'span' }
+    = f.input :purchase_account_name1, label: 'Purchase Account', input_html: { class: 'span' }
   .span5
     = f.input :category_list, input_html: { data: { tags: Product.tag_counts_on(:categories).map {|t| t.name } }, class: 'span' }
 #packages
@@ -22,10 +22,5 @@
 
 :javascript
   $(document).ready(function() {
-    $('#product_category_list').select2({
-      tags: $('#product_category_list').data('tags'),
-      closeOnSelect: true,
-      openOnEnter: false,
-      minimumInputLength: 2
-    });
+    product.init();
   });

@@ -14,9 +14,10 @@ class CreateProductsPackagings < ActiveRecord::Migration
     create_table :product_packagings do |t|
       t.belongs_to  :product
       t.belongs_to  :packaging
-      t.decimal     :quantity,     precision: 12,  scale: 4, default: 0, null: false
-      t.decimal     :cost,         precision: 12,  scale: 4, default: 0, null: false
-      t.integer     :lock_version, default: 0
+      t.decimal     :quantity,      precision: 12,  scale: 4, default: 0, null: false
+      t.decimal     :cost,          precision: 12,  scale: 4, default: 0, null: false
+      t.string      :pack_qty_name, null: false
+      t.integer     :lock_version,  default: 0
       t.timestamps
     end
 

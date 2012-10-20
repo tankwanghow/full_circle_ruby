@@ -1,6 +1,6 @@
 .row-fluid
   .span5
-    = f.input :particular_type_name, input_html: { class: 'span', data: { source: ParticularType.pluck(:name), provide: 'typeahead' } }, wrapper: :table_field
+    = f.input :particular_type_name, input_html: { class: 'span particular_type' }, wrapper: :table_field
   .span5
     = f.input :note, input_html: { class: 'span' }, wrapper: :table_field
   .span3
@@ -10,6 +10,6 @@
   .span3
     = f.input :unit_price, input_html: { class: 'unit-price numeric span', type: :text }, wrapper: :table_field
   .span3
-    = f.input :total, input_html: { class: 'numeric row-total span', name: 'row_total', type: :text, readOnly: true }, wrapper: :table_field
+    = f.input :total, input_html: { tabindex: -1, class: 'numeric row-total span', name: 'row_total', type: :text, readOnly: true }, wrapper: :table_field
   .span1
-    = f.link_to_remove "X", class: "btn btn-danger"
+    = f.link_to_remove "X", class: "btn btn-danger", tabindex: -1
