@@ -44,4 +44,17 @@ class PackagingsController < ApplicationController
     end
   end
 
+  def typeahead_product_package_name
+    render json: ProductPackaging.pack_qty_names(params[:product_id], params[:term])
+  end
+
+  def typeahead_name
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: Packaging.where('name ilike ?', term).limit(8).pluck(:name)
+  end
+
+  def json
+    render json: ProductPackaging.find_product_package(params[:product_id], params[:name])
+  end  
+
 end
