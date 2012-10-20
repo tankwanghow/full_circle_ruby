@@ -44,7 +44,13 @@ class ProductsController < ApplicationController
     end
   end
 
-  def get_unit
-    render text: Product.where(name1: params[:name1]).try(:first).try(:unit) || 'Not Found!'
+  def typeahead_name1
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: Product.where('name1 ilike ?', term).limit(8).pluck(:name1)
   end
+
+  def json
+    render json: Product.find_by_name1(params[:name1]) || 'Not Found!'
+  end
+
 end
