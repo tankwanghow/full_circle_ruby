@@ -44,5 +44,10 @@ class PaymentsController < ApplicationController
     end
   end
 
+  def typeahead_collector
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: Payment.uniq.where('collector ilike ?', term).limit(8).pluck(:collector)
+  end
+
 end
 
