@@ -13,13 +13,6 @@ class Transaction < ActiveRecord::Base
   scope :bigger,  ->(val) { where('transaction_date > ?', val.to_date) }
   scope :smaller,  ->(val) { where('transaction_date < ?', val.to_date) }
 
-  def terms_string
-    return '-' unless terms
-    return "#{t} days" if terms >= 2
-    return "C.O.D." if terms == 0
-    return "C.B.D." if terms == -1
-  end
-
   private
 
   def closed?
