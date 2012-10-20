@@ -1,0 +1,16 @@
+@import 'bootstrap/mixins';
+
+#details {
+  padding: 5px 5px 5px 20px;
+  background-color: #FAF7A9;
+  margin-bottom: 5px;
+  @include border-radius(5px);
+  border: 2px solid lightgray;
+}
+
+#particulars {
+  padding: 5px 5px 5px 20px;
+  background-color: #FFCFCF;
+  @include border-radius(5px);
+  border: 2px solid lightgray;
+}
