@@ -20,4 +20,8 @@ class ParticularType < ActiveRecord::Base
     }
   end
 
+  def name_nil_if_note
+    self.name == 'Note' ? nil : self.name
+  end
+
 end
