@@ -32,8 +32,8 @@ class PaymentPdf < Prawn::Document
   def draw_static_content
     repeat(:all) do
       draw_text CompanyName, size: 18, style: :bold, at: [4.mm, 131.mm]
-      draw_text @view.payment_header_address_pdf(CompanyAddress), size: 9, at: [4.mm, 127.mm]
-      draw_text @view.payment_header_contact_pdf(CompanyAddress), size: 9, at: [4.mm, 123.mm]
+      draw_text @view.header_address_pdf(CompanyAddress), size: 9, at: [4.mm, 127.mm]
+      draw_text @view.header_contact_pdf(CompanyAddress), size: 9, at: [4.mm, 123.mm]
       draw_text "PAYMENT VOUCHER", style: :bold, size: 12, at: [155.mm, 124.mm]
       stroke_rounded_rectangle [4.mm, 119.mm], 202.mm, 35.mm, 3.mm
       draw_text "TO ACCOUNT", size: 8, at: [6.mm, 115.mm]
@@ -85,9 +85,10 @@ class PaymentPdf < Prawn::Document
     @detail_y = @detail_y_start_at
 
     @payment.pay_to_particulars.each do |t|
-      str = [t.particular_type.name, "-", t.note.strip == "-" ? nil : t.note,
-             t.quantity, t.unit.strip == "-" ? nil : t.unit, "X", t.unit_price.to_money.format].compact.join(" ")
-
+      part_note = [t.particular_type.name_nil_if_note, t.note]
+      qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true) + t.unit
+      price = @view.number_with_precision(t.unit_price, precision: 4)
+      str = [part_note, qty, "X", price].compact.join(" ")
       bounding_box [8.mm, @detail_y], height: @detail_height, width: 140.mm do
         text_box str, overflow: :shrink_to_fit, valign: :center
       end
