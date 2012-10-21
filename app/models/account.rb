@@ -30,9 +30,9 @@ class Account < ActiveRecord::Base
   def statement start_date, end_date
     bal = balance_before(start_date)
     if bal > 0
-      balance = Transaction.new(doc_type: 'BF', note: 'Balance Brought Foward', debit: bal, transaction_date: start_date.to_date.yesterday)
+      balance = Transaction.new(doc_type: 'BF', note: 'Balance Brought Foward', amount: bal, transaction_date: start_date.to_date.yesterday)
     else
-      balance = Transaction.new(doc_type: 'BF',note: 'Balance Brought Foward', credit: bal.abs, transaction_date: start_date.to_date.yesterday)
+      balance = Transaction.new(doc_type: 'BF',note: 'Balance Brought Foward', amount: -bal.abs, transaction_date: start_date.to_date.yesterday)
     end
     ([balance] << transactions.bigger_eq(start_date).smaller_eq(end_date).order("transaction_date")).flatten
   end
@@ -40,18 +40,18 @@ class Account < ActiveRecord::Base
   def balance_at date
     BigDecimal(
       if bf_balance?
-        transactions.smaller_eq(date).sum("debit - credit")
+        transactions.smaller_eq(date).sum(:amount)
     else
-      transactions.smaller(prev_close_date(date)).bigger_eq(date).sum("debit - credit")
+      transactions.smaller(prev_close_date(date)).bigger_eq(date).sum(:amount)
     end)
   end
 
   def balance_before date
     BigDecimal(
       if bf_balance?
-        transactions.smaller(date).sum("debit - credit")
+        transactions.smaller(date).sum(:amount)
     else
-      transactions.bigger(prev_close_date(date)).smaller(date).sum("debit - credit")
+      transactions.bigger(prev_close_date(date)).smaller(date).sum(:amount)
     end)
   end
 

@@ -6,8 +6,7 @@ class CreateTransactions < ActiveRecord::Migration
       t.belongs_to :account,        null: false
       t.integer    :terms
       t.string     :note,           null: false
-      t.decimal    :debit ,         default: 0, precision: 12, scale: 2
-      t.decimal    :credit,         default: 0, precision:  12, scale: 2
+      t.decimal    :amount,         default: 0, precision: 12, scale: 2
       t.boolean    :closed,         null: false, default: false
       t.boolean    :reconciled,     null: false, default: false
       t.belongs_to :user,           null: false

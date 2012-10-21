@@ -49,8 +49,7 @@ private
     Transaction.new({
       doc: invoice, account: product.sale_account, transaction_date: invoice.doc_date, 
       note: invoice.customer.name1 + ' - ' + product.name1,
-      debit: 0,
-      credit: total,
+      amount: -total,
       user: User.current
     })
   end

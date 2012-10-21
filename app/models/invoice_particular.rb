@@ -18,9 +18,9 @@ private
 
   def debit_or_credit_amount total_flag
     if total_flag
-      { debit: total.abs, credit: 0 }
+      { amount: total.abs }
     else
-      { debit: 0, credit: total.abs }
+      { amount: -total.abs }
     end
   end
 

@@ -24,7 +24,7 @@
       %th.span3 Credit
   %tbody 
     - for t in @transactions
-      - total += t.debit - t.credit
+      - total += t.amount
       %tr.transaction
         %td.transaction_date= t.transaction_date
         %td.doc_type
@@ -35,8 +35,8 @@
             = t.doc_type
         %td.terms= term_string t.terms
         %td.note= t.note
-        %td.debit= t.debit.to_money
-        %td.credit= t.credit.to_money
+        %td.debit= t.amount.to_money.format if t.amount > 0
+        %td.credit= t.amount.abs.to_money.format if t.amount < 0
     - if @transactions.length == 0
       %tr
         %td{colspan: 6}

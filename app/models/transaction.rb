@@ -2,8 +2,8 @@ class Transaction < ActiveRecord::Base
   belongs_to :doc, polymorphic: true
   belongs_to :account
   belongs_to :user
-  validates_numericality_of :debit, :credit
-  validates_presence_of :transaction_date, :account, :note, :debit, :credit, :user, :doc
+  validates_numericality_of :amount
+  validates_presence_of :transaction_date, :account, :note, :amount, :user, :doc
   
   before_destroy :closed?
 

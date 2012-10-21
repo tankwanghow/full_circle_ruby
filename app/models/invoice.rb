@@ -14,6 +14,8 @@ class Invoice < ActiveRecord::Base
   include ValidateBelongsTo
   validate_belongs_to :customer, :name1
 
+  include ValidateTransactionsBalance
+
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :invoice_amount,
              content: [:customer_name1, :credit_terms, :invoice_details_string, :invoice_amount, 
@@ -50,6 +52,7 @@ private
     build_customer_transaction
     build_details_transactions
     build_particulars_transactions
+    validates_transactions_balance
   end
 
   def build_details_transactions
@@ -67,7 +70,7 @@ private
   end
 
   def product_summary
-    invoice_details.map { |t| t.product.name1 }.join(', ').truncate(30)
+    invoice_details.map { |t| t.product.name1 }.join(', ').truncate(70)
   end
 
   def build_customer_transaction
@@ -76,8 +79,7 @@ private
       transaction_date: doc_date,
       account: customer,
       note: product_summary,
-      debit: invoice_amount,
-      credit: 0,
+      amount: invoice_amount,
       user: User.current
     )
   end

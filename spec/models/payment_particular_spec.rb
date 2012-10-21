@@ -29,8 +29,8 @@ describe PaymentParticular do
       let(:particular) { build :payment_pay_from_particular, particular_type: particular_type, doc: payment, unit_price: -12 }
       it "should credit particular_type account & debit pay_from account" do
         particular.transactions.to_yaml.should == [
-          Transaction.new(particular_type_transaction.merge(debit: 0, credit: particular.total.abs)),
-          Transaction.new(pay_from_transaction.merge(debit: particular.total.abs, credit: 0)) 
+          Transaction.new(particular_type_transaction.merge(amount: -particular.total.abs)),
+          Transaction.new(pay_from_transaction.merge(amount: particular.total.abs)) 
         ].to_yaml
       end
     end
@@ -39,8 +39,8 @@ describe PaymentParticular do
       let(:particular) { build :payment_pay_from_particular, particular_type: particular_type, doc: payment, unit_price: 2 }
       it "should debit particular_type account & credit pay_from account" do
         particular.transactions.to_yaml.should == [
-          Transaction.new(particular_type_transaction.merge(debit: particular.total.abs, credit: 0)),
-          Transaction.new(pay_from_transaction.merge(debit: 0, credit: particular.total.abs))
+          Transaction.new(particular_type_transaction.merge(amount: particular.total.abs)),
+          Transaction.new(pay_from_transaction.merge(amount: -particular.total.abs))
         ].to_yaml
       end      
     end
@@ -61,8 +61,8 @@ describe PaymentParticular do
       let(:particular) { build :payment_pay_to_particular, particular_type: particular_type, doc: payment, unit_price: -12 }
       it "should credit particular_type account & debit pay_to account" do
         particular.transactions.to_yaml.should == [
-          Transaction.new(particular_type_transaction.merge(debit: 0, credit: particular.total.abs)),
-          Transaction.new(pay_to_transaction.merge(debit: particular.total.abs, credit: 0))
+          Transaction.new(particular_type_transaction.merge(amount: -particular.total.abs)),
+          Transaction.new(pay_to_transaction.merge(amount: particulars.total.abs))
         ].to_yaml
       end
     end
@@ -71,8 +71,8 @@ describe PaymentParticular do
       let(:particular) { build :payment_pay_to_particular, particular_type: particular_type, doc: payment, unit_price: 2 }
       it "should credit particular_type account & credit pay_to account" do
         particular.transactions.to_yaml.should == [ 
-          Transaction.new(particular_type_transaction.merge(debit: particular.total.abs, credit: 0)),
-          Transaction.new(pay_to_transaction.merge(debit: 0, credit: particular.total.abs))
+          Transaction.new(particular_type_transaction.merge(amount: particulars.total.abs)),
+          Transaction.new(pay_to_transaction.merge(amount: -particular.total.abs))
         ].to_yaml
       end      
     end

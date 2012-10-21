@@ -13,6 +13,8 @@ class Payment < ActiveRecord::Base
 
   before_save :build_transactions
 
+  include ValidateTransactionsBalance
+
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :actual_debit_amount,
              content: [:pay_to_name1, :collector, :pay_to_particulars_string, :actual_debit_amount,
@@ -52,6 +54,7 @@ private
     pay_to_transaction
     pay_from_transaction
     build_particulars_transactions
+    validates_transactions_balance
   end
 
   def build_particulars_transactions
@@ -70,9 +73,8 @@ private
       doc: self,
       transaction_date: doc_date,
       account: pay_from,
-      note: [pay_to.name1, collector].join(' - '),
-      debit: 0,
-      credit: actual_debit_amount,
+      note: 'To ' + [pay_to.name1, collector].join(' by '),
+      amount: actual_debit_amount,
       user: User.current
     )
   end
@@ -82,9 +84,8 @@ private
       doc: self,
       transaction_date: doc_date,
       account: pay_to,
-      note: [pay_from.name1, collector].join(' - '),
-      debit: actual_debit_amount,
-      credit: 0,
+      note: 'From ' + [pay_from.name1, collector].join(' by '),
+      credit: -actual_debit_amount,
       user: User.current
     )
   end

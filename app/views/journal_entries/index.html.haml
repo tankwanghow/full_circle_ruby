@@ -14,8 +14,8 @@
         %td.account= t.account.name1
         %td.terms= term_string t.terms
         %td.note= t.note
-        %td.debit= t.debit.to_money
-        %td.credit= t.credit.to_money
+        %td.debit= t.amount.to_money.format if t.amount > 0
+        %td.credit= t.amount.abs.to_money.format if t.amount < 0
     - if @journal_entries.length == 0
       %tr
         %td{colspan: 6}
