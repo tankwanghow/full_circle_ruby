@@ -42,15 +42,16 @@ group :test do
   gem 'ffaker'
   gem 'shoulda-matchers'
   gem 'database_cleaner'
-  gem 'guard-rspec'
+  # gem 'guard-rspec'
+  gem 'capybara'
+  # gem 'capybara-webkit'
+  # gem 'jasminerice'
+  # gem 'guard-jasmine'
+  # gem 'launchy'
+
 end
 
 group :development, :test do
-  gem 'capybara'
-  gem 'capybara-webkit'
-  gem 'jasminerice'
-  gem 'guard-jasmine'
-  gem 'launchy'
   gem 'pry-rails'
   gem 'pry-debugger'
 end
