@@ -1,7 +1,7 @@
 = render_flash
 = simple_nested_form_for @invoice, html: { class: 'form-inline well', id: 'invoice' } do |f|
   %legend
-    = "Invoice ##{@invoice.id}"
+    = "Invoice #" + ("%07d" % @invoice.id)
   = render 'fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
