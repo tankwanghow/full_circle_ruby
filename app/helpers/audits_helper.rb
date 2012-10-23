@@ -33,5 +33,9 @@ module AuditsHelper
       content_tag :div, time_ago_in_words(log.created_at, true) + " ago", class: "created_at"
     end
   end
+
+  def link_to_audits_log(object)
+    link_to "Audits Log", audit_logs_path(klass: object.class.name, id: object.id), class: 'btn btn-info' if current_user.is_admin?
+  end
 end
 

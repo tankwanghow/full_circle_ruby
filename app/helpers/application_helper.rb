@@ -43,12 +43,8 @@ module ApplicationHelper
 
   def link_to_print_buttons object
     url_options = { controller: object.class.name.underscore.pluralize, action: 'show', format: 'pdf', id: object.id }
-    link_to("Print with Form", url_for(url_options), class: 'btn btn-success', target: '_blank', data: { 'skip-pjax' => true }) + ' ' +
+    link_to("Templated Print", url_for(url_options), class: 'btn btn-success', target: '_blank', data: { 'skip-pjax' => true }) + ' ' +
     link_to("Print", url_for(url_options.merge(static_content: true)), class: 'btn btn-inverse', target: '_blank', data: { 'skip-pjax' => true })
-  end
-
-  def link_to_audits_log(object)
-    link_to "Show Audits Log", audit_logs_path(klass: object.class.name, id: object.id), class: 'btn btn-info' if current_user.is_admin?
   end
 
   def link_to_edit_action_buttons object, journal_url
@@ -56,7 +52,7 @@ module ApplicationHelper
       link_to('New', new_polymorphic_path(object.class), class: 'btn btn-info'),
       link_to_index(object.class),
       link_to_print_buttons(object),
-      link_to('Journal Entries', journal_url, class: 'btn btn-info'),
+      link_to('Journals', journal_url, class: 'btn btn-info'),
       link_to_audits_log(object) ].join(' ').html_safe
   end
 
