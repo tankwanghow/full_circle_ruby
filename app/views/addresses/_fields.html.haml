@@ -1,4 +1,5 @@
-= hidden_field_tag :account_id, f.object.addressable.id
+= f.hidden_field :addressable_id
+= f.hidden_field :addressable_type
 = f.input :address_type, label: 'Type', collection: ['Mailing', 'Shipping', 'Both'], include_blank: false, autofocus: true
 .row-fluid
   .span7

@@ -6,3 +6,4 @@
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
     = link_to 'Cancel', edit_address_path(@address), class: 'btn btn-warning'
+    = link_to 'Back', edit_polymorphic_path(@address.addressable), class: 'btn btn-info'

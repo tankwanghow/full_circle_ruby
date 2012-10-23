@@ -42,8 +42,8 @@ class AddressesController < ApplicationController
 private
 
   def load_parent
-    if params[:account_id]
-      @parent = Account.find(params[:account_id])
+    if params[:address][:addressable_id] and params[:address][:addressable_type]
+      @parent = params[:address][:addressable_type].constantize.find(params[:address][:addressable_id])
     end
   end
 end
