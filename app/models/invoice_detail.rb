@@ -36,7 +36,7 @@ class InvoiceDetail < ActiveRecord::Base
       if pid
         self.product_packaging_id = pid
       else
-        error.add 'packaging_name', 'not found!'
+        errors.add 'packaging_name', 'not found!'
       end
     else
       self.product_packaging_id = nil
