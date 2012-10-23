@@ -1,7 +1,6 @@
 = simple_form_for @user, html: { class: 'form-horizontal span16 offset2 well' } do |f|
-  %legend
-    %h2= CompanyName
-    User Registration
+  %legend= CompanyName
+  %h5 User Registration
   = render_flash
   = f.input :username
   = f.input :name

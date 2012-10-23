@@ -1,10 +1,10 @@
 .row-fluid
   .span6
     = f.input :customer_name1, input_html: { class: 'span' }, label: 'Customer', autofocus: true
-  .span2
+  .span3
     = f.input :credit_terms, label: 'Terms(days)', input_html: { type: :text, class: 'span' }
   .span3
-    = f.input :doc_date, as: :datepicker, input_html: { class: 'span21' }, label: 'Date'
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date'
 #details
   .row-fluid.nested
     = render_invoice_details_fields f, :invoice_details

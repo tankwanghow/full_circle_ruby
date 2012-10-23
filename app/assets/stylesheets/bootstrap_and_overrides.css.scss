@@ -8,9 +8,33 @@ $gridRowWidth: ($gridColumns * $gridColumnWidth) + ($gridGutterWidth * ($gridCol
 
 @import "bootstrap";
 
-body { padding-top: 100px; }
+body { 
+  padding-top: 100px; 
+  // line-height: 10px;
+}
 
-//@import "bootstrap-responsive";
+.form-actions {
+  margin: 0px;
+  border-top: 0px;
+  padding: 10px;
+}
+
+legend {
+  margin-bottom: 0px;
+  font-weight: bold;
+  border-bottom: 0px;
+  font-size: 21px;
+  a { font-weight: normal; font-size: 12px; }
+}
+
+.well {
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.control-group {
+  margin-bottom: 2px;
+}
 
 .dropdown-menu {
   margin-top: 0px;
@@ -22,23 +46,9 @@ ul.nav li a#nav-transactions { color: red; }
   text-align: center;
 }
 
-.show-hide .row-fluid .table-header {
-  min-height: 0px;
+.show-hide .table-header {
   text-align: center;
-}
-
-.row-fluid.nested .fields {
-  display: inline-block;
-}
-
-.row-fluid.nested .table-field {
-  margin-bottom: 0px;
-  line-height: 0px;
-}
-
-.row-fluid.nested .table-field.error {
-  margin-bottom: 0px;
-  line-height: 18px;
+  min-height: 10px;
 }
 
 body#center {

@@ -1,7 +1,6 @@
 = simple_form_for :session, url: sessions_path, html: { class: 'form-horizontal span16 offset2 well' } do |f|
-  %legend
-    %h2= CompanyName
-    Login
+  %legend= CompanyName
+  %h5 Login
   = render_flash
   = f.error_messages
   = f.input :username, autofocus: true
