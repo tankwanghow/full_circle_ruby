@@ -37,7 +37,7 @@ class PaymentsController < ApplicationController
   end
 
   def new_or_edit
-    if Payment.first
+    if Payment.last
       redirect_to edit_payment_path(Payment.last)
     else
       redirect_to new_payment_path

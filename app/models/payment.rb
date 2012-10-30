@@ -3,6 +3,7 @@ class Payment < ActiveRecord::Base
   belongs_to :pay_from, class_name: "Account", foreign_key: "pay_from_id"
   has_many :pay_to_particulars, as: :doc, class_name: "PaymentParticular", conditions: { flag: "pay_to" }
   has_many :pay_from_particulars, as: :doc, class_name: "PaymentParticular", conditions: { flag: "pay_from" }
+  has_many :matchers, class_name: 'TransactionMatcher', as: :doc
   has_many :transactions, as: :doc
 
   validates_presence_of :collector, :pay_to_name1, :pay_from_name1, :doc_date
@@ -10,6 +11,7 @@ class Payment < ActiveRecord::Base
   validates_numericality_of :actual_debit_amount, greater_than: 0
   accepts_nested_attributes_for :pay_to_particulars, allow_destroy: true
   accepts_nested_attributes_for :pay_from_particulars, allow_destroy: true
+  accepts_nested_attributes_for :matchers, allow_destroy: true, reject_if: :dont_process
 
   before_save :build_transactions
 
@@ -27,6 +29,7 @@ class Payment < ActiveRecord::Base
       collector: r.collector,
       pay_to_particulars: r.pay_to_particulars_string,
       actual_debit_amount: r.actual_debit_amount.to_money.format,
+      matchers: r.matchers_string,
       pay_from: r.pay_from_name1,
       cheque_no: r.cheque_no,
       cheque_date: r.cheque_date,
@@ -47,7 +50,15 @@ class Payment < ActiveRecord::Base
     pay_from_particulars.map{ |t| t.simple_audit_string }.join(' ')
   end
 
+  def matchers_string
+    matchers.map{ |t| t.simple_audit_string }.join(' ')
+  end
+
 private
+
+  def dont_process(attr)
+    return true if attr["id"].blank? && attr["amount"].to_f == 0
+  end
 
   def build_transactions
     transactions.destroy_all
@@ -85,7 +96,7 @@ private
       transaction_date: doc_date,
       account: pay_to,
       note: 'From ' + [pay_from.name1, collector].join(' by '),
-      credit: -actual_debit_amount,
+      amount: -actual_debit_amount,
       user: User.current
     )
   end

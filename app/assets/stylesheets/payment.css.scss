@@ -1,6 +1,6 @@
 @import 'bootstrap/mixins';
 
-.pay-to {
+#pay-to {
   padding: 5px 5px 5px 20px;
   background-color: #FAF7A9;
   margin-bottom: 5px;
@@ -8,9 +8,19 @@
   border: 2px solid lightgray;
 }
 
-.pay-from {
+#pay-from {
   padding: 5px 5px 5px 20px;
   background-color: #FFCFCF;
   @include border-radius(5px);
   border: 2px solid lightgray;
+}
+
+#matcher-query {
+  padding: 10px;
+  background-color: #FFF944;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  @include border-radius(5px);
+  border: 2px solid lightgray;
+  text-align: center;
 }

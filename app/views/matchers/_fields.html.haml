@@ -1,0 +1,19 @@
+#matcher-query.span17
+  = hidden_field_tag :matcher_account_element, account_element
+  = hidden_field_tag :matcher_doc_type, f.object.class
+  = hidden_field_tag :matcher_doc_id, f.object.id
+  = text_field_tag :matcher_from, params[:matcher_from] || Date.today.beginning_of_month, {class: 'datepicker span5', placeholder: 'start date...'}
+  = text_field_tag :matcher_to, params[:matcher_to] || Date.today, {class: 'datepicker span5', placeholder: 'end date...'}
+  = link_to 'Matching Transactions Query', '#', class: 'btn', id: 'matcher-query-btn'
+.row-fluid.nested
+  .span23
+    .bold.table-header{ class: 'span2' } Date
+    .bold.table-header{ class: 'span3' } Doc Type
+    .bold.table-header{ class: 'span2' } Term
+    .bold.table-header{ class: 'span3' } Amount
+    .bold.table-header{ class: 'span3' } Matched
+    .bold.table-header{ class: 'span3' } Matching
+    .bold.table-header{ class: 'span3' } Balance
+  #matcher-data.span23
+    = f.fields_for :matchers do |builder|
+      = render 'matchers/object_field', f: builder

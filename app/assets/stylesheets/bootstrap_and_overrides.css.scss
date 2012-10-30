@@ -1,22 +1,15 @@
 $baseFontSize: 13px;
 $gridColumns: 24;
-$gridColumnWidth: 35px;
-$gridGutterWidth: 5px;
-$gridColumnWidthLarge: 35px;
-$gridGutterWidthLarge: 5px;
+$gridColumnWidth: 38px;
+$gridGutterWidth: 2px;
+$gridColumnWidthLarge: 38px;
+$gridGutterWidthLarge: 2px;
 $gridRowWidth: ($gridColumns * $gridColumnWidth) + ($gridGutterWidth * ($gridColumns - 1));
 
 @import "bootstrap";
 
 body { 
   padding-top: 100px; 
-  // line-height: 10px;
-}
-
-.form-actions {
-  margin: 0px;
-  border-top: 0px;
-  padding: 10px;
 }
 
 legend {
@@ -24,7 +17,6 @@ legend {
   font-weight: bold;
   border-bottom: 0px;
   font-size: 21px;
-  a { font-weight: normal; font-size: 12px; }
 }
 
 .well {
@@ -46,7 +38,7 @@ ul.nav li a#nav-transactions { color: red; }
   text-align: center;
 }
 
-.show-hide .table-header {
+.table-header {
   text-align: center;
   min-height: 10px;
 }

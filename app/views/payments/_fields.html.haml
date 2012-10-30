@@ -1,16 +1,18 @@
-.pay-to
+#pay-to
   .row-fluid
-    .span6
+    .span5
       = f.input :pay_to_name1, input_html: { class: 'span' }, label: 'Pay To', autofocus: true
-    .span6
+    .span5
       = f.input :collector, input_html: { class: 'span' }
     .span3
       = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }
-  .row-fluid.nested
+    .span4
+      = f.input :actual_debit_amount, input_html: { class: 'bold span', type: :text }, label_html: { class: 'bold' }, readonly: true
+  .row-fluid#pay-to-particulars
     = render_particulars_fields f, :pay_to_particulars
-    .offset18.span3
-      = f.input_field :actual_debit_amount, type: :text, readOnly: true, class: 'span bold'
-.pay-from
+  .row-fluid
+    = render 'matchers/fields', account_element: '#payment_pay_to_name1', f: f
+#pay-from
   .row-fluid
     .span6
       = f.input :pay_from_name1, input_html: { class: 'span' }, label: 'Pay From'
@@ -20,7 +22,7 @@
       = f.input :cheque_date, as: :datepicker, wrapper_html: { style: "display: #{f.object.pay_from_name1 == 'Cash in Hand' ? 'none' : ''}" }, input_html: { class: 'span21' }
     .span4
       = f.input :actual_credit_amount, input_html: { class: 'bold span', type: :text }, label_html: { class: 'bold' }, readonly: true
-  .row-fluid.nested
+  .row-fluid#pay-from-particulars
     = render_particulars_fields f, :pay_from_particulars
     .offset18.span3
       %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_pay_from_particulars', type: 'text', readonly: true }
@@ -28,5 +30,6 @@
 :javascript
   $(document).ready(function() {
     payment.init();
-    $('.row-total').trigger('change');
+    $('.matching').change();
+    $('.row-total').change();
   });

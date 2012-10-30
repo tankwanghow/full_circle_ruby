@@ -5,6 +5,7 @@ FullCircle::Application.routes.draw do
   match 'signup' => 'users#new', as: :signup
   match 'search' => 'main#index', as: :search
   match 'transactions' => 'transactions#index', as: :transactions
+  match 'matchers' => 'matchers#index'
   
   root to: 'main#index'
   resources :audit_logs, only: :index
