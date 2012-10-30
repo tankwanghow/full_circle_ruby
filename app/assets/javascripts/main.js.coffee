@@ -83,13 +83,13 @@ window.app = {
   nestedFormFieldAdded: (form, fields_parent, show_hide_elm, func) ->
     ($ form).on "nested:fieldAdded", (event) ->
       func(event.field)
-      event.field.parents(fields_parent).find(show_hide_elm).show()
+      event.field.closest(fields_parent).find(show_hide_elm).show()
       event.field.find(':visible input:first').select()
       app.standardInit()
 
   nestedFormFieldRemoved: (form, fields_parent, show_hide_elm, count_fields, trigger_blur_elements) ->
     ($ form).on "nested:fieldRemoved", (event) ->
-      row_parent = event.field.parents(fields_parent)
+      row_parent = event.field.closest(fields_parent)
       ($ trigger_blur_elements).trigger 'change'
       if row_parent.find(count_fields).size() is 0
         row_parent.find(show_hide_elm).hide()
