@@ -69,11 +69,11 @@ private
   end
 
   def build_particulars_transactions
-    pay_to_particulars.each do |t|
+    pay_to_particulars.select { |t| !t.marked_for_destruction? }.each do |t|
       t.doc = self
       transactions << t.transactions
     end
-    pay_from_particulars.each do |t|
+    pay_from_particulars.select { |t| !t.marked_for_destruction? }.each do |t|
       t.doc = self
       transactions << t.transactions
     end
@@ -85,7 +85,7 @@ private
       transaction_date: doc_date,
       account: pay_from,
       note: 'To ' + [pay_to.name1, collector].join(' by '),
-      amount: actual_debit_amount,
+      amount: -actual_debit_amount,
       user: User.current
     )
   end
@@ -96,7 +96,7 @@ private
       transaction_date: doc_date,
       account: pay_to,
       note: 'From ' + [pay_from.name1, collector].join(' by '),
-      amount: -actual_debit_amount,
+      amount: actual_debit_amount,
       user: User.current
     )
   end

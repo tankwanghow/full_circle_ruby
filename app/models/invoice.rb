@@ -15,7 +15,7 @@ class Invoice < ActiveRecord::Base
   validate_belongs_to :customer, :name1
 
   include ValidateTransactionsBalance
-
+  include NestedAttributesLib
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :invoice_amount,
              content: [:customer_name1, :credit_terms, :invoice_details_string, :invoice_amount, 
@@ -26,9 +26,9 @@ class Invoice < ActiveRecord::Base
       doc_date: r.doc_date.to_s,
       customer: r.customer_name1,
       credit_terms: r.credit_terms,
-      invoice_details: r.invoice_details_string,
+      invoice_details: invoice_details_string,
       note: r.note,
-      particulars: r.particulars_string
+      particulars: particulars_string
      }
   end
 
@@ -56,27 +56,28 @@ private
   end
 
   def build_details_transactions
-    invoice_details.select { |t| t.total > 0 }.each do |t|
+    invoice_details.select { |t| t.total > 0 and !t.marked_for_destruction }.each do |t|
       t.invoice = self
       transactions << t.transactions
     end
   end
 
   def build_particulars_transactions
-    particulars.each do |t|
+    particulars.select{ |t| !t.marked_for_destruction }.each do |t|
       t.doc = self
       transactions << t.transactions
     end
   end
 
   def product_summary
-    invoice_details.map { |t| t.product.name1 }.join(', ').truncate(70)
+    invoice_details.select{ |t| !t.marked_for_destruction }.map { |t| t.product.name1 }.join(', ').truncate(70)
   end
 
   def build_customer_transaction
     transactions.build(
       doc: self,
       transaction_date: doc_date,
+      terms: credit_terms,
       account: customer,
       note: product_summary,
       amount: invoice_amount,
