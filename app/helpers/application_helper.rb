@@ -57,7 +57,7 @@ module ApplicationHelper
   end
 
   def term_string term
-    return '-' unless term
+    return nil unless term
     return "#{term} days" if term >= 2
     return "#{term} day" if term == 1
     return "CASH" if term == 0
