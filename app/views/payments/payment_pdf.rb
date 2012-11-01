@@ -83,16 +83,42 @@ class PaymentPdf < Prawn::Document
 
   def draw_detail
     @detail_y = @detail_y_start_at
+    draw_pay_to_particulars
+    draw_matchers
+  end
 
+  def draw_matchers
+    @payment.matchers.each do |t|
+      particular = ['Payment for', t.transaction.doc_type, "%07d" % t.transaction.doc_id, "(#{t.transaction.transaction_date})"]
+      particular << "Due at: #{t.transaction.transaction_date + t.transaction.terms.days}"
+      bounding_box [8.mm, @detail_y], height: @detail_height, width: 140.mm do
+        text_box particular.compact.join(' '), overflow: :shrink_to_fit, valign: :center
+      end
+
+      bounding_box [155.mm, @detail_y], height: @detail_height, width: 50.mm do
+        text_box t.amount.to_money.format, overflow: :shrink_to_fit, align: :center, valign: :center
+      end
+
+      @detail_y = @detail_y - @detail_height
+
+      if @detail_y <= @page_end_at
+        start_new_page_for_current_payment
+        @detail_y = @detail_y_start_at
+      end
+    end
+  end
+
+  def draw_pay_to_particulars
     @payment.pay_to_particulars.each do |t|
       part_note = [t.particular_type.name_nil_if_note, t.note]
       qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true) + t.unit
       price = @view.number_with_precision(t.unit_price, precision: 4)
       str = [part_note, qty, "X", price].compact.join(" ")
+      
       bounding_box [8.mm, @detail_y], height: @detail_height, width: 140.mm do
         text_box str, overflow: :shrink_to_fit, valign: :center
       end
-
+      
       bounding_box [155.mm, @detail_y], height: @detail_height, width: 50.mm do
         text_box (t.quantity * t.unit_price).to_money.format, overflow: :shrink_to_fit, align: :center, valign: :center
       end
