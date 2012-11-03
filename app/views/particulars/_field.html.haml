@@ -1,6 +1,9 @@
 .row-fluid
   .span5
-    = f.input :particular_type_name, input_html: { class: 'span particular_type' }, wrapper: :table_field
+    - if !with_type
+      = f.input :particular_type_name, input_html: { tabindex: -1, class: 'span particular_type', readOnly: true, value: 'Note' }, wrapper: :table_field
+    - else
+      = f.input :particular_type_name, input_html: { class: 'span particular_type' }, wrapper: :table_field
   .span5
     = f.input :note, input_html: { class: 'span' }, wrapper: :table_field
   .span3
