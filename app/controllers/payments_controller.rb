@@ -18,7 +18,7 @@ class PaymentsController < ApplicationController
       @payment = Payment.not_matched.find(params[:id])
       @static_content = params[:static_content]
     rescue ActiveRecord::RecordNotFound 
-      redirect_to matching_payment_path
+      redirect_to matching_payment_path(params)
     end
   end
 
@@ -26,25 +26,21 @@ class PaymentsController < ApplicationController
     @payment = Payment.new(params[:payment])
     if @payment.save
       flash[:success] = "Payment '##{@payment.id}' created successfully."
-      redirect_to edit_payment_path(@payment)
+      redirect_to is_matching? ? edit_matching_payment_path(@payment) : edit_payment_path(@payment)
     else
       flash.now[:error] = "Failed to create Payment."
-      render :new
+      render template: payment_template_path + 'new'
     end
   end
 
   def update
-    begin
-      @payment = Payment.not_matched.find(params[:id])
-      if @payment.update_attributes(params[:payment])
-        flash[:success] = "Payment '##{@payment.id}' updated successfully."
-        redirect_to edit_payment_path(@payment)
-      else
-        flash.now[:error] = "Failed to update Payment."
-        render :edit
-      end
-    rescue ActiveRecord::RecordNotFound 
-      redirect_to edit_matching_payment_path
+    @payment = Payment.find(params[:id])
+    if @payment.update_attributes(params[:payment])
+      flash[:success] = "Payment '##{@payment.id}' updated successfully."
+      redirect_to is_matching? ? edit_matching_payment_path(@payment) : edit_payment_path(@payment)
+    else
+      flash.now[:error] = "Failed to update Payment."
+      render template: payment_template_path + 'edit'
     end
   end
 
@@ -61,5 +57,14 @@ class PaymentsController < ApplicationController
     render json: Payment.uniq.where('collector ilike ?', term).limit(8).pluck(:collector)
   end
 
+private
+
+  def is_matching?
+    params[:matcher_account_element]
+  end
+
+  def payment_template_path
+    is_matching? ? 'matching_payments/' : 'payments/'
+  end
 end
 
