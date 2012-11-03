@@ -2,8 +2,8 @@
 = simple_nested_form_for @payment, html: { class: 'form-inline well', id: 'payment_form' } do |f|
   %legend
     New Matching Payment
-  = render 'fields', f: f
+  = render 'matching_payments/fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
-    = link_to 'Cancel', Payment.last ? edit_payment_path(Payment.last) : root_path, class: 'btn btn-warning'
+    = link_to 'Cancel', Payment.matched.last ? edit_payment_path(Payment.matched.last) : root_path, class: 'btn btn-warning'
 
