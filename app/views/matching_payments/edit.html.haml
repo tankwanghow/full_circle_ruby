@@ -2,7 +2,7 @@
 = simple_nested_form_for @payment, html: { class: 'form-inline well', id: 'payment_form' } do |f|
   %legend
     = "Matching Payment #" + ("%07d" % @payment.id)
-  = render 'fields', f: f
+  = render 'matching_payments/fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
     = link_to('Cancel', edit_polymorphic_path(@payment), class: 'btn btn-warning')
