@@ -1,0 +1,13 @@
+= render_flash
+= simple_nested_form_for @payment, html: { class: 'form-inline well', id: 'payment_form' } do |f|
+  %legend
+    = "Matching Payment #" + ("%07d" % @payment.id)
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to('Cancel', edit_polymorphic_path(@payment), class: 'btn btn-warning')
+    = link_to('New', new_matching_payment_path, class: 'btn btn-info')
+    = link_to_index(@payment.class)
+    = link_to_print_buttons(@payment)
+    = link_to('Journals', payment_journal_entries_path(@payment), class: 'btn btn-info')
+    = link_to_audits_log(@payment)

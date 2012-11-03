@@ -1,7 +1,13 @@
 class PaymentParticular < Particular
 
   def transactions
-    [ particular_type_transaction, account_transaction ]
+    ptt = particular_type_transaction
+    act = account_transaction
+    if act.account == ptt.account and act.amount + ptt.amount == 0
+      nil
+    else
+      [ particular_type_transaction, account_transaction ]
+    end
   end
 
 private

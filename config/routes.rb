@@ -33,6 +33,9 @@ FullCircle::Application.routes.draw do
   get 'payment/new_or_edit' => 'payments#new_or_edit'
   get 'payment/typeahead_collector' => 'payments#typeahead_collector'
 
+  resources :matching_payments, only: [:new, :edit, :update, :create, :show]
+  get 'matching_payment/new_or_edit' => 'matching_payments#new_or_edit'
+  
   resources :invoices, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]
   end

@@ -38,6 +38,9 @@ class Payment < ActiveRecord::Base
     }
   end
 
+  scope :matched, -> { where(id: TransactionMatcher.uniq.where(doc_type: 'Payment').pluck(:doc_id)) }
+  scope :not_matched, -> { where('id not in (?)', TransactionMatcher.uniq.where(doc_type: 'Payment').pluck(:doc_id)) }
+
   include ValidateBelongsTo
   validate_belongs_to :pay_to, :name1
   validate_belongs_to :pay_from, :name1
@@ -69,14 +72,13 @@ private
   end
 
   def build_particulars_transactions
-    pay_to_particulars.select { |t| !t.marked_for_destruction? }.each do |t|
-      t.doc = self
-      transactions << t.transactions
-    end
-    pay_from_particulars.select { |t| !t.marked_for_destruction? }.each do |t|
-      t.doc = self
-      transactions << t.transactions
-    end
+    transactions <<
+      pay_to_particulars.select { |t| !t.marked_for_destruction? }.
+        map { |t| t.doc = self; t.transactions; }.select { |t| t != nil}
+
+    transactions <<
+      pay_from_particulars.select { |t| !t.marked_for_destruction? }.
+        map { |t| t.doc = self; t.transactions; }.select { |t| t != nil}
   end
 
   def pay_from_transaction

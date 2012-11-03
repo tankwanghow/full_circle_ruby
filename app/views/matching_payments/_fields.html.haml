@@ -8,8 +8,8 @@
       = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }
     .span4
       = f.input :actual_debit_amount, input_html: { class: 'bold span', type: :text }, label_html: { class: 'bold' }, readonly: true
-  .row-fluid#pay-to-particulars
-    = render_particulars_fields f, :pay_to_particulars, false
+  .row-fluid
+    = render 'matchers/fields', account_element: '#payment_pay_to_name1', f: f
 #pay-from
   .row-fluid
     .span6
@@ -27,6 +27,7 @@
       
 :javascript
   $(document).ready(function() {
-    payment.init();
+    matching_payment.init();
+    $('.matching').change();
     $('.row-total').change();
   });
