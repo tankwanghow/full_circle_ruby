@@ -10,6 +10,8 @@ $gridRowWidth: ($gridColumns * $gridColumnWidth) + ($gridGutterWidth * ($gridCol
 
 body { 
   padding-top: 100px; 
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 legend {
