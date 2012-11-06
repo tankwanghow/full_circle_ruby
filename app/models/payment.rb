@@ -39,7 +39,7 @@ class Payment < ActiveRecord::Base
   end
 
   scope :matched, -> { where(id: TransactionMatcher.uniq.where(doc_type: 'Payment').pluck(:doc_id)) }
-  scope :not_matched, -> { where('id not in (?)', TransactionMatcher.uniq.where(doc_type: 'Payment').pluck(:doc_id)) }
+  scope :not_matched, -> { where('id not in (?)', TransactionMatcher.uniq.where(doc_type: 'Payment').pluck(:doc_id) << -1) }
 
   include ValidateBelongsTo
   validate_belongs_to :pay_to, :name1
