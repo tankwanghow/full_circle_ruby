@@ -1,0 +1,28 @@
+.row-fluid
+  .span6
+    = f.input :supplier_name1, input_html: { class: 'span' }, label: 'Supplier', autofocus: true
+  .span3
+    = f.input :credit_terms, label: 'Terms(days)', input_html: { type: :text, class: 'span' }
+  .span3
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date'
+#details
+  .row-fluid.nested
+    = render_invoice_details_fields f, :invoice_details
+    .offset18.span3
+      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_invoice_details', type: 'text', readonly: true }
+#particulars
+  .row-fluid.nested
+    = render_particulars_fields f, :particulars
+    .offset18.span3
+      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_particulars', type: 'text', readonly: true }
+.row-fluid
+  .span8
+    = f.input :note, input_html: { rows: 3, class: 'span' }
+  .offset18
+    = f.input :invoice_amount, input_html: { tabindex: -1, class: 'bold numeric', type: :text, name: 'invoice_amount' }, label_html: { class: 'bold' }, readonly: true
+
+:javascript
+  $(document).ready(function() {
+    pur_invoice.init();
+    $('.row-total').trigger('change');
+  });

@@ -10,7 +10,8 @@
         = menu_child 'Product', product_new_or_edit_path
         = menu_child 'Packaging', packaging_new_or_edit_path
         = menu_child 'Invoice', invoice_new_or_edit_path
-      = menu 'Purchases'
+      = menu 'Purchases' do
+        = menu_child 'Invoice', pur_invoice_new_or_edit_path
       = menu 'Bank'
       = menu 'Payroll'
       = menu_child 'Transactions', transactions_path, class: 'bold', id: 'nav-transactions'

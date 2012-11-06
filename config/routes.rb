@@ -41,6 +41,11 @@ FullCircle::Application.routes.draw do
   end
   get 'invoice/new_or_edit' => 'invoices#new_or_edit'
 
+  resources :pur_invoices, only: [:new, :edit, :update, :create] do
+    resources :journal_entries, only: [:index]
+  end
+  get 'pur_invoice/new_or_edit' => 'pur_invoices#new_or_edit'
+
   resources :packagings, only: [:new, :edit, :update, :create, :destroy]
   get 'packaging/new_or_edit' => 'packagings#new_or_edit'
   get 'packaging/typeahead_product_package_name' => 'packagings#typeahead_product_package_name'
