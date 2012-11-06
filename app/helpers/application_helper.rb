@@ -47,13 +47,13 @@ module ApplicationHelper
     link_to("Print", url_for(url_options.merge(static_content: true)), class: 'btn btn-inverse', target: '_blank', data: { 'skip-pjax' => true })
   end
 
-  def link_to_edit_action_buttons object, journal_url
+  def link_to_edit_action_buttons object, journal_url, print_button=true
     [ link_to('Cancel', edit_polymorphic_path(object), class: 'btn btn-warning'),
       link_to('New', new_polymorphic_path(object.class), class: 'btn btn-info'),
       link_to_index(object.class),
-      link_to_print_buttons(object),
+      print_button ? link_to_print_buttons(object) : nil ,
       link_to('Journals', journal_url, class: 'btn btn-info'),
-      link_to_audits_log(object) ].join(' ').html_safe
+      link_to_audits_log(object) ].compact.join(' ').html_safe
   end
 
   def term_string term
