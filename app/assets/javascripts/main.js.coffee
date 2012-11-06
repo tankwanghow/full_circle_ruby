@@ -100,6 +100,9 @@ window.app = {
     else
       ($ showhide_selector).hide()
 
+  standard_row_total_init: ->
+    math.rowTotal '.quantity', '.unit-price', '.row-total', '.fields', '.row-fluid'
+
   typeahead_init: (selector, url, params_func= -> {}) ->
     if selector.jquery
       elms = selector

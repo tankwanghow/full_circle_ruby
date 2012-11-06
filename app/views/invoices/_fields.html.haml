@@ -6,12 +6,12 @@
   .span3
     = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date'
 #details
-  .row-fluid.nested
+  .row-fluid
     = render_invoice_details_fields f, :invoice_details
     .offset18.span3
       %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_invoice_details', type: 'text', readonly: true }
 #particulars
-  .row-fluid.nested
+  .row-fluid
     = render_particulars_fields f, :particulars
     .offset18.span3
       %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_particulars', type: 'text', readonly: true }
@@ -24,5 +24,4 @@
 :javascript
   $(document).ready(function() {
     invoice.init();
-    $('.row-total').trigger('change');
   });
