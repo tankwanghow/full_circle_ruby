@@ -16,7 +16,7 @@ class InvoicesController < ApplicationController
   def create
     @invoice = Invoice.new(params[:invoice])
     if @invoice.save
-      flash[:success] = "Invioce '##{@invoice.id}' created successfully."
+      flash[:success] = "Invoice '##{@invoice.id}' created successfully."
       redirect_to edit_invoice_path(@invoice)
     else
       flash.now[:error] = "Failed to create Invoice."
@@ -27,7 +27,7 @@ class InvoicesController < ApplicationController
   def update
     @invoice = Invoice.find(params[:id])
     if @invoice.update_attributes(params[:invoice])
-      flash[:success] = "Invioce '##{@invoice.id}' updated successfully."
+      flash[:success] = "Invoice '##{@invoice.id}' updated successfully."
       redirect_to edit_invoice_path(@invoice)
     else
       flash.now[:error] = "Failed to update Invoice."
