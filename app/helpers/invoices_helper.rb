@@ -1,6 +1,6 @@
 module InvoicesHelper
   def render_invoice_details_fields builder, xies_name
-    render 'share/nested_fields', f: builder, xies_name: xies_name, field: 'invoice_details/field',
+    render 'share/nested_fields', f: builder, xies_name: xies_name, field: 'details/field',
             headers: [['Product', 'span4'], ['Package', 'span3'], ['Pack Qty', 'span2'], ['Note', 'span4'], 
                       ['Quantity', 'span2'], ['Unit', 'span2'], ['Price', 'span2'], ['Amount', 'span3']]
   end
