@@ -13,4 +13,12 @@
   background-color: #FFCFCF;
   @include border-radius(5px);
   border: 2px solid lightgray;
+  margin-bottom: 5px;
+}
+
+#cheques {
+  padding: 5px 5px 5px 20px;
+  background-color: #89ED85;
+  @include border-radius(5px);
+  border: 2px solid lightgray; 
 }
