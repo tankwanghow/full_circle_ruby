@@ -21,7 +21,7 @@ window.math = {
       qty = ($ elm).closest(rowCls).find(qtyCls).val()
       price = ($ elm).closest(rowCls).find(priceCls).val()
       row_total.val (qty * price).toFixed(2)
-      row_total.trigger 'change' # should use 'change' event but not all browser support it
+      row_total.change() # should use 'change' event but not all browser support it
 
 
   sum: (elements, totalElm, evtBubbleCls, checkVisible=true) ->
@@ -34,7 +34,7 @@ window.math = {
           val = ($ elm).val()
         total = total + +val
       ($ totalElm).val total.toFixed(2)
-      ($ totalElm).trigger 'change' # should use 'change' event but not all browser support it
+      ($ totalElm).change() # should use 'change' event but not all browser support it
 }
 
 window.main = {
@@ -90,7 +90,7 @@ window.app = {
   nestedFormFieldRemoved: (form, fields_parent, show_hide_elm, count_fields, trigger_blur_elements) ->
     ($ form).on "nested:fieldRemoved", (event) ->
       row_parent = event.field.closest(fields_parent)
-      ($ trigger_blur_elements).trigger 'change'
+      ($ trigger_blur_elements).change()
       if row_parent.find(count_fields).size() is 0
         row_parent.find(show_hide_elm).hide()
 
