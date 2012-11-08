@@ -2,13 +2,13 @@ class PurInvoice < ActiveRecord::Base
   belongs_to :supplier, class_name: "Account"
   has_many :particulars, as: :doc, class_name: "PurInvoiceParticular"
   has_many :transactions, as: :doc
-  has_many :invoice_details, order: 'product_id', class_name: "PurInvoiceDetail"
+  has_many :details, order: 'product_id', class_name: "PurInvoiceDetail"
 
   validates_presence_of :credit_terms, :supplier_id, :doc_date
 
   before_save :build_transactions
 
-  accepts_nested_attributes_for :invoice_details, allow_destroy: true
+  accepts_nested_attributes_for :details, allow_destroy: true
   accepts_nested_attributes_for :particulars, allow_destroy: true
 
   include ValidateBelongsTo
@@ -18,7 +18,7 @@ class PurInvoice < ActiveRecord::Base
 
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :invoice_amount,
-             content: [:supplier_name1, :credit_terms, :invoice_details_string, :invoice_amount, 
+             content: [:supplier_name1, :credit_terms, :details_string, :invoice_amount, 
                        :note, :particulars_string]
 
   simple_audit username_method: :username do |r|
@@ -26,23 +26,31 @@ class PurInvoice < ActiveRecord::Base
       doc_date: r.doc_date.to_s,
       customer: r.supplier_name1,
       credit_terms: r.credit_terms,
-      invoice_details: r.invoice_details_string,
+      details: r.details_string,
       note: r.note,
       particulars: r.particulars_string
      }
   end
 
-  def invoice_details_string
-    invoice_details.map{ |t| t.simple_audit_string }.join(' ')
+  def details_string
+    details.
+      select { |t| !t.marked_for_destruction? }.
+      map{ |t| t.simple_audit_string }.join(' ')
   end
 
   def particulars_string
-    particulars.map{ |t| t.simple_audit_string }.join(' ')
+    particulars.
+      select { |t| !t.marked_for_destruction? }.
+      map{ |t| t.simple_audit_string }.join(' ')
   end
 
   def invoice_amount
-    particulars.inject(0) { |sum, p| sum + p.quantity * p.unit_price } +
-    invoice_details.inject(0) { |sum, p| sum + p.quantity * p.unit_price }
+    particulars.
+      select { |t| !t.marked_for_destruction? }.
+      inject(0) { |sum, p| sum + p.quantity * p.unit_price } +
+    details.
+      select { |t| !t.marked_for_destruction? }.
+      inject(0) { |sum, p| sum + p.quantity * p.unit_price }
   end
 
 private
@@ -56,7 +64,7 @@ private
   end
 
   def build_details_transactions
-    invoice_details.select { |t| t.total > 0 and !t.marked_for_destruction? }.each do |t|
+    details.select { |t| t.total > 0 and !t.marked_for_destruction? }.each do |t|
       t.pur_invoice = self
       transactions << t.transactions
     end
@@ -70,7 +78,7 @@ private
   end
 
   def product_summary
-    invoice_details.select{ |t| !t.marked_for_destruction? }.map { |t| t.product.name1 }.join(', ').truncate(70)
+    details.select{ |t| !t.marked_for_destruction? }.map { |t| t.product.name1 }.join(', ').truncate(70)
   end
 
   def build_supplier_transaction

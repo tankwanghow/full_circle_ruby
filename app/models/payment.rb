@@ -46,15 +46,21 @@ class Payment < ActiveRecord::Base
   validate_belongs_to :pay_from, :name1
 
   def pay_to_particulars_string
-    pay_to_particulars.map{ |t| t.simple_audit_string }.join(' ')
+    pay_to_particulars.
+      select { |t| !t.marked_for_destruction? }.
+      map{ |t| t.simple_audit_string }.join(' ')
   end
 
   def pay_from_particulars_string
-    pay_from_particulars.map{ |t| t.simple_audit_string }.join(' ')
+    pay_from_particulars.
+      select { |t| !t.marked_for_destruction? }.
+      map{ |t| t.simple_audit_string }.join(' ')
   end
 
   def matchers_string
-    matchers.map{ |t| t.simple_audit_string }.join(' ')
+    matchers.
+      select { |t| !t.marked_for_destruction? }.
+      map{ |t| t.simple_audit_string }.join(' ')
   end
 
 private
