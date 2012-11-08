@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @cashsale, html: { class: 'form-inline well', id: 'cashsale' } do |f|
+  %legend
+    New Cash Sales
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', CashSale.last ? edit_cash_sale_path(CashSale.last) : root_path, class: 'btn btn-warning'
