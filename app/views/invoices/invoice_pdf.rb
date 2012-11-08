@@ -91,7 +91,7 @@ class InvoicePdf < Prawn::Document
   def draw_detail
     @detail_y = @detail_y_start_at
 
-    @invoice.invoice_details.each do |t|
+    @invoice.details.each do |t|
 
       bounding_box [12.mm, @detail_y], height: @detail_height, width: 100.mm do
         pack_qty = t.package_qty == 0 ? nil : @view.number_with_precision(t.package_qty, precision: 4, strip_insignificant_zeros: true)
@@ -157,9 +157,9 @@ class InvoicePdf < Prawn::Document
 
   def draw_footer
     group do
-      bounding_box [12.mm, @detail_y], height: @detail_height, width: 100.mm do
-        text_box 'Note : ' + @invoice.note, overflow: :shrink_to_fit, valign: :center, size: 12
-      end
+      bounding_box [12.mm, @detail_y], height: 25.mm, width: 100.mm do
+        text_box "Note :\n" + @invoice.note, overflow: :shrink_to_fit, valign: :center, size: 10
+      end if !@invoice.note.blank?
       line_width 1
       stroke_horizontal_line 175.mm, 210.mm, at: @detail_y 
       bounding_box [175.mm, @detail_y - 2.5.mm], height: 5.mm, width: 38.mm do

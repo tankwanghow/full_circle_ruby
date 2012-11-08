@@ -7,9 +7,9 @@
     = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date'
 #details
   .row-fluid
-    = render_invoice_details_fields f, :invoice_details
+    = render_invoice_details_fields f, :details
     .offset18.span3
-      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_invoice_details', type: 'text', readonly: true }
+      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_details', type: 'text', readonly: true }
 #particulars
   .row-fluid
     = render_particulars_fields f, :particulars
