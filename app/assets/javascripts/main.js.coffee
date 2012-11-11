@@ -82,7 +82,7 @@ window.app = {
 
   nestedFormFieldAdded: (form, fields_parent, show_hide_elm, func) ->
     ($ form).on "nested:fieldAdded", (event) ->
-      func(event.field)
+      func(event.field) if func
       event.field.closest(fields_parent).find(show_hide_elm).show()
       event.field.find(':visible input:first').select()
       app.standardInit()
