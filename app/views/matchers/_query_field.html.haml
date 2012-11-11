@@ -6,11 +6,11 @@
     = hidden_field_tag matcher_attr_name(:doc_id, query_field, matcher_id), params[:doc_id]
     = hidden_field_tag matcher_attr_name(:id, query_field, matcher_id), query_field.matcher_id
     = hidden_field_tag matcher_attr_name(:_destroy, query_field, matcher_id), false
-    .span2
+    .span3
       .control-group.table-field.string.optional
         .controls
           = text_field_tag :transaction_date, query_field.transaction_date, class: 'span', readOnly: true, tabindex: -1
-    .span3
+    .span4
       .control-group.table-field.string.optional
         .controls
           = text_field_tag :doc_type, query_field.doc_type + " #%07d" % query_field.doc_id, class: 'span', readOnly: true, tabindex: -1
@@ -18,11 +18,11 @@
       .control-group.table-field.string.optional
         .controls
           = text_field_tag :terms, query_field.terms, class: 'span', readOnly: true, tabindex: -1
-    .span3
+    .span4
       .control-group.table-field.string.optional
         .controls
           = text_field_tag :trans_amount, query_field.amount, class: 'amount span numeric', readOnly: true, tabindex: -1
-    .span3
+    .span4
       .control-group.table-field.string.optional
         .controls
           = text_field_tag :matched, query_field.matched, class: 'matched span numeric', readOnly: true, tabindex: -1
