@@ -3,7 +3,7 @@ module InvoicesHelper
     render 'share/nested_fields', f: builder, xies_name: xies_name, field: 'details/field',
             headers: [['Product', 'span4'], ['Package', 'span3'], ['Pack Qty', 'span2'], ['Note', 'span4'], 
                       ['Quantity', 'span2'], ['Unit', 'span2'], ['Price', 'span2'], ['Amount', 'span3']],
-            button_text: 'Add Detail'
+            text: 'Add Detail'
   end
 
   def product_html_data builder
