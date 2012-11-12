@@ -57,6 +57,7 @@ Account.create!(
   status: 'Active'
 )
 fix_ass = AccountType.create!(
+  parent_id: assets.id,
   name: 'Fixed Assets',
   description: 'Assets and property which cannot easily be converted into cash',
   normal_balance: 'Debit',
