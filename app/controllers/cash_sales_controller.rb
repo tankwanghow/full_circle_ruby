@@ -5,7 +5,7 @@ class CashSalesController < ApplicationController
 
   def new
     @cashsale = CashSale.new(doc_date: Date.today)
-    @cashsale.cash_sale_details.build
+    @cashsale.details.build
   end
 
   def show

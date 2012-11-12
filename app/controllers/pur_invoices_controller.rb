@@ -5,7 +5,7 @@ class PurInvoicesController < ApplicationController
 
   def new
     @invoice = PurInvoice.new(doc_date: Date.today)
-    @invoice.invoice_details.build
+    @invoice.details.build
   end
 
   def create

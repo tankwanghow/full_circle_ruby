@@ -5,7 +5,7 @@ class InvoicesController < ApplicationController
 
   def new
     @invoice = Invoice.new(doc_date: Date.today)
-    @invoice.invoice_details.build
+    @invoice.details.build
   end
 
   def show
