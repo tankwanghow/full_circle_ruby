@@ -20,7 +20,7 @@ class CashSale < ActiveRecord::Base
 
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :sales_amount,
-             content: [:customer_name1, :details_string, :sales_amount, 
+             content: [:id, :customer_name1, :details_string, :sales_amount, 
                        :note, :particulars_string, :cheques_string]
 
   simple_audit username_method: :username do |r|
@@ -107,7 +107,7 @@ private
         doc: self,
         transaction_date: doc_date,
         account: Account.find_by_name1('Cash in Hand'),
-        note: product_summary,
+        note: "#{customer_name1} #{product_summary}",
         amount: cash_amount,
         user: User.current)
     end
@@ -118,7 +118,7 @@ private
           doc: self,
           transaction_date: doc_date,
           account: Account.find_by_name1('Post Dated Cheques'),
-          note: [t.bank, t.chq_no, t.city, t.due_date].join(' '),
+          note: [customer_name1, t.bank, t.chq_no, t.city, t.due_date].join(' '),
           amount: t.amount,
           user: User.current)
       end

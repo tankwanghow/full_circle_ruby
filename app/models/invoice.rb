@@ -18,7 +18,7 @@ class Invoice < ActiveRecord::Base
 
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :invoice_amount,
-             content: [:customer_name1, :credit_terms, :details_string, :invoice_amount, 
+             content: [:id, :customer_name1, :credit_terms, :details_string, :invoice_amount, 
                        :note, :particulars_string]
 
   simple_audit username_method: :username do |r|
