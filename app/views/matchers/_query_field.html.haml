@@ -1,36 +1,68 @@
 .fields
   .row-fluid
-    - matcher_id = query_field.matcher_id || rand(999999999)
-    = hidden_field_tag matcher_attr_name(:transaction_id, query_field, matcher_id), query_field.id
-    = hidden_field_tag matcher_attr_name(:doc_type, query_field, matcher_id), params[:doc_type]
-    = hidden_field_tag matcher_attr_name(:doc_id, query_field, matcher_id), params[:doc_id]
-    = hidden_field_tag matcher_attr_name(:id, query_field, matcher_id), query_field.matcher_id
-    = hidden_field_tag matcher_attr_name(:_destroy, query_field, matcher_id), false
+    = hidden_field_tag :placed_to_lineup_all_field
     .span3
       .control-group.table-field.string.optional
         .controls
-          = text_field_tag :transaction_date, query_field.transaction_date, class: 'span', readOnly: true, tabindex: -1
+          = text_field_tag :transaction_date, nil, class: 'span', readOnly: true, tabindex: -1
     .span4
       .control-group.table-field.string.optional
         .controls
-          = text_field_tag :doc_type, query_field.doc_type + " #%07d" % query_field.doc_id, class: 'span', readOnly: true, tabindex: -1
+          = text_field_tag :doc_type, 'Balance B/F', class: 'span', readOnly: true, tabindex: -1
     .span2
       .control-group.table-field.string.optional
         .controls
-          = text_field_tag :terms, query_field.terms, class: 'span', readOnly: true, tabindex: -1
+          = text_field_tag :terms, nil, class: 'span', readOnly: true, tabindex: -1
     .span4
       .control-group.table-field.string.optional
         .controls
-          = text_field_tag :trans_amount, query_field.amount, class: 'amount span numeric', readOnly: true, tabindex: -1
+          = text_field_tag :trans_amount, nil, class: 'span', readOnly: true, tabindex: -1
     .span4
       .control-group.table-field.string.optional
         .controls
-          = text_field_tag :matched, query_field.matched, class: 'matched span numeric', readOnly: true, tabindex: -1
+          = text_field_tag :matched, nil, class: 'span', readOnly: true, tabindex: -1
     .span3
       .control-group.table-field.string.optional
         .controls
-          = text_field_tag matcher_attr_name(:amount, query_field, matcher_id), query_field.matching, class: 'span numeric matching'
+          = text_field_tag :amount, nil, class: 'span', readOnly: true, tabindex: -1  
     .span3
       .control-group.table-field.string.optional
         .controls
-          = text_field_tag :balance, query_field.amount, class: 'span numeric balance', readOnly: true, tabindex: -1
+          = text_field_tag :balance, @balance, class: 'span numeric', readOnly: true, tabindex: -1
+- for qf in @matchers
+  .fields
+    .row-fluid
+      - matcher_id = qf.matcher_id || rand(999999999)
+      = hidden_field_tag matcher_attr_name(:transaction_id, qf, matcher_id), qf.id
+      = hidden_field_tag matcher_attr_name(:doc_type, qf, matcher_id), params[:doc_type]
+      = hidden_field_tag matcher_attr_name(:doc_id, qf, matcher_id), params[:doc_id]
+      = hidden_field_tag matcher_attr_name(:id, qf, matcher_id), qf.matcher_id
+      = hidden_field_tag matcher_attr_name(:_destroy, qf, matcher_id), false
+      .span3
+        .control-group.table-field.string.optional
+          .controls
+            = text_field_tag :transaction_date, qf.transaction_date, class: 'span', readOnly: true, tabindex: -1
+      .span4
+        .control-group.table-field.string.optional
+          .controls
+            = text_field_tag :doc_type, qf.doc_type + " #%07d" % qf.doc_id, class: 'span', readOnly: true, tabindex: -1
+      .span2
+        .control-group.table-field.string.optional
+          .controls
+            = text_field_tag :terms, qf.terms, class: 'span', readOnly: true, tabindex: -1
+      .span4
+        .control-group.table-field.string.optional
+          .controls
+            = text_field_tag :trans_amount, qf.amount, class: 'amount span numeric', readOnly: true, tabindex: -1
+      .span4
+        .control-group.table-field.string.optional
+          .controls
+            = text_field_tag :matched, qf.matched, class: 'matched span numeric', readOnly: true, tabindex: -1
+      .span3
+        .control-group.table-field.string.optional
+          .controls
+            = text_field_tag matcher_attr_name(:amount, qf, matcher_id), qf.matching, class: 'span numeric matching'
+      .span3
+        .control-group.table-field.string.optional
+          .controls
+            = text_field_tag :balance, qf.amount, class: 'span numeric balance', readOnly: true, tabindex: -1
