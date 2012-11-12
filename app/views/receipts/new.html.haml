@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @receipt, html: { class: 'form-inline well', id: 'receipt' } do |f|
+  %legend
+    New Receipt
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', Receipt.last ? edit_receipt_path(Receipt.last) : root_path, class: 'btn btn-warning'

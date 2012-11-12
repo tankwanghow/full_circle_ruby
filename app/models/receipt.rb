@@ -1,0 +1,113 @@
+class Receipt < ActiveRecord::Base
+  include ActionView::Helpers::TextHelper
+  belongs_to :receive_from, class_name: "Account"
+  has_many :transactions, as: :doc
+  has_many :cheques, as: :db_doc
+  has_many :matchers, class_name: 'TransactionMatcher', as: :doc
+
+  validates_presence_of :receive_from_id, :doc_date
+  validates_numericality_of :cash_amount, greater_than: 0
+
+  before_save :build_transactions
+
+  accepts_nested_attributes_for :cheques, allow_destroy: true
+  accepts_nested_attributes_for :matchers, allow_destroy: true, reject_if: :dont_process
+
+  include ValidateBelongsTo
+  validate_belongs_to :receive_from, :name1
+
+  include ValidateTransactionsBalance
+
+  include Searchable
+  searchable doc_date: :doc_date, doc_amount: :cash_amount,
+             content: [:id, :receive_from_name1, :cash_amount, 
+                       :note, :cheques_string]
+
+  simple_audit username_method: :username do |r|
+     {
+      doc_date: r.doc_date.to_s,
+      customer: r.receive_from_name1,
+      note: r.note,
+      cash: r.cash_amount,
+      cheques: r.cheques_string,
+      matchers: r.matchers_string
+     }
+  end
+
+  def matchers_string
+    matchers.
+      select { |t| !t.marked_for_destruction? }.
+      map{ |t| t.simple_audit_string }.join(' ')
+  end
+
+  def cheques_string
+    cheques.
+      select { |t| !t.marked_for_destruction? }.
+      map{ |t| t.simple_audit_string }.join(' ')
+  end
+
+  def cheques_amount
+    cheques.
+      select { |t| !t.marked_for_destruction? }.
+      inject(0) { |sum, p| sum + p.amount }
+  end
+
+  def receipt_amount
+    cheques_amount + cash_amount
+  end
+
+private
+  
+  def dont_process(attr)
+    return true if attr["id"].blank? && attr["amount"].to_f == 0
+  end
+
+  def build_transactions
+    transactions.destroy_all
+    build_cash_n_pd_chq_transaction
+    build_receive_from_transaction
+    validates_transactions_balance
+  end
+
+  def build_receive_from_transaction
+    transactions.build(
+      doc: self,
+      transaction_date: doc_date,
+      account: receive_from,
+      note: transaction_note_summary,
+      amount: -receipt_amount,
+      user: User.current)
+  end
+
+  def transaction_note_summary
+    'Being ' +
+    (cash_amount > 0 ? 'Cash, ' : '') +
+    (cheques.size > 0 ? pluralize(cheques.size, 'cheque') : '') +
+    ' recevied'
+  end
+
+  def build_cash_n_pd_chq_transaction
+
+    if cash_amount > 0
+      transactions.build(
+        doc: self,
+        transaction_date: doc_date,
+        account: Account.find_by_name1('Cash in Hand'),
+        note: receive_from_name1,
+        amount: cash_amount,
+        user: User.current)
+    end
+
+    if cheques_amount > 0
+      cheques.select { |t| !t.marked_for_destruction? }.each do |t|
+        transactions.build(
+          doc: self,
+          transaction_date: doc_date,
+          account: Account.find_by_name1('Post Dated Cheques'),
+          note: [receive_from_name1, t.bank, t.chq_no, t.city, t.due_date].join(' '),
+          amount: t.amount,
+          user: User.current)
+      end
+    end
+  end
+end

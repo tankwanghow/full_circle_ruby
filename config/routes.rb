@@ -46,6 +46,11 @@ FullCircle::Application.routes.draw do
   end
   get 'cash_sale/new_or_edit' => 'cash_sales#new_or_edit'
 
+  resources :receipts, only: [:new, :edit, :update, :create, :show] do
+    resources :journal_entries, only: [:index]
+  end
+  get 'receipt/new_or_edit' => 'receipts#new_or_edit'
+
   resources :pur_invoices, only: [:new, :edit, :update, :create] do
     resources :journal_entries, only: [:index]
   end

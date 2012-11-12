@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @receipt, html: { class: 'form-inline well', id: 'receipt' } do |f|
+  %legend
+    = "Receipt #" + ("%07d" % @receipt.id)
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to_edit_action_buttons @receipt, receipt_journal_entries_path(@receipt)

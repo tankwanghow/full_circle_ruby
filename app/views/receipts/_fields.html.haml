@@ -1,0 +1,30 @@
+.row-fluid
+  .span6
+    = f.input :receive_from_name1, input_html: { class: 'span' }, label: 'Receive From', autofocus: true
+  .span3
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date'
+  .span3
+    = f.input :alt_receipt_no, input_html: { class: 'span' }
+.row-fluid
+  .span3
+    = f.input :cash_amount, input_html: { class: 'numeric', type: :text }
+#cheques
+  .row-fluid
+    = render_cheques_fields f, :cheques
+    .offset16.span3
+      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_cheques', type: 'text', readonly: true }
+.row-fluid
+  .span8
+    = f.input :note, input_html: { rows: 3, class: 'span' }
+  .offset18
+    = f.input :receipt_amount, input_html: { tabindex: -1, class: 'bold numeric', type: :text, name: 'receipt_amount' }, label_html: { class: 'bold' }, readonly: true
+#matcher-query
+  .row-fluid
+    = render 'matchers/fields', account_element: '#receipt_receive_from_name1', f: f
+    .offset17.span3
+      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_matched', type: 'text', readonly: true }
+
+:javascript
+  $(document).ready(function() {
+    receipt.init();
+  });

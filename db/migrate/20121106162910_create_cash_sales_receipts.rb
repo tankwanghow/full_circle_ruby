@@ -1,20 +1,21 @@
 class CreateCashSalesReceipts < ActiveRecord::Migration
   def change
     create_table :receipts do |t|
+      t.string     :alt_receipt_no
       t.date       :doc_date,      null: false
       t.belongs_to :receive_from,  references: :accounts, null: false
-      t.string     :collector,     null: false
       t.decimal    :chq_amount,    default: 0, precision: 12, scale: 2
       t.decimal    :cash_amount,   default: 0, precision: 12, scale: 2
-      t.text     :note
+      t.text       :note
       t.integer    :lock_version,  default: 0
       t.timestamps
     end
 
     create_table :cash_sales do |t|
+      t.string     :sale_no
       t.date       :doc_date,      null: false
       t.belongs_to :customer,  references: :accounts, null: false
-      t.text     :note
+      t.text       :note
       t.integer    :lock_version,  default: 0
       t.timestamps
     end
