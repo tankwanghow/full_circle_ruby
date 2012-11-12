@@ -5,5 +5,5 @@
   - if defined? with_type
     = render field, f: builder, with_type: with_type
   - else
-    = render field, f: builder
-= f.link_to_add "Add", xies_name, class: 'btn btn-success'
+    = render field, f: builder 
+= f.link_to_add defined?(button_text) ? button_text : 'Add', xies_name, class: 'bold span3'
