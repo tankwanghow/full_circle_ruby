@@ -6,7 +6,7 @@ class Receipt < ActiveRecord::Base
   has_many :matchers, class_name: 'TransactionMatcher', as: :doc
 
   validates_presence_of :receive_from_id, :doc_date
-  validates_numericality_of :cash_amount, greater_than: 0
+  validates_numericality_of :cash_amount, greater_than: -0.0001
 
   before_save :build_transactions
 
