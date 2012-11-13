@@ -7,13 +7,12 @@
         = menu_child 'Payment', payment_new_or_edit_path
         = menu_child 'Matching Payment', matching_payment_new_or_edit_path
         = menu_child 'Receipt', receipt_new_or_edit_path
-      = menu 'Sales' do
+      = menu 'Sales & Pruchases' do
         = menu_child 'Product', product_new_or_edit_path
         = menu_child 'Packaging', packaging_new_or_edit_path
         = menu_child 'Cash Sale', cash_sale_new_or_edit_path
-        = menu_child 'Invoice', invoice_new_or_edit_path
-      = menu 'Purchases' do
-        = menu_child 'Invoice', pur_invoice_new_or_edit_path
+        = menu_child 'Sales Invoice', invoice_new_or_edit_path
+        = menu_child 'Purchase Invoice', pur_invoice_new_or_edit_path
       = menu 'Bank'
       = menu 'Payroll'
       = menu_child 'Transactions', transactions_path, class: 'bold', id: 'nav-transactions'
