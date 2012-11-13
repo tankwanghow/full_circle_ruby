@@ -160,7 +160,7 @@ class CashSalePdf < Prawn::Document
     @cashsale.cheques.each do |t|
       bounding_box [12.mm, @detail_y - 30.mm], height: 5.mm, width: 100.mm do
         text_box [ t.bank, t.chq_no, t.city, t.due_date, t.amount.to_money.format].join(' '), 
-                 overflow: :shrink_to_fit, valign: :center, size: 10
+                 overflow: :shrink_to_fit, valign: :center, size: 10, align: :center
       end
 
       @detail_y = @detail_y - 5.mm
