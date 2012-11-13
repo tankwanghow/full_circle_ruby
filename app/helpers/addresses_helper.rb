@@ -22,7 +22,8 @@ module AddressesHelper
     tel = address.tel_no.blank? ? nil : "Tel No: #{address.tel_no}"
     fax = address.fax_no.blank? ? nil : "Fax No: #{address.fax_no}"
     em  = address.email.blank?  ? nil : "Email: #{address.email}"
-    [tel, fax, em].compact.join(", ")
+    rg  = address.reg_no.blank?  ? nil : "Registration no: #{address.reg_no}"
+    [tel, fax, em, rg].compact.join(", ")
   end
 
 end
