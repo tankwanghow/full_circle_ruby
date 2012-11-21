@@ -21,7 +21,7 @@ class Receipt < ActiveRecord::Base
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :cash_amount,
              content: [:id, :receive_from_name1, :cash_amount, 
-                       :note, :cheques_string]
+                       :note, :cheques_string, :matchers_string]
 
   simple_audit username_method: :username do |r|
      {
