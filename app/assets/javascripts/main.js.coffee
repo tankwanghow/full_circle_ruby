@@ -61,7 +61,7 @@ window.app = {
     app.avoidAutocompleteForTypeahead()
 
   avoidAutocompleteForTypeahead: ->
-    ($ 'input[data-provide="typeahead"]').attr('autocomplete', 'off')
+    ($ 'input.string[type="text"]').attr('autocomplete', 'off')
 
   initNumeric: ->
     ($ 'input.numeric').on 'change', ->
