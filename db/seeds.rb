@@ -44,10 +44,18 @@ AccountType.create!(
 ac_rec = AccountType.create!(
   parent_id: current_assets.id,
   name: 'Account Receivables',
-  description: 'Money owed by customers in exchange for goods or services that have been delivered or used, but not yet paid for',
+  description: 'Money owed by anyone to this company, but not yet paid for',
   normal_balance: 'Debit',
   admin_lock: true,
   bf_balance: true
+)
+AccountType.create!(
+  parent_id: ac_rec.id,
+  name: 'Trade Debtors',
+  description: 'Money owed by main customers in exchange for goods or services that have been delivered or used, but not yet paid for',
+  normal_balance: 'Debit',
+  admin_lock: true,
+  bf_balance: true 
 )
 Account.create!(
   account_type_id: ac_rec.id,
@@ -82,7 +90,15 @@ curr_liabi = AccountType.create!(
 ac_paya = AccountType.create!(
   parent_id: curr_liabi.id,
   name: 'Account Payables',
-  description: 'Debts that must be paid off within a given period of time in order to avoid default',
+  description: 'Money owed to anyone by this company, but not yet paid for',
+  normal_balance: 'Credit',
+  admin_lock: true,
+  bf_balance: true
+)
+AccountType.create!(
+  parent_id: ac_paya.id,
+  name: 'Trade Creditors',
+  description: 'Money owed to main suppliers in exchange for goods or services that have been delivered or used, but not yet paid for',
   normal_balance: 'Credit',
   admin_lock: true,
   bf_balance: true
@@ -142,7 +158,7 @@ sales = AccountType.create!(
 Account.create!(
   account_type_id: sales.id,
   name1: 'General Sales',
-  description: 'Uncategorize Goods or Services sold to customer',
+  description: 'Uncategorized Goods or Services sold to customer',
   admin_lock: true,
   status: 'Active'
 )
@@ -164,7 +180,7 @@ pur = AccountType.create!(
 Account.create!(
   account_type_id: pur.id,
   name1: 'General Purchases',
-  description: 'Uncategorize Goods or Services consumed from supplier',
+  description: 'Uncategorized Goods or Services consumed from supplier',
   admin_lock: true,
   status: 'Active'
 )
@@ -178,30 +194,30 @@ Account.create!(
 ParticularType.create!(
   name: 'Note'
 )
-%w(Bulk Trays Bags).each do |t|
+%w(Bulk Tray Bag).each do |t|
   Packaging.create!(
     name: t
   )
 end
-
 %w(AA A B C D E F G Crack Broken Dirty White).each do |t|
   p = Product.create!(
     name1: "Egg Grade #{t}",
     unit: 'pcs',
     sale_account_id: Account.find_by_name1('General Sales').id,
     purchase_account_id: Account.find_by_name1('General Purchases').id,
-    category_list: 'eggs'
+    category_list: 'Eggs'
   )
     ProductPackaging.create!(
     product_id: p.id,
-    packaging_id: Packaging.find_by_name("Trays").id,
+    packaging_id: Packaging.find_by_name("Tray").id,
     quantity: 30,
     cost: 0
   )
 end
 
-[ 'Maize', 'Soyabean Meal', 'Wheat Pollard',
-  'Wheat Bran', 'Rice Bran', 'Full Fat Soyabean Meal'].each do |t|
+[ 'Maize', 'Soybean Meal Hi Pro', 'Wheat Pollard', 'Rice Powder',
+  'Soybean Meal Low Pro', 'Rice Bran', 'Full Fat Soybean Meal',
+  'Soybean Hull'].each do |t|
   Product.create!(
     name1: "#{t}",
     unit: 'Kg',
@@ -211,7 +227,7 @@ end
   )
 end
 
-[ 'Lime Stone Grit', 'Lime Stone Powder', 'Salt', 'MDCP'].each do |t|
+[ 'Lime Stone Grit', 'Lime Stone Powder', 'Salt', 'MDCP 21%', 'MDCP 22%'].each do |t|
   Product.create!(
     name1: "#{t}",
     unit: 'Kg',
@@ -221,9 +237,40 @@ end
   )
 end
 Product.create!(
-  name1: 'Fish Meal',
+  name1: 'Fish Meal 60%',
   unit: 'Kg',
   sale_account_id: Account.find_by_name1('General Sales').id,
   purchase_account_id: Account.find_by_name1('General Purchases').id,
-  category_list: 'Meat_Meals'
+  category_list: 'MeatMeals'
 )
+
+[ 
+  ['Maize', 'Bulk', 0, 0],
+  ['Soybean Meal Hi Pro', 'Bulk', 0, 0],
+  ['Soybean Meal Low Pro', 'Bulk', 0, 0],
+  ['Rice Bran', 'Bag', 70, 0],
+  ['Lime Stone Grit', 'Bag', 1000, 0],
+  ['Lime Stone Powder', 'Bag', 1000, 0],
+  ['Lime Stone Grit', 'Bag', 50, 0],
+  ['Lime Stone Powder', 'Bag', 50, 0],
+  ['Salt', 'Bag', 50, 0],
+  ['MDCP 21%', 'Bag', 25, 0],
+  ['MDCP 22%', 'Bag', 25, 0],
+  ['Fish Meal 60%', 'Bag', 50, 0],
+  ['Full Fat Soybean Meal', 'Bag', 50, 0],
+  ['Maize', 'Bag', 50, 0],
+  ['Soybean Meal Hi Pro', 'Bag', 50, 0],
+  ['Soybean Meal Low Pro', 'Bag', 50, 0],
+  ['Rice Powder', 'Bag', 50, 0],
+  ['Soybean Hull', 'Bag', 50, 0],
+  ['Wheat Pollard', 'Bag', 50, 0],
+  ['Wheat Pollard', 'Bag', 55, 0],
+  ['Wheat Pollard', 'Bag', 45, 0]
+].each do |t|
+  ProductPackaging.create!(
+    product_id: Product.find_by_name1(t[0]).id,
+    packaging_id: Packaging.find_by_name(t[1]).id,
+    quantity: t[2],
+    cost: t[3]
+  )
+end
