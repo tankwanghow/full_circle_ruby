@@ -4,7 +4,7 @@ class CreateParticulars < ActiveRecord::Migration
       t.belongs_to :doc,             null: false, polymorphic: true
       t.string     :flag
       t.belongs_to :particular_type, null: false
-      t.string     :note,            null: false
+      t.string     :note
       t.decimal    :quantity,        precision: 12,  scale: 4, default: 0, null: false
       t.string     :unit,            null: false,    default: '-'
       t.decimal    :unit_price,      precision: 12,  scale: 4, default: 0, null: false

@@ -2,7 +2,7 @@ class Particular < ActiveRecord::Base
 
   belongs_to :particular_type
   belongs_to :doc, polymorphic: true
-  validates_presence_of :particular_type_name, :note, :unit
+  validates_presence_of :particular_type_name, :unit
   validates_numericality_of :quantity, :unit_price
 
   include ValidateBelongsTo
