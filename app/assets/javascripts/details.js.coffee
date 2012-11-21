@@ -26,7 +26,7 @@ window.detail = {
       elm = ($ this)
       $.get '/product/json', { name1: elm.val() }, (data) -> 
         elm.parents('.fields').find('[name="row_unit"]').val(data.unit)
-        elm.parents('.fields').find('.packaging').val('')
+        elm.parents('.fields').find('.packaging').val(data.first_packaging_name)
         elm.data('product-json', data)
         elm.parents('.fields').find('.packaging').change()
 
