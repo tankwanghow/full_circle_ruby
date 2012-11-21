@@ -106,7 +106,6 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
   padding-left: 80px;
 }
 
-
-a.add_nested_fields {
-  float: left;
+#main a:focus, #main input[type='submit']:focus {
+  color: black;
 }
