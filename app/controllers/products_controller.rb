@@ -50,7 +50,12 @@ class ProductsController < ApplicationController
   end
 
   def json
-    render json: Product.find_by_name1(params[:name1]) || 'Not Found!'
+    p = Product.find_by_name1(params[:name1])
+    if p
+      render json: p.attributes.merge!(first_packaging_name: p.product_packagings.first.pack_qty_name)
+    else
+      render json: 'Not Found!'
+    end
   end
 
 end
