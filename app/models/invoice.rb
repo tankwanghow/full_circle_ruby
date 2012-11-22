@@ -18,39 +18,29 @@ class Invoice < ActiveRecord::Base
 
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :invoice_amount,
-             content: [:id, :customer_name1, :credit_terms, :details_string, :invoice_amount, 
-                       :note, :particulars_string]
+             content: [:id, :customer_name1, :credit_terms, :details_audit_string, :invoice_amount, 
+                       :note, :particulars_audit_string]
 
   simple_audit username_method: :username do |r|
      {
       doc_date: r.doc_date.to_s,
       customer: r.customer_name1,
       credit_terms: r.credit_terms,
-      details: r.details_string,
+      details: r.details_audit_string,
       note: r.note,
-      particulars: r.particulars_string
+      particulars: r.particulars_audit_string
      }
   end
 
-  def details_string
-    details.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
+  include AuditString
+  audit_string :particulars, :details
 
-  def particulars_string
-    particulars.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
+  include SumNestedAttributes
+  sum_of :particulars, "quantity * unit_price"
+  sum_of :details, "quantity * unit_price"
 
   def invoice_amount
-    particulars.
-      select { |t| !t.marked_for_destruction? }.
-      inject(0) { |sum, p| sum + p.quantity * p.unit_price } +
-    details.
-      select { |t| !t.marked_for_destruction? }.
-      inject(0) { |sum, p| sum + p.quantity * p.unit_price }
+    particulars_amount + details_amount
   end
 
 private

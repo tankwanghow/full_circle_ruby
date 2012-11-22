@@ -15,7 +15,7 @@ class Product < ActiveRecord::Base
   
   include Searchable
   searchable content: [:name1, :name2, :unit, :sale_account_name1, :purchase_account_name1,
-                       :description, :category_list, :packagings_string]
+                       :description, :category_list, :product_packagings_audit_string]
 
   simple_audit username_method: :username do |r|
     {
@@ -26,12 +26,11 @@ class Product < ActiveRecord::Base
       purchase_account: r.purchase_account_name1,
       description: r.description,
       categories: r.category_list,
-      packagings: r.packagings_string
+      packagings: r.product_packagings_audit_string
     }
   end
 
-  def packagings_string
-    product_packagings.map{ |t| t.simple_audit_string }.join(' ')
-  end
+  include AuditString
+  audit_string :product_packagings
 
 end

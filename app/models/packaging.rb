@@ -4,19 +4,18 @@ class Packaging < ActiveRecord::Base
   has_many :products, through: :product_packagings
 
   include Searchable
-  searchable content: [:name, :products_string]
+  searchable content: [:name, :products_audit_string]
 
   accepts_nested_attributes_for :product_packagings, allow_destroy: true
 
   simple_audit username_method: :username do |r|
     {
       name: r.name,
-      packagings: r.products_string
+      packagings: r.products_audit_string
     }
   end
 
-  def products_string
-    product_packagings.map{ |t| t.simple_audit_string }.join(' ')
-  end
+  include AuditString
+  audit_string :products
 
 end

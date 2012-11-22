@@ -21,7 +21,7 @@ class Receipt < ActiveRecord::Base
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :cash_amount,
              content: [:id, :receive_from_name1, :cash_amount, 
-                       :note, :cheques_string, :matchers_string]
+                       :note, :cheques_audit_string, :matchers_audit_string]
 
   simple_audit username_method: :username do |r|
      {
@@ -29,28 +29,17 @@ class Receipt < ActiveRecord::Base
       customer: r.receive_from_name1,
       note: r.note,
       cash: r.cash_amount,
-      cheques: r.cheques_string,
-      matchers: r.matchers_string
+      cheques: r.cheques_audit_string,
+      matchers: r.matchers_audit_string
      }
   end
 
-  def matchers_string
-    matchers.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
+  include AuditString
+  audit_string :matchers, :cheques
 
-  def cheques_string
-    cheques.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
-
-  def cheques_amount
-    cheques.
-      select { |t| !t.marked_for_destruction? }.
-      inject(0) { |sum, p| sum + p.amount }
-  end
+  include SumNestedAttributes
+  sum_of :cheques, "amount"
+  sum_of :matchers, "amount"
 
   def receipt_amount
     cheques_amount + cash_amount

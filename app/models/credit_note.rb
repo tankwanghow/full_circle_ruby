@@ -19,33 +19,26 @@ class CreditNote < ActiveRecord::Base
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :credit_note_amount,
              content: [:id, :account_name1, :credit_note_amount, 
-                       :particulars_string, :matchers_string]
+                       :particulars_audit_string, :matchers_audit_string]
 
   simple_audit username_method: :username do |r|
      {
       doc_date: r.doc_date.to_s,
       account: r.account_name1,
-      particulars: r.particulars_string,
-      matchers: r.matchers_string
+      particulars: r.particulars_audit_string,
+      matchers: r.matchers_audit_string
      }
   end
 
-  def matchers_string
-    matchers.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
+  include AuditString
+  audit_string :particulars, :matchers
 
-  def particulars_string
-    particulars.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
+  include SumNestedAttributes
+  sum_of :particulars, "quantity * unit_price"
+  sum_of :matchers, "amount"
 
   def credit_note_amount
-    particulars.
-      select { |t| !t.marked_for_destruction? }.
-      inject(0) { |sum, p| sum + p.quantity * p.unit_price }
+    particulars_amount
   end
 
 private

@@ -20,45 +20,30 @@ class CashSale < ActiveRecord::Base
 
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :sales_amount,
-             content: [:id, :customer_name1, :details_string, :sales_amount, 
-                       :note, :particulars_string, :cheques_string]
+             content: [:id, :customer_name1, :details_audit_string, :sales_amount, 
+                       :note, :particulars_audit_string, :cheques_audit_string]
 
   simple_audit username_method: :username do |r|
      {
       doc_date: r.doc_date.to_s,
       customer: r.customer_name1,
-      details: r.details_string,
+      details: r.details_audit_string,
       note: r.note,
-      particulars: r.particulars_string,
-      cheques: r.cheques_string
+      particulars: r.particulars_audit_string,
+      cheques: r.cheques_audit_string
      }
   end
 
-  def details_string
-    details.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
+  include AuditString
+  audit_string :details, :particulars, :cheques
 
-  def particulars_string
-    particulars.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
-
-  def cheques_string
-    cheques.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
+  include SumNestedAttributes
+  sum_of :particulars, "quantity * unit_price"
+  sum_of :details, "quantity * unit_price"
+  sum_of :cheques, "amount"
 
   def sales_amount
-    particulars.
-      select { |t| !t.marked_for_destruction? }.
-      inject(0) { |sum, p| sum + p.quantity * p.unit_price } +
-    details.
-      select { |t| !t.marked_for_destruction? }.
-      inject(0) { |sum, p| sum + p.quantity * p.unit_price }
+    particulars_amount + details_amount
   end
 
 private
@@ -87,12 +72,6 @@ private
 
   def product_summary
     details.select{ |t| !t.marked_for_destruction? }.map { |t| t.product.name1 }.join(', ').truncate(70)
-  end
-
-  def cheques_amount
-    cheques.
-      select { |t| !t.marked_for_destruction? }.
-      inject(0) { |sum, p| sum + p.amount }
   end
 
   def build_cash_n_pd_chq_transaction

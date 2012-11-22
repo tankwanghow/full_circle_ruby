@@ -19,21 +19,21 @@ class Payment < ActiveRecord::Base
 
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :actual_debit_amount,
-             content: [:id, :pay_to_name1, :collector, :pay_to_particulars_string, :actual_debit_amount,
-                       :pay_from_name1, :cheque_date, :cheque_no, :pay_from_particulars_string, :actual_credit_amount]
+             content: [:id, :pay_to_name1, :collector, :pay_to_particulars_audit_string, :actual_debit_amount, :matchers_audit_string,
+                       :pay_from_name1, :cheque_date, :cheque_no, :pay_from_particulars_audit_string, :actual_credit_amount]
 
   simple_audit username_method: :username do |r|
     {
       doc_date: r.doc_date.to_s,
       pay_to: r.pay_to_name1,
       collector: r.collector,
-      pay_to_particulars: r.pay_to_particulars_string,
+      pay_to_particulars: r.pay_to_particulars_audit_string,
       actual_debit_amount: r.actual_debit_amount.to_money.format,
-      matchers: r.matchers_string,
+      matchers: r.matchers_audit_string,
       pay_from: r.pay_from_name1,
       cheque_no: r.cheque_no,
       cheque_date: r.cheque_date,
-      pay_from_particulars: r.pay_from_particulars_string,
+      pay_from_particulars: r.pay_from_particulars_audit_string,
       actual_credit_amount: r.actual_credit_amount.to_money.format
     }
   end
@@ -45,23 +45,11 @@ class Payment < ActiveRecord::Base
   validate_belongs_to :pay_to, :name1
   validate_belongs_to :pay_from, :name1
 
-  def pay_to_particulars_string
-    pay_to_particulars.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
+  include AuditString
+  audit_string :pay_to_particulars, :pay_from_particulars, :matchers
 
-  def pay_from_particulars_string
-    pay_from_particulars.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
-
-  def matchers_string
-    matchers.
-      select { |t| !t.marked_for_destruction? }.
-      map{ |t| t.simple_audit_string }.join(' ')
-  end
+  include SumNestedAttributes
+  sum_of :matchers, "amount"
 
 private
 
@@ -94,6 +82,7 @@ private
       account: pay_from,
       note: 'To ' + [pay_to.name1, collector].join(' by '),
       amount: -actual_debit_amount,
+      self_matched: matchers.sum(:amount),
       user: User.current
     )
   end
@@ -105,6 +94,7 @@ private
       account: pay_to,
       note: 'From ' + [pay_from.name1, collector].join(' by '),
       amount: actual_debit_amount,
+      self_matched: -matchers.sum(:amount),
       user: User.current
     )
   end
