@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @credit_note, html: { class: 'form-inline well', id: 'credit_note' } do |f|
+  %legend
+    = "Credit Note #" + ("%07d" % @credit_note.id)
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to_edit_action_buttons @credit_note, credit_note_journal_entries_path(@credit_note)

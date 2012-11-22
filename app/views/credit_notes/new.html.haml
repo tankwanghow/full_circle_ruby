@@ -1,0 +1,9 @@
+= render_flash
+= simple_nested_form_for @credit_note, html: { class: 'form-inline well', id: 'credit_note' } do |f|
+  %legend
+    New Credit Note
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', CreditNote.last ? edit_credit_note_path(CreditNote.last) : root_path, class: 'btn btn-warning'
+
