@@ -14,14 +14,6 @@ class Transaction < ActiveRecord::Base
   scope :bigger,     ->(val) { where('transaction_date > ?', val.to_date) }
   scope :smaller,    ->(val) { where('transaction_date < ?', val.to_date) }
 
-  def self_matched
-    if doc.respond_to?(:matchers)
-      doc.matchers.sum(:amount)
-    else
-      0
-    end
-  end
-
   def closed?
     raise 'Transactions closed CAN#NOT update or delete!' if closed 
   end
