@@ -9,12 +9,11 @@ class Document < ActiveRecord::Base
   pg_search_scope :search, against: :content, 
                   using: { 
                     tsearch: { any_word: true, prefix: true },
-                    dmetaphone: {},
-                    trigram: {}
+                    dmetaphone: {}
                   }
 
   scope :type_in, ->(values) { where('searchable_type ~* ?', values.map { |t| '^' + t + '$' }.join('|')) }
-  scope :amount_between, ->(larger, smaller) { amount_larger_eq(larger).amount_smaller(smaller) }
+  scope :amount_between, ->(larger, smaller) { amount_larger_eq(larger).amount_smaller_eq(smaller) }
   scope :amount_larger_eq, ->(val) { where('doc_amount >= ?', val) }
   scope :amount_smaller_eq, ->(val) { where('doc_amount <= ?', val) }
   scope :date_between, ->(from, to) { date_larger_eq(from.to_date).date_smaller_eq(to.to_date) }
@@ -52,7 +51,7 @@ class Document < ActiveRecord::Base
     elsif !start_date and end_date
       date_smaller_eq end_date
     else
-      where('0=0')
+      where "1=1"
     end
   end
 
@@ -64,23 +63,39 @@ class Document < ActiveRecord::Base
     elsif !larger and smaller
       amount_smaller_eq smaller
     else
-      where('0=0')
+      where "1=1"
     end
   end
 
   def self.by_types query
-    query ||= ''
-    types = query.scan(/\@[a-zA-Z]+/).each { |t| t.gsub!('@', '').capitalize! }
-    types.length > 0 ? type_in(types) : where('0=0')
+    types = search_types query
+    if types.count > 0
+      type_in types
+    else
+      where "1=1"
+    end
   end
 
   def self.by_term query
-    query ||= ''
-    term = query.gsub(/\@[a-zA-Z]+/, '').strip
-    !term.blank? ? search(term) : where('0=0')
+    terms = search_terms query
+    if !terms.blank?
+      search terms
+    else
+      where "1=1"
+    end
   end
 
 private
+
+  def self.search_terms query
+    query ||= ''
+    query.gsub(/\@[a-zA-Z]+/, '').strip
+  end
+
+  def self.search_types query
+    query ||= ''
+    query.scan(/\@[a-zA-Z]+/).each { |t| t.gsub!('@', '').capitalize! }
+  end
 
   def update_record_value
     if searchable.searchable_options[:doc_date]
@@ -90,7 +105,15 @@ private
     end
     self.doc_amount = searchable.send(searchable.searchable_options[:doc_amount]) if searchable.searchable_options[:doc_amount]
     methods = Array.wrap(searchable.searchable_options[:content])
-    searchable_text = methods.map { |symbol| searchable.send(symbol) }.compact.join("; ")
+    searchable_text = methods.map { |symbol| process(symbol) }.compact.join("; ")
     self.content = searchable_text
+  end
+
+  def process symbol
+    if symbol == :id
+      "#%07d" % searchable.send(symbol)
+    else
+      searchable.send symbol
+    end
   end
 end
