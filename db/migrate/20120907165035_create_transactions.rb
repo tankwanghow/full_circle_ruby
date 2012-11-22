@@ -7,6 +7,7 @@ class CreateTransactions < ActiveRecord::Migration
       t.integer    :terms
       t.string     :note,           null: false
       t.decimal    :amount,         default: 0, precision: 12, scale: 2
+      t.decimal    :self_matched,   default: 0, precision: 12, scale: 2
       t.boolean    :closed,         null: false, default: false
       t.boolean    :reconciled,     null: false, default: false
       t.belongs_to :user,           null: false

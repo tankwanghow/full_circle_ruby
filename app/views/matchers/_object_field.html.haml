@@ -4,15 +4,17 @@
   = f.hidden_field :doc_id
   = f.hidden_field :id
   = f.hidden_field :_destroy
-  .span3
+  .span2
     = f.input :transaction_date, input_html: { tabindex: -1, class: 'span', type: :text, readOnly: true, name: :trans_date }, wrapper: :table_field
   .span4
     = f.input :trans_doc_type_id, input_html: { tabindex: -1, class: 'span', type: :text, readOnly: true, name: :trans_doc_type_id }, wrapper: :table_field
   .span2
     = f.input :trans_terms, input_html: { tabindex: -1, class: 'numeric span', type: :text, readOnly: true, name: :trans_terms }, wrapper: :table_field
-  .span4
+  .span3
     = f.input :trans_amount, input_html: { tabindex: -1, class: 'amount numeric span', type: :text, readOnly: true, name: :trans_amount }, wrapper: :table_field
-  .span4
+  .span3
+    = f.input :self_matched, input_html: { tabindex: -1, class: 'numeric span', type: :text, readOnly: true, name: :trans_amount }, wrapper: :table_field
+  .span3
     = f.input :matched, input_html: { tabindex: -1, class: 'matched numeric span', type: :text, readOnly: true, name: :trans_matched }, wrapper: :table_field
   .span3
     = f.input :amount, input_html: { class: 'matching numeric span', type: :text }, wrapper: :table_field

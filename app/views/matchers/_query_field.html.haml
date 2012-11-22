@@ -1,7 +1,7 @@
 .fields
   .row-fluid
     = hidden_field_tag :placed_to_lineup_all_field
-    .span3
+    .span2
       .control-group.table-field.string.optional
         .controls
           = text_field_tag :transaction_date, nil, class: 'span', readOnly: true, tabindex: -1
@@ -13,11 +13,15 @@
       .control-group.table-field.string.optional
         .controls
           = text_field_tag :terms, nil, class: 'span', readOnly: true, tabindex: -1
-    .span4
+    .span3
       .control-group.table-field.string.optional
         .controls
           = text_field_tag :trans_amount, nil, class: 'span', readOnly: true, tabindex: -1
-    .span4
+    .span3
+      .control-group.table-field.string.optional
+        .controls
+          = text_field_tag :self_matched, nil, class: 'span', readOnly: true, tabindex: -1
+    .span3
       .control-group.table-field.string.optional
         .controls
           = text_field_tag :matched, nil, class: 'span', readOnly: true, tabindex: -1
@@ -36,9 +40,9 @@
       = hidden_field_tag matcher_attr_name(:transaction_id, qf, matcher_id), qf.id
       = hidden_field_tag matcher_attr_name(:doc_type, qf, matcher_id), params[:doc_type]
       = hidden_field_tag matcher_attr_name(:doc_id, qf, matcher_id), params[:doc_id]
-      = hidden_field_tag matcher_attr_name(:id, qf, matcher_id), qf.matcher_id
+      = hidden_field_tag(matcher_attr_name(:id, qf, matcher_id), matcher_id) if qf.matcher_id
       = hidden_field_tag matcher_attr_name(:_destroy, qf, matcher_id), false
-      .span3
+      .span2
         .control-group.table-field.string.optional
           .controls
             = text_field_tag :transaction_date, qf.transaction_date, class: 'span', readOnly: true, tabindex: -1
@@ -50,11 +54,15 @@
         .control-group.table-field.string.optional
           .controls
             = text_field_tag :terms, qf.terms, class: 'span', readOnly: true, tabindex: -1
-      .span4
+      .span3
         .control-group.table-field.string.optional
           .controls
             = text_field_tag :trans_amount, qf.amount, class: 'amount span numeric', readOnly: true, tabindex: -1
-      .span4
+      .span3
+        .control-group.table-field.string.optional
+          .controls
+            = text_field_tag :self_matched, qf.self_matched, class: 'span numeric', readOnly: true, tabindex: -1
+      .span3
         .control-group.table-field.string.optional
           .controls
             = text_field_tag :matched, qf.matched, class: 'matched span numeric', readOnly: true, tabindex: -1

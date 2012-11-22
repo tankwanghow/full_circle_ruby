@@ -17,6 +17,14 @@ class TransactionMatcher < ActiveRecord::Base
     TransactionMatcher.where("transaction_id = ? and id <> ?", transaction.id, self.id).sum(:amount)
   end
 
+  def self_matched
+    if transaction.doc.respond_to?(:matchers)
+      transaction.doc.matchers.sum(:amount)
+    else
+      0
+    end
+  end
+
   def trans_doc_type_id
     transaction.doc_type + (" #%07d" % transaction.doc_id)
   end

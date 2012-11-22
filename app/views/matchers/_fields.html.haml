@@ -5,11 +5,12 @@
 = text_field_tag :matcher_to, params[:matcher_to] || Date.today, {class: 'datepicker span5', placeholder: 'end date...'}
 = link_to 'Matching Transactions Query', '#', class: 'btn', id: 'matcher-query-btn'
 .row-fluid
-  .bold.table-header.span3 Date
+  .bold.table-header.span2 Date
   .bold.table-header.span4 Doc Type
   .bold.table-header.span2 Term
-  .bold.table-header.span4 Amount
-  .bold.table-header.span4 Matched
+  .bold.table-header.span3 Amount
+  .bold.table-header.span3 Self Matched
+  .bold.table-header.span3 Matched
   .bold.table-header.span3 Matching
   .bold.table-header.span3 Balance
 .row-fluid

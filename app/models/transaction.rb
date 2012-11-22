@@ -14,38 +14,45 @@ class Transaction < ActiveRecord::Base
   scope :bigger,     ->(val) { where('transaction_date > ?', val.to_date) }
   scope :smaller,    ->(val) { where('transaction_date < ?', val.to_date) }
 
-  private
-
-  def closed?
-    raise 'Transactions closed CANNOT update or delete!' if closed 
+  def self_matched
+    if doc.respond_to?(:matchers)
+      doc.matchers.sum(:amount)
+    else
+      0
+    end
   end
 
-  def self.with_matched_amount_and_balance account_name1, doc_type, doc_id, from, to
+  def closed?
+    raise 'Transactions closed CAN#NOT update or delete!' if closed 
+  end
+
+  def self.with_matched_amount_and_balance account_name1, in_doc_type, in_doc_id, from, to
     ac = Account.find_by_name1(account_name1)
-    doc_id = doc_id.blank? ? 0 : doc_id
+    in_doc_id = in_doc_id.blank? ? -1 : in_doc_id
     if ac
       matching = <<-BOL 
         (SELECT COALESCE(SUM(amount), 0) FROM transaction_matchers
            WHERE transaction_id = transactions.id
-             AND doc_type = '#{doc_type}'
-             AND doc_id = #{doc_id}) AS matching
+             AND doc_type = '#{in_doc_type}'
+             AND doc_id = #{in_doc_id}) AS matching
       BOL
       matched = <<-BOL
         (SELECT COALESCE(SUM(amount), 0) FROM transaction_matchers
            WHERE transaction_id = transactions.id
              AND id NOT IN (SELECT id FROM transaction_matchers
-                             WHERE doc_type = '#{doc_type}'
-                               AND doc_id = #{doc_id})) AS matched
+                             WHERE doc_type = '#{in_doc_type}'
+                               AND doc_id = #{in_doc_id})) AS matched
       BOL
       matcher_id = <<-BOL
         (SELECT id FROM transaction_matchers 
           WHERE transaction_id = transactions.id 
-            AND doc_type = '#{doc_type}' 
-            AND doc_id = #{doc_id}) AS matcher_id
+            AND doc_type = '#{in_doc_type}' 
+            AND doc_id = #{in_doc_id}) AS matcher_id
       BOL
-       Transaction.select(["transactions.*", matched, matching, matcher_id].join(', ')).
+       Transaction.
+         select(["transactions.*", matched, matching, matcher_id].join(', ')).
          where(account_id: ac.id).bigger_eq(from).smaller_eq(to).order("transaction_date").
-         where('doc_id <> ? and doc_type <> ?', doc_id, doc_type)
+         where('doc_type || doc_id <> ?', "#{in_doc_type}#{in_doc_id}")
     end
   end
 
