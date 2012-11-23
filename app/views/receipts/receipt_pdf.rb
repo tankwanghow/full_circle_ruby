@@ -114,9 +114,15 @@ include Prawn::Helper
     end
   end
 
+  def matchers_summary
+    @receipt.matchers.map do |t|
+      t.transaction.doc_type + ("#%07d" % t.transaction.doc_id)
+    end.join(', ')
+  end
+
   def draw_footer
     group do
-      bounding_box [12.mm, @detail_y + 5.mm], height: 25.mm, width: 100.mm do
+      bounding_box [12.mm, @detail_y], height: 20.mm, width: 130.mm do
         text_box "Note :\n" + @receipt.note, overflow: :shrink_to_fit, valign: :center, size: 10
       end if !@receipt.note.blank?
       line_width 1
@@ -128,6 +134,9 @@ include Prawn::Helper
       line_width 2
       stroke_horizontal_line 169.mm, 209.mm, at: @detail_y - 7.5.mm
       line_width 1
+      bounding_box [12.mm, @detail_y - 11.mm], height: 25.mm, width: 130.mm do
+        text_box "Receipt for:\n" + matchers_summary, overflow: :shrink_to_fit, valign: :center, size: 10
+      end if !matchers_summary.blank?
     end
   end
 
