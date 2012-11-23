@@ -13,6 +13,10 @@ class TransactionMatcher < ActiveRecord::Base
       self.amount.to_money.format ].join("_")
   end
 
+  def self_matched
+    transaction.self_matched
+  end
+
   def matched
     TransactionMatcher.where("transaction_id = ? and id <> ?", transaction.id, self.id).sum(:amount)
   end
