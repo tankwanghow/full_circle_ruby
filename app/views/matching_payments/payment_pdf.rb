@@ -120,7 +120,6 @@ class PaymentPdf < Prawn::Document
       line_width 1
     end
     draw_text @payment.collector, at: [152.mm, 21.mm], size: 9
-#    draw_text @payment.approved_user.try(:name), at: [7.mm, 21.mm], size: 9
   end
 
   def start_new_page_for_current_payment
