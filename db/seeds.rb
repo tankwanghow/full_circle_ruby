@@ -194,6 +194,22 @@ Account.create!(
 ParticularType.create!(
   name: 'Note'
 )
+ParticularType.create!(
+  party_type: 'Expense',
+  name: 'Discount on Goods Sold',
+  account_id: Account.find_by_name1('General Sales').id
+)
+ParticularType.create!(
+  party_type: 'Income',
+  name: 'Discount on Goods Purchased',
+  account_id: Account.find_by_name1('General Purchases').id
+)
+ParticularType.create!(
+  party_type: 'Expense',
+  name: 'Bank Charges',
+  account_id: Account.find_by_name1('Bank Charges').id
+)
+
 %w(Bulk Tray Bag).each do |t|
   Packaging.create!(
     name: t
