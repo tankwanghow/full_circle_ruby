@@ -44,7 +44,27 @@ class Transaction < ActiveRecord::Base
        Transaction.
          select(["transactions.*", matched, matching, matcher_id].join(', ')).
          where(account_id: ac.id).bigger_eq(from).smaller_eq(to).order("transaction_date").
-         where('doc_type || doc_id <> ?', "#{in_doc_type}#{in_doc_id}")
+         where('doc_type || doc_id <> ?', "#{in_doc_type}#{in_doc_id}").
+         where(decide_debit_or_credit_transaction? in_doc_type)
+    end
+  end
+
+private
+
+  def self.decide_debit_or_credit_transaction? in_doc_type
+    case in_doc_type
+    when "Payment"
+      'amount < 0'
+    when "Receipt"
+      'amount > 0'
+    when "CreditNote"
+      'amount > 0'
+    when "DebitNote"
+      'amount < 0'
+    when "ReturnChequeNotice"
+      'amount < 0'
+    else
+      '1=1'
     end
   end
 
