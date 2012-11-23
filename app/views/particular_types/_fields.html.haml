@@ -1,3 +1,3 @@
-= f.input :party_type, label: 'Type', collection: ['Incomes', 'Expenses'], autofocus: true
+= f.input :party_type, label: 'Type', collection: ['Income', 'Expense'], autofocus: true
 = f.input :name
 = f.input :account_name1, label: 'Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } }

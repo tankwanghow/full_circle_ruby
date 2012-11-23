@@ -12,12 +12,18 @@ window.matchers = {
           ($ '.matching').change()
       e.preventDefault()
 
+    ($ 'form').on 'click', '.auto_match', ->
+      balance = +($ this).closest('.fields').find('.balance').val()
+      ($ this).closest('.fields').find('.matching').val(-balance)
+      ($ '.matching').change()
+
     ($ 'form').on 'change', '.matching', ->
       amount = +($ this).closest('.fields').find('.amount').val()
       matched = +($ this).closest('.fields').find('.matched').val()
+      self_matched = +($ this).closest('.fields').find('.self_matched').val()
       matching = +($ this).val()
       balance = ($ this).closest('.fields').find('.balance')
-      balance.val (amount + matched + matching)
+      balance.val (amount + matched + matching + self_matched)
       if matching == 0
         ($ this).closest('.fields').find('[type=hidden][name*=_destroy]').val(true)
       else

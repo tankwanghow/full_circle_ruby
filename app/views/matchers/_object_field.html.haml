@@ -13,10 +13,11 @@
   .span3
     = f.input :trans_amount, input_html: { tabindex: -1, class: 'amount numeric span', type: :text, readOnly: true, name: :trans_amount }, wrapper: :table_field
   .span3
-    = f.input :self_matched, input_html: { tabindex: -1, class: 'numeric span', type: :text, readOnly: true, name: :trans_amount }, wrapper: :table_field
+    = f.input :self_matched, input_html: { tabindex: -1, class: 'self_matched numeric span', type: :text, readOnly: true, name: :trans_amount }, wrapper: :table_field
   .span3
     = f.input :matched, input_html: { tabindex: -1, class: 'matched numeric span', type: :text, readOnly: true, name: :trans_matched }, wrapper: :table_field
   .span3
     = f.input :amount, input_html: { class: 'matching numeric span', type: :text }, wrapper: :table_field
   .span3
     = f.input :trans_amount, input_html: { tabindex: -1, class: 'balance numeric span', type: :text, readOnly: true, name: :balance }, wrapper: :table_field
+  = check_box_tag "#{rand(99999)}", nil, f.object.amount != 0 ? true : false, class: 'auto_match'

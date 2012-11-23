@@ -65,6 +65,7 @@ private
       account: receive_from,
       note: transaction_note_summary,
       amount: -receipt_amount,
+      self_matched: -matchers_amount,
       user: User.current)
   end
 

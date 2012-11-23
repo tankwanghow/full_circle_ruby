@@ -61,7 +61,7 @@
       .span3
         .control-group.table-field.string.optional
           .controls
-            = text_field_tag :self_matched, qf.self_matched, class: 'span numeric', readOnly: true, tabindex: -1
+            = text_field_tag :self_matched, qf.self_matched, class: 'self_matched span numeric', readOnly: true, tabindex: -1
       .span3
         .control-group.table-field.string.optional
           .controls
@@ -74,3 +74,4 @@
         .control-group.table-field.string.optional
           .controls
             = text_field_tag :balance, qf.amount, class: 'span numeric balance', readOnly: true, tabindex: -1
+      = check_box_tag "#{rand(99999)}", nil, qf.matching.to_f != 0 ? true : false, class: 'auto_match'

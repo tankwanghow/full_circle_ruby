@@ -82,7 +82,6 @@ private
       account: pay_from,
       note: 'To ' + [pay_to.name1, collector].join(' by '),
       amount: -actual_debit_amount,
-      self_matched: matchers.sum(:amount),
       user: User.current
     )
   end
@@ -94,7 +93,7 @@ private
       account: pay_to,
       note: 'From ' + [pay_from.name1, collector].join(' by '),
       amount: actual_debit_amount,
-      self_matched: -matchers.sum(:amount),
+      self_matched: -matchers_amount,
       user: User.current
     )
   end

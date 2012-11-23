@@ -64,7 +64,7 @@ private
   def particulars_summary
     particulars.select{ |t| !t.marked_for_destruction? }.
       map { |t| t.particular_type.name + ' ' + t.note }.
-      join(', ').truncate(70)
+      join(', ').truncate(60)
   end
 
   def build_account_transaction
@@ -74,6 +74,7 @@ private
       account: account,
       note: particulars_summary,
       amount: -credit_note_amount,
+      self_matched: -matchers_amount,
       user: User.current)
   end
 end
