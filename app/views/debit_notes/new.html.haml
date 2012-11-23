@@ -1,0 +1,9 @@
+= render_flash
+= simple_nested_form_for @debit_note, html: { class: 'form-inline well', id: 'debit_note' } do |f|
+  %legend
+    New Debit Note
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', DebitNote.last ? edit_debit_note_path(DebitNote.last) : root_path, class: 'btn btn-warning'
+

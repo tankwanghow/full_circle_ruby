@@ -1,0 +1,20 @@
+.row-fluid
+  .span5
+    = f.input :account_name1, input_html: { class: 'span' }, label: 'Account', autofocus: true
+  .span3
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }
+#particulars
+  .row-fluid
+    = render_particulars_fields f, :particulars
+    .offset16.span3   
+      %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_particulars', type: 'text', readonly: true }
+#matcher-query
+  .row-fluid
+    = render 'matchers/fields', account_element: '#debit_note_account_name1', f: f
+    .offset17.span3
+      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_matched', type: 'text', readonly: true }
+      
+:javascript
+  $(document).ready(function() {
+    debit_note.init();
+  });
