@@ -7,14 +7,11 @@ class TransactionMatcher < ActiveRecord::Base
 
   delegate :transaction_date, to: :transaction
   delegate :amount, :terms, to: :transaction, prefix: :trans
+  delegate :self_matched, to: :transaction
 
   def simple_audit_string
     [ self.transaction.doc_type, "##{self.transaction.doc_id}",
       self.amount.to_money.format ].join("_")
-  end
-
-  def self_matched
-    transaction.self_matched
   end
 
   def matched
