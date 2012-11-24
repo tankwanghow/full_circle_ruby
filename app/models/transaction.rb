@@ -18,6 +18,13 @@ class Transaction < ActiveRecord::Base
     raise 'Transactions closed CAN#NOT update or delete!' if closed 
   end
 
+  include SumNestedAttributes
+  sum_of :matchers, "amount"
+
+  def balance
+    amount + matchers_amount
+  end
+
   def self.with_matched_amount_and_balance account_name1, in_doc_type, in_doc_id, from, to
     ac = Account.find_by_name1(account_name1)
     in_doc_id = in_doc_id.blank? ? -1 : in_doc_id
