@@ -1,0 +1,15 @@
+@import 'bootstrap/mixins';
+
+#cheque-query {
+  padding: 10px;
+  background-color: #89ED85;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  @include border-radius(5px);
+  border: 2px solid lightgray;
+  text-align: center;
+}
+
+#cheque-data input.deposited {
+  background-color: powderblue;
+}

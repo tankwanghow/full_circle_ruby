@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @deposit, html: { class: 'form-inline well', id: 'deposit' } do |f|
+  %legend
+    = "Deposit #" + ("%07d" % @deposit.id)
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to_edit_action_buttons @deposit, deposit_journal_entries_path(@deposit), false
