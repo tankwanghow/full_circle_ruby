@@ -7,4 +7,12 @@ module ChequesHelper
             text: 'Add Cheque'
   end
 
+  def cheque_attr_name(field, chq_id)
+    "#{params[:doc_type].underscore}[cheques_attributes][" + chq_id.to_s + "][#{field.to_s}]"
+  end
+
+  def deposited? cheque
+    !cheque.cr_doc_id.blank? ? ' deposited' : ''
+  end
+
 end
