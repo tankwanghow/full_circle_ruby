@@ -37,11 +37,11 @@
   .fields
     .row-fluid
       - matcher_id = qf.matcher_id || rand(999999999)
-      = hidden_field_tag matcher_attr_name(:transaction_id, qf, matcher_id), qf.id
-      = hidden_field_tag matcher_attr_name(:doc_type, qf, matcher_id), params[:doc_type]
-      = hidden_field_tag matcher_attr_name(:doc_id, qf, matcher_id), params[:doc_id]
-      = hidden_field_tag(matcher_attr_name(:id, qf, matcher_id), matcher_id) if qf.matcher_id
-      = hidden_field_tag matcher_attr_name(:_destroy, qf, matcher_id), false
+      = hidden_field_tag matcher_attr_name(:transaction_id, matcher_id), qf.id
+      = hidden_field_tag matcher_attr_name(:doc_type, matcher_id), params[:doc_type]
+      = hidden_field_tag matcher_attr_name(:doc_id, matcher_id), params[:doc_id]
+      = hidden_field_tag(matcher_attr_name(:id, matcher_id), matcher_id) if qf.matcher_id
+      = hidden_field_tag matcher_attr_name(:_destroy, matcher_id), false
       .span2
         .control-group.table-field.string.optional
           .controls
@@ -69,7 +69,7 @@
       .span3
         .control-group.table-field.string.optional
           .controls
-            = text_field_tag matcher_attr_name(:amount, qf, matcher_id), qf.matching, class: 'span numeric matching'
+            = text_field_tag matcher_attr_name(:amount, matcher_id), qf.matching, class: 'span numeric matching'
       .span3
         .control-group.table-field.string.optional
           .controls
