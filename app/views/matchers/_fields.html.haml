@@ -1,8 +1,10 @@
 = hidden_field_tag :matcher_account_element, account_element
 = hidden_field_tag :matcher_doc_type, f.object.class
 = hidden_field_tag :matcher_doc_id, f.object.id
-= text_field_tag :matcher_from, params[:matcher_from] || Date.today.beginning_of_month, {class: 'datepicker span5', placeholder: 'start date...'}
-= text_field_tag :matcher_to, params[:matcher_to] || Date.today, {class: 'datepicker span5', placeholder: 'end date...'}
+= label_tag :start, nil, class: 'bold'
+= text_field_tag :matcher_from, params[:matcher_from] || Date.today.beginning_of_month, {class: 'datepicker span3', placeholder: 'start date...'}
+= label_tag :end, nil, class: 'bold'
+= text_field_tag :matcher_to, params[:matcher_to] || Date.today, {class: 'datepicker span3', placeholder: 'end date...'}
 = link_to 'Matching Transactions Query', '#', class: 'btn', id: 'matcher-query-btn'
 .row-fluid
   .bold.table-header.span2 Date
