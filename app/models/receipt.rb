@@ -5,7 +5,7 @@ class Receipt < ActiveRecord::Base
   has_many :cheques, as: :db_doc
   has_many :matchers, class_name: 'TransactionMatcher', as: :doc
 
-  validates_presence_of :receive_from_id, :doc_date
+  validates_presence_of :receive_from_name1, :doc_date
   validates_numericality_of :cash_amount, greater_than: -0.0001
 
   before_save :build_transactions
@@ -37,7 +37,7 @@ class Receipt < ActiveRecord::Base
   include AuditString
   audit_string :matchers, :cheques
 
-  include SumNestedAttributes
+  include SumAttributes
   sum_of :cheques, "amount"
   sum_of :matchers, "amount"
 
@@ -70,10 +70,13 @@ private
   end
 
   def transaction_note_summary
-    'Being ' +
-    (cash_amount > 0 ? 'Cash, ' : '') +
-    (cheques.size > 0 ? pluralize(cheques.size, 'cheque') : '') +
-    ' recevied'
+    if cash_amount > 0 and cheques_amount > 0
+      'Being Cash and ' + pluralize(cheques.size, 'cheque') + ' received'
+    elsif  cash_amount > 0 and cheques_amount == 0
+      'Being Cash received'
+    elsif cash_amount == 0 and cheques_amount > 0
+      'Being ' + pluralize(cheques.size, 'cheque') + ' received'
+    end
   end
 
   def build_cash_n_pd_chq_transaction
@@ -94,7 +97,7 @@ private
           doc: self,
           transaction_date: doc_date,
           account: Account.find_by_name1('Post Dated Cheques'),
-          note: [receive_from_name1, t.bank, t.chq_no, t.city, t.due_date].join(' '),
+          note: "From #{receive_from_name1}, " + [t.bank, t.chq_no, t.city, t.due_date].join(' '),
           amount: t.amount,
           user: User.current)
       end

@@ -4,7 +4,7 @@ class PurInvoice < ActiveRecord::Base
   has_many :transactions, as: :doc
   has_many :details, order: 'product_id', class_name: "PurInvoiceDetail"
 
-  validates_presence_of :credit_terms, :supplier_id, :doc_date
+  validates_presence_of :credit_terms, :supplier_name1, :doc_date
 
   before_save :build_transactions
 
@@ -35,7 +35,7 @@ class PurInvoice < ActiveRecord::Base
   include AuditString
   audit_string :particulars, :details
 
-  include SumNestedAttributes
+  include SumAttributes
   sum_of :particulars, "quantity * unit_price"
   sum_of :details, "quantity * unit_price"
 

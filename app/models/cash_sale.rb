@@ -5,7 +5,7 @@ class CashSale < ActiveRecord::Base
   has_many :details, order: 'product_id', class_name: "CashSaleDetail"
   has_many :cheques, as: :db_doc
 
-  validates_presence_of :customer_id, :doc_date
+  validates_presence_of :customer_name1, :doc_date
 
   before_save :build_transactions
 
@@ -37,7 +37,7 @@ class CashSale < ActiveRecord::Base
   include AuditString
   audit_string :details, :particulars, :cheques
 
-  include SumNestedAttributes
+  include SumAttributes
   sum_of :particulars, "quantity * unit_price"
   sum_of :details, "quantity * unit_price"
   sum_of :cheques, "amount"

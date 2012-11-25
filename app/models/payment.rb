@@ -48,7 +48,7 @@ class Payment < ActiveRecord::Base
   include AuditString
   audit_string :pay_to_particulars, :pay_from_particulars, :matchers
 
-  include SumNestedAttributes
+  include SumAttributes
   sum_of :matchers, "amount"
 
 private
@@ -80,7 +80,7 @@ private
       doc: self,
       transaction_date: doc_date,
       account: pay_from,
-      note: 'To ' + [pay_to.name1, collector].join(' by '),
+      note: 'To ' + [pay_to.name1, collector].join(', by '),
       amount: -actual_debit_amount,
       user: User.current
     )
@@ -91,7 +91,7 @@ private
       doc: self,
       transaction_date: doc_date,
       account: pay_to,
-      note: 'From ' + [pay_from.name1, collector].join(' by '),
+      note: 'From ' + [pay_from.name1, collector].join(', by '),
       amount: actual_debit_amount,
       self_matched: -matchers_amount,
       user: User.current

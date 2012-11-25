@@ -4,7 +4,7 @@ class CreditNote < ActiveRecord::Base
   has_many :transactions, as: :doc
   has_many :matchers, class_name: 'TransactionMatcher', as: :doc
 
-  validates_presence_of :account_id, :doc_date
+  validates_presence_of :account_name1, :doc_date
 
   before_save :build_transactions
 
@@ -33,7 +33,7 @@ class CreditNote < ActiveRecord::Base
   include AuditString
   audit_string :particulars, :matchers
 
-  include SumNestedAttributes
+  include SumAttributes
   sum_of :particulars, "quantity * unit_price"
   sum_of :matchers, "amount"
 
