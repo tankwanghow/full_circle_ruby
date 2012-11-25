@@ -18,7 +18,7 @@ class Transaction < ActiveRecord::Base
     raise 'Transactions closed CAN#NOT update or delete!' if closed 
   end
 
-  include SumNestedAttributes
+  include SumAttributes
   sum_of :matchers, "amount"
 
   def balance
