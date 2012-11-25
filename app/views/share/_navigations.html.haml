@@ -15,6 +15,7 @@
         = menu_child 'Cash Sale', cash_sale_new_or_edit_path
         = menu_child 'Sales Invoice', invoice_new_or_edit_path
         = menu_child 'Purchase Invoice', pur_invoice_new_or_edit_path
-      = menu 'Bank'
+      = menu 'Bank' do
+        = menu_child 'Deposit', deposit_new_or_edit_path
       = menu 'Payroll'
       = menu_child 'Transactions', transactions_path, class: 'bold', id: 'nav-transactions'
