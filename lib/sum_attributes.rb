@@ -1,6 +1,6 @@
 require "active_support/concern"
 
-module SumNestedAttributes
+module SumAttributes
   extend ActiveSupport::Concern
 
   module ClassMethods
