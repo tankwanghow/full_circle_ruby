@@ -3,7 +3,7 @@ module ApplicationHelper
   def render_flash
     a = ''
     flash.each do |name, msg|
-      a << content_tag(:div, class: "alert alert-#{name}") do
+      a << content_tag(:div, class: "alert alert-#{name}", style: 'display: none;') do
         stamped_msg = "#{DateTime.now.to_s(:rfc822)} - <strong>#{msg}</strong>".html_safe
         content_tag(:button, '&times;'.html_safe, class: 'close', data: { dismiss: 'alert' }) +  
         content_tag(:div, stamped_msg, id: "flash_#{name}") if msg.is_a?(String)
