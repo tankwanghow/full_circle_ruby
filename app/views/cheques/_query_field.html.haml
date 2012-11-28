@@ -1,20 +1,26 @@
-- for chq in @cheques
+- if @cheques.count > 0
+  - for chq in @cheques
+    .fields
+      .row-fluid
+        - chq_id = chq.id || rand(999999999)
+        = hidden_field_tag cheque_attr_name(:id, chq_id), chq_id
+        .span4
+          = text_field_tag :bank, chq.bank, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
+        .span3
+          = text_field_tag :chq_no, chq.chq_no, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
+        .span4
+          = text_field_tag :city, chq.city, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
+        .span4
+          = text_field_tag :state, chq.state, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
+        .span4
+          = text_field_tag :due_date, chq.due_date, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
+        .span3
+          = text_field_tag :amount, chq.amount, class: 'span numeric amount' + deposited?(chq), readOnly: true, tabindex: -1
+        .span1
+          = hidden_field_tag cheque_attr_name(:_destroy, chq.id), false
+          = link_to "X", 'javascript:void(0)', class: 'btn btn-danger remove_nested_fields', data: { association: 'cheques' }, tabindex: -1
+- else
   .fields
     .row-fluid
-      - chq_id = chq.id || rand(999999999)
-      = hidden_field_tag cheque_attr_name(:id, chq_id), chq_id
-      .span4
-        = text_field_tag :bank, chq.bank, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
-      .span3
-        = text_field_tag :chq_no, chq.chq_no, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
-      .span4
-        = text_field_tag :city, chq.city, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
-      .span4
-        = text_field_tag :state, chq.state, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
-      .span4
-        = text_field_tag :due_date, chq.due_date, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
-      .span3
-        = text_field_tag :amount, chq.amount, class: 'span numeric amount' + deposited?(chq), readOnly: true, tabindex: -1
-      .span1
-        = hidden_field_tag cheque_attr_name(:_destroy, chq.id), false
-        = link_to "X", 'javascript:void(0)', class: 'btn btn-danger remove_nested_fields', data: { association: 'cheques' }, tabindex: -1
+      .span23
+        %h4.no-record{style: 'display: none'} No Cheque found!

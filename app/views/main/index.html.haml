@@ -16,7 +16,7 @@
             = f.button :submit, 'Search', class: 'btn-primary'
             = link_to 'Clear', '#', class: 'btn btn-danger', id: 'clear-advance-search-form', 'data-skip-pjax' => true
 - if @docs.length == 0
-  %h1 No record found!
+  %h1.no-record{style: 'display: none'} No record found!
 - else
   = paginate @docs
 - for doc in @docs

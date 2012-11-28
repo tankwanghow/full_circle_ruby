@@ -15,6 +15,7 @@ window.deposit = {
         , (data) -> 
           ($ '#cheque-data').html(data)
           ($ '#cheque-data .amount').change()
+          ($ 'h4.no-record').slideDown 1000
       e.preventDefault()
 }
 
