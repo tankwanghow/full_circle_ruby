@@ -1,14 +1,19 @@
 $ ->
   app.standardInit()
-
-  ($ 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax]):not([data-method="delete"])').pjax('[data-pjax-container]')
+  
+  $(document).on 'click', 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax]):not([data-method="delete"])', (event) ->
+    container = $('[data-pjax-container]')
+    $.pjax.click(event, container)
 
   $(document).on 'submit', 'form', (event) ->
     container = ($ '[data-pjax-container]')
     $.pjax.submit(event, container)
 
   ($ '[data-pjax-container]').on 'pjax:end', ->
+    $('.alert, .no-record').slideDown(1000)
     app.standardInit()
+
+  $('.alert, .no-record').slideDown(1000)
 
 window.math = {
 
