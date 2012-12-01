@@ -1,0 +1,33 @@
+- stuff_cheque_id_error_to_chq_no f.object
+.row-fluid
+  .span6
+    = f.input :return_to_name1, input_html: { class: 'span' }, label: 'Return To', autofocus: true
+  .span3
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date'
+  .span4
+    = f.input :reason, input_html: { class: 'span' }
+#cheque-query
+  .row-fluid
+    = render 'cheque_query', account_element: '#return_cheque_return_to_name1', f: f
+.row-fluid
+  .span6
+    = f.input :return_from_name1, input_html: { class: 'span', readOnly: true }, label: 'Return From'
+.row-fluid
+  = f.hidden_field :cheque_id
+  .span4
+    = f.input :bank, input_html: { class: 'span', readOnly: true }
+  .span4
+    = f.input :chq_no, input_html: { class: 'span', readOnly: true}, label: 'Cheque No'
+  .span4
+    = f.input :city, input_html: { class: 'span', readOnly: true }
+  .span4
+    = f.input :state, input_html: { class: 'span', readOnly: true }
+  .span3
+    = f.input :due_date, as: :string, input_html: { class: 'span', readOnly: true }
+  .span4
+    = f.input :amount, as: :string, input_html: { class: 'bold span numeric', readOnly: true }
+
+:javascript
+  $(document).ready(function() {
+    return_cheque.init();
+  });

@@ -1,0 +1,5 @@
+= label_tag :chq_no, 'Cheque No', class: 'bold'
+= text_field_tag :chq_no, params[:chq_no]
+= label_tag :bank, 'Bank', class: 'bold'
+= text_field_tag :bank, params[:bank]
+= link_to 'Get Cheque', '#', class: 'btn', id: 'rtn-cheque-query-btn'
