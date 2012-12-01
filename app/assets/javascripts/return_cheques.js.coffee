@@ -1,6 +1,7 @@
 window.return_cheque = {
   init: ->
     app.typeahead_init '#return_cheque_return_to_name1', '/account/typeahead_name1'
+    app.typeahead_init '#return_cheque_reason', '/return_cheque/typeahead_reason'
 
     ($ '#rtn-cheque-query-btn').click (e) ->
       $.get '/get_return_cheque', 
