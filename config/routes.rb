@@ -62,6 +62,7 @@ FullCircle::Application.routes.draw do
     resources :journal_entries, only: [:index]
   end
   get 'return_cheque/new_or_edit' => 'return_cheques#new_or_edit'
+  get 'return_cheque/typeahead_reason' => 'return_cheques#typeahead_reason'
 
   resources :pur_invoices, only: [:new, :edit, :update, :create] do
     resources :journal_entries, only: [:index]
@@ -83,6 +84,11 @@ FullCircle::Application.routes.draw do
   get 'packaging/typeahead_product_package_name' => 'packagings#typeahead_product_package_name'
   get 'packaging/typeahead_name' => 'packagings#typeahead_name'
   get 'packaging/json' => 'packagings#json'
+
+  resources :journals, only: [:new, :edit, :update, :create, :show] do
+    resources :journal_entries, only: [:index]
+  end
+  get 'journal/new_or_edit' => 'journals#new_or_edit'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @journal, html: { class: 'form-inline well', id: 'journal' } do |f|
+  %legend
+    New Journal
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', Journal.last ? edit_journal_path(Journal.last) : root_path, class: 'btn btn-warning'

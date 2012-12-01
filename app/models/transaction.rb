@@ -14,12 +14,19 @@ class Transaction < ActiveRecord::Base
   scope :bigger,     ->(val) { where('transaction_date > ?', val.to_date) }
   scope :smaller,    ->(val) { where('transaction_date < ?', val.to_date) }
 
+  def simple_audit_string
+    [ transaction_date, doc_type, doc_id, account.name1, terms, note, amount, closed, reconciled ].join("_")
+  end
+
   def closed?
     raise 'Transactions closed CAN#NOT update or delete!' if closed 
   end
 
   include SumAttributes
   sum_of :matchers, "amount"
+
+  include ValidateBelongsTo
+  validate_belongs_to :account, :name1
 
   def balance
     amount + matchers_amount

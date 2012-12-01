@@ -1,0 +1,13 @@
+.row-fluid
+  .span3
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date'
+#transactions
+  .row-fluid
+    = render_journal_transaction_fields f, :transactions
+    .offset10.span3   
+      %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_transactions', type: 'text', readonly: true }
+
+:javascript
+  $(document).ready(function() {
+    journal.init();
+  });
