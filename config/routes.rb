@@ -6,7 +6,8 @@ FullCircle::Application.routes.draw do
   match 'search' => 'main#index', as: :search
   match 'transactions' => 'transactions#index', as: :transactions
   match 'matchers' => 'matchers#index'
-  match 'cheques' => 'cheques#index'
+  match 'depositable_cheques' => 'cheques#depositable'
+  match 'get_return_cheque' => 'cheques#return_cheque'
   
   root to: 'main#index'
   resources :audit_logs, only: :index
@@ -56,6 +57,11 @@ FullCircle::Application.routes.draw do
     resources :journal_entries, only: [:index]
   end
   get 'deposit/new_or_edit' => 'deposits#new_or_edit'
+
+  resources :return_cheques, only: [:new, :edit, :update, :create, :show] do
+    resources :journal_entries, only: [:index]
+  end
+  get 'return_cheque/new_or_edit' => 'return_cheques#new_or_edit'
 
   resources :pur_invoices, only: [:new, :edit, :update, :create] do
     resources :journal_entries, only: [:index]

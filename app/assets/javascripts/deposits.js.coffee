@@ -7,7 +7,7 @@ window.deposit = {
     ($ '#cheque-data .amount').change()
 
     ($ '#cheque-query-btn').click (e) ->
-      $.get '/cheques', 
+      $.get '/depositable_cheques', 
         due_date:($ '#due_date').val()
         doc_id: ($ '#doc_id').val()
         doc_type: ($ '#doc_type').val()
