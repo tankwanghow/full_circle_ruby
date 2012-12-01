@@ -61,9 +61,16 @@ private
 
   def build_transactions
     transactions.destroy_all
+    set_cheques_account
     build_cash_transaction if cash_amount > 0
     build_pd_chq_transaction if cheques_amount > 0
     validates_transactions_balance
+  end
+
+  def set_cheques_account
+    cheques.select { |t| !t.marked_for_destruction? }.each do |t|
+      t.cr_ac = bank
+    end
   end
 
   def build_cash_transaction

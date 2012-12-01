@@ -50,10 +50,17 @@ private
 
   def build_transactions
     transactions.destroy_all
+    set_cheques_account
     build_cash_n_pd_chq_transaction
     build_details_transactions
     build_particulars_transactions
     validates_transactions_balance
+  end
+
+  def set_cheques_account
+    cheques.select { |t| !t.marked_for_destruction? }.each do |t|
+      t.db_ac = customer
+    end
   end
 
   def build_details_transactions

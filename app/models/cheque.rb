@@ -1,6 +1,8 @@
 class Cheque < ActiveRecord::Base
   belongs_to :db_doc, polymorphic: true
   belongs_to :cr_doc, polymorphic: true
+  belongs_to :db_ac, :class_name => "Account"
+  belongs_to :cr_ac, :class_name => "Account"
   validates_presence_of :bank, :chq_no, :city, :state, :due_date, :amount
   validates_numericality_of :amount, greater_than: 0
 
