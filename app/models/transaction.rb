@@ -68,7 +68,7 @@ private
       'amount > 0'
     when "DebitNote"
       'amount < 0'
-    when "ReturnChequeNotice"
+    when "ReturnCheque"
       'amount < 0'
     else
       '1=1'
