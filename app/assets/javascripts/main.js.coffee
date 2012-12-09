@@ -10,10 +10,10 @@ $ ->
     $.pjax.submit(event, container)
 
   ($ '[data-pjax-container]').on 'pjax:end', ->
-    $('.alert, .no-record').slideDown(1000)
+    $('.alert, .no-record').fadeIn(1000)
     app.standardInit()
 
-  $('.alert, .no-record').slideDown(1000)
+  $('.alert, .no-record').fadeIn(1000)
 
 window.math = {
 
