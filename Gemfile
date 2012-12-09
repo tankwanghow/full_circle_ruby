@@ -25,6 +25,7 @@ gem 'pg_search'
 gem 'pjax_rails'
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'mousetrap-rails'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
