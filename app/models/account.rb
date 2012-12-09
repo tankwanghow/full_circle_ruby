@@ -5,6 +5,7 @@ class Account < ActiveRecord::Base
   validates :account_type_id, presence: true
   validates :name1, presence: true, uniqueness: true
   has_one :mailing_address, as: :addressable, conditions: ["addresses.address_type ~* ?", "mailing|both"], class_name: "Address"
+  has_one :fixed_asset, dependent: :destroy, validate: true
 
   include Searchable
   searchable content: [:name1, :name2, :type_name, :description, :status]
@@ -17,6 +18,10 @@ class Account < ActiveRecord::Base
       admin_lock: r.admin_lock,
       description: r.description
     }
+  end
+
+  def is_fixed_assets?
+    true if account_type.descendant_of?(AccountType.find_by_name 'Fixed Assets')
   end
 
   def type_name

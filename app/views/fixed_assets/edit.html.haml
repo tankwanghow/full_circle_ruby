@@ -1,0 +1,9 @@
+= render_flash
+= simple_nested_form_for @asset, html: { class: 'offset2 span21 form-inline well' } do |f|
+  %legend
+    = "Asset information for #{@asset.account.name1}"
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', edit_fixed_asset_path(@asset), class: 'btn btn-warning'
+    = link_to 'Back to Account', edit_account_path(@asset.account), class: 'btn btn-info'

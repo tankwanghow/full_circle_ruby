@@ -28,6 +28,8 @@ FullCircle::Application.routes.draw do
   resources :account_types, only: [:new, :edit, :update, :create, :destroy]
   resource :sessions, only: [:new, :create, :destroy]
   resources :addresses, only: [:new, :edit, :update, :create, :destroy]
+  resources :fixed_assets, only: [:new, :edit, :update, :create, :destroy]
+  resources :asset_additions, only: [:edit, :update]
 
   resources :payments, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]

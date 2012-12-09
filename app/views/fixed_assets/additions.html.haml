@@ -1,0 +1,20 @@
+= render_flash
+= simple_nested_form_for @addition, html: { class: 'offset2 span21 form-inline well' } do |f|
+  %legend
+    = "Asset #{@addition.entry_date.to_s} #{@addition.asset.account.name1}"
+  %h3 Depreciations
+  #depreciations
+    .row-fluid
+      = render_depreciations_fields f, :depreciations
+  %h3 Disposals
+  #disposals
+    .row-fluid
+      = render_disposals_fields f, :disposals
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Back to Addition', edit_fixed_asset_path(@addition.asset), class: 'btn btn-warning'
+
+:javascript
+  $(document).ready(function() {
+    asset.addition_init();
+  });

@@ -1,0 +1,12 @@
+= f.hidden_field :account_id
+.row-fluid
+  .span3
+    = f.input :depreciation_rate, input_html: { class: 'numeric span', type: :text }
+#additions
+  .row-fluid
+    = render_additions_fields f, :additions
+
+:javascript
+  $(document).ready(function() {
+    asset.init();
+  });
