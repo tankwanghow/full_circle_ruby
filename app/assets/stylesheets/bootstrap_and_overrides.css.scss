@@ -36,9 +36,13 @@ legend {
 
 ul.nav li a#nav-transactions { color: red; }
 
-.alert, .center-text {
-  text-align: center;
+.alert {
+  position: fixed;
+  top: 5px;
+  z-index: 999999999;
 }
+
+.center-text { text-align: center; }
 
 .bold.table-header {
   text-align: center;
