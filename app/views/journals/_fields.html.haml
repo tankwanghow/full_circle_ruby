@@ -7,7 +7,5 @@
     .offset10.span3   
       %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_transactions', type: 'text', readonly: true }
 
-:javascript
-  $(document).ready(function() {
-    journal.init();
-  });
+:coffee
+  ($ document).ready -> journal.init()

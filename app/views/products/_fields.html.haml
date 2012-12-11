@@ -20,7 +20,5 @@
   .span6
     = f.input :description, input_html: { rows: 4, class: 'span' }
 
-:javascript
-  $(document).ready(function() {
-    product.init();
-  });
+:coffee
+  ($ document).ready -> product.init()

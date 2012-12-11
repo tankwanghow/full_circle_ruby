@@ -7,7 +7,5 @@
     %a{href: '#', id: 'css-treeview-collapse', class: 'btn btn-danger', 'data-skip-pjax' => true }Collapse
     = render_chart_of_account
 
-:javascript
-  $(document).ready(function() {
-    chart_of_account.init();
-  });
+:coffee
+  ($ document).ready -> chart_of_account.init()

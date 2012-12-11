@@ -5,7 +5,5 @@
     .span17
       = render_products_fields f, :product_packagings
 
-:javascript
-  $(document).ready(function() {
-    packaging.init();
-  });
+:coffee
+  ($ document).ready -> packaging.init()

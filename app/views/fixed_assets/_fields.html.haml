@@ -6,7 +6,5 @@
   .row-fluid
     = render_additions_fields f, :additions
 
-:javascript
-  $(document).ready(function() {
-    asset.init();
-  });
+:coffee
+  ($ document).ready -> asset.init()

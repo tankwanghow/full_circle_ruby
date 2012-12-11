@@ -21,7 +21,5 @@
   .offset18
     = f.input :invoice_amount, input_html: { tabindex: -1, class: 'bold numeric', type: :text, name: 'invoice_amount' }, label_html: { class: 'bold' }, readonly: true
 
-:javascript
-  $(document).ready(function() {
-    pur_invoice.init();
-  });
+:coffee
+  ($ document).ready -> pur_invoice.init()

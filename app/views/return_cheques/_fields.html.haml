@@ -27,7 +27,5 @@
   .span4
     = f.input :amount, as: :string, input_html: { class: 'bold span numeric', readOnly: true }
 
-:javascript
-  $(document).ready(function() {
-    return_cheque.init();
-  });
+:coffee
+  ($ document).ready -> return_cheque.init()

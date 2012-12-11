@@ -11,7 +11,5 @@
     .offset19.span3
       %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_cheques', type: 'text', readonly: true }
 
-:javascript
-  $(document).ready(function() {
-    deposit.init();
-  });
+:coffee
+  ($ document).ready -> deposit.init()

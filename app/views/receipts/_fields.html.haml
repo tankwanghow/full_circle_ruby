@@ -24,7 +24,5 @@
     .offset17.span3
       %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_matched', type: 'text', readonly: true }
 
-:javascript
-  $(document).ready(function() {
-    receipt.init();
-  });
+:coffee
+  ($ document).ready -> receipt.init()

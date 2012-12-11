@@ -27,7 +27,5 @@
       .offset16.span3   
         %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_pay_from_particulars', type: 'text', readonly: true }
       
-:javascript
-  $(document).ready(function() {
-    payment.init();
-  });
+:coffee
+  ($ document).ready -> payment.init()
