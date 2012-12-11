@@ -63,4 +63,14 @@ module ApplicationHelper
     return "C.B.D." if term == -1
   end
 
+  def try_try(object, *methods)
+    methods.each do |m|
+      if object.respond_to?(m)
+        if object.try(m)
+          return object.try(m)
+        end
+      end
+    end
+  end
+
 end
