@@ -15,17 +15,20 @@ gem 'simple_audit', git: 'git://github.com/tankwanghow/simple_audit.git'
 gem "sentient_user"
 gem 'aasm'
 gem 'nested_form'
-#gem 'cancan'
-#gem 'coffeebeans'
 gem 'prawn'
 gem 'simple_form'
+gem 'haml', "~> 3.2.0.rc.1"
 gem 'haml-rails'
-#gem 'tinymce-rails'
 gem 'pg_search'
 gem 'pjax_rails'
+gem 'mousetrap-rails'
+
+#gem 'tinymce-rails'
+#gem 'cancan'
+#gem 'coffeebeans'
+
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
-gem 'mousetrap-rails'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
