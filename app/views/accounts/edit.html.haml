@@ -17,9 +17,4 @@
     .row-fluid
       - if @account.addresses.count > 0
         - for address in @account.addresses
-          .address.center-text.span8
-            .label.label-info= address.address_type
-            = html_format address
-            .btn-group
-              = link_to 'Edit', edit_address_path(address), class: 'btn btn-warning'
-              = link_to 'Delete', address, method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger'
+          = render 'addresses/address', address: address

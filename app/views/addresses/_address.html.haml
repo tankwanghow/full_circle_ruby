@@ -1,0 +1,8 @@
+.address.center-text.span5
+  .label.label-info= address.address_type
+  %br
+  = html_format address
+  %br
+  .btn-group
+    = link_to 'Edit', edit_address_path(address), class: 'btn btn-warning'
+    = link_to 'Delete', address, method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger'
