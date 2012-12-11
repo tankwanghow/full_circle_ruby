@@ -47,7 +47,5 @@
       %td.bold= total.to_money.format if total >= 0
       %td.bold= total.abs.to_money.format if total <= 0
   
-:javascript
-  $(document).ready(function() {
-    transaction.init();
-  });
+:coffee
+  ($ document).ready -> transaction.init()

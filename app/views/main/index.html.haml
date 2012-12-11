@@ -38,7 +38,5 @@
 - if @docs.length > 8
   = paginate @docs
   
-:javascript
-  $(document).ready(function() {
-    main.init();
-  });
+:coffee
+  ($ document).ready -> main.init()
