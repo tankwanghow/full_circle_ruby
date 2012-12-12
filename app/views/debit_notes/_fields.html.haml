@@ -7,7 +7,7 @@
   .row-fluid
     = render_particulars_fields f, :particulars
     .offset16.span3   
-      %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_particulars', type: 'text', readonly: true }
+      %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_particulars', type: 'text', readonly: true, tabindex: -1 }
 #matcher-query
   .row-fluid
     = render 'matchers/fields', account_element: '#debit_note_account_name1', f: f

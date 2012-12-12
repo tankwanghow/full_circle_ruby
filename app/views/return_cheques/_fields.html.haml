@@ -11,21 +11,21 @@
     = render 'cheque_query', account_element: '#return_cheque_return_to_name1', f: f
 .row-fluid
   .span6
-    = f.input :return_from_name1, input_html: { class: 'span', readOnly: true }, label: 'Return From'
+    = f.input :return_from_name1, input_html: { class: 'span', readOnly: true, tabindex: -1 }, label: 'Return From'
 .row-fluid
   = f.hidden_field :cheque_id
   .span4
-    = f.input :bank, input_html: { class: 'span', readOnly: true }
+    = f.input :bank, input_html: { class: 'span', readOnly: true, tabindex: -1 }
   .span4
-    = f.input :chq_no, input_html: { class: 'span', readOnly: true}, label: 'Cheque No'
+    = f.input :chq_no, input_html: { class: 'span', readOnly: true, tabindex: -1 }, label: 'Cheque No'
   .span4
-    = f.input :city, input_html: { class: 'span', readOnly: true }
+    = f.input :city, input_html: { class: 'span', readOnly: true, tabindex: -1 }
   .span4
-    = f.input :state, input_html: { class: 'span', readOnly: true }
+    = f.input :state, input_html: { class: 'span', readOnly: true, tabindex: -1 }
   .span3
-    = f.input :due_date, as: :string, input_html: { class: 'span', readOnly: true }
+    = f.input :due_date, as: :string, input_html: { class: 'span', readOnly: true, tabindex: -1 }
   .span4
-    = f.input :amount, as: :string, input_html: { class: 'bold span numeric', readOnly: true }
+    = f.input :amount, as: :string, input_html: { class: 'bold span numeric', readOnly: true, tabindex: -1 }
 
 :coffee
   ($ document).ready -> return_cheque.init()

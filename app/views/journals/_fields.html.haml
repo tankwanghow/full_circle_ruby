@@ -5,7 +5,7 @@
   .row-fluid
     = render_journal_transaction_fields f, :transactions
     .offset10.span3   
-      %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_transactions', type: 'text', readonly: true }
+      %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_transactions', type: 'text', readonly: true, tabindex: -1 }
 
 :coffee
   ($ document).ready -> journal.init()
