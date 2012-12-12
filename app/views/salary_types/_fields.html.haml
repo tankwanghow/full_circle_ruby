@@ -1,0 +1,9 @@
+= f.input :name, autofocus: true
+= f.input :classifiaction, collection: ['Addition', 'Deduction', 'Contribution'], include_blank: false
+= f.input :db_account_name1, label: 'Debit Account'
+= f.input :cr_account_name1, label: 'Credit Account'
+
+:coffee
+  ($ document).ready ->
+    app.typeahead_init '#salary_type_db_account_name1', '/account/typeahead_name1'
+    app.typeahead_init '#salary_type_cr_account_name1', '/account/typeahead_name1'

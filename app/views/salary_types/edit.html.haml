@@ -1,0 +1,11 @@
+= render_flash
+= simple_nested_form_for @salary_type, html: { class: 'form-horizontal well', id: 'salary_type' } do |f|
+  %legend
+    = "Salary Type #" + ("%07d" % @salary_type.id)
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'New', new_salary_type_path, class: 'btn btn-info'
+    = link_to 'Cancel', edit_salary_type_path(@salary_type), class: 'btn btn-warning'
+    = link_to_index(SalaryType)
+    = link_to_audits_log(@salary_type)

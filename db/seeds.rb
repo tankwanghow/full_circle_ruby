@@ -119,6 +119,34 @@ AccountType.create!(
   admin_lock: true,
   bf_balance: true
 )
+Account.create!(
+  account_type_id: ac_paya.id,
+  name1: 'Salary Payable',
+  description: 'The salaries owed to employee',
+  admin_lock: true,
+  status: 'Active'
+)
+Account.create!(
+  account_type_id: ac_paya.id,
+  name1: 'EPF Payable',
+  description: 'The amount owed to KWSP',
+  admin_lock: true,
+  status: 'Active'
+)
+Account.create!(
+  account_type_id: ac_paya.id,
+  name1: 'SOCSO Payable',
+  description: 'The amount owed to SOCSO',
+  admin_lock: true,
+  status: 'Active'
+)
+Account.create!(
+  account_type_id: ac_paya.id,
+  name1: 'Employee Income Tax Witheld',
+  description: 'Employee Income Tax held by the company',
+  admin_lock: true,
+  status: 'Active'
+)
 equity = AccountType.create!(
   name: 'Equity',
   description: 'Owners rights to the Assets',
@@ -169,6 +197,62 @@ exp = AccountType.create!(
   admin_lock: true,
   bf_balance: false
 )
+Account.create!(
+  account_type_id: exp.id,
+  name1: 'Commission Salary',
+  description: 'Salaries Paid to Employees according to Commission',
+  admin_lock: true,
+  status: 'Active'
+)
+Account.create!(
+  account_type_id: exp.id,
+  name1: 'Director Salary',
+  description: 'Salaries Paid to Directors',
+  admin_lock: true,
+  status: 'Active'
+)
+Account.create!(
+  account_type_id: exp.id,
+  name1: 'Employee Salary',
+  description: 'Salaries Paid to Employees',
+  admin_lock: true,
+  status: 'Active'
+)
+Account.create!(
+  account_type_id: exp.id,
+  name1: 'EPF Employer Contribution',
+  description: 'EPF contributed by the Employer',
+  admin_lock: true,
+  status: 'Active'
+)
+Account.create!(
+  account_type_id: exp.id,
+  name1: 'SOCSO Employer Contribution',
+  description: 'SOCSO contributed by the Employer',
+  admin_lock: true,
+  status: 'Active'
+)
+Account.create!(
+  account_type_id: exp.id,
+  name1: 'Chicken Feeding Wages',
+  description: 'Salary paid due to Chicken Feeding Works',
+  admin_lock: true,
+  status: 'Active'
+)
+Account.create!(
+  account_type_id: exp.id,
+  name1: 'Chicken Dung Packing Wages',
+  description: 'Salary paid due to packaging chicken dung',
+  admin_lock: true,
+  status: 'Active'
+)
+Account.create!(
+  account_type_id: exp.id,
+  name1: 'Eggs Harvesting Wages',
+  description: 'Salary paid due to harvesting chicken eggs',
+  admin_lock: true,
+  status: 'Active'
+)
 pur = AccountType.create!(
   parent_id: exp.id,
   name: 'Purchases',
@@ -210,7 +294,7 @@ ParticularType.create!(
   account_id: Account.find_by_name1('Bank Charges').id
 )
 
-%w(Bulk Tray Bag).each do |t|
+%w(Bulk Tray Bag Bundle).each do |t|
   Packaging.create!(
     name: t
   )
@@ -259,6 +343,27 @@ Product.create!(
   purchase_account_id: Account.find_by_name1('General Purchases').id,
   category_list: 'MeatMeals'
 )
+Product.create!(
+  name1: 'Egg Tray',
+  unit: 'pcs',
+  sale_account_id: Account.find_by_name1('General Sales').id,
+  purchase_account_id: Account.find_by_name1('General Purchases').id,
+  category_list: 'EggTray'
+)
+Product.create!(
+  name1: 'Uni-Tray',
+  unit: 'pcs',
+  sale_account_id: Account.find_by_name1('General Sales').id,
+  purchase_account_id: Account.find_by_name1('General Purchases').id,
+  category_list: 'EggTray'
+)
+Product.create!(
+  name1: 'AA-Tray',
+  unit: 'pcs',
+  sale_account_id: Account.find_by_name1('General Sales').id,
+  purchase_account_id: Account.find_by_name1('General Purchases').id,
+  category_list: 'EggTray'
+)
 
 [ 
   ['Maize', 'Bulk', 0, 0],
@@ -281,12 +386,41 @@ Product.create!(
   ['Soybean Hull', 'Bag', 50, 0],
   ['Wheat Pollard', 'Bag', 50, 0],
   ['Wheat Pollard', 'Bag', 55, 0],
-  ['Wheat Pollard', 'Bag', 45, 0]
+  ['Wheat Pollard', 'Bag', 45, 0],
+  ['Uni-Tray', 'Bundle', 140, 0],
+  ['AA-Tray', 'Bundle', 140, 0]
 ].each do |t|
   ProductPackaging.create!(
     product_id: Product.find_by_name1(t[0]).id,
     packaging_id: Packaging.find_by_name(t[1]).id,
     quantity: t[2],
     cost: t[3]
+  )
+end
+
+[
+  ['Monthly Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
+  ['Daily Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
+  ['Hourly Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
+  ['Director Salary', 'Addition', 'Director Salary', 'Salary Payable'],
+  ['EPF By Employee', 'Deduction', 'Salary Payable', 'EPF Payable'],
+  ['EPF By Employer', 'Contribution', 'EPF Employer Contribution', 'EPF Payable'],
+  ['SOCSO By Employee', 'Deduction', 'Salary Payable', 'SOCSO Payable'],
+  ['SOCSO By Employer', 'Contribution', 'SOCSO Employer Contribution', 'SOCSO Payable'],
+  ['Employee PCB', 'Deduction', 'Salary Payable', 'Employee Income Tax Witheld'],
+  ['Overtime Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
+  ['Sunday Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
+  ['Holiday Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
+  ['Commission', 'Addition', 'Commission Salary', 'Salary Payable'],
+  ['Dung Packing', 'Addition', 'Chicken Dung Packing Wages', 'Salary Payable'],
+  ['Chicken Feeding', 'Addition', 'Chicken Feeding Wages', 'Salary Payable'],
+  ['Filling Hopper', 'Addition', 'Chicken Feeding Wages', 'Salary Payable'],
+  ['Eggs Harvesting', 'Addition', 'Eggs Harvesting Wages', 'Salary Payable']
+].each do |t|
+  SalaryType.create!(
+    name: t[0],
+    classifiaction: t[1],
+    db_account_name1: t[2],
+    cr_account_name1: t[3]
   )
 end

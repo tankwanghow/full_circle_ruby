@@ -30,6 +30,12 @@ FullCircle::Application.routes.draw do
   resources :addresses, only: [:new, :edit, :update, :create, :destroy]
   resources :fixed_assets, only: [:new, :edit, :update, :create, :destroy]
   resources :asset_additions, only: [:edit, :update]
+  
+  resources :salary_types, only: [:new, :edit, :update, :create, :destroy]
+  get 'salary_type/new_or_edit' => 'salary_types#new_or_edit'
+
+  resources :employees, only: [:new, :edit, :update, :create, :destroy]
+  get 'employee/new_or_edit' => 'employees#new_or_edit'
 
   resources :payments, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]

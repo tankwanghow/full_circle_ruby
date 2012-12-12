@@ -1,0 +1,16 @@
+= render_flash
+= simple_nested_form_for @employee, html: { class: 'form-inline well', id: 'employee' } do |f|
+  %legend
+    = "Employee #" + ("%07d" % @employee.id)
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'New', new_employee_path, class: 'btn btn-info'
+    = link_to 'Cancel', edit_employee_path(@employee), class: 'btn btn-warning'
+    - if !@employee.address
+      = link_to 'New Address', new_address_path(address: { addressable_id: @employee.id, addressable_type: 'Employee' }), class: 'btn btn-success'
+    = link_to_index(Employee)
+    = link_to_audits_log(@employee)
+  .row-fluid
+    - if @employee.address
+      = render 'addresses/address', address: @employee.address
