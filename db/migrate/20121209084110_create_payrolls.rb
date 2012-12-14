@@ -3,11 +3,11 @@ class CreatePayrolls < ActiveRecord::Migration
     create_table :advances do |t|
       t.date       :doc_date,     null: false
       t.belongs_to :employee,     null: false
-      t.belongs_to :salary_type,  null: false
       t.belongs_to :pay_from,     references: :accounts, null: false
       t.string     :chq_no
       t.decimal    :amount,       precision: 12, scale: 4, default: 0, null: false
       t.integer    :lock_version, default: 0
+      t.belongs_to :pay_slip
       t.timestamps
     end
 
@@ -17,10 +17,11 @@ class CreatePayrolls < ActiveRecord::Migration
       t.belongs_to :salary_type,  null: false
       t.string     :note,         null: false
       t.decimal    :quantity,     precision: 12, scale: 4, default: 0, null: false
-      t.string     :unit,         null: false,    default: '-'
+      t.string     :unit,         null: false,   default: '-'
       t.decimal    :unit_price,   precision: 12, scale: 4, default: 0, null: false
       t.integer    :lock_version, default: 0
       t.belongs_to :pay_slip
+      t.belongs_to :recurring_note
       t.timestamps
     end
 
@@ -31,10 +32,10 @@ class CreatePayrolls < ActiveRecord::Migration
       t.string     :note,          null: false
       t.decimal    :amount,        precision: 12, scale: 4, default: 0, null: false
       t.decimal    :target_amount, precision: 12, scale: 4, default: 0, null: false
-      t.date       :start_date
+      t.date       :start_date,    null: false
       t.date       :end_date
       t.text       :note
-      t.string     :status,        default: 'Fullfilled'
+      t.string     :status,        default: 'Active'
       t.integer    :lock_version,  default: 0
       t.timestamps
     end

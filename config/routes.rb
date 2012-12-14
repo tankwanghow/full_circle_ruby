@@ -33,9 +33,12 @@ FullCircle::Application.routes.draw do
   
   resources :salary_types, only: [:new, :edit, :update, :create, :destroy]
   get 'salary_type/new_or_edit' => 'salary_types#new_or_edit'
+  get 'salary_type/typeahead_name' => 'salary_types#typeahead_name'  
 
   resources :employees, only: [:new, :edit, :update, :create, :destroy]
+  get 'employee/typeahead_name' => 'employees#typeahead_name'    
   get 'employee/new_or_edit' => 'employees#new_or_edit'
+  get 'employees/new_with_template' => 'employees#new_with_template'
 
   resources :payments, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]
@@ -60,6 +63,16 @@ FullCircle::Application.routes.draw do
     resources :journal_entries, only: [:index]
   end
   get 'receipt/new_or_edit' => 'receipts#new_or_edit'
+
+  resources :advances, only: [:new, :edit, :update, :create, :show] do
+    resources :journal_entries, only: [:index]
+  end
+  get 'advance/new_or_edit' => 'advances#new_or_edit'
+
+  resources :salary_notes, only: [:new, :edit, :update, :create, :show] do
+    resources :journal_entries, only: [:index]
+  end
+  get 'salary_note/new_or_edit' => 'salary_notes#new_or_edit'
 
   resources :deposits, only: [:new, :edit, :update, :create] do
     resources :journal_entries, only: [:index]

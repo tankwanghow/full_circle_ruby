@@ -1,0 +1,9 @@
+= render_flash
+= simple_nested_form_for @advance, html: { class: 'form-inline well span15', id: 'advance_form' } do |f|
+  %legend
+    New Employee Advance
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', Advance.last ? edit_advance_path(Advance.last) : root_path, class: 'btn btn-warning'
+

@@ -6,6 +6,7 @@
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
     = link_to 'New', new_employee_path, class: 'btn btn-info'
+    = link_to 'Copy as New', employees_new_with_template_path(id: @employee), class: 'btn btn-info'
     = link_to 'Cancel', edit_employee_path(@employee), class: 'btn btn-warning'
     - if !@employee.address
       = link_to 'New Address', new_address_path(address: { addressable_id: @employee.id, addressable_type: 'Employee' }), class: 'btn btn-success'

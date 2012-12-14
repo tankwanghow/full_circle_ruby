@@ -415,8 +415,7 @@ end
   ['Dung Packing', 'Addition', 'Chicken Dung Packing Wages', 'Salary Payable'],
   ['Chicken Feeding', 'Addition', 'Chicken Feeding Wages', 'Salary Payable'],
   ['Filling Hopper', 'Addition', 'Chicken Feeding Wages', 'Salary Payable'],
-  ['Eggs Harvesting', 'Addition', 'Eggs Harvesting Wages', 'Salary Payable'],
-  ['Advances', 'Deduction', 'Salary Payable', nil]
+  ['Eggs Harvesting', 'Addition', 'Eggs Harvesting Wages', 'Salary Payable']
 ].each do |t|
   SalaryType.create!(
     name: t[0],

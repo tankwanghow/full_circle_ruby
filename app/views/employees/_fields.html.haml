@@ -1,25 +1,34 @@
 .row-fluid
-  .span6
+  .span5
     = f.input :name, input_html: { class: 'span' }, autofocus: true
   .span3
     = f.input :id_no, label: 'Identity No', input_html: { class: 'span' }
   .span3
-    = f.input :service_since, as: :datepicker, input_html: { class: 'span19' }
-.row-fluid
+    = f.input :birth_date, as: :datepicker, input_html: { class: 'span19' }
+  .span3
+    = f.input :nationality, input_html: { class: 'span' }
   .span3
     = f.input :epf_no, input_html: { class: 'span' }, label: 'EPF No'
+.row-fluid
   .span3
     = f.input :socso_no, label: 'SOCSO No', input_html: { class: 'span' }
   .span3
     = f.input :tax_no, input_html: { class: 'span' }, label: 'Income Tax No'
   .span3
-    = f.input :nationality, input_html: { class: 'span' }
-.row-fluid
-  .span2
+    = f.input :service_since, as: :datepicker, input_html: { class: 'span19' }
+  .span3
     = f.input :marital_status, collection: ['Single', 'Married'], include_blank: false, input_html: { class: 'span' }
   .span2
     = f.input :partner_working, collection: ['Yes', 'No'], include_blank: false, input_html: { class: 'span' }
   .span2
     = f.input :dependent, input_html: { class: 'numeric span', type: :text }
-  .span2
+  .span3
     = f.input :status, collection: ['Active', 'Resigned'], include_blank: false, input_html: { class: 'span' }
+#salary-types
+  .row-fluid
+    = render_salary_types_fields f, :salary_types
+
+:coffee
+  app.typeahead_init '.salary_type', '/salary_type/typeahead_name'
+  app.nestedFormFieldAdded 'form', '.row-fluid', '.show-hide', (field) ->
+    app.typeahead_init field.find('.salary_type'), '/salary_type/typeahead_name'

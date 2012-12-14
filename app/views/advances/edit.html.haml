@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @advance, html: { class: 'form-inline well span15', id: 'advance_form' } do |f|
+  %legend
+    = "Employee Advance #" + ("%07d" % @advance.id)
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to_edit_action_buttons @advance, advance_journal_entries_path(@advance)
