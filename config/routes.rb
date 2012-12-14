@@ -74,6 +74,11 @@ FullCircle::Application.routes.draw do
   end
   get 'salary_note/new_or_edit' => 'salary_notes#new_or_edit'
 
+  resources :recurring_notes, only: [:new, :edit, :update, :create, :show] do
+    resources :journal_entries, only: [:index]
+  end
+  get 'recurring_note/new_or_edit' => 'recurring_notes#new_or_edit'
+
   resources :deposits, only: [:new, :edit, :update, :create] do
     resources :journal_entries, only: [:index]
   end

@@ -1,0 +1,9 @@
+= render_flash
+= simple_nested_form_for @recurring_note, html: { class: 'form-inline well span15', id: 'recurring_note_form' } do |f|
+  %legend
+    New Recurring Note
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', RecurringNote.last ? edit_recurring_note_path(RecurringNote.last) : root_path, class: 'btn btn-warning'
+
