@@ -13,7 +13,7 @@ class SalaryNote < ActiveRecord::Base
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :amount,
              content: [:id, :employee_name , :salary_type_name, :note, :quantity,
-                       :unit, :pay_slip_id, :recurring_note_id]
+                       :unit, :unit_price, :pay_slip_id, :recurring_note_id]
 
   simple_audit username_method: :username do |r|
     {
@@ -23,7 +23,7 @@ class SalaryNote < ActiveRecord::Base
       note: r.note,
       quantity: r.quantity,
       unit: r.unit,
-      amount: r.unit_price.to_money.format,
+      unit_price: r.unit_price.to_money.format,
       pay_slip: r.pay_slip_id,
       recurring_note: r.recurring_note_id
     }
