@@ -10,7 +10,7 @@ module AuditString
           def #{t}_audit_string
             #{t}.      
             select { |t| !t.marked_for_destruction? }.
-            map{ |t| t.simple_audit_string }.join(' ')
+            map{ |t| t.simple_audit_string }.join(' | ')
           end
         BOL
       end
