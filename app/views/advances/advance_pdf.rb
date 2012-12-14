@@ -35,7 +35,7 @@ class AdvancePdf < Prawn::Document
       draw_text "EMPLOYEE:", size: 10, at: [8.mm, 40.mm]
       draw_text "PAY BY:", size: 10, at: [15.mm, 33.mm]
       draw_text "CHEQUE NO:", size: 10, at: [90.mm, 33.mm]
-      draw_text "AMOUNT:", size: 10, at: [11.5.mm, 26.mm], style: :bold
+      draw_text "AMOUNT:", size: 10, at: [11.5.mm, 26.mm]
       stroke_horizontal_line 4.mm, 60.mm, at: 4.mm
       draw_text "Issued By", size: 9, at: [4.mm, 17.mm]
       stroke_horizontal_line 90.mm, 143.mm, at: 4.mm
@@ -45,11 +45,11 @@ class AdvancePdf < Prawn::Document
 
   #Dynamic Content
   def draw_header
-    draw_text "%07d" % @advance.id, at: [57.mm, 47.mm], size: 12
-    draw_text @advance.doc_date, at: [110.mm, 47.mm], size: 12
-    draw_text @advance.employee.name, at: [30.mm, 40.mm], size: 12
-    draw_text @advance.pay_from.name1, at: [30.mm, 33.mm], size: 12
-    draw_text @advance.chq_no, at: [115.mm, 33.mm], size: 12
+    draw_text "%07d" % @advance.id, at: [57.mm, 47.mm], size: 12, style: :bold
+    draw_text @advance.doc_date, at: [110.mm, 47.mm], size: 12, style: :bold
+    draw_text @advance.employee.name, at: [30.mm, 40.mm], size: 12, style: :bold
+    draw_text @advance.pay_from.name1, at: [30.mm, 33.mm], size: 12, style: :bold
+    draw_text @advance.chq_no, at: [115.mm, 33.mm], size: 12, style: :bold
     draw_text @advance.amount.to_money.format, at: [30.mm, 26.mm], size: 12, style: :bold
   end
 

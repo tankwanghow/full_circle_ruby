@@ -34,10 +34,11 @@ class SalaryNotePdf < Prawn::Document
       draw_text "SLIP DATE:", size: 10, at: [90.mm, 49.mm]
       draw_text "EMPLOYEE:", size: 10, at: [8.mm, 43.mm]
       draw_text "TYPE:", size: 10, at: [18.mm, 37.mm]
+      draw_text "NOTE:", size: 10, at: [78.mm, 37.mm]
       draw_text "QUANTITY:", size: 10, at: [9.5.mm, 31.mm]
       draw_text "UNIT:", size: 10, at: [55.mm, 31.mm]
-      draw_text "PRICE:", size: 10, at: [95.mm, 31.mm]
-      draw_text "AMOUNT:", size: 10, at: [11.5.mm, 25.mm], style: :bold
+      draw_text "PRICE:", size: 10, at: [78.mm, 31.mm]
+      draw_text "AMOUNT:", size: 10, at: [11.5.mm, 25.mm]
       stroke_horizontal_line 4.mm, 60.mm, at: 4.mm
       draw_text "Issued By", size: 9, at: [4.mm, 17.mm]
       stroke_horizontal_line 90.mm, 143.mm, at: 4.mm
@@ -47,13 +48,14 @@ class SalaryNotePdf < Prawn::Document
 
   #Dynamic Content
   def draw_header
-    draw_text "%07d" % @salary_note.id, at: [46.mm, 49.mm], size: 12
-    draw_text @salary_note.doc_date, at: [110.mm, 49.mm], size: 12
-    draw_text @salary_note.employee.name, at: [30.mm, 43.mm], size: 12
-    draw_text @salary_note.salary_type.name, at: [30.mm, 37.mm], size: 12
-    draw_text @salary_note.quantity, at: [30.mm, 31.mm], size: 12
-    draw_text @salary_note.unit, at: [65.mm, 31.mm], size: 12
-    draw_text @salary_note.unit_price.to_money.format, at: [108.mm, 31.mm], size: 12
+    draw_text "%07d" % @salary_note.id, at: [46.mm, 49.mm], size: 12, style: :bold
+    draw_text @salary_note.doc_date, at: [110.mm, 49.mm], size: 12, style: :bold
+    draw_text @salary_note.employee.name, at: [30.mm, 43.mm], size: 12, style: :bold
+    draw_text @salary_note.salary_type.name, at: [30.mm, 37.mm], size: 12, style: :bold
+    draw_text @salary_note.note, at: [90.mm, 37.mm], size: 12, style: :bold
+    draw_text @salary_note.quantity, at: [30.mm, 31.mm], size: 12, style: :bold
+    draw_text @salary_note.unit, at: [65.mm, 31.mm], size: 12, style: :bold
+    draw_text @salary_note.unit_price.to_money.format, at: [90.mm, 31.mm], size: 12, style: :bold
     draw_text @salary_note.amount.to_money.format, at: [30.mm, 25.mm], size: 12, style: :bold
   end
 
