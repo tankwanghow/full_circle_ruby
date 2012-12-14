@@ -31,10 +31,9 @@ class CreatePayrolls < ActiveRecord::Migration
       t.belongs_to :salary_type,   null: false
       t.string     :note,          null: false
       t.decimal    :amount,        precision: 12, scale: 4, default: 0, null: false
-      t.decimal    :target_amount, precision: 12, scale: 4, default: 0, null: false
+      t.decimal    :target_amount, precision: 12, scale: 4, default: 0
       t.date       :start_date,    null: false
       t.date       :end_date
-      t.text       :note
       t.string     :status,        default: 'Active'
       t.integer    :lock_version,  default: 0
       t.timestamps
