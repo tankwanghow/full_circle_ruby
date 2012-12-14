@@ -55,6 +55,14 @@ module ApplicationHelper
       link_to_audits_log(object) ].compact.join(' ').html_safe
   end
 
+  def link_to_edit_action_no_journal_buttons object, print_button=true
+    [ link_to('Cancel', edit_polymorphic_path(object), class: 'btn btn-warning'),
+      link_to('New', new_polymorphic_path(object.class), class: 'btn btn-info'),
+      link_to_index(object.class),
+      print_button ? link_to_print_buttons(object) : nil ,
+      link_to_audits_log(object) ].compact.join(' ').html_safe
+  end
+
   def term_string term
     return nil unless term
     return "#{term} days" if term >= 2
