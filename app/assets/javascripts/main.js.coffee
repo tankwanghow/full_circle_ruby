@@ -64,6 +64,7 @@ window.app = {
     app.initDatepicker()
     app.initNumeric()
     app.avoidAutocompleteForTypeahead()
+    ($ 'form[admin_lock=true] input, form[admin_lock=true] select, form[admin_lock=true] textarea').attr('readOnly', true)
 
   avoidAutocompleteForTypeahead: ->
     ($ 'input.string[type="text"]').attr('autocomplete', 'off')
