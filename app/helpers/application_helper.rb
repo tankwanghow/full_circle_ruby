@@ -63,6 +63,11 @@ module ApplicationHelper
       link_to_audits_log(object) ].compact.join(' ').html_safe
   end
 
+  def admin_lock_show? object
+    return false if object.admin_lock and !current_user.is_admin
+    true
+  end
+
   def term_string term
     return nil unless term
     return "#{term} days" if term >= 2

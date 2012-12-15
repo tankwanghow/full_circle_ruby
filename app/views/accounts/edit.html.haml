@@ -2,12 +2,12 @@
 .span9
   = render 'share/chart_of_accounts'
 .span14
-  = simple_form_for @account, html: { class: 'form-horizontal well', admin_lock: @account.admin_lock } do |f|
+  = simple_form_for @account, html: { class: 'form-horizontal well', admin_lock: !admin_lock_show?(@account) } do |f|
     %legend
       Account
     = render 'fields', f: f
     .form-actions
-      - if !@account.admin_lock
+      - if admin_lock_show?(@account)
         = f.button :submit, 'Save', class: 'btn btn-primary'
         = link_to 'Cancel', edit_account_path(@account), class: 'btn btn-warning'
         = link_to 'Delete', @account, method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger'
