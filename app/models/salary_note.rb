@@ -29,9 +29,23 @@ class SalaryNote < ActiveRecord::Base
     }
   end
 
+  def simple_audit_string
+    [ doc_date.to_s, salary_type_name, note,
+      amount.to_money.format, recurring_note_id ].join ' '
+  end
+
   include ValidateBelongsTo
   validate_belongs_to :employee, :name
   validate_belongs_to :salary_type, :name
+
+  scope :employee, ->(emp_name) { joins(:employee).where("employees.name = ?", emp_name) }
+  scope :addition, -> { joins(:salary_type).where("salary_types.classifiaction = ?", 'Addition') }
+  scope :deduction, -> { joins(:salary_type).where("salary_types.classifiaction = ?", 'Deduction') }
+  scope :contribution, -> { joins(:salary_type).where("salary_types.classifiaction = ?", 'Contribution') }
+  scope :unpaid, -> { where(pay_slip_id: nil) }
+  scope :larger_eq, ->(start_date) { where('doc_date >= ?', start_date.to_date) }
+  scope :smaller_eq, ->(end_date) { where('doc_date <= ?', end_date.to_date) }
+  scope :between, ->(start_date, end_date) { larger_eq(start_date).smaller_eq(end_date) }
 
   def amount
     quantity * unit_price

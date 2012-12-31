@@ -28,6 +28,16 @@ class Advance < ActiveRecord::Base
   validate_belongs_to :employee, :name
   validate_belongs_to :pay_from, :name1
 
+  def simple_audit_string
+    [ doc_date.to_s, 'Advance', pay_from_name1, chq_no, amount ].join ' '
+  end
+
+  scope :employee, ->(emp_name) { joins(:employee).where("employees.name = ?", emp_name) }
+  scope :unpaid, -> { where(pay_slip_id: nil) }
+  scope :larger_eq, ->(start_date) { where('doc_date >= ?', start_date.to_date) }
+  scope :smaller_eq, ->(end_date) { where('doc_date <= ?', end_date.to_date) }
+  scope :between, ->(start_date, end_date) { larger_eq(start_date).smaller_eq(end_date) }
+
 private
 
   def build_transactions

@@ -6,9 +6,10 @@ class AccountTypesController < ApplicationController
 
   def update
     @account_type = AccountType.find(params[:id])
+    admin_lock_check @account_type
     if @account_type.update_attributes(params[:account_type])
       flash[:success] = "Account Type '#{@account_type.name}' updated successfully."
-      redirect_to edit_account_type_path(@account_type) 
+      redirect_to edit_account_type_path(@account_type)
     else
       flash.now[:error] = "Failed to updated Account Type."
       render :edit
@@ -32,6 +33,7 @@ class AccountTypesController < ApplicationController
 
   def destroy
     @account_type = AccountType.find(params[:id])
+    admin_lock_check @account_type
     @account_type.destroy
     flash[:success] = "Successfully deleted '#{@account_type.name}'."
     if @account_type.parent

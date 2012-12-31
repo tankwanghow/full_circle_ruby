@@ -13,6 +13,10 @@ class ApplicationController < ActionController::Base
 
 private
 
+  def admin_lock_check object
+    raise 'Need Administrator Right!' if object.admin_lock and !current_user.is_admin?
+  end
+
   def store_param name
     if params[name]
       params[name].each do |k,v|

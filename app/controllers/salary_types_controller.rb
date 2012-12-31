@@ -7,10 +7,6 @@ class SalaryTypesController < ApplicationController
     @salary_type = SalaryType.new
   end
 
-  def show
-    @salary_type = SalaryType.find(params[:id])
-  end
-
   def create
     @salary_type = SalaryType.new(params[:salary_type])
     if @salary_type.save
@@ -24,6 +20,7 @@ class SalaryTypesController < ApplicationController
 
   def update
     @salary_type = SalaryType.find(params[:id])
+    admin_lock_check @salary_type
     if @salary_type.update_attributes(params[:salary_type])
       flash[:success] = "SalaryType '##{@salary_type.name}' updated successfully."
       redirect_to edit_salary_type_path(@salary_type)
@@ -44,5 +41,20 @@ class SalaryTypesController < ApplicationController
   def typeahead_name
     term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
     render json: SalaryType.where("name ilike ?", term).limit(8).pluck(:name)
+  end
+
+  def typeahead_addition_name
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: SalaryType.addition.where("name ilike ?", term).limit(8).pluck(:name)
+  end
+
+  def typeahead_deduction_name
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: SalaryType.deduction.where("name ilike ?", term).limit(8).pluck(:name)
+  end
+
+  def typeahead_contribution_name
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: SalaryType.contribution.where("name ilike ?", term).limit(8).pluck(:name)
   end
 end

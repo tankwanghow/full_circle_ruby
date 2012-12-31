@@ -147,6 +147,13 @@ Account.create!(
   admin_lock: true,
   status: 'Active'
 )
+Account.create!(
+  account_type_id: ac_paya.id,
+  name1: 'Employee Zakat Witheld',
+  description: 'Employee Zakat held by the company',
+  admin_lock: true,
+  status: 'Active'
+)
 equity = AccountType.create!(
   name: 'Equity',
   description: 'Owners rights to the Assets',
@@ -234,22 +241,8 @@ Account.create!(
 )
 Account.create!(
   account_type_id: exp.id,
-  name1: 'Chicken Feeding Wages',
-  description: 'Salary paid due to Chicken Feeding Works',
-  admin_lock: true,
-  status: 'Active'
-)
-Account.create!(
-  account_type_id: exp.id,
-  name1: 'Chicken Dung Packing Wages',
-  description: 'Salary paid due to packaging chicken dung',
-  admin_lock: true,
-  status: 'Active'
-)
-Account.create!(
-  account_type_id: exp.id,
-  name1: 'Eggs Harvesting Wages',
-  description: 'Salary paid due to harvesting chicken eggs',
+  name1: 'By Piece Wages',
+  description: 'Salary paid by piece of work done',
   admin_lock: true,
   status: 'Active'
 )
@@ -399,28 +392,27 @@ Product.create!(
 end
 
 [
-  ['Monthly Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
-  ['Daily Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
-  ['Hourly Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
-  ['Director Salary', 'Addition', 'Director Salary', 'Salary Payable'],
-  ['EPF By Employee', 'Deduction', 'Salary Payable', 'EPF Payable'],
-  ['EPF By Employer', 'Contribution', 'EPF Employer Contribution', 'EPF Payable'],
-  ['SOCSO By Employee', 'Deduction', 'Salary Payable', 'SOCSO Payable'],
-  ['SOCSO By Employer', 'Contribution', 'SOCSO Employer Contribution', 'SOCSO Payable'],
-  ['Employee PCB', 'Deduction', 'Salary Payable', 'Employee Income Tax Witheld'],
-  ['Overtime Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
-  ['Sunday Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
-  ['Holiday Salary', 'Addition', 'Employee Salary', 'Salary Payable'],
-  ['Commission', 'Addition', 'Commission Salary', 'Salary Payable'],
-  ['Dung Packing', 'Addition', 'Chicken Dung Packing Wages', 'Salary Payable'],
-  ['Chicken Feeding', 'Addition', 'Chicken Feeding Wages', 'Salary Payable'],
-  ['Filling Hopper', 'Addition', 'Chicken Feeding Wages', 'Salary Payable'],
-  ['Eggs Harvesting', 'Addition', 'Eggs Harvesting Wages', 'Salary Payable']
+  ['Monthly Salary', 'Addition', 'Employee Salary', 'Salary Payable', true],
+  ['Daily Salary', 'Addition', 'Employee Salary', 'Salary Payable', true],
+  ['Hourly Salary', 'Addition', 'Employee Salary', 'Salary Payable', true],
+  ['Director Salary', 'Addition', 'Director Salary', 'Salary Payable', true],
+  ['EPF By Employee', 'Deduction', 'Salary Payable', 'EPF Payable', true],
+  ['EPF By Employer', 'Contribution', 'EPF Employer Contribution', 'EPF Payable', true],
+  ['SOCSO By Employee', 'Deduction', 'Salary Payable', 'SOCSO Payable', true],
+  ['SOCSO By Employer', 'Contribution', 'SOCSO Employer Contribution', 'SOCSO Payable', true],
+  ['Employee PCB', 'Deduction', 'Salary Payable', 'Employee Income Tax Witheld', true],
+  ['Employee Zakat', 'Deduction', 'Salary Payable', 'Employee Zakat Witheld', true],
+  ['Overtime Salary', 'Addition', 'Employee Salary', 'Salary Payable', true],
+  ['Sunday Salary', 'Addition', 'Employee Salary', 'Salary Payable', true],
+  ['Holiday Salary', 'Addition', 'Employee Salary', 'Salary Payable', true],
+  ['Commission', 'Addition', 'Commission Salary', 'Salary Payable', true],
+  ['By Piece Works', 'Addition', 'By Piece Wages', 'Salary Payable', true]
 ].each do |t|
   SalaryType.create!(
     name: t[0],
     classifiaction: t[1],
     db_account_name1: t[2],
-    cr_account_name1: t[3]
+    cr_account_name1: t[3],
+    admin_lock: t[4]
   )
 end

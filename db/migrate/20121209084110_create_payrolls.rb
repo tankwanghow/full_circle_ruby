@@ -42,8 +42,7 @@ class CreatePayrolls < ActiveRecord::Migration
     create_table :pay_slips do |t|
       t.date       :doc_date,     null: false
       t.belongs_to :employee,     null: false
-      t.integer    :pay_month,    null: false
-      t.integer    :pay_year,     null: false
+      t.date       :pay_date,     null: false
       t.belongs_to :pay_from,     references: :accounts, null: false
       t.string     :chq_no
       t.integer    :lock_version, default: 0

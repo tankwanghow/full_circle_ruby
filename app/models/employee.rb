@@ -24,7 +24,7 @@ class Employee < ActiveRecord::Base
       marital_status: r.marital_status,
       partner_working: r.partner_working,
       service_since: r.service_since,
-      dependent: r.dependent,
+      children: r.children,
       status: r.status,
       salary_types: r.salary_types_audit_string
     }
@@ -39,12 +39,16 @@ class Employee < ActiveRecord::Base
   end
 
   def self.new_like id
-    sts = find(id).salary_types.map { |t| t.attributes.select { |k,v| k == 'salary_type_id' || k == 'amount' } }
+    sts = find(id).salary_types.map { |t| t.attributes.slice('salary_type_id', 'amount') }
     a = new
     sts.each do |t|
       a.salary_types.build t
     end
     a
+  end
+
+  def married?
+    marital_status == 'Married' ? true : false
   end
 
 end

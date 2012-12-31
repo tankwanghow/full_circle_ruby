@@ -114,6 +114,68 @@ FactoryGirl.define do
     actual_debit_amount 1
   end
 
-  factory :invoice do
+  factory :employee do
+    name { Faker::Name.name }
+    id_no { Faker::PhoneNumber.phone_number }
+    birth_date { Date.today - (rand(18..55) * 365) }
+    epf_no { Faker::PhoneNumber.phone_number }
+    socso_no { Faker::PhoneNumber.phone_number }
+    tax_no { Faker::PhoneNumber.phone_number }
+    nationality { ['Malaysian', 'Indonesian', 'Nepalest', 'Burmist'].fetch rand(3) }
+    marital_status { ['Single', 'Married'].fetch rand(2) }
+    partner_working { [true, false].fetch rand(2) }
+    service_since { Date.today - (rand(0..17) * 365) }
+    children { rand(8) }
   end
+
+  factory :salary_type do
+    name { Faker::Name.name }
+    classifiaction { ['Addition', 'Deduction'].fetch rand(2) }
+    db_account { [create(:active_account), Account.first(order: 'random()')].fetch rand(2) }
+    cr_account { [create(:active_account), Account.first(order: 'random()')].fetch rand(2) }
+  end
+
+  factory :employee_salary_type do
+    employee { [create(:employee), Employee.first(order: 'random()')].fetch rand(2) }
+    salary_type { [create(:salary_type), SalaryType.first(order: 'random()')].fetch rand(2) }
+    amount { rand(10000) }
+  end
+
+  factory :advance do
+    doc_date { Date.current - rand(30) }
+    employee { [create(:employee), Employee.first(order: 'random()')].fetch rand(2) }
+    pay_from { [create(:active_account), Account.first(order: 'random()')].fetch rand(2) }    
+    chq_no { Faker::PhoneNumber.phone_number }
+    amount { rand * rand(1000..5000) }
+  end
+
+  factory :salary_note do
+    doc_date { Date.current - rand(30) }
+    employee { [create(:employee), Employee.first(order: 'random()')].fetch rand(2) }
+    salary_type { [create(:salary_type), SalaryType.first(order: 'random()')].fetch rand(2) }
+    note { Faker::Lorem.sentence }
+    quantity { rand(30) }
+    unit { '-' }
+    unit_price { rand(21..100) }
+  end
+
+  factory :recurring_note do
+    doc_date { Date.current - rand(30) }
+    employee { [create(:employee), Employee.first(order: 'random()')].fetch rand(2) }
+    salary_type { [create(:salary_type), SalaryType.first(order: 'random()')].fetch rand(2) }
+    note { Faker::Lorem.sentence }
+    amount { rand(100..500) }
+    target_amount { rand(500..1000) }
+    start_date { Date.current - rand(30) }
+    end_date { Date.current - rand(300) }
+  end
+
+  factory :pay_slip do
+    doc_date { Date.current - rand(30) }
+    employee { [create(:employee), Employee.first(order: 'random()')].fetch rand(2) }
+    pay_from { [create(:active_account), Account.first(order: 'random()')].fetch rand(2) }    
+    pay_date { Date.current - rand(30) }
+    chq_no { Faker::PhoneNumber.phone_number }
+  end
+
 end

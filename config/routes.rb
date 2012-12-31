@@ -33,7 +33,10 @@ FullCircle::Application.routes.draw do
   
   resources :salary_types, only: [:new, :edit, :update, :create, :destroy]
   get 'salary_type/new_or_edit' => 'salary_types#new_or_edit'
-  get 'salary_type/typeahead_name' => 'salary_types#typeahead_name'  
+  get 'salary_type/typeahead_name' => 'salary_types#typeahead_name'
+  get 'salary_type/typeahead_addition_name' => 'salary_types#typeahead_addition_name'
+  get 'salary_type/typeahead_deduction_name' => 'salary_types#typeahead_deduction_name'
+  get 'salary_type/typeahead_contribution_name' => 'salary_types#typeahead_contribution_name'
 
   resources :employees, only: [:new, :edit, :update, :create, :destroy]
   get 'employee/typeahead_name' => 'employees#typeahead_name'    
@@ -53,6 +56,13 @@ FullCircle::Application.routes.draw do
     resources :journal_entries, only: [:index]
   end
   get 'invoice/new_or_edit' => 'invoices#new_or_edit'
+
+  resources :pay_slips, only: [:new, :edit, :update, :create, :show] do
+    resources :journal_entries, only: [:index]
+  end
+  get 'pay_slip/new_or_edit' => 'pay_slips#new_or_edit'
+
+  resource :pay_slip_generations, only: [:new, :create]
 
   resources :cash_sales, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]

@@ -1,9 +1,9 @@
 class CreateEmployees < ActiveRecord::Migration
   def change
     create_table :employees do |t|
-      t.string     :name,           null: false
-      t.string     :id_no,          null: false
-      t.date       :birth_date,     null: false
+      t.string     :name,            null: false
+      t.string     :id_no,           null: false
+      t.date       :birth_date,      null: false
       t.string     :epf_no
       t.string     :socso_no
       t.string     :tax_no
@@ -11,7 +11,7 @@ class CreateEmployees < ActiveRecord::Migration
       t.string     :marital_status,  default: 'Single'
       t.boolean    :partner_working, default: false
       t.date       :service_since,   null: false
-      t.integer    :dependent,       null: false, default: 0
+      t.integer    :children,        null: false, default: 0
       t.string     :status,          default: 'Active', null: false
       t.integer    :lock_version,    default: 0
       t.timestamps
@@ -20,8 +20,11 @@ class CreateEmployees < ActiveRecord::Migration
     create_table :salary_types do |t|
       t.string     :name,           null: false
       t.string     :classifiaction, null: false
+      t.string     :service_class
+      t.string     :service_method
       t.belongs_to :db_account,     null: false
       t.belongs_to :cr_account,     null: false
+      t.boolean    :admin_lock,     default: false
       t.integer    :lock_version,   default: 0
       t.timestamps
     end

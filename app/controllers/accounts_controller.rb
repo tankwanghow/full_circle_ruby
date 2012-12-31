@@ -6,6 +6,7 @@ class AccountsController < ApplicationController
 
   def update
     @account = Account.find(params[:id])
+    admin_lock_check @account
     if @account.update_attributes(params[:account])
       flash[:success] = "Account '#{@account.name1}' updated successfully."
       redirect_to edit_account_path(@account) 
@@ -36,6 +37,7 @@ class AccountsController < ApplicationController
 
   def destroy
     @account = Account.find(params[:id])
+    admin_lock_check @account
     @account.destroy
     flash[:success] = "Successfully deleted '#{@account.name1}'."
     redirect_to edit_account_type_path(@account.account_type)
