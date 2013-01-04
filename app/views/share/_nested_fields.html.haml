@@ -6,4 +6,4 @@
     = render field, f: builder, with_type: with_type
   - else
     = render field, f: builder 
-= f.link_to_add defined?(text) ? text : 'Add', xies_name, class: 'bold  span3'
+= f.link_to_add defined?(text) ? text : 'Add', xies_name, class: defined?(add_html_class) ? add_html_class : 'bold span3'
