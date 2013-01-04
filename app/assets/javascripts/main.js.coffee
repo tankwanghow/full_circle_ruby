@@ -7,6 +7,9 @@ $ ->
 
   $(document).on 'submit', 'form', (event) ->
     container = ($ '[data-pjax-container]')
+    val = $("input[type=submit][clicked=true]").val()
+    $(event.currentTarget).append("<input type='hidden' name='submit' value='#{val}'>")
+    $("input[type=submit][clicked=true]").removeAttr('clicked')
     $.pjax.submit(event, container)
 
   ($ '[data-pjax-container]').on 'pjax:end', ->
@@ -65,6 +68,8 @@ window.app = {
     app.initNumeric()
     app.avoidAutocompleteForTypeahead()
     ($ 'form[admin_lock=true] input, form[admin_lock=true] select, form[admin_lock=true] textarea').attr('readOnly', true)
+    ($ 'form input[type=submit]').click -> 
+      ($ this).attr('clicked', true)
 
   avoidAutocompleteForTypeahead: ->
     ($ 'input.string[type="text"]').attr('autocomplete', 'off')
