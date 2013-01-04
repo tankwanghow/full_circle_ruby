@@ -1,7 +1,7 @@
 = render_flash
 = simple_nested_form_for @recurring_note, html: { class: 'form-inline well span15', id: 'recurring_note_form' } do |f|
   %legend
-    = "Recurring Note #" + ("%07d" % @recurring_note.id)
+    = "Recurring Note #" + docnolize(@recurring_note.id)
   = render 'fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'

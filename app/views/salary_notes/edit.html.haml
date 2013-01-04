@@ -1,7 +1,7 @@
 = render_flash
 = simple_nested_form_for @salary_note, html: { class: 'form-inline well span15', id: 'salary_note_form' } do |f|
   %legend
-    = "Salary Note #" + ("%07d" % @salary_note.id)
+    = "Salary Note #" + docnolize(@salary_note.id)
   = render 'fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
