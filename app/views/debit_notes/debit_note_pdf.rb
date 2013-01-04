@@ -63,9 +63,9 @@ class DebitNotePdf < Prawn::Document
     if @debit_note.account.mailing_address
       address_box(self, @debit_note.account.mailing_address, [10.mm, 108.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text "%07d" % @debit_note.account.id, at: [150.mm, 112.mm], size: 10, style: :bold
+    draw_text docnolize(@debit_note.account.id), at: [150.mm, 112.mm], size: 10, style: :bold
     draw_text @debit_note.doc_date, at: [150.mm, 103.mm], style: :bold
-    draw_text "%07d" % @debit_note.id, at: [150.mm, 94.5.mm], size: 15, style: :bold
+    draw_text docnolize(@debit_note.id), at: [150.mm, 94.5.mm], size: 15, style: :bold
   end
 
   def draw_page_number

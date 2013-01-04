@@ -72,10 +72,10 @@ class InvoicePdf < Prawn::Document
     if @invoice.customer.mailing_address
       address_box(self, @invoice.customer.mailing_address, [13.mm, 248.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text "%07d" % @invoice.customer.id, at: [30.mm, 220.5.mm], size: 10, style: :bold
+    draw_text docnolize(@invoice.customer.id), at: [30.mm, 220.5.mm], size: 10, style: :bold
     draw_text @view.term_string(@invoice.credit_terms), at: [70.mm, 220.5.mm], style: :bold
     draw_text @invoice.doc_date, at: [124.mm, 220.5.mm], style: :bold
-    draw_text "%07d" % @invoice.id, at: [180.mm, 220.5.mm], style: :bold
+    draw_text docnolize(@invoice.id), at: [180.mm, 220.5.mm], style: :bold
   end
 
   def draw_page_number

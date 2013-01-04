@@ -57,7 +57,7 @@ class JournalPdf < Prawn::Document
   #Dynamic Content
   def draw_header
     draw_text @journal.doc_date, at: [50.mm, 114.5.mm], style: :bold, size: 14
-    draw_text "%07d" % @journal.id, at: [160.mm, 114.5.mm], style: :bold, size: 14
+    draw_text docnolize(@journal.id), at: [160.mm, 114.5.mm], style: :bold, size: 14
   end
 
   def draw_page_number

@@ -73,10 +73,10 @@ class CashSalePdf < Prawn::Document
     if @cashsale.customer.mailing_address
       address_box(self, @cashsale.customer.mailing_address, [13.mm, 248.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text "%07d" % @cashsale.customer.id, at: [30.mm, 220.5.mm], size: 10, style: :bold
+    draw_text docnolize(@cashsale.customer.id), at: [30.mm, 220.5.mm], size: 10, style: :bold
     draw_text @view.term_string(0), at: [70.mm, 220.5.mm], style: :bold
     draw_text @cashsale.doc_date, at: [124.mm, 220.5.mm], style: :bold
-    draw_text "%07d" % @cashsale.id, at: [180.mm, 220.5.mm], style: :bold
+    draw_text docnolize(@cashsale.id), at: [180.mm, 220.5.mm], style: :bold
   end
 
   def draw_page_number

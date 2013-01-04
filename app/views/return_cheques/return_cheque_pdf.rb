@@ -65,9 +65,9 @@ include Prawn::Helper
     if @return_cheque.return_to.mailing_address
       address_box(self, @return_cheque.return_to.mailing_address, [12.mm, 105.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text "%07d" % @return_cheque.return_to.id, at: [150.mm, 112.mm], style: :bold, size: 12
+    draw_text docnolize(@return_cheque.return_to.id), at: [150.mm, 112.mm], style: :bold, size: 12
     draw_text @return_cheque.doc_date, at: [150.mm, 103.mm], size: 12, style: :bold
-    draw_text "%07d" % @return_cheque.id, at: [150.mm, 94.5.mm], size: 12, style: :bold
+    draw_text docnolize(@return_cheque.id), at: [150.mm, 94.5.mm], size: 12, style: :bold
     draw_text @return_cheque.reason, at: [150.mm, 86.5.mm], size: 12
   end
 

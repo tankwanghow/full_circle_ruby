@@ -68,7 +68,7 @@ class PaymentPdf < Prawn::Document
     draw_text @payment.pay_from.name1, at: [122.mm, 109.mm], size: 14, style: :bold
     draw_text [@payment.cheque_no, @payment.cheque_date].join("     "), at: [129.mm, 98.mm], style: :bold
     draw_text @payment.doc_date, at: [165.mm, 92.mm]
-    draw_text "%07d" % @payment.id, at: [166.mm, 85.7.mm]
+    draw_text docnolize(@payment.id), at: [166.mm, 85.7.mm]
   end
 
   def draw_page_number

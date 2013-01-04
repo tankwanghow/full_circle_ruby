@@ -45,7 +45,7 @@ class AdvancePdf < Prawn::Document
 
   #Dynamic Content
   def draw_header
-    draw_text "%07d" % @advance.id, at: [57.mm, 47.mm], size: 12, style: :bold
+    draw_text docnolize(@advance.id), at: [57.mm, 47.mm], size: 12, style: :bold
     draw_text @advance.doc_date, at: [110.mm, 47.mm], size: 12, style: :bold
     draw_text @advance.employee.name, at: [30.mm, 40.mm], size: 12, style: :bold
     draw_text @advance.pay_from.name1, at: [30.mm, 33.mm], size: 12, style: :bold

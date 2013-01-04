@@ -68,7 +68,7 @@ class PaymentPdf < Prawn::Document
     draw_text @payment.pay_from.name1, at: [122.mm, 109.mm], size: 14, style: :bold
     draw_text [@payment.cheque_no, @payment.cheque_date].join("     "), at: [129.mm, 98.mm], style: :bold
     draw_text @payment.doc_date, at: [165.mm, 92.mm]
-    draw_text "%07d" % @payment.id, at: [166.mm, 85.7.mm]
+    draw_text docnolize(@payment.id), at: [166.mm, 85.7.mm]
   end
 
   def draw_page_number
@@ -88,7 +88,7 @@ class PaymentPdf < Prawn::Document
 
   def draw_matchers
     @payment.matchers.each do |t|
-      particular = ['Payment for', t.transaction.doc_type, "%07d" % t.transaction.doc_id, "(#{t.transaction.transaction_date})"]
+      particular = ['Payment for', t.transaction.doc_type, docnolize(t.transaction.doc_id), "(#{t.transaction.transaction_date})"]
       particular << "Due at: #{t.transaction.transaction_date + t.transaction.terms.days}"
       bounding_box [8.mm, @detail_y], height: @detail_height, width: 140.mm do
         text_box particular.compact.join(' '), overflow: :shrink_to_fit, valign: :center

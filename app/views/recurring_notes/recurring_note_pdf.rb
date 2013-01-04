@@ -48,7 +48,7 @@ class RecurringNotePdf < Prawn::Document
 
   #Dynamic Content
   def draw_header
-    draw_text "%07d" % @recurring_note.id, at: [48.mm, 49.mm], size: 12, style: :bold
+    draw_text docnolize(@recurring_note.id), at: [48.mm, 49.mm], size: 12, style: :bold
     draw_text @recurring_note.doc_date, at: [110.mm, 49.mm], size: 12, style: :bold
     draw_text @recurring_note.employee.name, at: [30.mm, 43.mm], size: 12, style: :bold
     draw_text @recurring_note.salary_type.name, at: [30.mm, 37.mm], size: 12, style: :bold

@@ -63,9 +63,9 @@ class CreditNotePdf < Prawn::Document
     if @credit_note.account.mailing_address
       address_box(self, @credit_note.account.mailing_address, [10.mm, 108.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text "%07d" % @credit_note.account.id, at: [150.mm, 112.mm], size: 10, style: :bold
+    draw_text docnolize(@credit_note.account.id), at: [150.mm, 112.mm], size: 10, style: :bold
     draw_text @credit_note.doc_date, at: [150.mm, 103.mm], style: :bold
-    draw_text "%07d" % @credit_note.id, at: [150.mm, 94.5.mm], size: 15, style: :bold
+    draw_text docnolize(@credit_note.id), at: [150.mm, 94.5.mm], size: 15, style: :bold
   end
 
   def draw_page_number

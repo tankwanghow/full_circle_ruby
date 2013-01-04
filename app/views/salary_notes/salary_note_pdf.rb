@@ -48,7 +48,7 @@ class SalaryNotePdf < Prawn::Document
 
   #Dynamic Content
   def draw_header
-    draw_text "%07d" % @salary_note.id, at: [46.mm, 49.mm], size: 12, style: :bold
+    draw_text docnolize(@salary_note.id), at: [46.mm, 49.mm], size: 12, style: :bold
     draw_text @salary_note.doc_date, at: [110.mm, 49.mm], size: 12, style: :bold
     draw_text @salary_note.employee.name, at: [30.mm, 43.mm], size: 12, style: :bold
     draw_text @salary_note.salary_type.name, at: [30.mm, 37.mm], size: 12, style: :bold
