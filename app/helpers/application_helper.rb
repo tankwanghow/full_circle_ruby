@@ -86,4 +86,8 @@ module ApplicationHelper
     end
   end
 
+  def docnolize val, prepend=''
+    prepend + ("%07d" % val) if val
+  end
+
 end
