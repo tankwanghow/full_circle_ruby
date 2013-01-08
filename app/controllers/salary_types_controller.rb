@@ -43,6 +43,15 @@ class SalaryTypesController < ApplicationController
     render json: SalaryType.where("name ilike ?", term).limit(8).pluck(:name)
   end
 
+  def json
+    p = SalaryType.find_by_name(params[:name])
+    if p
+      render json: p.attributes
+    else
+      render json: 'Not Found!'
+    end
+  end
+
   def typeahead_addition_name
     term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
     render json: SalaryType.addition.where("name ilike ?", term).limit(8).pluck(:name)
