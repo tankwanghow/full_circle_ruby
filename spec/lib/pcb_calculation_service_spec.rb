@@ -1,17 +1,6 @@
 #require 'spec_helper'
 require './lib/pcb_calculation_service'
-require 'date'
-
-def nearest_five_cents val
-  truncate_val = (val * 100).to_i
-  t = truncate_val % 5
-  if t == 0  
-    return truncate_val.round(2)    
-  else  
-    return ((truncate_val.round(2)*100) + (5 - t)) / 100    
-  end  
-end  
-
+require 'date' 
 
 class SalaryNote; end
 class SalaryType; end
@@ -154,7 +143,7 @@ describe PcbCalculationService do
       @serv = PcbCalculationService.new(@payslip)
       @serv.stub(current_year_epf: 0)
       @serv.stub(current_month_epf: 1000)
-      expect(@serv.estimated_future_epf).to eq 5000.0/11.0
+      expect(@serv.estimated_future_epf).to eq (5000.0/11.0)
     end
 
     it "estimated_future_epf should be 4000/10" do
@@ -162,7 +151,7 @@ describe PcbCalculationService do
       @serv = PcbCalculationService.new(@payslip)
       @serv.stub(current_year_epf: 1000)
       @serv.stub(current_month_epf: 1000)
-      expect(@serv.estimated_future_epf).to eq 4000.0/10.0
+      expect(@serv.estimated_future_epf).to eq (4000.0/10.0)
     end
 
     it "estimated_future_epf should be 3000/9" do
@@ -170,7 +159,7 @@ describe PcbCalculationService do
       @serv = PcbCalculationService.new(@payslip)
       @serv.stub(current_year_epf: 2000)
       @serv.stub(current_month_epf: 1000)
-      expect(@serv.estimated_future_epf).to eq 3000.0/9.0
+      expect(@serv.estimated_future_epf).to eq (3000.0/9.0)
     end
 
     it "estimated_future_epf should be 2000/8" do
@@ -178,7 +167,7 @@ describe PcbCalculationService do
       @serv = PcbCalculationService.new(@payslip)
       @serv.stub(current_year_epf: 3000)
       @serv.stub(current_month_epf: 1000)
-      expect(@serv.estimated_future_epf).to eq 2000.0/8.0
+      expect(@serv.estimated_future_epf).to eq (2000.0/8.0)
     end
 
     it "estimated_future_epf should be 1000/7" do
@@ -186,7 +175,7 @@ describe PcbCalculationService do
       @serv = PcbCalculationService.new(@payslip)
       @serv.stub(current_year_epf: 4000)
       @serv.stub(current_month_epf: 1000)
-      expect(@serv.estimated_future_epf).to eq 1000.0/7.0
+      expect(@serv.estimated_future_epf).to eq (1000.0/7.0)
     end
 
     it "estimated_future_epf should be 500/6" do
@@ -194,7 +183,7 @@ describe PcbCalculationService do
       @serv = PcbCalculationService.new(@payslip)
       @serv.stub(current_year_epf: 5000)
       @serv.stub(current_month_epf: 500)
-      expect(@serv.estimated_future_epf).to eq 500.0/6.0
+      expect(@serv.estimated_future_epf).to eq (500.0/6.0)
     end
 
     it "estimated_future_epf should be 0" do
