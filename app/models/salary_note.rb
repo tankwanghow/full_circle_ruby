@@ -68,12 +68,20 @@ private
     validates_transactions_balance
   end
 
+  def transaction_note
+    if pay_slip.try(:id)
+      "Pay Slip - #{'%07d' % pay_slip.id} #{salary_type_name} #{note} #{employee_name}"
+    else
+      "#{salary_type_name} #{note} #{employee_name}"
+    end
+  end
+
   def db_transaction
     transactions.build(
       doc: self,
       transaction_date: doc_date,
       account: salary_type.db_account,
-      note: "#{salary_type_name} #{note} #{employee_name}",
+      note: transaction_note,
       amount: amount,
       user: User.current
     )
@@ -84,7 +92,7 @@ private
       doc: self,
       transaction_date: doc_date,
       account: salary_type.cr_account,
-      note: "#{salary_type_name} #{note} #{employee_name}",
+      note: transaction_note,
       amount: -amount,
       user: User.current
     )
