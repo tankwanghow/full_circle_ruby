@@ -66,9 +66,9 @@ include Prawn::Helper
     if @receipt.receive_from.mailing_address
       address_box(self, @receipt.receive_from.mailing_address, [12.mm, 105.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text docnolize(@receipt.receive_from.id), at: [150.mm, 112.mm], style: :bold, size: 12
+    draw_text @view.docnolize(@receipt.receive_from.id), at: [150.mm, 112.mm], style: :bold, size: 12
     draw_text @receipt.doc_date, at: [150.mm, 103.mm], size: 12, style: :bold
-    draw_text docnolize(@receipt.id), at: [150.mm, 94.5.mm], size: 12, style: :bold
+    draw_text @view.docnolize(@receipt.id), at: [150.mm, 94.5.mm], size: 12, style: :bold
     draw_text @receipt.alt_receipt_no, at: [150.mm, 86.5.mm], size: 12
   end
 

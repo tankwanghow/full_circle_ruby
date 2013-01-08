@@ -73,10 +73,10 @@ class CashSalePdf < Prawn::Document
     if @cashsale.customer.mailing_address
       address_box(self, @cashsale.customer.mailing_address, [13.mm, 248.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text docnolize(@cashsale.customer.id), at: [30.mm, 220.5.mm], size: 10, style: :bold
+    draw_text @view.docnolize(@cashsale.customer.id), at: [30.mm, 220.5.mm], size: 10, style: :bold
     draw_text @view.term_string(0), at: [70.mm, 220.5.mm], style: :bold
     draw_text @cashsale.doc_date, at: [124.mm, 220.5.mm], style: :bold
-    draw_text docnolize(@cashsale.id), at: [180.mm, 220.5.mm], style: :bold
+    draw_text @view.docnolize(@cashsale.id), at: [180.mm, 220.5.mm], style: :bold
   end
 
   def draw_page_number
@@ -95,7 +95,7 @@ class CashSalePdf < Prawn::Document
     @cashsale.details.each do |t|
 
       bounding_box [12.mm, @detail_y], height: @detail_height, width: 100.mm do
-        pack_qty = t.package_qty == 0 ? nil : @view.number_with_precision(t.package_qty, precision: 4, strip_insignificant_zeros: true)
+        pack_qty = t.package_qty == 0 ? nil : @view.number_with_precision(t.package_qty, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
         pack_name = t.try(:product_packaging).try(:pack_qty_name) ? "(#{t.product_packaging.pack_qty_name})" : nil
         pack_qty_name = [pack_qty, pack_name].flatten.join ''
         text_box [ pack_qty_name, t.product.name1, t.product.try(:name2), 
@@ -103,12 +103,12 @@ class CashSalePdf < Prawn::Document
       end
 
       bounding_box [110.mm, @detail_y], height: @detail_height, width: 35.mm do
-        qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true)
+        qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
         text_box [ qty, t.unit ].flatten.join(''), overflow: :shrink_to_fit, valign: :center, align: :center
       end
 
       bounding_box [145.mm, @detail_y], height: @detail_height, width: 30.mm do
-        text_box @view.number_with_precision(t.unit_price, precision: 4), 
+        text_box @view.number_with_precision(t.unit_price, precision: 4, delimiter: ','), 
                  overflow: :shrink_to_fit, valign: :center, align: :center
       end
 
@@ -133,12 +133,12 @@ class CashSalePdf < Prawn::Document
       end
 
       bounding_box [110.mm, @detail_y], height: @detail_height, width: 35.mm do
-        qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true)
+        qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
         text_box [ qty, t.unit ].flatten.join(''), overflow: :shrink_to_fit, valign: :center, align: :center
       end
 
       bounding_box [145.mm, @detail_y], height: @detail_height, width: 30.mm do
-        text_box @view.number_with_precision(t.unit_price, precision: 4), 
+        text_box @view.number_with_precision(t.unit_price, precision: 4, delimiter: ','), 
                  overflow: :shrink_to_fit, valign: :center, align: :center
       end
 

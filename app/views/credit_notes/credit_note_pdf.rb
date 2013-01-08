@@ -63,9 +63,9 @@ class CreditNotePdf < Prawn::Document
     if @credit_note.account.mailing_address
       address_box(self, @credit_note.account.mailing_address, [10.mm, 108.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text docnolize(@credit_note.account.id), at: [150.mm, 112.mm], size: 10, style: :bold
+    draw_text @view.docnolize(@credit_note.account.id), at: [150.mm, 112.mm], size: 10, style: :bold
     draw_text @credit_note.doc_date, at: [150.mm, 103.mm], style: :bold
-    draw_text docnolize(@credit_note.id), at: [150.mm, 94.5.mm], size: 15, style: :bold
+    draw_text @view.docnolize(@credit_note.id), at: [150.mm, 94.5.mm], size: 15, style: :bold
   end
 
   def draw_page_number
@@ -87,8 +87,8 @@ class CreditNotePdf < Prawn::Document
     @detail_y = @detail_y_start_at
     @credit_note.particulars.each do |t|
       part_note = [t.particular_type.name_nil_if_note, t.note]
-      qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true) + t.unit
-      price = @view.number_with_precision(t.unit_price, precision: 4)
+      qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',') + t.unit
+      price = @view.number_with_precision(t.unit_price, precision: 4, delimiter: ',')
       str = [part_note, qty, "X", price].compact.join(" ")
       
       bounding_box [8.mm, @detail_y], height: @detail_height, width: 140.mm do

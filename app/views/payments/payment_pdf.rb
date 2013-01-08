@@ -68,7 +68,7 @@ class PaymentPdf < Prawn::Document
     draw_text @payment.pay_from.name1, at: [122.mm, 109.mm], size: 14, style: :bold
     draw_text [@payment.cheque_no, @payment.cheque_date].join("     "), at: [129.mm, 98.mm], style: :bold
     draw_text @payment.doc_date, at: [165.mm, 92.mm]
-    draw_text docnolize(@payment.id), at: [166.mm, 85.7.mm]
+    draw_text @view.docnolize(@payment.id), at: [166.mm, 85.7.mm]
   end
 
   def draw_page_number
@@ -89,8 +89,8 @@ class PaymentPdf < Prawn::Document
   def draw_pay_to_particulars
     @payment.pay_to_particulars.each do |t|
       part_note = [t.particular_type.name_nil_if_note, t.note]
-      qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true) + t.unit
-      price = @view.number_with_precision(t.unit_price, precision: 4)
+      qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',') + t.unit
+      price = @view.number_with_precision(t.unit_price, precision: 4, delimiter: ',')
       str = [part_note, qty, "X", price].compact.join(" ")
       
       bounding_box [8.mm, @detail_y], height: @detail_height, width: 140.mm do
