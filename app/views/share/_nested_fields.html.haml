@@ -5,5 +5,6 @@
   - if defined? with_type
     = render field, f: builder, with_type: with_type
   - else
-    = render field, f: builder 
-= f.link_to_add defined?(text) ? text : 'Add', xies_name, class: defined?(add_html_class) ? add_html_class : 'bold span3'
+    = render field, f: builder
+- if !defined?(can_add_row) or can_add_row
+  = f.link_to_add defined?(text) ? text : 'Add', xies_name, class: defined?(add_html_class) ? add_html_class : 'bold span3'
