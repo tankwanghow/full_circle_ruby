@@ -1,14 +1,12 @@
 class Deposit < ActiveRecord::Base
   belongs_to :bank, class_name: "Account"
   has_many :transactions, as: :doc
-  has_many :cheques, as: :cr_doc
+  has_many :cheques, as: :cr_doc, autosave: true
 
   validates_presence_of :bank_name1, :doc_date
   validates_numericality_of :cash_amount, greater_than: -0.0001
 
   before_save :build_transactions
-
-  accepts_nested_attributes_for :cheques
 
   include ValidateBelongsTo
   validate_belongs_to :bank, :name1
@@ -44,20 +42,27 @@ class Deposit < ActiveRecord::Base
   end
 
   def cheques_attributes= vals
-    vals.map do |k, v|
-      if cheques.detect { |t| t.id == v['id'].to_i }
-        if v['_destroy'].to_i == 1
-          cheques.select { |t| t.id == v['id'].to_i }[0].cr_doc = nil
+    vals.each do |k, v|
+      chq = cheques.detect { |t| t.id == v['id'].to_i }
+      if chq
+        if v['_destroy'] == '1'
+          chq.cr_doc = nil
         end
-      elsif v['_destroy'].to_i != 1
-        chq = Cheque.find(v['id'])
-        chq.cr_doc = self
-        cheques << chq
+      else
+        if v['_destroy'] != '1'
+          chq = Cheque.find(v['id'])
+          chq.cr_doc = self
+          cheques << chq
+        end
       end
     end
   end
 
 private
+
+  def process_cheque_in_current_list chq_id
+    cheques.select { |t| t.id == chq_id }.cr_doc = nil
+  end
 
   def build_transactions
     transactions.destroy_all
