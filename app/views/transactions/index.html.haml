@@ -1,18 +1,12 @@
 - total = 0
 = render_flash
 - unless @parent
-  .accordion#accordion1.center-text
-    .accordion-group
-      .accordion-heading
-        %a.accordion-toggle{data: { toggle: 'collapse', parent: '#accordion1' }, href: '#transaction-search-form', 'data-skip-pjax' => true }
-          .bold Transaction Query
-      .accordion-body.collapse#transaction-search-form
-        .accordion-inner
-          = simple_form_for :transactions_query, url: transactions_path, html: { class: 'form-search' } do |f|
-            = f.input_field :name, class: 'span8', placeholder: 'account name...', autofocus: true, value: session[:transactions_query][:name]
-            = f.input_field :start_date, class: 'datepicker span3', placeholder: 'start date...', value: session[:transactions_query][:start_date]
-            = f.input_field :end_date, class: 'datepicker span3', placeholder: 'end date...', value: session[:transactions_query][:end_date]
-            = f.button :submit, 'Query', class: 'btn-primary' 
+  .bold Transaction Query
+  = simple_form_for :transactions_query, url: transactions_path, html: { class: 'form-search' } do |f|
+    = f.input_field :name, class: 'span8', placeholder: 'account name...', autofocus: true, value: session[:transactions_query][:name]
+    = f.input_field :start_date, class: 'datepicker span3', placeholder: 'start date...', value: session[:transactions_query][:start_date]
+    = f.input_field :end_date, class: 'datepicker span3', placeholder: 'end date...', value: session[:transactions_query][:end_date]
+    = f.button :submit, 'Query', class: 'btn-primary' 
 %table.table-bordered.table#transactions
   %thead
     %tr
