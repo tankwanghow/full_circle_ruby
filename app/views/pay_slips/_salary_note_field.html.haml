@@ -1,0 +1,21 @@
+.row-fluid{ class: "#{f.object.salary_type.try(:classifiaction)}" }
+  = f.hidden_field :generated
+  = f.hidden_field :recurring_note_id
+  .span3
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span21' }, wrapper: :table_field
+  .span2
+    = text_field_tag :id, docnolize(f.object.id, '#'), class: 'span', readonly: true, tabindex: -1
+  .span4
+    = f.input :salary_type_name, input_html: { class: 'span salary_type' }, wrapper: :table_field
+  .span4
+    = f.input :note, input_html: { class: 'span' }, wrapper: :table_field
+  .span2
+    = f.input :quantity, input_html: { class: 'quantity span', type: :text }, wrapper: :table_field
+  .span2
+    = f.input :unit, input_html: { class: 'span' }, wrapper: :table_field
+  .span2
+    = f.input :unit_price, input_html: { class: 'unit-price numeric span', type: :text }, wrapper: :table_field
+  .span3
+    = f.input :amount, input_html: { tabindex: -1, class: 'numeric row-total span', name: 'row_total', type: :text, readOnly: true }, wrapper: :table_field
+  .span1
+    = f.link_to_remove "X", class: "btn btn-danger", tabindex: -1

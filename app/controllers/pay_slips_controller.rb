@@ -1,21 +1,24 @@
 class PaySlipsController < ApplicationController
+
+  def new
+    @pay_slip = PaySlipGenerationService.new(params[:employee_name], params[:pay_date]).generate_pay_slip
+  end
   
   def edit
     @pay_slip = PaySlip.find(params[:id])
   end
 
-  def new
-    @pay_slip = PaySlip.new(pay_date: Date.today)
+  def show
+    @pay_slip = PaySlip.find(params[:id])
+    @static_content = params[:static_content]
   end
 
   def create
     @pay_slip = PaySlip.new(params[:pay_slip])
-    if @pay_slip.save
-      flash[:success] = "Pay Slip '##{@pay_slip.id}' created successfully."
-      redirect_to edit_pay_slip_path(@pay_slip)
+    if params[:submit] == 'Calculate'
+      calculate_pay
     else
-      flash.now[:error] = "Failed to create Pay Slip."
-      render :new
+      save_slip
     end
   end
 
@@ -27,6 +30,23 @@ class PaySlipsController < ApplicationController
     else
       flash.now[:error] = "Failed to update Pay Slip."
       render :edit
+    end
+  end
+
+private
+
+  def calculate_pay
+    SalaryCalculationService.calculate @pay_slip
+    render :calculated
+  end
+
+  def save_slip
+    if @pay_slip.save
+      flash[:success] = "Pay Slip '##{@pay_slip.id}' created successfully."
+      redirect_to edit_pay_slip_path(@pay_slip)
+    else
+      flash.now[:error] = "Failed to create Pay Slip."
+      render :new
     end
   end
   

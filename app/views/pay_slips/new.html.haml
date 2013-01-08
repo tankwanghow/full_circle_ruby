@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @pay_slip, html: { class: 'form-inline well', id: 'pay_slip' } do |f|
+  %legend
+    New Pay Slip
+  = render 'pay_slips/fields', f: f, readonly: true
+  .form-actions
+    = f.button :submit, 'Calculate', class: 'btn btn-primary'
+    = link_to 'Prepare Again', new_pay_slip_generations_path, class: 'btn btn-info'

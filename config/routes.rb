@@ -33,10 +33,11 @@ FullCircle::Application.routes.draw do
   
   resources :salary_types, only: [:new, :edit, :update, :create, :destroy]
   get 'salary_type/new_or_edit' => 'salary_types#new_or_edit'
+  get 'salary_type/json' => 'salary_types#json'
   get 'salary_type/typeahead_name' => 'salary_types#typeahead_name'
-  get 'salary_type/typeahead_addition_name' => 'salary_types#typeahead_addition_name'
-  get 'salary_type/typeahead_deduction_name' => 'salary_types#typeahead_deduction_name'
-  get 'salary_type/typeahead_contribution_name' => 'salary_types#typeahead_contribution_name'
+  # get 'salary_type/typeahead_addition_name' => 'salary_types#typeahead_addition_name'
+  # get 'salary_type/typeahead_deduction_name' => 'salary_types#typeahead_deduction_name'
+  # get 'salary_type/typeahead_contribution_name' => 'salary_types#typeahead_contribution_name'
 
   resources :employees, only: [:new, :edit, :update, :create, :destroy]
   get 'employee/typeahead_name' => 'employees#typeahead_name'    

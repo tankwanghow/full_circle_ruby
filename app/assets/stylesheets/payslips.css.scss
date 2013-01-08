@@ -1,0 +1,29 @@
+@import 'bootstrap/mixins';
+
+#notes {
+  padding: 5px 5px 5px 20px;
+  background-color: #FAF7A9;
+  margin-bottom: 5px;
+  @include border-radius(5px);
+  border: 2px solid lightgray;
+}
+
+#advances {
+  padding: 5px 5px 5px 20px;
+  background-color: #FFCFCF;
+  @include border-radius(5px);
+  border: 2px solid lightgray;
+  margin-bottom: 5px;
+}
+
+#pay_slip {
+  .Addition input {
+    color: green;
+  }
+  .Deduction input, .advance input {
+    color: red;
+  }
+  .Contribution input {
+    color: blue;
+  }
+}

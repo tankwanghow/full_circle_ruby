@@ -22,6 +22,7 @@ class CreatePayrolls < ActiveRecord::Migration
       t.integer    :lock_version, default: 0
       t.belongs_to :pay_slip
       t.belongs_to :recurring_note
+      t.boolean    :generated,    default: false, null: false
       t.timestamps
     end
 
