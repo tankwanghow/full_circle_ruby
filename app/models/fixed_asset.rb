@@ -3,14 +3,15 @@ class FixedAsset < ActiveRecord::Base
   validates_presence_of :depreciation_rate
   validate :is_fixed_assets?
   has_many :additions, class_name: "AssetAddition"
+  validates_numericality_of :depreciation_rate, greater_than_or_equal_to: 0, less_than_or_equal_to: 1
+
 
   accepts_nested_attributes_for :additions, allow_destroy: true
 
   simple_audit username_method: :username do |r|
     {
       account: r.account.name1,
-      depreciation_rate: r.depreciation_rate,
-      final_amount: r.final_amount
+      depreciation_rate: r.depreciation_rate
     }
   end
 
