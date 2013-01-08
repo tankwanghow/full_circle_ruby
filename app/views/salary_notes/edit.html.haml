@@ -2,6 +2,9 @@
 = simple_nested_form_for @salary_note, html: { class: 'form-inline well span15', id: 'salary_note_form' } do |f|
   %legend
     = "Salary Note #" + docnolize(@salary_note.id)
+  - if @salary_note.pay_slip
+    .label-important.label
+      = "Accounted for, by Pay Slip #" + docnolize(@salary_note.pay_slip.id) 
   = render 'fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
