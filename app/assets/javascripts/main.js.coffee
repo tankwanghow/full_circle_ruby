@@ -1,6 +1,9 @@
 $ ->
   app.standardInit()
   
+  ($ '[data-pjax-container]').on 'pjax:start', ->
+    ($ element).css('cursor', 'wait')
+
   $(document).on 'click', 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax]):not([data-method="delete"])', (event) ->
     container = $('[data-pjax-container]')
     $.pjax.click(event, container)
@@ -13,6 +16,7 @@ $ ->
     $.pjax.submit(event, container)
 
   ($ '[data-pjax-container]').on 'pjax:end', ->
+    ($ element).css('cursor', 'default')
     $('.alert, .no-record').fadeIn(1000)
     app.standardInit()
 
