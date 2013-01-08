@@ -113,3 +113,11 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 #main a:focus, #main input[type='submit']:focus {
   color: black;
 }
+
+#multi-pay-slip-warning {
+  padding: 5px;
+  background-color: #FFCFCF;
+  @include border-radius(5px);
+  border: 2px solid red;
+  text-align: center;
+}
