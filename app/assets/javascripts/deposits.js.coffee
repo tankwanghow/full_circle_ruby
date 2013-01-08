@@ -1,7 +1,6 @@
 window.deposit = {
   init: ->
     cheque.init()
-#    app.showHide '#cheques .fields:visible', '#cheques .show-hide'
     math.sum '#cheque-data .amount', '#total_cheques', 'form#deposit'
     app.typeahead_init '#deposit_bank_name1', '/account/typeahead_name1'
     ($ '#cheque-data .amount').change()
