@@ -19,7 +19,7 @@ class TransactionMatcher < ActiveRecord::Base
   end
 
   def trans_doc_type_id
-    transaction.doc_type + (" #%07d" % transaction.doc_id)
+    transaction.doc_type + docnolize(transaction.doc_id, ' #')
   end
 
   def _destroy
