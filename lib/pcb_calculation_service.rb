@@ -48,7 +48,8 @@ class PcbCalculationService
     x = pcb_paid_current_year
     n = remaning_working_month_in_a_year
     cz = current_month_zakat
-    nearest_five_cents((((((pp-m)*r)+b)-(z+x))/(n+1)) - cz)
+    pcb = nearest_five_cents((((((pp-m)*r)+b)-(z+x))/(n+1)) - cz)
+    pcb < 0 ? 0 : pcb
   end
 
   def nearest_five_cents val
@@ -106,22 +107,22 @@ class PcbCalculationService
     k1 = current_month_epf
     kt = 0
     n = remaning_working_month_in_a_year
+    return 0 if n == 0
     val = (EPF_INSURANCE_DEDUCTION_LIMIT - (k+k1+kt))/n
     val > k1 ? k1 : val
-    (val > 0 ? val : 0).round 2
-
+    val > 0 ? val : 0
   end
 
   def current_month_epf_notes
     @payslip.salary_notes.select do |t| 
       !t.marked_for_destruction? and 
-      t.salary_type.name = EMPLOYEE_EPF_NAME
+      t.salary_type.name == EMPLOYEE_EPF_NAME
     end
   end
 
 
   def amount_of_first_taxable_income
-    row = SCHEDULE.detect { |t| total_taxable_income_for_the_year.between?(t[0], t[1]) }
+    row = SCHEDULE.detect { |t| total_taxable_income_for_the_year.to_f.between?(t[0], t[1]) }
     return row[2] if row
     0
   end
@@ -138,7 +139,7 @@ class PcbCalculationService
   def current_month_zakat_notes
     @payslip.salary_notes.select do |t| 
       !t.marked_for_destruction? and 
-      t.salary_type.name = EMPLOYEE_ZAKAT_NAME
+      t.salary_type.name == EMPLOYEE_ZAKAT_NAME
     end
   end
 
