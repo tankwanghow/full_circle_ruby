@@ -12,6 +12,7 @@ class Document < ActiveRecord::Base
                     dmetaphone: {}
                   }
 
+  scope :type_is, ->(val) { where('searchable_type ~* ?', val) } 
   scope :type_in, ->(values) { where('searchable_type ~* ?', values.map { |t| '^' + t + '$' }.join('|')) }
   scope :amount_between, ->(larger, smaller) { amount_larger_eq(larger).amount_smaller_eq(smaller) }
   scope :amount_larger_eq, ->(val) { where('doc_amount >= ?', val) }

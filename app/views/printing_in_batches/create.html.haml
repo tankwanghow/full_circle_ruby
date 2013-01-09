@@ -1,0 +1,19 @@
+%table.table-bordered.table#documents
+  %thead
+    %tr
+      %th.span2 Date
+      %th.span3 Doc Type
+      %th.span10 Partuculars
+      %th.span3 Print
+  %tbody
+    - for t in @documents
+      %tr.document
+        %td.doc_date= t.doc_date
+        %td.doc_type
+          = link_to t.searchable_type + docnolize(t.searchable_id, ' #'), url_for(controller: t.searchable_type.pluralize.underscore, action: :edit, id: t.searchable_id)
+        %td.particulars= truncate(t.content, length: 100)
+        %td.print= check_box_tag "#{rand(99999)}", nil
+    - if @documents.length == 0
+      %tr
+        %td{colspan: 6}
+          %h3.no-record{style: 'display: none'} No Record found!

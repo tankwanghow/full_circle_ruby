@@ -1,0 +1,7 @@
+= render_flash
+.bold Batch Printing
+= simple_form_for :printing_in_batches, url: printing_in_batches_path, html: { class: 'form-search' } do |f|
+  = f.input_field :doc_type, class: 'span8', placeholder: 'document type...', autofocus: true, value: params[:printing_in_batches][:doc_type]
+  = f.input_field :start_date, class: 'datepicker span3', placeholder: 'start date...', value: params[:printing_in_batches][:start_date]
+  = f.input_field :end_date, class: 'datepicker span3', placeholder: 'end date...', value: params[:printing_in_batches][:end_date]
+  = f.button :submit, 'Query', class: 'btn-primary'

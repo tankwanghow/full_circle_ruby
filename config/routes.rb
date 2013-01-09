@@ -12,6 +12,8 @@ FullCircle::Application.routes.draw do
   root to: 'main#index'
   resources :audit_logs, only: :index
 
+  resources :printing_in_batches, only: [:new, :create]
+
   resources :particular_types, only: [:new, :edit, :update, :create, :destroy]
   get 'particular_type/new_or_edit' => 'particular_types#new_or_edit'
   get 'particular_type/typeahead_name' => 'particular_types#typeahead_name'
