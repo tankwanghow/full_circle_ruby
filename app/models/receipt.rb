@@ -1,5 +1,4 @@
 class Receipt < ActiveRecord::Base
-  include ActionView::Helpers::TextHelper
   belongs_to :receive_from, class_name: "Account"
   has_many :transactions, as: :doc
   has_many :cheques, as: :db_doc
@@ -78,11 +77,11 @@ private
 
   def transaction_note_summary
     if cash_amount > 0 and cheques_amount > 0
-      'Being Cash and ' + pluralize(cheques.size, 'cheque') + ' received'
+      'Being Cash and ' + helpers.pluralize(cheques.size, 'cheque') + ' received'
     elsif  cash_amount > 0 and cheques_amount == 0
       'Being Cash received'
     elsif cash_amount == 0 and cheques_amount > 0
-      'Being ' + pluralize(cheques.size, 'cheque') + ' received'
+      'Being ' + helpers.pluralize(cheques.size, 'cheque') + ' received'
     end
   end
 
@@ -109,5 +108,9 @@ private
           user: User.current)
       end
     end
+  end
+
+  def helpers
+    ActionController::Base.helpers
   end
 end
