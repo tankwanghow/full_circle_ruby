@@ -28,8 +28,14 @@ class Transaction < ActiveRecord::Base
   include ValidateBelongsTo
   validate_belongs_to :account, :name1
 
-  def balance
-    amount + matchers_amount
+  def balance at=nil
+    if at.blank?
+      amount + matchers_amount
+    else
+      amount + 
+      matchers.select { |t| !t.marked_for_destruction? and t.doc_date <= at.to_date}.
+        inject(0) { |sum, t| sum + t.amount }
+    end
   end
 
   def self.with_matched_amount_and_balance account_name1, in_doc_type, in_doc_id, from, to

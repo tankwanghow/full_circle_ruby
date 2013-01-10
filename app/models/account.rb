@@ -34,7 +34,7 @@ class Account < ActiveRecord::Base
 
   def statement start_date, end_date
     bal = balance_before(start_date)
-    balance = Transaction.new(doc_type: 'BF', note: 'Balance Brought Foward', amount: bal, transaction_date: start_date.to_date.yesterday)
+    balance = Transaction.new(doc_type: 'BF', note: 'Balance Brought Foward', account: self, amount: bal || 0, transaction_date: start_date.to_date.yesterday)
     ([balance] << transactions.bigger_eq(start_date).smaller_eq(end_date).order("transaction_date")).flatten
   end
 
