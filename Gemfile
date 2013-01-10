@@ -33,7 +33,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-  gem 'therubyracer', :platforms => :ruby
+  gem 'therubyracer', "~> 0.10.2", :platforms => :ruby
   gem 'bootstrap-sass'
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-ui-rails'
@@ -58,4 +58,8 @@ end
 group :development, :test do
   gem 'pry-rails'
   gem 'pry-debugger'
+end
+
+group :development do
+  gem 'meta_request', '0.2.1'
 end
