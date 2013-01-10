@@ -1,5 +1,7 @@
 module ApplicationHelper
 
+  include SharedHelpers
+
   def render_flash
     a = ''
     flash.each do |name, msg|
@@ -84,10 +86,6 @@ module ApplicationHelper
         end
       end
     end
-  end
-
-  def docnolize val, prepend=''
-    prepend + ("%07d" % val) if val
   end
 
 end
