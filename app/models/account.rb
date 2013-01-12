@@ -21,7 +21,11 @@ class Account < ActiveRecord::Base
   end
 
   def is_fixed_assets?
-    true if account_type.descendant_of?(AccountType.find_by_name 'Fixed Assets')
+    true if account_type.descendant_of?(AccountType.find_by_name 'Fixed Assets') or account_type.name == 'Fixed Assets'
+  end
+
+  def is_descendant_of_type?(name)
+    true if account_type.descendant_of?(AccountType.find_by_name name) or account_type.name = name
   end
 
   def type_name
@@ -59,6 +63,56 @@ class Account < ActiveRecord::Base
   def prev_close_date date
     close_date = Date.new date.to_date.year, ClosingMonth, ClosingDay
     close_date >= date.to_date ? close_date.years_ago(1) : close_date
+  end
+
+  def self.aging_lists accounts, at_date=Date.today, interval_days=15, intervals=5
+    hash = {}
+    accounts.each do |ac|
+      hash[ac.id] = ac.aging_list at_date, interval_days, intervals
+    end
+    hash
+  end
+
+  def aging_list at_date=Date.today, interval_days=15, intervals=5
+    hash = {}
+    (0..intervals * interval_days).step(interval_days).each do |i|
+      cur_date = at_date - i
+      if i == intervals * interval_days
+        prev_date = nil
+        key = "more than #{i + interval_days} days"
+      else
+        prev_date = cur_date - interval_days
+        key = "#{i + 1} - #{i + interval_days} days"
+      end
+      hash[key] = aging_interval(at_date, cur_date, prev_date)
+    end
+    hash
+  end
+
+  def payment_due at_date=Date.today
+    results = transactions.smaller_eq(at_date)
+    if results.count > 0
+      results.select{ |t| t.terms != nil }.
+        select{ |t| t.transaction_date + t.terms <= at_date }.
+        inject(0.0){ |sum, t| sum += t.balance(at_date) }
+    else
+      0.0
+    end
+  end
+
+private
+
+  def aging_interval at_date, cur_date, prev_date=nil
+    if prev_date
+      results = transactions.smaller_eq(cur_date).bigger_eq(prev_date + 1)
+    else
+      results = transactions.smaller_eq(cur_date)
+    end
+    if results.count > 0
+      results.inject(0.0) { |sum, t| sum += t.balance(at_date) }
+    else
+      0.0
+    end  
   end
 
 end

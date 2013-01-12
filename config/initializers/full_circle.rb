@@ -1,4 +1,6 @@
+# encoding: utf-8
 CompanyName = 'Kim Poh Sitt Tat Feedmill Sdn. Bhd.'
+CompanyName1 = '金宝实达饲料厂有限公司'
 ClosingDay = 31
 ClosingMonth = 12
 Date::DATE_FORMATS[:default] = '%d-%m-%Y'

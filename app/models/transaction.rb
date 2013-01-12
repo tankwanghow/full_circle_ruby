@@ -30,11 +30,11 @@ class Transaction < ActiveRecord::Base
 
   def balance at=nil
     if at.blank?
-      amount + matchers_amount
+      amount + matchers_amount + self_matched
     else
       amount + 
       matchers.select { |t| !t.marked_for_destruction? and t.doc_date <= at.to_date}.
-        inject(0) { |sum, t| sum + t.amount }
+        inject(0) { |sum, t| sum + t.amount } + self_matched
     end
   end
 

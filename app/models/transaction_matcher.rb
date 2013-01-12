@@ -1,9 +1,13 @@
 class TransactionMatcher < ActiveRecord::Base
+  include SharedHelpers
+
   belongs_to :transaction
   belongs_to :doc, polymorphic: true
   validates_uniqueness_of :transaction_id, scope: [:doc_type, :doc_id]
   validates_presence_of :transaction_id, :amount
   validates_numericality_of :amount
+
+  before_save :set_doc_date
 
   delegate :transaction_date, to: :transaction
   delegate :amount, :terms, to: :transaction, prefix: :trans
@@ -24,6 +28,12 @@ class TransactionMatcher < ActiveRecord::Base
 
   def _destroy
     false
+  end
+
+private
+  
+  def set_doc_date
+    self.doc_date = doc.doc_date
   end
 
 end
