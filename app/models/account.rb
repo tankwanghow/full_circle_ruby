@@ -25,7 +25,7 @@ class Account < ActiveRecord::Base
   end
 
   def is_descendant_of_type?(name)
-    true if account_type.descendant_of?(AccountType.find_by_name name) or account_type.name = name
+    true if account_type.descendant_of?(AccountType.find_by_name name) or account_type.name == name
   end
 
   def type_name

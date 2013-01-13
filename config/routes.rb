@@ -9,7 +9,7 @@ FullCircle::Application.routes.draw do
   match 'depositable_cheques' => 'cheques#depositable'
   match 'get_return_cheque' => 'cheques#return_cheque'
   
-  resource :statements, only: [:show]
+  resources :statements, only: [:new, :create]
 
   root to: 'main#index'
   resources :audit_logs, only: :index
@@ -30,6 +30,8 @@ FullCircle::Application.routes.draw do
   get 'account/typeahead_name1' => 'accounts#typeahead_name1'
 
   resources :account_types, only: [:new, :edit, :update, :create, :destroy]
+  get 'account_type/typeahead_name' => 'account_types#typeahead_name'
+
   resource :sessions, only: [:new, :create, :destroy]
   resources :addresses, only: [:new, :edit, :update, :create, :destroy]
   resources :fixed_assets, only: [:new, :edit, :update, :create, :destroy]

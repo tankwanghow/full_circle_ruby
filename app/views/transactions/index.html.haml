@@ -9,10 +9,6 @@
   - url_options = { controller: 'transactions', action: 'index', format: 'pdf', transactions_query: session[:transactions_query] }
   = link_to "Templated Print", url_for(url_options), class: 'btn btn-success', target: '_blank', data: { 'skip-pjax' => true }
   = link_to "Print", url_for(url_options.merge(static_content: true)), class: 'btn btn-inverse', target: '_blank', data: { 'skip-pjax' => true }
-  - if @transactions.count > 0
-    - if @transactions.first.account.is_descendant_of_type?('Trade Debtors') or @transactions.first.account.is_descendant_of_type?('Trade Creditors')  
-      = link_to "Templated Statement", statements_path(session[:transactions_query].merge(format: :pdf)), class: 'btn btn-info', target: '_blank', data: { 'skip-pjax' => true }
-      = link_to "Statement", statements_path(session[:transactions_query].merge({format: :pdf, static_content: true})), class: 'btn btn-info', target: '_blank', data: { 'skip-pjax' => true }
 %table.table-bordered.table#transactions
   %thead
     %tr

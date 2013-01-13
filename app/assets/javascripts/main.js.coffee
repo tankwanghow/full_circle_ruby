@@ -5,7 +5,7 @@ $ ->
     container = $('[data-pjax-container]')
     $.pjax.click(event, container)
 
-  $(document).on 'submit', 'form', (event) ->
+  $(document).on 'submit', 'form:not([data-skip-pjax])', (event) ->
     container = ($ '[data-pjax-container]')
     val = $("input[type=submit][clicked=true]").val()
     $(event.currentTarget).append("<input type='hidden' name='submit' value='#{val}'>")

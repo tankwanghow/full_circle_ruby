@@ -8,6 +8,7 @@ class StatementPdf < Prawn::Document
     @start_date = start_date
     @end_date = end_date
     @static_content = static_content
+    @static_content_drawn = false
     draw(accounts)
   end
 
@@ -22,7 +23,7 @@ class StatementPdf < Prawn::Document
       @detail_height = 4.mm
       @detail_y_start_at = 228.mm
       start_new_statement_page
-      draw_static_content if @static_content
+      draw_static_content if @static_content and !@static_content_drawn
       fill_color "000077"
       draw_header
       font_size 9.5 do
@@ -77,6 +78,7 @@ class StatementPdf < Prawn::Document
       stroke_vertical_line 30.mm, 10.mm, at: 138.33.mm
       stroke_vertical_line 30.mm, 10.mm, at: 171.66.mm
     end
+    @static_content_drawn = true
   end
 
   #Dynamic Content

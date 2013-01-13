@@ -12,7 +12,6 @@
 - if @pay_slips.count > 0
   #multi-pay-slip-warning.offset5.span10
     %h4= "#{@pay_slips.count} Pay Slips found, for #{@pay_slips[0].employee_name} during #{params[:gen_pay][:pay_date].to_date.strftime('%B %Y')}."
-
     .bold
       = "Are you sure, you want to"
       %span= link_to 'prepare new pay slip', new_pay_slip_path(params[:gen_pay])

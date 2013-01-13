@@ -17,4 +17,3 @@ window.deposit = {
           ($ 'h4.no-record').slideDown 1000
       e.preventDefault()
 }
-

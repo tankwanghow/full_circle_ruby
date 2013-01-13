@@ -121,3 +121,19 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
   border: 2px solid red;
   text-align: center;
 }
+
+#statements-accounts {
+  margin-top: 5px;
+  padding: 5px;
+  background-color: #C6FFC4;
+  @include border-radius(5px);
+  border: 2px solid green;
+  .account_name {
+    margin-top: 5px;
+    padding: 5px;
+    background-color: #BBC2FF;
+    @include border-radius(5px);
+    border: 2px solid blue;
+    input { margin: 0px }
+  }
+}
