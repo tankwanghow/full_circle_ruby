@@ -7,6 +7,8 @@ class CashSale < ActiveRecord::Base
 
   validates_presence_of :customer_name1, :doc_date
 
+  acts_as_taggable
+
   before_save :build_transactions
 
   accepts_nested_attributes_for :details, allow_destroy: true
@@ -30,7 +32,8 @@ class CashSale < ActiveRecord::Base
       details: r.details_audit_string,
       note: r.note,
       particulars: r.particulars_audit_string,
-      cheques: r.cheques_audit_string
+      cheques: r.cheques_audit_string,
+      tag_list: r.tag_list
      }
   end
 

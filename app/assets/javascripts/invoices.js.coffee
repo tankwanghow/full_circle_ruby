@@ -4,6 +4,13 @@ window.invoice = {
     particular.init()
     detail.init()
     app.standard_row_total_init()
+
+
+    ($ '#invoice_tag_list').select2
+      tags: $('#invoice_tag_list').data('tags')
+      closeOnSelect: true
+      openOnEnter: false
+      minimumInputLength: 2
     
     math.sum '#details .row-total', '#total_details', 'form'
     math.sum '#particulars .row-total', '#total_particulars', 'form'

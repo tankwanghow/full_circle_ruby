@@ -14,6 +14,8 @@ class Invoice < ActiveRecord::Base
   include ValidateBelongsTo
   validate_belongs_to :customer, :name1
 
+  acts_as_taggable
+
   include ValidateTransactionsBalance
 
   include Searchable
@@ -28,7 +30,8 @@ class Invoice < ActiveRecord::Base
       credit_terms: r.credit_terms,
       details: r.details_audit_string,
       note: r.note,
-      particulars: r.particulars_audit_string
+      particulars: r.particulars_audit_string,
+      tag_list: r.tag_list
      }
   end
 
