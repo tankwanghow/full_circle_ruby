@@ -40,7 +40,7 @@ class SalaryTypesController < ApplicationController
 
   def typeahead_name
     term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
-    render json: SalaryType.where("name ilike ?", term).limit(8).pluck(:name)
+    render json: SalaryType.where("name ilike ?", term).limit(8).order(:name).pluck(:name)
   end
 
   def json

@@ -45,7 +45,7 @@ class AccountTypesController < ApplicationController
 
   def typeahead_name
     term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
-    render json: AccountType.where("name ilike ?", term).limit(8).pluck(:name)
+    render json: AccountType.where("name ilike ?", term).limit(8).order(:name).pluck(:name)
   end
 
 end

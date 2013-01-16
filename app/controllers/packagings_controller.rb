@@ -50,7 +50,7 @@ class PackagingsController < ApplicationController
 
   def typeahead_name
     term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
-    render json: Packaging.where('name ilike ?', term).limit(8).pluck(:name)
+    render json: Packaging.where('name ilike ?', term).limit(8).order(:name).pluck(:name)
   end
 
   def json
