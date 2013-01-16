@@ -12,7 +12,7 @@ class TransactionsPdf < Prawn::Document
   def draw(transactions, static_content)
     @transactions = transactions
     @total_pages = 1
-    @page_end_at = 7.mm
+    @page_end_at = 9.mm
     @detail_height = 4.5.mm
     @detail_y_start_at = 269.mm
     start_new_pay_slip_page

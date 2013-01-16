@@ -85,7 +85,7 @@ class StatementPdf < Prawn::Document
   def draw_header
     text_box @account.name1, at: [10.mm, 261.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
     if @account.mailing_address
-      address_box(self, @account.mailing_address, [13.mm, 248.mm], width: 110.mm, height: 24.mm)
+      address_box(self, @account.mailing_address, [10.mm, 257.mm], width: 110.mm, height: 24.mm, size: 10)
     end
     draw_text @start_date, at: [155.mm, 262.5.mm], style: :bold, size: 12
     draw_text @end_date, at: [155.mm, 254.5.mm], style: :bold, size: 12
@@ -132,7 +132,7 @@ class StatementPdf < Prawn::Document
       @detail_y = @detail_y - @detail_height
 
       if @detail_y <= @page_end_at
-        start_new_page_for_current_pay_slip
+        start_new_page_for_current_statement
         @detail_y = @detail_y_start_at
       end
     end
