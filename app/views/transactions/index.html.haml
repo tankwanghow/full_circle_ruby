@@ -25,10 +25,13 @@
         %td.transaction_date= t.transaction_date
         %td.doc_type
           =#did not use polymorphic_path to avoid n+1 issue
-          - if !t.new_record?
-            = link_to t.doc_type + docnolize(t.doc_id, ' #'), url_for(controller: t.doc_type.pluralize.underscore, action: :edit, id: t.doc_id)
+          - if t.old_data
+            = "#{t.doc_type} #{t.doc_id}"
           - else
-            = t.doc_type
+            - if !t.new_record?
+              = link_to t.doc_type + docnolize(t.doc_id, ' #'), url_for(controller: t.doc_type.pluralize.underscore, action: :edit, id: t.doc_id)
+            - else
+              = t.doc_type
         %td.terms= term_string t.terms
         %td.note= t.note
         %td.debit= t.amount.to_money.format if t.amount > 0
