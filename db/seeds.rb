@@ -22,7 +22,7 @@ AccountType.create!(
 )
 cash_or_eq = AccountType.create!(
   parent_id: current_assets.id,
-  name: 'Cash and cash equivalents',
+  name: 'Cash and Cash Equivalents',
   description: 'Assets that are readily convertible into cash',
   normal_balance: 'Debit',
   admin_lock: true,
@@ -30,7 +30,7 @@ cash_or_eq = AccountType.create!(
 )
 Account.create!(
   account_type_id: cash_or_eq.id,
-  name1: 'Cash in Hand',
+  name1: 'Cash In Hand',
   description: 'Real cash that you can count',
   admin_lock: true,
   status: 'Active'
@@ -142,14 +142,14 @@ Account.create!(
 )
 Account.create!(
   account_type_id: ac_paya.id,
-  name1: 'Employee Income Tax Witheld',
+  name1: 'Employee Income Tax Withheld',
   description: 'Employee Income Tax held by the company',
   admin_lock: true,
   status: 'Active'
 )
 Account.create!(
   account_type_id: ac_paya.id,
-  name1: 'Employee Zakat Witheld',
+  name1: 'Employee Zakat Withheld',
   description: 'Employee Zakat held by the company',
   admin_lock: true,
   status: 'Active'
@@ -400,8 +400,8 @@ end
   ['EPF By Employer', 'Contribution', 'EPF Employer Contribution', 'EPF Payable', true],
   ['SOCSO By Employee', 'Deduction', 'Salary Payable', 'SOCSO Payable', true],
   ['SOCSO By Employer', 'Contribution', 'SOCSO Employer Contribution', 'SOCSO Payable', true],
-  ['Employee PCB', 'Deduction', 'Salary Payable', 'Employee Income Tax Witheld', true],
-  ['Employee Zakat', 'Deduction', 'Salary Payable', 'Employee Zakat Witheld', true],
+  ['Employee PCB', 'Deduction', 'Salary Payable', 'Employee Income Tax Withheld', true],
+  ['Employee Zakat', 'Deduction', 'Salary Payable', 'Employee Zakat Withheld', true],
   ['Overtime Salary', 'Addition', 'Employee Salary', 'Salary Payable', true],
   ['Sunday Salary', 'Addition', 'Employee Salary', 'Salary Payable', true],
   ['Holiday Salary', 'Addition', 'Employee Salary', 'Salary Payable', true],
