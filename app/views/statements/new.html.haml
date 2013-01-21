@@ -28,7 +28,7 @@
 
 :coffee
   ($ document).ready -> 
-    app.typeahead_init '#statement_account_type_name', '/account_type/typeahead_name'
+    app.typeahead_init '#statement_account_type_name', '/account_type/typeahead_name_combine_account'
     ($ 'form#statement').on 'click', '#show-account', ->
       this.form.action = '/statements'
       $(this.form).removeAttr('target')
