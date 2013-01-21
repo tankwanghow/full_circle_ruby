@@ -6,10 +6,12 @@
   #depreciations
     .row-fluid
       = render_depreciations_fields f, :depreciations
+  %span marked '*' is record that has not been saved
   %h3 Disposals
   #disposals
     .row-fluid
       = render_disposals_fields f, :disposals
+  %span marked '*' is record that has not been saved
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
     = link_to 'Back to Addition', edit_fixed_asset_path(@addition.asset), class: 'btn btn-warning'
