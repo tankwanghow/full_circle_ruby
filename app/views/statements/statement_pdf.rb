@@ -16,8 +16,8 @@ class StatementPdf < Prawn::Document
     for a in accounts
       @account = a
       @transactions = a.statement @start_date, @end_date
-      @aging_list = a.aging_list @end_date
       @balance = a.balance_at @end_date
+      @aging_list = a.aging_list @end_date
       @total_pages = 1
       @page_end_at = 32.mm
       @detail_height = 4.mm
@@ -44,7 +44,7 @@ class StatementPdf < Prawn::Document
       draw_text "STATEMENT OF ACCOUNT", style: :bold, size: 12, at: [140.mm, 270.mm]
       stroke_rounded_rectangle [5.mm, 268.mm], 200.mm, 32.mm, 3.mm
       stroke_vertical_line 268.mm, 236.mm, at: 130.mm
-      draw_text "CUSTOMER", size: 10, at: [7.mm, 263.mm]
+      draw_text "TO", size: 10, at: [7.mm, 263.mm]
       draw_text "FROM", size: 10, at: [132.mm, 262.5.mm]
       stroke_horizontal_line 130.mm, 205.mm, at: 260.mm
       draw_text "TO", size: 10, at: [132.mm, 255.mm]
