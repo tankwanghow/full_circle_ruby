@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails'
 gem 'pg'
-gem 'jquery-rails'
+gem 'jquery-rails', '2.1.4'
 
 gem 'dynamic_form'
 gem 'strong_parameters'
@@ -20,15 +20,17 @@ gem 'simple_form'
 gem 'haml', "~> 3.2.0.rc.1"
 gem 'haml-rails'
 gem 'pg_search'
-gem 'pjax_rails'
-gem 'mousetrap-rails'
+gem 'pjax_rails', '0.3.3'
+# To use ActiveModel has_secure_password
+gem 'bcrypt-ruby', '~> 3.0.0'
+
+# Use unicorn as the web server
+gem 'unicorn'
 
 #gem 'tinymce-rails'
 #gem 'cancan'
 #gem 'coffeebeans'
-
-# To use ActiveModel has_secure_password
-gem 'bcrypt-ruby', '~> 3.0.0'
+#gem 'mousetrap-rails'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -36,7 +38,7 @@ group :assets do
   gem 'therubyracer', "~> 0.10.2", :platforms => :ruby
   gem 'bootstrap-sass'
   gem 'uglifier', '>= 1.0.3'
-  gem 'jquery-ui-rails'
+  gem 'jquery-ui-rails', '2.0.2'
   gem 'select2-rails'
 end
 
@@ -61,5 +63,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'meta_request', '0.2.1'
+  gem 'meta_request'
+  gem 'capistrano'
 end

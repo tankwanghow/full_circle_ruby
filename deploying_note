@@ -1,0 +1,7 @@
+rake assets:precompile
+decide let rails or nginx to serve assets (config.serve_static_assets = true # if allow rails to serve)
+RAILS_ENV=production rake db:create
+RAILS_ENV=production rake db:migrate
+RAILS_ENV=production rake db:seed
+Create first User
+RAILS_ENV=production ruby ./lib/task/migrate_old_data.rb # move to a rake task future
