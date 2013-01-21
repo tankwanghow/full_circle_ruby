@@ -416,3 +416,5 @@ end
     admin_lock: t[4]
   )
 end
+
+User.create!(username: 'root', name: 'Root User', password: 'root', password_confirmation: 'root')
