@@ -1,5 +1,4 @@
 require 'csv'
-require File.dirname(File.absolute_path(__FILE__)) + '/../../config/environment'
 
 @account_and_types = []
 
@@ -24,7 +23,6 @@ def find_or_create_account_by_name name
     k = @account_and_types.find { |t| t[1] == capitalize_first_word(name) }
     if k
       a = Account.create(name1: k[1], account_type_id: find_or_create_type_by_name(k[0]).id)
-      p "Created Account - #{capitalize_first_word(name)}"
     end
   end
   a
@@ -36,7 +34,6 @@ def find_or_create_type_by_name name
     k = @account_and_types.find { |t| t[0] == capitalize_first_word(name) }
     if k
       a = AccountType.create(name: k[0])
-      p "Created AccountType - #{capitalize_first_word(name)}"
     end
   end
   a
@@ -61,7 +58,6 @@ def migrate_transaction filename
     t.user_id = 1
     if !t.save
       p "#{d['Name']} - #{d['TransactionTypeNo']}"
-      binding.pry
     end
   end
   puts 'migrating...Done ' + filename
@@ -89,12 +85,3 @@ def migrate_address
   end
   puts 'migrating addresses... Done'
 end
-
-check_for_first_user
-populate_account_and_types
-migrate_transaction 'transaction2011'
-migrate_transaction 'transaction2012'
-migrate_transaction 'transaction_others'
-migrate_transaction 'no_need_bf_transaction2011_2012'
-migrate_transaction 'balance2010'
-migrate_address
