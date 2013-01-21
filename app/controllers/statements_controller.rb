@@ -11,7 +11,12 @@ class StatementsController < ApplicationController
     @end_date = (params[:end_date] || Date.today).to_date
     @accounts = Account.where(id: params[:account_ids]) if params[:account_ids]
     if params[:submit] == 'Show Accounts'
-      @accounts = AccountType.find_by_name(params[:statement][:account_type_name]).accounts
+      type = AccountType.find_by_name(params[:statement][:account_type_name])
+      if type
+        @accounts = type.accounts
+      else
+        @accounts = Account.where('name1 = ?', params[:statement][:account_type_name])
+      end
       render :new
     elsif params[:submit] == 'Statement'
       @static_content = true

@@ -31,6 +31,7 @@ FullCircle::Application.routes.draw do
 
   resources :account_types, only: [:new, :edit, :update, :create, :destroy]
   get 'account_type/typeahead_name' => 'account_types#typeahead_name'
+  get 'account_type/typeahead_name_combine_account' => 'account_types#typeahead_name_combine_account'
 
   resource :sessions, only: [:new, :create, :destroy]
   resources :addresses, only: [:new, :edit, :update, :create, :destroy]

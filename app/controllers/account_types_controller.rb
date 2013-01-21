@@ -48,4 +48,11 @@ class AccountTypesController < ApplicationController
     render json: AccountType.where("name ilike ?", term).limit(8).order(:name).pluck(:name)
   end
 
+  def typeahead_name_combine_account
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    data = AccountType.where("name ilike ?", term).limit(8).order(:name).pluck(:name)
+    data << Account.where("name1 ilike ?", term).limit(8).order(:name1).pluck(:name1)
+    render json: data.flatten
+  end  
+
 end
