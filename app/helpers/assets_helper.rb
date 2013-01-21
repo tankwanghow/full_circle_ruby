@@ -7,7 +7,7 @@ module AssetsHelper
   
   def render_depreciations_fields builder, xies_name
     render 'share/nested_fields', f: builder, xies_name: xies_name, field: 'fixed_assets/depreciation_fields',
-            headers: [['Year End Date', 'span4'], ['Amount', 'span4']], text: 'Add Depreciations'
+            headers: [['Year End Date', 'span4'], ['Amount', 'span4']], text: 'Add Depreciation'
   end
 
   def render_disposals_fields builder, xies_name
