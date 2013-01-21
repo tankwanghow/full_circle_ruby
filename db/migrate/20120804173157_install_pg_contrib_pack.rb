@@ -1,10 +1,10 @@
 class InstallPgContribPack < ActiveRecord::Migration
-  def up
+  def self.up
     execute "CREATE EXTENSION pg_trgm;"
     execute "CREATE EXTENSION fuzzystrmatch;"
   end
 
-  def down
+  def self.down
     execute "DROP EXTENSION pg_trgm;"
     execute "DROP EXTENSION fuzzystrmatch;"
   end

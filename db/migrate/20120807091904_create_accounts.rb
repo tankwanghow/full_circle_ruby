@@ -5,7 +5,7 @@ class CreateAccounts < ActiveRecord::Migration
       t.string     :name2
       t.belongs_to :account_type, null: false
       t.text       :description
-      t.string     :status,       default: 'active', null: false
+      t.string     :status,       default: 'Active', null: false
       t.boolean    :admin_lock,   default: false
       t.integer    :lock_version, default: 0
       t.timestamps
