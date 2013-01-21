@@ -68,12 +68,26 @@ class Account < ActiveRecord::Base
   def self.aging_lists accounts, at_date=Date.today, interval_days=15, intervals=5
     hash = {}
     accounts.each do |ac|
-      hash[ac.id] = ac.aging_list at_date, interval_days, intervals
+      if ac.balance_at(at_date) >= 0
+        hash[ac.id] = ac.customer_aging_list at_date, interval_days, intervals
+      else
+        hash[ac.id] = ac.supplier_aging_list at_date, interval_days, intervals
+      end
     end
     hash
   end
 
   def aging_list at_date=Date.today, interval_days=15, intervals=5
+    if balance_at(at_date) >= 0
+      customer_aging_list at_date, interval_days, intervals
+    else
+      supplier_aging_list at_date, interval_days, intervals
+    end
+  end
+
+private
+
+  def customer_aging_list at_date=Date.today, interval_days=15, intervals=5
     hash = {}
     (0..intervals * interval_days).step(interval_days).each do |i|
       cur_date = at_date - i
@@ -84,16 +98,32 @@ class Account < ActiveRecord::Base
         prev_date = cur_date - interval_days
         key = "#{i + 1} - #{i + interval_days} days"
       end
-      hash[key] = aging_interval(at_date, cur_date, prev_date)
+      hash[key] = customer_aging_interval(at_date, cur_date, prev_date)
     end
-    agingify hash
+    hash['payment'] = all_customer_payment(at_date - (intervals * interval_days), at_date)
+    agingify_customer hash
   end
 
-private
+  def supplier_aging_list at_date=Date.today, interval_days=15, intervals=5
+    hash = {}
+    (0..intervals * interval_days).step(interval_days).each do |i|
+      cur_date = at_date - i
+      if i == intervals * interval_days
+        prev_date = nil
+        key = "more than #{i + interval_days} days"
+      else
+        prev_date = cur_date - interval_days
+        key = "#{i + 1} - #{i + interval_days} days"
+      end
+      hash[key] = supplier_aging_interval(at_date, cur_date, prev_date)
+    end
+    hash['payment'] = all_supplier_payment(at_date - (intervals * interval_days), at_date)
+    agingify_supplier hash
+  end
 
-  def aging_interval at_date, cur_date, prev_date=nil
+  def customer_aging_interval at_date, cur_date, prev_date=nil
     if prev_date
-      results = transactions.smaller_eq(cur_date).bigger_eq(prev_date + 1)
+      results = transactions.smaller_eq(cur_date).bigger_eq(prev_date + 1).where('amount > 0')
       results.inject(0.0) { |sum, t| sum += t.balance(at_date) }
     else
       results = transactions.smaller_eq(cur_date)
@@ -101,17 +131,28 @@ private
     end
   end
 
-  def agingify hash
-    if hash.values.sum >= 0.0
-      agingify_normal hash
+  def supplier_aging_interval at_date, cur_date, prev_date=nil
+    if prev_date
+      results = transactions.smaller_eq(cur_date).bigger_eq(prev_date + 1).where('amount < 0')
+      results.inject(0.0) { |sum, t| sum += t.balance(at_date) }
     else
-      agingify_reverse hash
+      results = transactions.smaller_eq(cur_date)
+      (results.sum(:amount) || 0).to_f
     end
   end
 
-  def agingify_normal hash
-    move = hash.select { |k, v| v < 0.0 }.values.sum
-    hash.keys.each { |k| hash[k] = 0.0 if hash[k] < 0.0 }
+  def all_customer_payment start_date, end_date
+    results = transactions.smaller_eq(end_date).bigger_eq(start_date + 1).where('amount < 0')
+    results.inject(0.0) { |sum, t| sum += t.balance(end_date) }
+  end
+
+  def all_supplier_payment start_date, end_date
+    results = transactions.smaller_eq(end_date).bigger_eq(start_date + 1).where('amount > 0')
+    results.inject(0.0) { |sum, t| sum += t.balance(end_date) }
+  end
+
+  def agingify_customer hash
+    move = hash.delete('payment')
     hash.keys.reverse.each do |k|
       if move + hash[k] <= 0.0
         move += hash[k]
@@ -124,9 +165,8 @@ private
     hash
   end
 
-  def agingify_reverse hash
-    move = hash.select { |k, v| v > 0.0 }.values.sum
-    hash.keys.each { |k| hash[k] = 0.0 if hash[k] > 0.0 }
+  def agingify_supplier hash
+    move = hash.delete('payment')
     hash.keys.reverse.each do |k| 
       if move + hash[k] >= 0.0
         move += hash[k]
