@@ -23,7 +23,7 @@ module Prawn
     def address_box(pdf, address, position, options={})
       return unless address
       pdf.bounding_box(position, options) do
-        pdf.text address.address1
+        pdf.text address.address1 unless address.address2.blank?
         pdf.text address.address2 unless address.address2.blank?
         pdf.text address.address3 unless address.address3.blank?
         zip_city = [address.zipcode, address.city].compact.join(" ").strip
