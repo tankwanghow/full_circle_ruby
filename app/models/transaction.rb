@@ -4,7 +4,8 @@ class Transaction < ActiveRecord::Base
   belongs_to :user
   has_many :matchers, :class_name => "TransactionMatcher", :foreign_key => "transaction_id", dependent: :restrict
   validates_numericality_of :amount
-  validates_presence_of :transaction_date, :account, :note, :amount, :user, :doc
+  validates_presence_of :transaction_date, :account, :note, :amount, :user
+  validates_presence_of :doc, if: "!old_data"
   
   before_destroy :closed?
 
