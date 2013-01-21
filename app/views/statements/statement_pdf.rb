@@ -17,7 +17,7 @@ class StatementPdf < Prawn::Document
       @account = a
       @transactions = a.statement @start_date, @end_date
       @aging_list = a.aging_list @end_date
-      @payment_due = a.payment_due @end_date
+      @balance = a.balance_at @end_date
       @total_pages = 1
       @page_end_at = 32.mm
       @detail_height = 4.mm
@@ -49,7 +49,7 @@ class StatementPdf < Prawn::Document
       stroke_horizontal_line 130.mm, 205.mm, at: 260.mm
       draw_text "TO", size: 10, at: [132.mm, 255.mm]
       stroke_horizontal_line 130.mm, 205.mm, at: 252.mm
-      draw_text "PAYMENT DUE", size: 10, at: [132.mm, 247.mm]
+      draw_text "BALANCE", size: 10, at: [132.mm, 247.mm]
 
       stroke_rounded_rectangle [5.mm, 236.mm], 200.mm, 206.mm, 3.mm
       stroke_horizontal_line 5.mm, 205.mm, at: 229.mm
@@ -57,15 +57,13 @@ class StatementPdf < Prawn::Document
       stroke_vertical_line 236.mm, 30.mm, at: 25.mm
       stroke_vertical_line 236.mm, 30.mm, at: 60.mm
       stroke_vertical_line 236.mm, 30.mm, at: 75.mm
-      stroke_vertical_line 236.mm, 30.mm, at: 85.mm
       stroke_vertical_line 236.mm, 30.mm, at: 157.mm
       stroke_vertical_line 236.mm, 30.mm, at: 181.mm
 
       draw_text "DATE", size: 9, at: [11.mm, 231.mm]
       draw_text "DOCUMENT", size: 9, at: [34.mm, 231.mm]
       draw_text "TERMS", size: 9, at: [62.mm, 231.mm]
-      draw_text "CODE", size: 8, at: [76.mm, 231.mm]
-      draw_text "PARTICULARS", size: 9, at: [105.mm, 231.mm]
+      draw_text "PARTICULARS", size: 9, at: [100.mm, 231.mm]
       draw_text "DEBIT/CREDIT", size: 8.5, at: [158.5.mm, 231.mm]
       draw_text "LINE BALANCE", size: 8.5, at: [182.mm, 231.mm]
       
@@ -89,7 +87,7 @@ class StatementPdf < Prawn::Document
     end
     draw_text @start_date, at: [155.mm, 262.5.mm], style: :bold, size: 12
     draw_text @end_date, at: [155.mm, 254.5.mm], style: :bold, size: 12
-    draw_text @view.number_with_precision(@payment_due, precision: 2, delimiter: ','), at: [155.mm, 240.5.mm], style: :bold, size: 16
+    draw_text @view.number_with_precision(@balance, precision: 2, delimiter: ','), at: [155.mm, 240.5.mm], style: :bold, size: 16
   end
 
   def draw_page_number
@@ -111,19 +109,12 @@ class StatementPdf < Prawn::Document
                width: 20.mm, at: [5.mm, @detail_y], align: :center
       type_id = "#{t.doc_type} #{@view.docnolize(t.doc_id, '#') if t.doc_id}"
       amount = @view.number_with_precision(t.amount, precision: 2, delimiter: ',')
-      if t.terms != nil
-        code = "pd" if t.transaction_date + t.terms <= @end_date and t.balance(@end_date) != 0
-        code = "#{code}pp" if t.balance(@end_date) != t.amount and t.balance(@end_date) != 0
-        code = "#{code}fp" if t.balance(@end_date) == 0
-      end
       text_box type_id, overflow: :shrink_to_fit, valign: :center, height: @detail_height,
-               width: 35.mm, at: [25.mm, @detail_y], align: :center
+               width: 33.mm, at: [26.mm, @detail_y], align: :center
       text_box @view.term_string(t.terms) || '-', overflow: :shrink_to_fit, valign: :center, height: @detail_height,
                  width: 15.mm, at: [60.mm, @detail_y], align: :center
-      text_box code || '-', overflow: :truncate, valign: :center, height: @detail_height,
-               width: 10.mm, at: [75.mm, @detail_y], align: :center
       text_box t.note, overflow: :truncate, valign: :center, height: @detail_height,
-               width: 70.mm, at: [87.mm, @detail_y], align: :left
+               width: 80.mm, at: [76.mm, @detail_y], align: :left
       text_box amount, overflow: :shrink_to_fit, 
                valign: :center, height: @detail_height, width: 23.mm, at: [157.mm, @detail_y], align: :right
       text_box @view.number_with_precision(balance, precision: 2, delimiter: ','), overflow: :shrink_to_fit, 

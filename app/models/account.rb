@@ -46,18 +46,18 @@ class Account < ActiveRecord::Base
     BigDecimal(
       if bf_balance?
         transactions.smaller_eq(date).sum(:amount)
-    else
-      transactions.smaller(prev_close_date(date)).bigger_eq(date).sum(:amount)
-    end)
+      else
+        transactions.smaller(prev_close_date(date)).bigger_eq(date).sum(:amount)
+      end)
   end
 
   def balance_before date
     BigDecimal(
       if bf_balance?
         transactions.smaller(date).sum(:amount)
-    else
-      transactions.bigger(prev_close_date(date)).smaller(date).sum(:amount)
-    end)
+      else
+        transactions.bigger(prev_close_date(date)).smaller(date).sum(:amount)
+      end)
   end
 
   def prev_close_date date
@@ -86,18 +86,7 @@ class Account < ActiveRecord::Base
       end
       hash[key] = aging_interval(at_date, cur_date, prev_date)
     end
-    hash
-  end
-
-  def payment_due at_date=Date.today
-    results = transactions.smaller_eq(at_date)
-    if results.count > 0
-      results.select{ |t| t.terms != nil }.
-        select{ |t| t.transaction_date + t.terms <= at_date }.
-        inject(0.0){ |sum, t| sum += t.balance(at_date) }
-    else
-      0.0
-    end
+    agingify hash
   end
 
 private
@@ -105,14 +94,49 @@ private
   def aging_interval at_date, cur_date, prev_date=nil
     if prev_date
       results = transactions.smaller_eq(cur_date).bigger_eq(prev_date + 1)
-    else
-      results = transactions.smaller_eq(cur_date)
-    end
-    if results.count > 0
       results.inject(0.0) { |sum, t| sum += t.balance(at_date) }
     else
-      0.0
-    end  
+      results = transactions.smaller_eq(cur_date)
+      (results.sum(:amount) || 0).to_f
+    end
+  end
+
+  def agingify hash
+    if hash.values.sum >= 0.0
+      agingify_normal hash
+    else
+      agingify_reverse hash
+    end
+  end
+
+  def agingify_normal hash
+    move = hash.select { |k, v| v < 0.0 }.values.sum
+    hash.keys.each { |k| hash[k] = 0.0 if hash[k] < 0.0 }
+    hash.keys.reverse.each do |k|
+      if move + hash[k] <= 0.0
+        move += hash[k]
+        hash[k] = 0.0
+      else
+        hash[k] = hash[k] + move
+        move = 0.0
+      end
+    end
+    hash
+  end
+
+  def agingify_reverse hash
+    move = hash.select { |k, v| v > 0.0 }.values.sum
+    hash.keys.each { |k| hash[k] = 0.0 if hash[k] > 0.0 }
+    hash.keys.reverse.each do |k| 
+      if move + hash[k] >= 0.0
+        move += hash[k]
+        hash[k] = 0.0
+      else
+        hash[k] = hash[k] + move
+        move = 0.0
+      end
+    end
+    hash
   end
 
 end
