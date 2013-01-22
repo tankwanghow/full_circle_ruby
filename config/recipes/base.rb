@@ -15,3 +15,10 @@ namespace :deploy do
     run "#{sudo} apt-get -y install software-properties-common"
   end
 end
+
+namespace :deploy do
+  desc "reload the database with seed data"
+  task :seed do
+    run "cd #{current_path_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
+  end
+end
