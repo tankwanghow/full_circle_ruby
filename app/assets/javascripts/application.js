@@ -21,3 +21,5 @@
 //= require bootstrap-typeahead
 //= require bootstrap-collapse
 //= require_tree .
+
+$.pjax.defaults.timeout = 6000;
