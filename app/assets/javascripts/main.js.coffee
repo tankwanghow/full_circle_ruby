@@ -2,7 +2,7 @@ $ ->
   app.standardInit()
 
   ($ '[data-pjax-container]').on 'pjax:start', ->
-    ($ body).css('cursor', 'wait')
+    ($ 'body').css('cursor', 'wait')
   
   $(document).on 'click', 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax]):not([data-method="delete"])', (event) ->
     container = $('[data-pjax-container]')
