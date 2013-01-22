@@ -82,7 +82,7 @@ private
     transactions.build(
       doc: self,
       transaction_date: doc_date,
-      account: Account.find_by_name1('Cash in Hand'),
+      account: Account.find_by_name1('Cash In Hand'),
       note: 'To ' + bank_name1,
       amount: -cash_amount,
       user: User.current)

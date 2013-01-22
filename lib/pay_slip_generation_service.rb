@@ -7,7 +7,7 @@ class PaySlipGenerationService
   end
 
   def generate_pay_slip
-    @payslip = PaySlip.new employee_name: @employee_name, pay_date: @pay_date, doc_date: Date.today, pay_from_name1: 'Cash in Hand'
+    @payslip = PaySlip.new employee_name: @employee_name, pay_date: @pay_date, doc_date: Date.today, pay_from_name1: 'Cash In Hand'
     fill_in_payable_salary
     @payslip
   end

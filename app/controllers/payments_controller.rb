@@ -9,7 +9,7 @@ class PaymentsController < ApplicationController
   end
 
   def new
-    @payment = Payment.new(doc_date: Date.today, pay_from_name1: 'Cash in Hand')
+    @payment = Payment.new(doc_date: Date.today, pay_from_name1: 'Cash In Hand')
     @payment.pay_to_particulars.build particular_type_name: 'Note'
   end
 

@@ -5,7 +5,7 @@ class AdvancesController < ApplicationController
   end
 
   def new
-    @advance = Advance.new(doc_date: Date.today, pay_from_name1: 'Cash in Hand')
+    @advance = Advance.new(doc_date: Date.today, pay_from_name1: 'Cash In Hand')
   end
 
   def show

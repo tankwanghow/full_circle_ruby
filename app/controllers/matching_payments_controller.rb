@@ -5,7 +5,7 @@ class MatchingPaymentsController < ApplicationController
   end
 
   def new
-    @payment = Payment.new(doc_date: Date.today, pay_from_name1: 'Cash in Hand')
+    @payment = Payment.new(doc_date: Date.today, pay_from_name1: 'Cash In Hand')
   end
 
   def show

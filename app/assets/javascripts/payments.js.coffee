@@ -9,7 +9,7 @@ window.payment = {
     particular.init()
 
     ($ 'form').on 'blur', '#payment_pay_from_name1', ->
-      if ($ this).val() is 'Cash in Hand'
+      if ($ this).val() is 'Cash In Hand'
         ($ '#payment_cheque_no, #payment_cheque_date').parents('.control-group').hide()
         ($ '#payment_cheque_no, #payment_cheque_date').val('')
       else
