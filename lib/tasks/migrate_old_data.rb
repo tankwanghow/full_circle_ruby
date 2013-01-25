@@ -44,8 +44,12 @@ def capitalize_first_word string
 end
 
 def migrate_transaction filename
-  puts 'migrating... ' + filename
-  CSV.foreach(File.expand_path("db/old_data/#{filename}.csv"), headers: true, col_sep: '^') do |d|
+  i = 0
+  table = CSV.read(File.expand_path("db/old_data/#{filename}.csv"), headers: true, col_sep: '^')
+  count = table.count
+  puts "Migrating '#{filename}'."
+  table.each do |d|
+    i += 1
     t = Transaction.new
     t.account = find_or_create_account_by_name(d['Name'])
     t.transaction_date = d['TransactionDate'].to_date
@@ -57,14 +61,14 @@ def migrate_transaction filename
     t.old_data = true
     t.user_id = 1
     if !t.save
-      p "#{d['Name']} - #{d['TransactionTypeNo']}"
+      puts "error on #{d['Name']} - #{d['TransactionTypeNo']}"
     end
+    print "\r#{i} of #{count} in file '#{filename}'"
   end
-  puts 'migrating...Done ' + filename
 end
 
 def migrate_address
-  puts 'migrating addresses... '
+  puts 'Migrating addresses...'
   CSV.foreach(File.expand_path('db/old_data/Addresses.csv'), headers: true, col_sep: '^') do |d|
     name = capitalize_first_word(d['Name'])
     a = Account.find_by_name1 name
@@ -83,5 +87,4 @@ def migrate_address
       puts "#{name} Address has no Account."
     end
   end
-  puts 'migrating addresses... Done'
 end

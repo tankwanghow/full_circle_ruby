@@ -1,4 +1,4 @@
-#require File.expand_path('lib/tasks/migrate_old_data')
+require File.expand_path('lib/tasks/migrate_old_data')
 
 assets = AccountType.create!(
   name: 'Assets',
@@ -421,11 +421,11 @@ end
 
 User.create!(username: 'root', name: 'Root User', password: 'root', password_confirmation: 'root')
 
-# check_for_first_user
-# populate_account_and_types
-# migrate_transaction 'transaction2011'
-# migrate_transaction 'transaction2012'
-# migrate_transaction 'transaction_others'
-# migrate_transaction 'no_need_bf_transaction2011_2012'
-# migrate_transaction 'balance2010'
-# migrate_address
+check_for_first_user
+populate_account_and_types
+migrate_transaction 'transaction2011'
+migrate_transaction 'transaction2012'
+migrate_transaction 'transaction_others'
+migrate_transaction 'no_need_bf_transaction2011_2012'
+migrate_transaction 'balance2010'
+migrate_address
