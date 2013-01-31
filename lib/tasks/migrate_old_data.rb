@@ -43,11 +43,18 @@ def capitalize_first_word string
   string.split(' ').map{ |t| t.capitalize }.join(' ')
 end
 
+def migrate_assets_additions filename
+  puts 'Migrating assets additions...'
+  table = CSV.read(File.expand_path("db/old_data/#{filename}.csv"), headers: true, col_sep: '^')
+  table.each do |d|
+    
+  end
+end
+
 def migrate_transaction filename
   i = 0
   table = CSV.read(File.expand_path("db/old_data/#{filename}.csv"), headers: true, col_sep: '^')
   count = table.count
-  puts "Migrating '#{filename}'."
   table.each do |d|
     i += 1
     t = Transaction.new
@@ -63,7 +70,7 @@ def migrate_transaction filename
     if !t.save
       puts "error on #{d['Name']} - #{d['TransactionTypeNo']}"
     end
-    print "\r#{i} of #{count} in file '#{filename}'"
+    print "\rMigrating file '#{filename}' #{i} of #{count}"
   end
 end
 
