@@ -2,9 +2,8 @@ class FixedAsset < ActiveRecord::Base
   belongs_to :account
   validates_presence_of :depreciation_rate
   validate :is_fixed_assets?
-  has_many :additions, class_name: "AssetAddition", order: 'entry_date'
+  has_many :additions, class_name: "AssetAddition", order: 'entry_date', dependent: :destroy
   validates_numericality_of :depreciation_rate, greater_than_or_equal_to: 0, less_than_or_equal_to: 1
-
 
   accepts_nested_attributes_for :additions, allow_destroy: true
 
