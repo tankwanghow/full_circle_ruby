@@ -11,7 +11,7 @@ module ChartOfAccountsHelper
 
   def render_account_types account_type, account_types
       content_tag :li do
-        check_box_tag('account_type_' + account_type.id.to_s, '1', checked: true) +
+        check_box_tag('account_type_' + account_type.id.to_s) +
         content_tag(:span, '') +
         link_to(account_type.name, edit_account_type_path(account_type), 
           name: edit_account_type_path(account_type), class: "label #{account_type_label(account_type)}") +
