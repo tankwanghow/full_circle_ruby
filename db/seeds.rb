@@ -425,7 +425,7 @@ check_for_first_user
 populate_account_and_types
 migrate_transaction 'transaction2011'
 migrate_transaction 'transaction2012'
-migrate_transaction 'transaction_others'
 migrate_transaction 'no_need_bf_transaction2011_2012'
 migrate_transaction 'balance2010'
 migrate_address
+migrate_assets_additions 'assets_additions'
