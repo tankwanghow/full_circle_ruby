@@ -76,7 +76,7 @@ class TransactionsPdf < Prawn::Document
       text_box t.transaction_date.to_s, overflow: :shrink_to_fit, valign: :center, height: @detail_height,
                width: 20.mm, at: [5.mm, @detail_y], align: :center
       text_box "#{t.doc_type} #{@view.docnolize(t.doc_id, '#') if t.doc_id}", overflow: :shrink_to_fit, valign: :center, height: @detail_height,
-               width: 35.mm, at: [25.mm, @detail_y], align: :center
+               width: 33.mm, at: [26.mm, @detail_y], align: :center
       text_box @view.term_string(t.terms) || '-', overflow: :shrink_to_fit, valign: :center, height: @detail_height,
                  width: 15.mm, at: [60.mm, @detail_y], align: :center
       text_box t.note, overflow: :truncate, valign: :center, height: @detail_height,
