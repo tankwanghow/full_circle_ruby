@@ -132,7 +132,7 @@ FullCircle::Application.routes.draw do
   resources :journals, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]
   end
-  get 'journal/new_or_edit' => 'journals#new_or_edit'
+  get 'journal/new_or_edit' => 'journals#new_or_edit' 
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
