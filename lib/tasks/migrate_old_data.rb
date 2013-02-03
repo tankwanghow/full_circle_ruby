@@ -17,12 +17,13 @@ def populate_account_and_types
   end
 end
 
-def find_or_create_account_by_name name
+def find_or_create_account_by_name name, print=false
   a = Account.find_by_name1 capitalize_first_word(name)
   if !a
     k = @account_and_types.find { |t| t[1] == capitalize_first_word(name) }
     if k
       a = Account.create(name1: k[1], account_type_id: find_or_create_type_by_name(k[0]).id)
+      puts(k[1] + ' created.') if print
     end
   end
   a
@@ -45,9 +46,47 @@ end
 
 def migrate_assets_additions filename
   puts 'Migrating assets additions...'
+  fixass_type_id = AccountType.find_by_name('Fixed Assets').id
   table = CSV.read(File.expand_path("db/old_data/#{filename}.csv"), headers: true, col_sep: '^')
   table.each do |d|
-    
+    account = find_or_create_account_by_name(d['Name'], true)
+    if account
+      if !account.is_fixed_assets?
+        at = account.account_type
+        at.parent_id = fixass_type_id
+        at.save!
+      end
+      if !account.fixed_asset
+        fa = FixedAsset.create(depreciation_rate: d['Rate'].to_f, account_id: account.id)
+      else
+        fa = account.fixed_asset
+      end
+      aa = AssetAddition.create(entry_date: "#{d['Year']}-12-31".to_date, amount: d['Amount'].to_f, final_amount: 1, fixed_asset_id: fa.id)
+      aa.save!
+    else
+      puts d['Name'] + ' error.'
+    end
+  end
+  generate_depreciation
+end
+
+def generate_depreciation
+  puts 'Generating assets depreciations until 2010...'
+  FixedAsset.all.each do |fa|
+    if fa.additions.count > 1
+      id = fa.additions.order(:entry_date).last.id
+      fa.additions.order(:entry_date).each do |a|
+        if a.id != id
+          a.final_amount = 0
+          a.save!
+        end
+      end
+    end
+  end
+
+  AssetAddition.all.each do |t|
+    t.generate_annual_depreciation 2010
+    t.save!
   end
 end
 
@@ -72,6 +111,7 @@ def migrate_transaction filename
     end
     print "\rMigrating file '#{filename}' #{i} of #{count}"
   end
+  puts ''
 end
 
 def migrate_address
