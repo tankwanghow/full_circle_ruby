@@ -1,7 +1,7 @@
 class AssetAddition < ActiveRecord::Base
   belongs_to :asset, class_name: "FixedAsset", foreign_key: "fixed_asset_id"
-  has_many :disposals, class_name: "AssetDisposal", order: 'entry_date'
-  has_many :depreciations, class_name: "AssetDepreciation", order: 'entry_date'
+  has_many :disposals, class_name: "AssetDisposal", order: 'entry_date', dependent: :destroy
+  has_many :depreciations, class_name: "AssetDepreciation", order: 'entry_date', dependent: :destroy
   validates_presence_of :final_amount, :entry_date, :amount
 
   accepts_nested_attributes_for :disposals, allow_destroy: true, reject_if: proc { |attr| attr['amount'].to_f == 0 }
