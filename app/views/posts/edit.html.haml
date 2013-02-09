@@ -6,6 +6,6 @@
   .form-actions
     = f.button(:submit, 'Save', class: 'btn btn-primary')
     = link_to 'New', new_post_path, class: 'btn btn-info'
-    = link_to 'Cancel', edit_post_path(@post), class: 'btn btn-warning'
+    = link_to 'Cancel', post_path(@post), class: 'btn btn-warning'
     = link_to_index(Post)
     = link_to_audits_log(@post)

@@ -1,6 +1,13 @@
+= render_flash
 %h3= @post.title
 = @post.content.html_safe
-.form-actions
-  = link_to 'New', new_post_path
-  = link_to 'Edit', edit_post_path(@post)
+.post_user= "Created by #{@post.audits.first.user.name} at #{@post.created_at.to_s(:long)}"
+- if @post.audits.count > 1
+  .post_user= "Updated by #{@post.audits.last.user.name} at #{@post.updated_at.to_s(:long)}"
+.form-actions  
+  = link_to 'New', new_post_path, class: 'btn btn-info'
+  - if current_user == @post.audits.first.user or current_user.is_admin
+    = link_to 'Edit', edit_post_path(@post), class: 'btn btn-warning'
+    = link_to 'Delete', @post, method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger'
   = link_to_index(Post)
+  = link_to_audits_log(@post)

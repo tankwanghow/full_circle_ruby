@@ -35,9 +35,14 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
-    @post.destroy
-    flash[:success] = "Successfully deleted '#{@post.title}'."
-    redirect_to Post.last
+    if current_user == @post.audits.first.user or current_user.is_admin
+      @post.destroy
+      flash[:success] = "Successfully deleted Post '#{@post.title}'."
+      redirect_to Post.first ? Post.last : root_path
+    else
+      flash.now[:error] = "Failed to delete Post."
+      render :show
+    end
   end
 
   def new_or_edit

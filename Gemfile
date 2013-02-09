@@ -26,11 +26,10 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Use unicorn as the web server
 gem 'unicorn'
-
-#gem 'tinymce-rails'
+gem 'thinreports-rails'
+gem 'tinymce-rails'
+gem 'dossier'
 #gem 'cancan'
-#gem 'coffeebeans'
-#gem 'mousetrap-rails'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
