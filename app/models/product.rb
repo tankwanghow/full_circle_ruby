@@ -3,6 +3,9 @@ class Product < ActiveRecord::Base
   belongs_to :purchase_account, class_name: "Account", foreign_key: "purchase_account_id"
   has_many :packagings, through: :product_packagings
   has_many :product_packagings
+  has_many :cash_sale_details
+  has_many :invoice_details
+  has_many :pur_invoice_details
   validates_presence_of :sale_account_name1, :purchase_account_name1, :unit, :name1
   validates_uniqueness_of :name1
   acts_as_taggable_on :categories
