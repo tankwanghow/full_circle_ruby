@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @post, html: { class: 'form-horizontal well', id: 'post' } do |f|
+  %legend
+    New Post
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', Post.last ? edit_post_path(Post.last) : root_path, class: 'btn btn-warning'

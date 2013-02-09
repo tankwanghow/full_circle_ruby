@@ -22,8 +22,10 @@
 - for doc in @docs
   .row-fluid.searchable
     .span6
-      =#did not use polymorphic_path to avoid n+1 issue
-      = link_to_searchable doc
+      - if doc.searchable_type == 'Post'
+        = link_to 'Post', post_path(doc.searchable_id), class: 'btn btn-info'
+      - else
+        = link_to_searchable doc
       %div
         %span.label.label-success= doc.created_at.to_s(:long)
       - if doc.created_at != doc.updated_at
@@ -32,9 +34,9 @@
     .span18
       .row
         %span.label= doc.doc_date
-        -if doc.doc_amount
+        - if doc.doc_amount
           %span.label.label-inverse= doc.doc_amount.to_money.format
-      .row= doc.content
+      .row= sanitize strip_links strip_tags doc.content
 - if @docs.length > 8
   = paginate @docs
   

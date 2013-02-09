@@ -1,0 +1,6 @@
+%h3= @post.title
+= @post.content.html_safe
+.form-actions
+  = link_to 'New', new_post_path
+  = link_to 'Edit', edit_post_path(@post)
+  = link_to_index(Post)
