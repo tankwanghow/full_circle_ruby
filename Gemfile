@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails'
 gem 'pg'
-gem 'jquery-rails', '2.1.4'
+gem 'jquery-rails'
 
 gem 'dynamic_form'
 gem 'strong_parameters'
@@ -20,7 +20,7 @@ gem 'simple_form'
 gem 'haml', "~> 3.2.0.rc.1"
 gem 'haml-rails'
 gem 'pg_search'
-gem 'pjax_rails', '0.3.3'
+gem 'pjax_rails', git: 'git://github.com/tankwanghow/pjax_rails.git'
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -37,7 +37,7 @@ group :assets do
   gem 'therubyracer', "~> 0.10.2", :platforms => :ruby
   gem 'bootstrap-sass'
   gem 'uglifier', '>= 1.0.3'
-  gem 'jquery-ui-rails', '2.0.2'
+  gem 'jquery-ui-rails'
   gem 'select2-rails'
 end
 

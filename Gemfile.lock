@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/tankwanghow/pjax_rails.git
+  revision: fb41008f58e7f2c762e556bda8fb9f0884ccd1a3
+  specs:
+    pjax_rails (0.3.4)
+      jquery-rails
+
+GIT
   remote: git://github.com/tankwanghow/simple_audit.git
   revision: 7b803c9a156b4250929153726bc277f750602fc8
   specs:
@@ -38,10 +45,10 @@ GEM
       multi_json (~> 1.0)
     acts-as-taggable-on (2.3.3)
       rails (~> 3.0)
-    acts-as-tree-with-dotted-ids (1.0.0)
+    acts-as-tree-with-dotted-ids (1.1.1)
+      activerecord (>= 3.0.0)
       activerecord (>= 3.0.0)
     acts_as_commentable (4.0.0)
-    addressable (2.3.2)
     afm (0.2.0)
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
@@ -50,7 +57,7 @@ GEM
     bourne (1.1.2)
       mocha (= 0.10.5)
     builder (3.0.4)
-    capistrano (2.14.1)
+    capistrano (2.14.2)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -63,8 +70,8 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 1.0.0)
-    childprocess (0.3.6)
-      ffi (~> 1.0, >= 1.0.6)
+    childprocess (0.3.8)
+      ffi (~> 1.0, >= 1.0.11)
     coderay (1.0.8)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -81,7 +88,7 @@ GEM
       debugger-ruby_core_source (~> 1.1.7)
     debugger-linecache (1.1.2)
       debugger-ruby_core_source (>= 1.1.1)
-    debugger-ruby_core_source (1.1.7)
+    debugger-ruby_core_source (1.1.8)
     diff-lcs (1.1.3)
     dossier (2.3.0)
       actionmailer (~> 3.2)
@@ -94,14 +101,14 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
-    factory_girl (4.1.0)
+    factory_girl (4.2.0)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.1.0)
-      factory_girl (~> 4.1.0)
+    factory_girl_rails (4.2.1)
+      factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
     ffaker (1.15.0)
     ffi (1.3.1)
-    haml (3.2.0.rc.2)
+    haml (3.2.0.rc.4)
       tilt
     haml-rails (0.3.5)
       actionpack (>= 3.1, < 4.1)
@@ -113,21 +120,18 @@ GEM
     hike (1.2.1)
     i18n (0.6.1)
     journey (1.0.4)
-    jquery-rails (2.1.4)
+    jquery-rails (2.2.1)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    jquery-ui-rails (2.0.2)
+    jquery-ui-rails (4.0.1)
       jquery-rails
       railties (>= 3.1.0)
-    json (1.7.6)
+    json (1.7.7)
     kaminari (0.14.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kgio (2.8.0)
     libv8 (3.3.10.4)
-    libwebsocket (0.1.7.1)
-      addressable
-      websocket
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -137,20 +141,20 @@ GEM
       rails
     metaclass (0.0.1)
     method_source (0.8.1)
-    mime-types (1.19)
+    mime-types (1.21)
     mocha (0.10.5)
       metaclass (~> 0.0.1)
     money (5.1.0)
       i18n (~> 0.6.0)
     multi_json (1.5.0)
     nested_form (0.3.1)
-    net-scp (1.0.4)
-      net-ssh (>= 1.99.1)
-    net-sftp (2.0.5)
-      net-ssh (>= 2.0.9)
-    net-ssh (2.6.3)
-    net-ssh-gateway (1.1.0)
-      net-ssh (>= 1.99.1)
+    net-scp (1.1.0)
+      net-ssh (>= 2.6.5)
+    net-sftp (2.1.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.6.5)
+    net-ssh-gateway (1.2.0)
+      net-ssh (>= 2.6.5)
     nokogiri (1.5.6)
     pdf-reader (1.3.0)
       Ascii85 (~> 1.0.0)
@@ -162,8 +166,6 @@ GEM
     pg_search (0.5.7)
       activerecord (>= 3)
       activesupport (>= 3)
-    pjax_rails (0.3.3)
-      jquery-rails
     polyglot (0.3.3)
     prawn (0.12.0)
       pdf-reader (>= 0.9.0)
@@ -177,12 +179,12 @@ GEM
       pry (~> 0.9.10)
     pry-rails (0.2.2)
       pry (>= 0.9.10)
-    rack (1.4.4)
+    rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
     rack-contrib (1.1.0)
       rack (>= 0.9.1)
-    rack-ssl (1.3.2)
+    rack-ssl (1.3.3)
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -203,12 +205,12 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.10.0)
     rake (10.0.3)
-    rdoc (3.12)
+    rdoc (3.12.1)
       json (~> 1.4)
     rspec-core (2.12.2)
     rspec-expectations (2.12.1)
       diff-lcs (~> 1.1.3)
-    rspec-mocks (2.12.1)
+    rspec-mocks (2.12.2)
     rspec-rails (2.12.2)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
@@ -225,11 +227,11 @@ GEM
       tilt (~> 1.3)
     select2-rails (3.2.1)
       thor (~> 0.14)
-    selenium-webdriver (2.27.2)
+    selenium-webdriver (2.29.0)
       childprocess (>= 0.2.5)
-      libwebsocket (~> 0.1.3)
       multi_json (~> 1.0)
       rubyzip
+      websocket (~> 1.0.4)
     sentient_user (0.3.2)
     shoulda-matchers (1.4.2)
       activesupport (>= 3.0.0)
@@ -253,7 +255,7 @@ GEM
       prawn (>= 0.12.0, <= 0.12.0)
     thinreports-rails (0.1.3)
       thinreports (~> 0.7.6)
-    thor (0.16.0)
+    thor (0.17.0)
     tilt (1.3.3)
     tinymce-rails (3.5.8)
       railties (>= 3.1.1)
@@ -265,11 +267,11 @@ GEM
     uglifier (1.3.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
-    unicorn (4.5.0)
+    unicorn (4.6.0)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    websocket (1.0.6)
+    websocket (1.0.7)
     xpath (1.0.0)
       nokogiri (~> 1.3)
 
@@ -293,15 +295,15 @@ DEPENDENCIES
   ffaker
   haml (~> 3.2.0.rc.1)
   haml-rails
-  jquery-rails (= 2.1.4)
-  jquery-ui-rails (= 2.0.2)
+  jquery-rails
+  jquery-ui-rails
   kaminari
   meta_request
   money
   nested_form
   pg
   pg_search
-  pjax_rails (= 0.3.3)
+  pjax_rails!
   prawn
   pry-debugger
   pry-rails
