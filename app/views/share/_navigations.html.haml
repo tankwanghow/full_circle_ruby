@@ -28,4 +28,4 @@
         = menu_child 'Salary Note', salary_note_new_or_edit_path
         = menu_child 'Recurring Note', recurring_note_new_or_edit_path
       = menu_child 'Transactions', transactions_path, class: 'bold', id: 'nav-transactions'
-      = menu_child 'Posts', post_new_or_edit_path, class: 'bold'
+      = menu_child 'Posts', search_path(search: { terms: "@Post" }), class: 'bold'
