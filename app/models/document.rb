@@ -106,7 +106,7 @@ private
     end
     self.doc_amount = searchable.send(searchable.searchable_options[:doc_amount]) if searchable.searchable_options[:doc_amount]
     methods = Array.wrap(searchable.searchable_options[:content])
-    searchable_text = methods.map { |symbol| process(symbol) }.compact.join("; ")
+    searchable_text = methods.map { |symbol| process(symbol) }.delete_if { |t| t.blank? }.join("; ")
     self.content = searchable_text
   end
 
