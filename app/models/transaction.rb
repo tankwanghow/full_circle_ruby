@@ -8,6 +8,7 @@ class Transaction < ActiveRecord::Base
   validates_presence_of :doc, if: "!old_data"
   
   before_destroy :closed?
+  before_save :round_amount
 
   scope :account,    ->(val) { joins(:account).where('accounts.name1 = ?', val) }
   scope :bigger_eq,  ->(val) { where('transaction_date >= ?', val.to_date) }
@@ -71,6 +72,10 @@ class Transaction < ActiveRecord::Base
   end
 
 private
+
+  def round_amount
+    amount = amount.round(2) if amount
+  end
 
   def self.decide_debit_or_credit_transaction? in_doc_type
     case in_doc_type
