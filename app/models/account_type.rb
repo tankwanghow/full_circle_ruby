@@ -3,6 +3,8 @@ class AccountType < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   acts_as_tree_with_dotted_ids order: :name
   has_many :accounts, dependent: :destroy
+
+  before_save :set_children_bf_balance
   
   include Searchable
   searchable content: [:name, :parent_name, :bf_balance, :normal_balance, :description]
@@ -26,6 +28,13 @@ class AccountType < ActiveRecord::Base
     if parent_id.present?
       errors.add(:parent, "cannot assign parent.") if parent_id == id
     end
+  end
+
+private
+
+  def set_children_bf_balance
+    self.bf_balance = parent.bf_balance if parent
+    AccountType.update_all "bf_balance = #{self.bf_balance}", "dotted_ids LIKE '#{self.dotted_ids}.%'"
   end
 
 end
