@@ -28,4 +28,7 @@
         = menu_child 'Prepare Pay Slip', new_pay_slip_generations_path
         = menu_child 'Salary Note', salary_note_new_or_edit_path
         = menu_child 'Recurring Note', recurring_note_new_or_edit_path
+      = menu 'Report' do
+        - all_report_filenames.each do |t|
+          = menu_child t.humanize.titleize, dossier_report_path(t)
       = menu_child 'Posts', search_path(search: { terms: "@Post" }), class: 'bold'
