@@ -29,6 +29,8 @@ gem 'unicorn'
 gem 'thinreports-rails'
 gem 'tinymce-rails'
 gem 'dossier'
+gem 'carrierwave'
+gem 'rmagick'
 #gem 'cancan'
 
 group :assets do
@@ -39,6 +41,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-ui-rails'
   gem 'select2-rails'
+  gem 'jquery-fileupload-rails'
 end
 
 group :test do

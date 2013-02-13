@@ -5,3 +5,9 @@ RAILS_ENV=production rake db:migrate
 RAILS_ENV=production rake db:seed
 Create first User
 RAILS_ENV=production ruby ./lib/task/migrate_old_data.rb # move to a rake task future
+
+installing gem rmagick needed
+=============================
+sudo apt-get install libdjvulibre-dev libjpeg-dev libtiff-dev libwmf-dev libmagickcore-dev libmagickwand-dev libmagick++-dev
+sudo apt-get install graphicsmagick-libmagick-dev-compat
+sudo apt-get install libmagickwand-dev
