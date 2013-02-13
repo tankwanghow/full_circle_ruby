@@ -5,4 +5,4 @@
   = render 'fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
-    = link_to 'Cancel', Post.last ? edit_post_path(Post.last) : root_path, class: 'btn btn-warning'
+    = link_to 'Cancel', Post.last ? post_path(Post.last) : root_path, class: 'btn btn-warning'

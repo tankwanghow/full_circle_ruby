@@ -143,3 +143,9 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
   color: lightgreen;
   font-style: italic;
 }
+
+#report {
+  thead, tfoot { 
+    background-color: lightgreen;
+  }
+}
