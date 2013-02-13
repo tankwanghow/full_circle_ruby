@@ -3,7 +3,7 @@
   = f.input_field :product_tags, class: 'span5', placeholder: 'product tags...', data: { tags: Product.category_counts.map {|t| t.name } }
   = f.input_field :start_date, class: 'datepicker span3', placeholder: 'start date...'
   = f.input_field :end_date, class: 'datepicker span3', placeholder: 'end date...'
-  = f.label 'Group by Month'
+  = f.label 'Group by Month', class: 'checkbox'
   = f.input_field :group_by_month, as: :boolean
   = f.button :submit, 'Show', class: 'btn-primary'
 
