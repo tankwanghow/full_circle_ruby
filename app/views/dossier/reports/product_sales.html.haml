@@ -1,0 +1,23 @@
+= simple_form_for report, as: :options, url: url_for, html: { method: :get, class: 'form-inline well' } do |f|
+  = f.input_field :doc_tags, class: 'span5', placeholder: 'document tags...', data: { tags: sales_doc_tags }
+  = f.input_field :product_tags, class: 'span5', placeholder: 'product tags...', data: { tags: Product.category_counts.map {|t| t.name } }
+  = f.input_field :start_date, class: 'datepicker span3', placeholder: 'start date...'
+  = f.input_field :end_date, class: 'datepicker span3', placeholder: 'end date...'
+  = f.label 'Group by Month'
+  = f.input_field :group_by_month, as: :boolean
+  = f.button :submit, 'Show', class: 'btn-primary'
+
+= render template: 'dossier/reports/show', locals: {report: report}
+
+:coffee
+  ($ document).ready ->
+    ($ '#options_doc_tags').select2
+      tags: $('#options_doc_tags').data('tags')
+      closeOnSelect: true
+      openOnEnter: false
+      minimumInputLength: 2
+    ($ '#options_product_tags').select2
+      tags: $('#options_product_tags').data('tags')
+      closeOnSelect: true
+      openOnEnter: false
+      minimumInputLength: 2
