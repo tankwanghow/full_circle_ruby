@@ -17,10 +17,10 @@ gem 'aasm'
 gem 'nested_form'
 gem 'prawn'
 gem 'simple_form'
-gem 'haml', "~> 3.2.0.rc.1"
-gem 'haml-rails'
+gem 'haml'
 gem 'pg_search'
 gem 'pjax_rails', git: 'git://github.com/tankwanghow/pjax_rails.git'
+
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -50,13 +50,7 @@ group :test do
   gem 'ffaker'
   gem 'shoulda-matchers'
   gem 'database_cleaner'
-  # gem 'guard-rspec'
   gem 'capybara'
-  # gem 'capybara-webkit'
-  # gem 'jasminerice'
-  # gem 'guard-jasmine'
-  # gem 'launchy'
-
 end
 
 group :development, :test do
