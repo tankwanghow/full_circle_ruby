@@ -14,6 +14,12 @@ namespace :deploy do
     run "#{sudo} apt-get -y install python-software-properties"
     run "#{sudo} apt-get -y install software-properties-common"
   end
+
+  desc "Install gem dependencies"
+  task :install_base_gem_dependencies do
+    run "#{sudo} apt-get -y install libmagickcore-dev libmagickwand-dev"
+  end
+  after "deploy:install", "deploy:install_base_gem_dependencies"
 end
 
 namespace :deploy do
