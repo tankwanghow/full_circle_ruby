@@ -25,7 +25,7 @@ private
     transactions.each do |t| 
       t.transaction_date = doc_date
       t.doc = self
-      t.user = User.current
+      t.user = User.current if !t.user
     end
   end
   
