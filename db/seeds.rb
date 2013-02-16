@@ -429,3 +429,4 @@ migrate_transaction 'no_need_bf_transaction2011_2012'
 migrate_transaction 'balance2010'
 migrate_address
 migrate_assets_additions 'assets_additions'
+migrate_cheque 'PDChq'

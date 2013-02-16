@@ -11,6 +11,7 @@ class CreateCheques < ActiveRecord::Migration
       t.string     :state,        null: false,    default: '-'
       t.date       :due_date,     null: false
       t.decimal    :amount,       precision: 12,  scale: 4, default: 0, null: false
+      t.boolean    :old_data,     null: false, default: false
       t.integer    :lock_version, default: 0
       t.timestamps
     end

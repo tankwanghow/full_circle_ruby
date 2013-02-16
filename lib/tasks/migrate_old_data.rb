@@ -26,6 +26,11 @@ def find_or_create_account_by_name name, print=false
       puts(k[1] + ' created.') if print
     end
   end
+
+  if !a
+    t = AccountType.find_by_name('Null Type') || AccountType.create(name: 'Null Type')
+    a = Account.create(name1: name, account_type_id: t.id)
+  end
   a
 end
 
@@ -112,6 +117,51 @@ def migrate_transaction filename
     print "\rMigrating file '#{filename}' #{i} of #{count}"
   end
   puts ''
+end
+
+def migrate_cheque filename
+  i = 0
+  table = CSV.read(File.expand_path("db/old_data/#{filename}.csv"), headers: true, col_sep: '^')
+  count = table.count
+  table.each do |d|
+    i += 1
+    t = Cheque.new
+    t.db_ac = find_or_create_account_by_name(d['Name'])
+    t.due_date = d['DueDate'].to_date
+    t.db_doc_type = d['DocType']
+    t.db_doc_id = d['DocNo'].scan(/([A-Z][A-Z]\-)([0-9]+)/).flatten[1].to_i
+    t.chq_no = ('000000' + d['ChqNo']).reverse.slice(0..5).reverse
+    t.bank = d['Bank']
+    t.city = d['City']
+    t.state = d['State'] || '-'
+    t.amount = d['Amount'].to_f
+    t.old_data = true
+    if !t.save
+      puts "error on #{d['Name']} - #{d['DocNo']}"
+    end
+    print "\rMigrating file '#{filename}' #{i} of #{count}"
+  end
+  puts ''
+  cash_to_pd_cheque
+end
+
+def cash_to_pd_cheque
+  (1..(Cheque.count/5.0).round).each do |p|
+    j = Journal.new(doc_date: Date.today)
+    Cheque.page(p).per(5).each do |t|
+      j.transactions.build ({
+        account: Account.find_by_name1('Cash In Hand'),
+        note: "Transfer "+ [t.db_ac.name1, t.bank, t.chq_no].join(' ') + ' to Post Dated Cheques Account',
+        amount: -t.amount,
+        user_id: User.first.id })
+      j.transactions.build ({
+        account: Account.find_by_name1('Post Dated Cheques'),
+        note:  "Transfer "+ [t.db_ac.name1, t.bank, t.chq_no].join(' ') + ' from Cash In Hand Account',
+        amount: t.amount,
+        user_id: User.first.id })
+    end
+    j.save
+  end
 end
 
 def migrate_address
