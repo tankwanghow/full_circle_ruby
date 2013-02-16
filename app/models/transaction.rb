@@ -17,7 +17,7 @@ class Transaction < ActiveRecord::Base
   scope :smaller,    ->(val) { where('transaction_date < ?', val.to_date) }
 
   def simple_audit_string
-    [ transaction_date, doc_type, doc_id, account.name1, terms, note, amount, closed, reconciled ].join("_")
+    [ transaction_date, doc_type, doc_id, account.name1, terms, note, amount, closed, reconciled ].join(" ")
   end
 
   def closed?
