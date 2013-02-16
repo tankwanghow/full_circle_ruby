@@ -1,0 +1,5 @@
+= simple_form_for report, as: :options, url: url_for, html: { method: :get, class: 'form-inline well' } do |f|
+  = f.input_field :end_date, class: 'datepicker span3', placeholder: 'end date...'
+  = f.button :submit, 'Show', class: 'btn-primary'
+
+= render template: 'dossier/reports/show', locals: {report: report}
