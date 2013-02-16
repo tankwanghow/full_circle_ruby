@@ -153,12 +153,12 @@ def cash_to_pd_cheque
         account: Account.find_by_name1('Cash In Hand'),
         note: "Transfer "+ [t.db_ac.name1, t.bank, t.chq_no].join(' ') + ' to Post Dated Cheques Account',
         amount: -t.amount,
-        user_id: User.first.id })
+        user: User.first })
       j.transactions.build ({
         account: Account.find_by_name1('Post Dated Cheques'),
         note:  "Transfer "+ [t.db_ac.name1, t.bank, t.chq_no].join(' ') + ' from Cash In Hand Account',
         amount: t.amount,
-        user_id: User.first.id })
+        user: User.first })
     end
     j.save
   end
