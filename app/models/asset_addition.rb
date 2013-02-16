@@ -30,17 +30,17 @@ class AssetAddition < ActiveRecord::Base
     end
   end
 
-  def net_book_value_at in_date=asset.account.prev_close_date(Date.today)
+  def net_book_value_at in_date=prev_close_date(Date.today)
     amount - cum_depreciation_at(in_date) - cum_disposal_at(in_date)
   end
 
-  def cum_depreciation_at in_date=asset.account.prev_close_date(Date.today)
+  def cum_depreciation_at in_date=prev_close_date(Date.today)
     depreciations.inject(0) do |sum, p| 
       (sum + p.amount) if p.entry_date <= in_date
     end
   end
 
-  def cum_disposal_at in_date=asset.account.prev_close_date(Date.today)
+  def cum_disposal_at in_date=prev_close_date(Date.today)
     disposals.inject(0) do |sum, p| 
       (sum + p.amount) if p.entry_date <= in_date
     end

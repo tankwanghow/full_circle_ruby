@@ -1,4 +1,6 @@
 class Account < ActiveRecord::Base
+  include SharedHelpers
+
   belongs_to :account_type
   has_many :transactions
   has_many :addresses, as: :addressable, dependent: :destroy
@@ -58,11 +60,6 @@ class Account < ActiveRecord::Base
       else
         transactions.bigger(prev_close_date(date)).smaller(date).sum(:amount)
       end)
-  end
-
-  def prev_close_date date
-    close_date = Date.new date.to_date.year, ClosingMonth, ClosingDay
-    close_date >= date.to_date ? close_date.years_ago(1) : close_date
   end
 
   def self.aging_lists accounts, at_date=Date.today, interval_days=15, intervals=5

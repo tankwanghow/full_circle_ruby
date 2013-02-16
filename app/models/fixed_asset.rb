@@ -14,19 +14,19 @@ class FixedAsset < ActiveRecord::Base
     }
   end
 
-  def cost_until entry_date=account.prev_close_date(Date.today)
+  def cost_until entry_date=prev_close_date(Date.today)
     additions.where('year_end <= ?', entry_date).inject(0) { |sum, p| sum + p.amount }
   end
 
-  def disposals_until entry_date=account.prev_close_date(Date.today)
+  def disposals_until entry_date=prev_close_date(Date.today)
     additions.where('year_end <= ?', entry_date).inject(0) { |sum, p| sum + p.cum_disposal_at(entry_date) }
   end
 
-  def depreciations_until entry_date=account.prev_close_date(Date.today)
+  def depreciations_until entry_date=prev_close_date(Date.today)
     additions.where('year_end <= ?', entry_date).inject(0) { |sum, p| sum + p.cum_depreciation_at(entry_date) }
   end
 
-  def net_book_value_at entry_date=account.prev_close_date(Date.today)
+  def net_book_value_at entry_date=prev_close_date(Date.today)
     additions.where('year_end <= ?', entry_date).inject(0) { |sum, p| sum + p.net_book_value_at(entry_date) }
   end
 
