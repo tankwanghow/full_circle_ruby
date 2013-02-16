@@ -1,4 +1,5 @@
 class AssetAddition < ActiveRecord::Base
+  include SharedHelpers
   belongs_to :asset, class_name: "FixedAsset", foreign_key: "fixed_asset_id"
   has_many :disposals, class_name: "AssetDisposal", order: 'entry_date', dependent: :destroy
   has_many :depreciations, class_name: "AssetDepreciation", order: 'entry_date', dependent: :destroy

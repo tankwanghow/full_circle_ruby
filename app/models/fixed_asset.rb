@@ -1,4 +1,5 @@
 class FixedAsset < ActiveRecord::Base
+  include SharedHelpers
   belongs_to :account
   validates_presence_of :depreciation_rate
   validate :is_fixed_assets?
