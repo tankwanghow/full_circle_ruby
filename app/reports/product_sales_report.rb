@@ -1,4 +1,6 @@
 class ProductSalesReport < Dossier::Report
+  include TagsHelper
+
   set_callback :execute, :after do
     options[:footer] = 0
     unit_sums = {}
@@ -81,6 +83,15 @@ class ProductSalesReport < Dossier::Report
          AND doc_date >= :start_date
          AND doc_date <= :end_date
     SQL
+  end
+
+  def param_fields form
+    form.input_field(:doc_tags, class: 'span5', placeholder: 'document tags...', data: { tags: sales_doc_tags }) +
+    form.input_field(:product_tags, class: 'span5', placeholder: 'product tags...', data: { tags: Product.category_counts.map {|t| t.name } }) +
+    form.input_field(:start_date, class: 'datepicker span3', placeholder: 'start date...') +
+    form.input_field(:end_date, class: 'datepicker span3', placeholder: 'end date...') +
+    form.label('Group by Month', class: 'checkbox') +
+    form.input_field(:group_by_month, as: :boolean) 
   end
 
   def doc_tag_condition

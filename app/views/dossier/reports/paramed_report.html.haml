@@ -1,0 +1,10 @@
+- if report.respond_to?(:param_fields)
+  = simple_form_for report, as: :options, url: url_for, html: { method: :get, class: 'form-inline well' } do |f|
+    = report.param_fields f
+    = f.button :submit, 'Show', class: 'btn-primary'
+
+= render template: 'dossier/reports/show', locals: {report: report}
+
+:coffee
+  ($ document).ready ->
+    #{report.class.name.underscore}.init()

@@ -39,6 +39,10 @@ class TrailBalanceReport < Dossier::Report
     SQL
   end
 
+  def param_fields form
+    form.input_field :end_date, class: 'datepicker span3', placeholder: 'end date...'
+  end
+
   def start_date
     prev_close_date(end_date) if end_date
   end
