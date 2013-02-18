@@ -23,7 +23,7 @@ set :scm, :git
 set :git_shallow_clone, 1
 set :scm_verbose, true
 set :deploy_via, :export
-set :repository, "ssh://deployer@173.255.216.93/#{user}/#{application}.git"
+set :repository, "ssh://deployer@173.255.216.93/home/#{user}/#{application}.git"
 set :branch, "master"
 
 default_run_options[:pty] = true
