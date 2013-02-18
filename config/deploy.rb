@@ -12,16 +12,14 @@ server "173.255.216.93", :web, :app, :db, primary: true
 
 set :user, "deployer"
 set :application, "full_circle"
-# set :deploy_to, "/home/#{user}/apps/#{application}"
-# set :deploy_via, :remote_cache
+set :deploy_to, "/home/#{user}/apps/#{application}"
 set :use_sudo, false
 
 set :scm, :git
 set :repository, "."
-set :deploy_via, :copy
-
-# set :scm, "git"
 # set :repository, "git@github.com:tankwanghow/#{application}.git"
+set :deploy_via, :copy
+# set :deploy_via, :remote_cache
 set :branch, "master"
 
 default_run_options[:pty] = true
