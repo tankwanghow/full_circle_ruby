@@ -1,4 +1,4 @@
-class TrailBalanceReport < Dossier::Report
+class TrailBalanceReport < AdminReportBase
   include SharedHelpers
 
   set_callback :execute, :after do
