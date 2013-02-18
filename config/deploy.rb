@@ -20,7 +20,7 @@ set :scm, :git
 # set :repository, "git@github.com:tankwanghow/#{application}.git"
 # set :deploy_via, :copy
 # set :copy_cache, true
-set :deploy_via, :remote_cache
+set :deploy_via, :export
 set :repository, "ssh://deployer@173.255.216.93/#{user}/#{application}.git"
 set :branch, "master"
 
