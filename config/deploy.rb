@@ -16,11 +16,12 @@ set :deploy_to, "/home/#{user}/apps/#{application}"
 set :use_sudo, false
 
 set :scm, :git
-set :repository, "."
+# set :repository, "."
 # set :repository, "git@github.com:tankwanghow/#{application}.git"
-set :deploy_via, :copy
-set :copy_cache, true
-# set :deploy_via, :remote_cache
+# set :deploy_via, :copy
+# set :copy_cache, true
+set :deploy_via, :remote_cache
+set :repository, "ssh://deployer@173.255.216.93/#{user}/#{application}.git"
 set :branch, "master"
 
 default_run_options[:pty] = true
