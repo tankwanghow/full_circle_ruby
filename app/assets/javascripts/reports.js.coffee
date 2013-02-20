@@ -1,7 +1,3 @@
-window.trail_balance_report = {
-  init: ->
-}
-
 window.product_sales_report = {
   init: ->
     ($ '#options_doc_tags').select2
