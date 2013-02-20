@@ -6,8 +6,7 @@ RAILS_ENV=production rake db:seed
 Create first User
 RAILS_ENV=production ruby ./lib/task/migrate_old_data.rb # move to a rake task future
 
-installing gem rmagick needed
-=============================
-sudo apt-get install libdjvulibre-dev libjpeg-dev libtiff-dev libwmf-dev libmagickcore-dev libmagickwand-dev libmagick++-dev
-sudo apt-get install graphicsmagick-libmagick-dev-compat
-sudo apt-get install libmagickwand-dev
+Seeding Database
+================
+Assets Additions for 2011 and 2012 can be generated automatically
+Asset Fixed Asset Accounts don't have Fixed Asset Record, solve manually
