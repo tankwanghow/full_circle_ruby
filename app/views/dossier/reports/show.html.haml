@@ -1,4 +1,5 @@
 %h4= report.class.name.titleize
+= link_to 'Download CSV', dossier_report_path(format: 'csv', options: report.options, report: report.class.report_name), class: 'download-csv', 'data-skip-pjax' => true
 
 %table.table.table-condensed.table-bordered#report
   %thead
@@ -17,5 +18,3 @@
         %tr
           - row.each do |value|
             %th= value
-
-= link_to 'Download CSV', dossier_report_path(format: 'csv', options: report.options, report: report.class.report_name), class: 'download-csv', 'data-skip-pjax' => true
