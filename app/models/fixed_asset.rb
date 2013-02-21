@@ -16,22 +16,45 @@ class FixedAsset < ActiveRecord::Base
   end
 
   def cost_until entry_date=prev_close_date(Date.today)
-    additions.where('year_end <= ?', entry_date).inject(0) { |sum, p| sum + p.amount }
+    additions.where('entry_date <= ?', entry_date).inject(0) { |sum, p| sum + p.amount }
   end
 
   def disposals_until entry_date=prev_close_date(Date.today)
-    additions.where('year_end <= ?', entry_date).inject(0) { |sum, p| sum + p.cum_disposal_at(entry_date) }
+    additions.where('entry_date <= ?', entry_date).inject(0) { |sum, p| sum + p.cum_disposal_at(entry_date) }
   end
 
   def depreciations_until entry_date=prev_close_date(Date.today)
-    additions.where('year_end <= ?', entry_date).inject(0) { |sum, p| sum + p.cum_depreciation_at(entry_date) }
+    additions.where('entry_date <= ?', entry_date).inject(0) { |sum, p| sum + p.cum_depreciation_at(entry_date) }
   end
 
   def net_book_value_at entry_date=prev_close_date(Date.today)
-    additions.where('year_end <= ?', entry_date).inject(0) { |sum, p| sum + p.net_book_value_at(entry_date) }
+    additions.where('entry_date <= ?', entry_date).inject(0) { |sum, p| sum + p.net_book_value_at(entry_date) }
+  end
+
+  def fill_in_unsaved_additions_until end_year=Date.today.year-1
+    if additions.count > 0
+      start_year = additions.order(:entry_date).last.entry_date.year 
+    else
+      start_year = account.transactions.order(:transaction_date).first.transaction_date.year
+    end
+    (start_year..end_year).each do |y|
+      end_date = "#{y}-#{ClosingMonth}-#{ClosingDay}".to_date
+      start_date = prev_close_date(end_date) + 1
+      sum = sum_of_unsaved_additions_from_transactions start_date, end_date
+      if sum > 0 and !additions.detect { |t| t.entry_date == end_date }
+        additions.build(entry_date: end_date, amount: sum)
+      end
+    end
   end
 
 private
+
+  def sum_of_unsaved_additions_from_transactions start_date, end_date
+    account.transactions.where('amount > 0').
+      where("doc_type <> 'Balance'").
+      where('transaction_date >= ?', start_date).
+      where('transaction_date <= ?', end_date).sum(:amount)
+  end
 
   def is_fixed_assets?
     unless account.is_fixed_assets?
