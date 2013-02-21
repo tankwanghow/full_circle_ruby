@@ -49,7 +49,9 @@
   opacity: .6;
 }
 
-.css-treeview input:checked:not(:disabled) ~ ul {
+.css-treeview input:checked:not(:disabled) ~ ul,
+.css-treeview input[checked]:not(:disabled) ~ ul
+{
   display: block;
 }
 
@@ -73,6 +75,8 @@
   content: ' + ';
 }
 
-.css-treeview input:checked + span::before {
+.css-treeview input:checked + span::before,
+.css-treeview input[checked] + span::before
+{
   content: ' - ';
 }
