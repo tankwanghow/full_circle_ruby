@@ -7,6 +7,7 @@ class FixedAssetsController < ApplicationController
 
   def edit
     @asset = FixedAsset.find(params[:id])
+    @asset.fill_in_unsaved_additions_until
   end
 
   def create
