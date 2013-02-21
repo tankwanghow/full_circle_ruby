@@ -1,4 +1,10 @@
 class DepreciationWorksheetReport < AdminReportBase
+
+  set_callback :execute, :after do
+    options[:footer] = 1
+    total = raw_results.rows.inject(0) { |sum, t| sum += t[6].to_f }
+    results.rows << [nil, nil, nil, nil, nil, 'Total', formatter.number_with_precision(total, precision: 2, delimiter: ',')]  
+  end
   
   def sql
     <<-SQL
