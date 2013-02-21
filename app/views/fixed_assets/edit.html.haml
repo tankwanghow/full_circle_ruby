@@ -3,6 +3,7 @@
   %legend
     = "Asset information for #{@asset.account.name1}"
   = render 'fields', f: f
+  %span marked '*' is record that has not been saved
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
     = link_to 'Cancel', edit_fixed_asset_path(@asset), class: 'btn btn-warning'

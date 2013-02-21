@@ -5,6 +5,8 @@
     = f.input :amount, input_html: { class: 'amount span', type: :text }, wrapper: :table_field
   .span3
     = f.input :final_amount, input_html: { class: 'span', type: :text }, wrapper: :table_field
+  - if f.object.new_record?
+    *
   = f.link_to_remove "X", class: "btn btn-danger", tabindex: -1
   - if f.object.id
     = link_to "Disposals (#{f.object.cum_disposal_at.to_money.format}) & Depreciations (#{f.object.cum_depreciation_at.to_money.format})", edit_asset_addition_path(f.object), tabindex: -1
