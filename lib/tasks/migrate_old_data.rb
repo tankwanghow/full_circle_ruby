@@ -76,7 +76,7 @@ def migrate_assets_additions filename
 end
 
 def generate_depreciation
-  puts 'Generating assets depreciations until 2010...'
+  puts 'Generating assets depreciations until 2012...'
   FixedAsset.all.each do |fa|
     if fa.additions.count > 1
       id = fa.additions.order(:entry_date).last.id
@@ -90,7 +90,7 @@ def generate_depreciation
   end
 
   AssetAddition.all.each do |t|
-    t.generate_annual_depreciation 2010
+    t.generate_annual_depreciation 2012
     t.save!
   end
 end
