@@ -38,13 +38,13 @@ class AssetAddition < ActiveRecord::Base
   def cum_depreciation_at in_date=prev_close_date(Date.today)
     depreciations.inject(0) do |sum, p| 
       (sum + p.amount) if p.entry_date <= in_date
-    end
+    end || 0
   end
 
   def cum_disposal_at in_date=prev_close_date(Date.today)
     disposals.inject(0) do |sum, p| 
       (sum + p.amount) if p.entry_date <= in_date
-    end
+    end || 0
   end
 
 private
@@ -55,18 +55,22 @@ private
 
   def depreciation_for in_date
     if can_depreciate_according_to_rate? in_date
-      (amount * asset.depreciation_rate).round(2)
+      (cost(in_date) * asset.depreciation_rate).round(2)
     else
-      amount - cum_depreciation_at(in_date) - final_amount
+      cost(in_date) - cum_depreciation_at(in_date) - final_amount
     end
   end
 
+  def cost in_date
+    amount - cum_disposal_at(in_date)
+  end
+
   def can_depreciate_according_to_rate? in_date
-    cum_depreciation_at(in_date) + (amount * asset.depreciation_rate).round(2) <= amount - final_amount
+    cum_depreciation_at(in_date) + (cost(in_date) * asset.depreciation_rate).round(2) <= amount - final_amount
   end
 
   def fully_depreciated? in_date
-    cum_depreciation_at(in_date) + final_amount >= amount
+    cum_depreciation_at(in_date) + final_amount >= cost(in_date)
   end
   
 end
