@@ -3,7 +3,7 @@ class TrailBalanceReport < AdminReportBase
 
   set_callback :execute, :after do
     options[:footer] = 1
-    balance = raw_results.rows.inject(0) { |sum, t| sum += t[1].to_f }
+    balance = raw_results.rows.inject(0) { |sum, t| sum += t[2].to_f }
     results.rows << [nil, 'Balance', formatter.number_with_precision(balance, precision: 2, delimiter: ',')]  
   end
   
@@ -44,7 +44,7 @@ class TrailBalanceReport < AdminReportBase
   end
 
   def start_date
-    prev_close_date(end_date) if end_date
+    prev_close_date(end_date) + 1 if end_date
   end
 
   def end_date
