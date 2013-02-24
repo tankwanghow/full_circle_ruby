@@ -10,3 +10,20 @@ Seeding Database
 ================
 Assets Additions for 2011 and 2012 can be generated automatically
 Asset Fixed Asset Accounts don't have Fixed Asset Record, solve manually
+
+** Factory Building additions move some value to Golden Star Feedmill **
+
+
+ssh root@72.14.183.209
+adduser deployer --ingroup sudo
+exit
+cap deploy:install
+cap deploy:setup
+cap deploy:cold -- has migration
+cap deploy      -- has no migration, when use pg_dump with 'schema'
+
+ PG_DUMP Command
+ ===============
+  pg_dump -h localhost full_circle_development --format=tar -f 'back_file_with_full_path'
+  scp backup_file_with_path deployer@173.255.216.93:backup_file_with_path
+  pg_restore -h localhost -U full_circle -d full_circle_production -v 'backup_file'
