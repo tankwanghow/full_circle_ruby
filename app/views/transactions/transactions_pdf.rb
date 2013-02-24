@@ -2,10 +2,10 @@
 class TransactionsPdf < Prawn::Document
   include Prawn::Helper
 
-  def initialize(transactions, view, static_content=false)
+  def initialize(transactions, account, view, static_content=false)
     super(page_size: [210.mm, 297.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
     @view = view
-    @account = transactions.first.account
+    @account = account
     draw(transactions, static_content)
   end
 
