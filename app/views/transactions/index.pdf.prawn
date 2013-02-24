@@ -1,2 +1,2 @@
 load './app/views/transactions/transactions_pdf.rb'
-TransactionsPdf.new(@transactions, self, @static_content)
+TransactionsPdf.new(@transactions, @account, self, @static_content)

@@ -6,9 +6,10 @@
   = f.input_field :start_date, class: 'datepicker span2', placeholder: 'start date...', value: session[:transactions_query][:start_date]
   = f.input_field :end_date, class: 'datepicker span2', placeholder: 'end date...', value: session[:transactions_query][:end_date]
   = f.button :submit, 'Query', class: 'btn-primary'
-  - url_options = { controller: 'transactions', action: 'index', format: 'pdf', transactions_query: session[:transactions_query] }
-  = link_to "Templated Print", url_for(url_options), class: 'btn btn-success', target: '_blank', data: { 'skip-pjax' => true }
-  = link_to "Print", url_for(url_options.merge(static_content: true)), class: 'btn btn-inverse', target: '_blank', data: { 'skip-pjax' => true }
+  - url_options = { controller: 'transactions', action: 'index', transactions_query: session[:transactions_query] }
+  = link_to "Templated Print", url_for(url_options.merge(format: 'pdf')), class: 'btn btn-success', target: '_blank', data: { 'skip-pjax' => true }
+  = link_to "Print", url_for(url_options.merge(static_content: true, format: 'pdf')), class: 'btn btn-inverse', target: '_blank', data: { 'skip-pjax' => true }
+= link_to "Download CSV", url_for(url_options.merge(format: 'csv')), data: { 'skip-pjax' => true }, class: 'download-csv'
 %table.table-bordered.table#transactions
   %thead
     %tr
@@ -45,6 +46,8 @@
       %td.bold{colspan: 4} Total
       %td.bold= total.to_money.format if total >= 0
       %td.bold= total.abs.to_money.format if total <= 0
+
+= link_to "Download CSV", url_for(url_options.merge(format: 'csv')), data: { 'skip-pjax' => true }, class: 'download-csv'
   
 :coffee
   ($ document).ready -> transaction.init()
