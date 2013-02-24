@@ -35,7 +35,11 @@ class FixedAsset < ActiveRecord::Base
     if additions.count > 0
       start_year = additions.order(:entry_date).last.entry_date.year 
     else
-      start_year = account.transactions.order(:transaction_date).first.transaction_date.year
+      if account.transactions.count > 0
+        start_year = account.transactions.order(:transaction_date).first.transaction_date.year
+      else
+        start_year = end_year
+      end
     end
     (start_year..end_year).each do |y|
       end_date = "#{y}-#{ClosingMonth}-#{ClosingDay}".to_date
