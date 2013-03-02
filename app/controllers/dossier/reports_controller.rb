@@ -10,7 +10,6 @@ module Dossier
             render template: "dossier/reports/#{report_class.report_name}", locals: {report: report}
           rescue ActionView::MissingTemplate => e
             render template: 'dossier/reports/paramed_report', locals: {report: report}
-            # render template: 'dossier/reports/show', locals: {report: report}
           end
         end
 
