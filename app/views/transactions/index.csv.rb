@@ -1,5 +1,5 @@
 if @transactions.count > 0
-  response.headers["Content-Disposition"] = "attachment; filename='#{@account.name1.underscore}_transactions.csv'"
+  response.headers["Content-Disposition"] = "attachment;filename=#{@account.name1.underscore}_transactions.csv"
 
   CSV.generate do |csv|
     csv << ["Date", "Doc Type", "Doc No", "Terms", "Partuculars", "Debit", "Credit"]
