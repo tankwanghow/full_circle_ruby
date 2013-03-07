@@ -1,6 +1,7 @@
 .bundle
 db/*.sqlite3*
 db/schema.rb
+old_data/
 log/*.log
 *.log
 tmp/**/*
