@@ -18,7 +18,7 @@ def populate_account_and_types
 end
 
 def find_or_create_account_by_name name, print=false
-  a = Account.find_by_name1 capitalize_first_word(name)
+  a = Account.where('name1 ilike ?', name).first
   if !a
     k = @account_and_types.find { |t| t[1] == capitalize_first_word(name) }
     if k
@@ -35,7 +35,7 @@ def find_or_create_account_by_name name, print=false
 end
 
 def find_or_create_type_by_name name
-  a = AccountType.find_by_name capitalize_first_word(name)
+  a = AccountType.where('name ilike ?', name).first
   if !a
     k = @account_and_types.find { |t| t[0] == capitalize_first_word(name) }
     if k
