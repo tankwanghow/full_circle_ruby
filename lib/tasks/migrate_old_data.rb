@@ -10,7 +10,7 @@ def check_for_first_user
 end
 
 def populate_account_and_types
-  CSV.foreach(File.expand_path('db/old_data/Account.csv'), headers: true, col_sep: '^') do |d|
+  CSV.foreach(File.expand_path('old_data/Account.csv'), headers: true, col_sep: '^') do |d|
     type = capitalize_first_word d['TYPE']
     name = capitalize_first_word d['NAME']
     @account_and_types << [type, name]
@@ -52,7 +52,7 @@ end
 def migrate_assets_additions filename
   puts 'Migrating assets additions...'
   fixass_type_id = AccountType.find_by_name('Fixed Assets').id
-  table = CSV.read(File.expand_path("db/old_data/#{filename}.csv"), headers: true, col_sep: '^')
+  table = CSV.read(File.expand_path("old_data/#{filename}.csv"), headers: true, col_sep: '^')
   table.each do |d|
     account = find_or_create_account_by_name(d['Name'], true)
     if account
@@ -97,7 +97,7 @@ end
 
 def migrate_transaction filename
   i = 0
-  table = CSV.read(File.expand_path("db/old_data/#{filename}.csv"), headers: true, col_sep: '^')
+  table = CSV.read(File.expand_path("old_data/#{filename}.csv"), headers: true, col_sep: '^')
   count = table.count
   table.each do |d|
     i += 1
@@ -121,7 +121,7 @@ end
 
 def migrate_cheque filename
   i = 0
-  table = CSV.read(File.expand_path("db/old_data/#{filename}.csv"), headers: true, col_sep: '^')
+  table = CSV.read(File.expand_path("old_data/#{filename}.csv"), headers: true, col_sep: '^')
   count = table.count
   table.each do |d|
     i += 1
@@ -166,7 +166,7 @@ end
 
 def migrate_address
   puts 'Migrating addresses...'
-  CSV.foreach(File.expand_path('db/old_data/Addresses.csv'), headers: true, col_sep: '^') do |d|
+  CSV.foreach(File.expand_path('old_data/Addresses.csv'), headers: true, col_sep: '^') do |d|
     name = capitalize_first_word(d['Name'])
     a = Account.find_by_name1 name
     if a

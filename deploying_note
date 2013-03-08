@@ -23,13 +23,13 @@ gem install thinreports --no-doc --no-ri => if uses thin reports
 cap deploy:cold -- has migration
 cap deploy      -- has no migration, when use pg_dump with 'schema'
 
- PG_DUMP Command
- ===============
-  pg_dump -h localhost full_circle_development --format=tar -f 'back_file_with_full_path'
-  scp backup_file_with_path deployer@173.255.216.93:backup_file_with_path
+PG_DUMP Command
+===============
+pg_dump -h localhost full_circle_development --format=tar -f 'back_file_with_full_path'
+scp backup_file_with_path deployer@173.255.216.93:backup_file_with_path
 
-  cat [file_name] | psql [database name] # for plain text dump file
-  pg_restore -h localhost -U full_circle -d full_circle_production -v 'backup_file' # for tar dump file
+cat [file_name] | psql [database name] # for plain text dump file
+pg_restore -h localhost -U full_circle -d full_circle_production -v 'backup_file' # for tar dump file
 
 
 Account name changes

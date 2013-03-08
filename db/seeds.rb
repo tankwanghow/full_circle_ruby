@@ -425,9 +425,9 @@ require File.expand_path('lib/tasks/migrate_old_data')
 
 # check_for_first_user
 # populate_account_and_types
-migrate_transaction 'balance2010'
+#migrate_transaction 'balance2010'
 # migrate_transaction 'adjustment_2011'
-migrate_transaction 'transactions_2011_2012'
+# migrate_transaction 'transactions_2013'
 # migrate_address
 #migrate_assets_additions 'assets_additions' -- use data dump
-#migrate_cheque 'PDChq'
+migrate_cheque 'pdchq'
