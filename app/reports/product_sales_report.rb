@@ -41,10 +41,14 @@ class ProductSalesReport < Dossier::Report
 
   def sales_sql
     cash_sale_sql + 
+    cash_product_tag_conditions +
+    cash_document_tag_conditions +
     product_tag_condition + 
     doc_tag_condition +
     " UNION ALL " +
     invoice_sql + 
+    invoice_product_tag_conditions +
+    invoice_document_tag_conditions +
     product_tag_condition + 
     doc_tag_condition
   end
@@ -54,15 +58,7 @@ class ProductSalesReport < Dossier::Report
       SELECT DISTINCT doc.id, doc.doc_date, pd.name1, docd.quantity, pd.unit
         FROM cash_sales doc, cash_sale_details docd, products pd, 
              tags doctg, taggings doctgs, taggings pdtgs, tags pdtg
-       WHERE doc.id = docd.cash_sale_id 
-         AND doc.id = doctgs.taggable_id 
-         AND doctg.id = doctgs.tag_id 
-         AND doctgs.taggable_type = 'CashSale'
-         AND pd.id = docd.product_id 
-         AND pd.id = pdtgs.taggable_id 
-         AND pdtgs.tag_id = pdtg.id 
-         AND pdtgs.taggable_type = 'Product' 
-         AND doc_date >= :start_date
+       WHERE doc_date >= :start_date
          AND doc_date <= :end_date
     SQL
   end
@@ -72,17 +68,61 @@ class ProductSalesReport < Dossier::Report
       SELECT DISTINCT doc.id, doc.doc_date, pd.name1, docd.quantity, pd.unit
         FROM invoices doc, invoice_details docd, products pd,
              tags doctg, taggings doctgs, taggings pdtgs, tags pdtg
-       WHERE doc.id = docd.invoice_id
-         AND doc.id = doctgs.taggable_id
-         AND doctg.id = doctgs.tag_id
-         AND doctgs.taggable_type = 'Invoice'
-         AND pd.id = docd.product_id
-         AND pd.id = pdtgs.taggable_id
-         AND pdtgs.tag_id = pdtg.id
-         AND pdtgs.taggable_type = 'Product'
-         AND doc_date >= :start_date
+       WHERE doc_date >= :start_date
          AND doc_date <= :end_date
     SQL
+  end
+
+  def cash_product_tag_conditions
+    if !product_tags.blank?
+      <<-SQL
+        AND pd.id = docd.product_id 
+        AND pd.id = pdtgs.taggable_id 
+        AND pdtgs.tag_id = pdtg.id 
+        AND pdtgs.taggable_type = 'Product' 
+      SQL
+    else
+      ''
+    end
+  end
+
+  def cash_document_tag_conditions
+    if !doc_tags.blank?
+      <<-SQL
+        AND doc.id = docd.cash_sale_id 
+        AND doc.id = doctgs.taggable_id 
+        AND doctg.id = doctgs.tag_id 
+        AND doctgs.taggable_type = 'CashSale'
+      SQL
+    else
+      ''
+    end
+  end
+
+  def invoice_product_tag_conditions
+    if !product_tags.blank?
+      <<-SQL
+        AND pd.id = docd.product_id
+        AND pd.id = pdtgs.taggable_id
+        AND pdtgs.tag_id = pdtg.id
+        AND pdtgs.taggable_type = 'Product'
+      SQL
+    else
+      ''
+    end
+  end
+
+  def invoice_document_tag_conditions
+    if !doc_tags.blank?
+      <<-SQL
+        AND doc.id = docd.invoice_id
+        AND doc.id = doctgs.taggable_id
+        AND doctg.id = doctgs.tag_id
+        AND doctgs.taggable_type = 'Invoice'
+      SQL
+    else
+      ''
+    end
   end
 
   def param_fields form
