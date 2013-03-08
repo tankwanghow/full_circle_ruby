@@ -3,7 +3,7 @@ class InvoicePdf < Prawn::Document
   include Prawn::Helper
 
   def initialize(invoices, view, static_content=false)
-    super(page_size: [220.mm, 295.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
+    super(page_size: [220.mm, 295.mm], margin: [0.mm, 0.mm, 10.mm, 0.mm], skip_page_creation: true)
     @view = view
     draw(invoices, static_content)
   end
