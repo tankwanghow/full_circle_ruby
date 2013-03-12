@@ -54,23 +54,39 @@ class ProductSalesReport < Dossier::Report
   end
 
   def cash_sale_sql
-    <<-SQL
-      SELECT DISTINCT doc.id, doc.doc_date, pd.name1, docd.quantity, pd.unit
-        FROM cash_sales doc, cash_sale_details docd, products pd, 
-             tags doctg, taggings doctgs, taggings pdtgs, tags pdtg
-       WHERE doc_date >= :start_date
-         AND doc_date <= :end_date
-    SQL
+    "SELECT DISTINCT doc.id, doc.doc_date, pd.name1, docd.quantity, pd.unit
+       FROM cash_sales doc, cash_sale_details docd, products pd
+            #{doc_tags?} #{product_tags?}
+      WHERE doc_date >= :start_date
+        AND doc_date <= :end_date
+        AND pd.id = docd.product_id
+        AND doc.id = docd.cash_sale_id"
   end
 
   def invoice_sql
-    <<-SQL
-      SELECT DISTINCT doc.id, doc.doc_date, pd.name1, docd.quantity, pd.unit
-        FROM invoices doc, invoice_details docd, products pd,
-             tags doctg, taggings doctgs, taggings pdtgs, tags pdtg
-       WHERE doc_date >= :start_date
-         AND doc_date <= :end_date
-    SQL
+    "SELECT DISTINCT doc.id, doc.doc_date, pd.name1, docd.quantity, pd.unit
+       FROM invoices doc, invoice_details docd, products pd
+            #{doc_tags?} #{product_tags?}
+      WHERE doc_date >= :start_date
+        AND doc_date <= :end_date
+        AND pd.id = docd.product_id
+        AND doc.id = docd.invoice_id"
+  end
+
+  def doc_tags?
+    if doc_tags.blank?
+      ''
+    else
+      ", tags doctg, taggings doctgs"
+    end
+  end
+
+  def product_tags?
+    if product_tags.blank?
+      ''
+    else
+      ", taggings pdtgs, tags pdtg"
+    end
   end
 
   def cash_product_tag_conditions
