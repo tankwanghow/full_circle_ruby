@@ -3,18 +3,12 @@ class ProductSalesReport < Dossier::Report
 
   set_callback :execute, :after do
     options[:footer] = 0
-    unit_sums = {}
-    raw_results.rows.each do |t|
-      if unit_sums[t[3]]
-        unit_sums[t[3]] += t[2].to_f
-      else
+    raw_results.rows.group_by{ |item| item[3] }.map do |unit, data| 
+        [ unit, data.inject(0) { |sum, value| sum+= value[2].to_f } ]
+      end.each do |sum|
         options[:footer] += 1
-        unit_sums[t[3]] = t[2].to_f
-      end
-    end
-    unit_sums.each do |k, v|
-      results.rows << [nil, 'Total', formatter.number_with_precision(v, precision: 2, delimiter: ','), k]  
-    end
+        results.rows << [nil, 'Total', formatter.number_with_precision(sum[1], precision: 2, delimiter: ','), sum[0]]
+     end
   end
 
   def sql
