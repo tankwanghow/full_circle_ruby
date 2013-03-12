@@ -92,7 +92,6 @@ class ProductSalesReport < Dossier::Report
   def cash_product_tag_conditions
     if !product_tags.blank?
       <<-SQL
-        AND pd.id = docd.product_id 
         AND pd.id = pdtgs.taggable_id 
         AND pdtgs.tag_id = pdtg.id 
         AND pdtgs.taggable_type = 'Product' 
@@ -105,7 +104,6 @@ class ProductSalesReport < Dossier::Report
   def cash_document_tag_conditions
     if !doc_tags.blank?
       <<-SQL
-        AND doc.id = docd.cash_sale_id 
         AND doc.id = doctgs.taggable_id 
         AND doctg.id = doctgs.tag_id 
         AND doctgs.taggable_type = 'CashSale'
@@ -118,7 +116,6 @@ class ProductSalesReport < Dossier::Report
   def invoice_product_tag_conditions
     if !product_tags.blank?
       <<-SQL
-        AND pd.id = docd.product_id
         AND pd.id = pdtgs.taggable_id
         AND pdtgs.tag_id = pdtg.id
         AND pdtgs.taggable_type = 'Product'
@@ -131,7 +128,6 @@ class ProductSalesReport < Dossier::Report
   def invoice_document_tag_conditions
     if !doc_tags.blank?
       <<-SQL
-        AND doc.id = docd.invoice_id
         AND doc.id = doctgs.taggable_id
         AND doctg.id = doctgs.tag_id
         AND doctgs.taggable_type = 'Invoice'
