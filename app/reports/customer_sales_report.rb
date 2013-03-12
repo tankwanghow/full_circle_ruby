@@ -7,7 +7,7 @@ class CustomerSalesReport < Dossier::Report
         [ product, data.inject(0) { |sum, value| sum+= value[4].to_f }, data.inject(0) { |sum, value| sum+= value[7].to_f } ]
       end.each do |sum|
         options[:footer] += 1
-        results.rows << [nil, nil, 'Total', sum[0], formatter.number_with_precision(sum[1], precision: 2, delimiter: ','), nil, nil,formatter.number_with_precision(sum[2], precision: 2, delimiter: ',')]
+        results.rows << [nil, nil, 'Total', sum[0], formatter.number_with_precision(sum[1], precision: 2, delimiter: ','), nil, nil ,formatter.number_with_precision(sum[2], precision: 2, delimiter: ',')]
      end
   end
 

@@ -2,9 +2,13 @@ class SalesAmountReport < Dossier::Report
   include TagsHelper
 
   set_callback :execute, :after do
-    options[:footer] = 1
-    balance = raw_results.rows.inject(0) { |sum, t| sum += t[5].to_f }
-    results.rows << [nil, nil, nil, nil, 'Total', formatter.number_with_precision(balance, precision: 2, delimiter: ',')]  
+    options[:footer] = 0
+    raw_results.rows.group_by{ |item| item[0] }.map do |doc, data| 
+        [ doc, data.inject(0) { |sum, value| sum+= value[5].to_f } ]
+      end.each do |sum|
+        options[:footer] += 1
+        results.rows << [nil, nil, nil, 'Total', sum[0], formatter.number_with_precision(sum[1], precision: 2, delimiter: ',')]
+     end
   end
 
   def sql
