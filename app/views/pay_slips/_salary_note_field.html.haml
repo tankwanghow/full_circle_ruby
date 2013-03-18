@@ -2,7 +2,7 @@
   = f.hidden_field :generated
   = f.hidden_field :recurring_note_id
   .span3
-    = f.input :doc_date, as: :datepicker, input_html: { class: 'span21' }, wrapper: :table_field
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, wrapper: :table_field
   .span2
     = text_field_tag :id, docnolize(f.object.id, '#'), class: 'span', readonly: true, tabindex: -1
   .span4
