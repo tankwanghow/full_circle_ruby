@@ -51,9 +51,10 @@ private
   def build_transactions
     transactions.destroy_all
     build_customer_transaction
-    build_details_transactions
     build_particulars_transactions
+    build_details_transactions
     validates_transactions_balance
+    binding.pry
   end
 
   def build_details_transactions
@@ -71,7 +72,11 @@ private
   end
 
   def product_summary
-    details.select{ |t| !t.marked_for_destruction? }.map { |t| t.product.name1 }.join(', ').truncate(70)
+    details.select{ |t| !t.marked_for_destruction? }.map { |t| t.product.name1 }.join(', ')
+  end
+
+  def particular_summary
+    particulars.select{ |t| !t.marked_for_destruction? }.map { |t| t.particular_type.name }.join(', ')
   end
 
   def build_customer_transaction
@@ -80,7 +85,7 @@ private
       transaction_date: doc_date,
       terms: credit_terms,
       account: customer,
-      note: product_summary,
+      note: (product_summary + particular_summary).truncate(70),
       amount: invoice_amount,
       user: User.current
     )

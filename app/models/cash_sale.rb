@@ -81,7 +81,11 @@ private
   end
 
   def product_summary
-    details.select{ |t| !t.marked_for_destruction? }.map { |t| t.product.name1 }.join(', ').truncate(70)
+    details.select{ |t| !t.marked_for_destruction? }.map { |t| t.product.name1 }.join(', ')
+  end
+
+  def particular_summary
+    particulars.select{ |t| !t.marked_for_destruction? }.map { |t| t.particular_type.name }.join(', ')
   end
 
   def build_cash_n_pd_chq_transaction
@@ -96,7 +100,7 @@ private
         doc: self,
         transaction_date: doc_date,
         account: Account.find_by_name1('Cash In Hand'),
-        note: "#{customer_name1} #{product_summary}",
+        note: [customer_name1, product_summary, particular_summary].join(', ').truncate(70),
         amount: cash_amount,
         user: User.current)
     end
