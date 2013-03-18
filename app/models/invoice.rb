@@ -54,7 +54,6 @@ private
     build_particulars_transactions
     build_details_transactions
     validates_transactions_balance
-    binding.pry
   end
 
   def build_details_transactions
