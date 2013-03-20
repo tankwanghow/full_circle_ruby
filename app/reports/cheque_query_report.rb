@@ -1,4 +1,4 @@
-  class ChequeQueryReport < AdminReportBase
+  class ChequeQueryReport < Dossier::Report
   include SharedHelpers
 
   def sql
