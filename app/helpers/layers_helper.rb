@@ -18,7 +18,7 @@ module LayersHelper
   end
 
   def harvesting_slip_lock? slip
-    if slip.salary_note.pay_slip
+    if slip.try(:salary_note).try(:pay_slip)
       true
     else
       false
