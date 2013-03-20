@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @house, html: { class: 'form-inline well', id: 'house' } do |f|
+  %legend
+    New House
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', House.last ? edit_house_path(House.last) : root_path, class: 'btn btn-warning'

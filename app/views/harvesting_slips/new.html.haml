@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @harvesting_slip, html: { class: 'form-inline well', id: 'harvesting_slip' } do |f|
+  %legend
+    New Harvesting Slip
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', HarvestingSlip.last ? edit_harvesting_slip_path(HarvestingSlip.last) : root_path, class: 'btn btn-warning'

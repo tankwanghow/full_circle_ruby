@@ -1,0 +1,11 @@
+= render_flash
+= simple_nested_form_for @house, html: { class: 'form-inline well', id: 'house' } do |f|
+  %legend
+    = "House #" + docnolize(@house.id)
+  = render 'fields', f: f
+  .form-actions
+    = f.button(:submit, 'Save', class: 'btn btn-primary')
+    = link_to 'New', new_house_path, class: 'btn btn-info'
+    = link_to 'Cancel', edit_house_path(@house), class: 'btn btn-warning'
+    = link_to_index(House)
+    = link_to_audits_log(@house)

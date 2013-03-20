@@ -68,12 +68,12 @@ window.main = {
 
 window.app = {
   standardInit: ->
-    app.initDatepicker()
-    app.initNumeric()
-    app.avoidAutocompleteForTypeahead()
     ($ 'form[admin_lock=true] input, form[admin_lock=true] select, form[admin_lock=true] textarea').attr('readOnly', true)
     ($ 'form input[type=submit]').click -> 
       ($ this).attr('clicked', true)
+    app.initDatepicker()
+    app.initNumeric()
+    app.avoidAutocompleteForTypeahead()
 
   avoidAutocompleteForTypeahead: ->
     ($ 'input.string[type="text"]').attr('autocomplete', 'off')
@@ -89,7 +89,7 @@ window.app = {
           ($ this).parents('.control-group').addClass('error')
 
   initDatepicker: ->
-    ($ 'input.datepicker').datepicker
+    ($ 'input.datepicker:not([readonly])').datepicker
       dateFormat: 'dd-mm-yy'
       buttonImage: '/assets/calendar-select.png'
       showOn: "button"

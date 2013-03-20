@@ -1,0 +1,20 @@
+.row-fluid
+  .span5
+    = f.input :house_no, input_html: { class: 'span' }, autofocus: true
+  .span3
+    = f.input :capacity, input_html: { class: 'numeric span', type: :text }
+.row-fluid
+  .span3
+    = f.input :filling_wages, input_html: { class: 'numeric span', type: :text }
+  .span3
+    = f.input :feeding_wages, input_html: { class: 'numeric span', type: :text }
+  .span3
+    = f.input :cleaning_wages, input_html: { class: 'numeric span', type: :text }
+#eggs-harvesting-wages
+  .row-fluid
+    = render_eggs_harvesting_wages_fields f, :eggs_harvesting_wages
+
+:coffee
+  app.showHide '#eggs-harvesting-wages .fields:visible', '#eggs-harvesting-wages .show-hide'
+  app.nestedFormFieldAdded 'form', '.row-fluid', '.show-hide'
+  app.nestedFormFieldRemoved 'form', '.row-fluid', '.show-hide', '.fields:visible'

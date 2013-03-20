@@ -1,0 +1,16 @@
+= render_flash
+= simple_nested_form_for @harvesting_slip, html: { class: 'form-inline well', id: 'harvesting_slip', admin_lock: harvesting_slip_lock?(@harvesting_slip) } do |f|
+  %legend
+    = "HarvestingSlip #" + docnolize(@harvesting_slip.id)
+  - if @harvesting_slip.salary_note
+    .label-warning.label
+      = "Salary Note"
+      = link_to "##{docnolize(@harvesting_slip.salary_note.id)}", edit_salary_note_path(@harvesting_slip.salary_note)
+      = "(#{@harvesting_slip.salary_note.amount.to_money.format})"
+  = render 'fields', f: f
+  .form-actions
+    = f.button(:submit, 'Save', class: 'btn btn-primary')
+    = link_to 'New', new_harvesting_slip_path, class: 'btn btn-info'
+    = link_to 'Cancel', edit_harvesting_slip_path(@harvesting_slip), class: 'btn btn-warning'
+    = link_to_index(HarvestingSlip)
+    = link_to_audits_log(@harvesting_slip)

@@ -7,6 +7,7 @@ class SalaryNote < ActiveRecord::Base
   validates_presence_of :employee_name, :salary_type_name, :doc_date
   validates_numericality_of :quantity, :unit_price, greater_than: 0
   before_save :build_transactions
+  has_one :harvesting_slip
 
   include ValidateTransactionsBalance
 

@@ -1,0 +1,19 @@
+.row-fluid
+  .span3
+    = f.input :harvest_date, as: :datepicker, input_html: { class: 'span19' }, autofocus: true
+  .span4
+    = f.input :collector_name, input_html: { class: 'span' }
+#harvest-details
+  .row-fluid
+    = render_harvest_detail_fields f, :harvesting_slip_details
+
+:coffee
+  app.typeahead_init '#harvesting_slip_collector_name', '/employee/typeahead_name'
+  app.showHide '#harvest-details .fields:visible', '#harvest-details .show-hide'
+  app.nestedFormFieldAdded 'form', '.row-fluid', '.show-hide'
+  app.nestedFormFieldRemoved 'form', '.row-fluid', '.show-hide', '.fields:visible'
+  ($ 'form').on 'change', '#harvest-details .house', ->
+    elm = ($ this)
+    $.get '/flock/info', { house: elm.val() }, (data) -> 
+      elm.parents('.fields').find('[name="flock_info"]').val(data.flock_info)
+      elm.parents('.fields').find('.flock_id').val(data.flock_id)

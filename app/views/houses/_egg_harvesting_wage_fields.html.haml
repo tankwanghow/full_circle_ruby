@@ -1,0 +1,9 @@
+.row-fluid
+  .span3
+    = f.input :prod_1, input_html: { class: 'numeric span', type: :text }, wrapper: :table_field
+  .span3
+    = f.input :prod_2, input_html: { class: 'numeric span', type: :text }, wrapper: :table_field
+  .span3  
+    = f.input :wages, input_html: { class: 'numeric span', type: :text }, wrapper: :table_field
+  .span1
+    = f.link_to_remove "X", class: "btn btn-danger", tabindex: -1

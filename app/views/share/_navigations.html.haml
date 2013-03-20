@@ -33,4 +33,8 @@
           = menu_child t.humanize.titleize, dossier_report_path(t)
         - admin_report_filenames.each do |t|
           = menu_child t.humanize.titleize, dossier_report_path(t)
+      = menu 'Layer' do
+        = menu_child 'Flock', flock_new_or_edit_path
+        = menu_child 'House', house_new_or_edit_path
+        = menu_child 'Harvesting Slip', harvesting_slip_new_or_edit_path
       = menu_child 'Posts', post_new_or_edit_path, class: 'bold'

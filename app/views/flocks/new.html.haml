@@ -1,0 +1,8 @@
+= render_flash
+= simple_nested_form_for @flock, html: { class: 'form-inline well', id: 'flock' } do |f|
+  %legend
+    New Flock
+  = render 'fields', f: f
+  .form-actions
+    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Cancel', Flock.last ? edit_flock_path(Flock.last) : root_path, class: 'btn btn-warning'

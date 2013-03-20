@@ -11,4 +11,12 @@ module PaySlipsHelper
            headers: [['Date', 'offset14 span3'], ['Advance No', 'span2'], ['Amount', 'span3']],
            text: 'Add Advance', can_add_row: false
   end
+
+  def salary_note_lock? note
+    if note.harvesting_slip || note.pay_slip
+      true
+    else
+      false
+    end
+  end
 end

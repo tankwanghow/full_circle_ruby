@@ -1,10 +1,15 @@
 = render_flash
-= simple_nested_form_for @salary_note, html: { class: 'form-inline well span15', id: 'salary_note_form' } do |f|
+= simple_nested_form_for @salary_note, html: { class: 'form-inline well span15', id: 'salary_note_form', admin_lock: salary_note_lock?(@salary_note) } do |f|
   %legend
     = "Salary Note #" + docnolize(@salary_note.id)
+  - if @salary_note.harvesting_slip
+    .label-important.label
+      = "Cannot change, Created by Harvesting Slip"
+      = link_to "##{docnolize(@salary_note.harvesting_slip.id)}", edit_harvesting_slip_path(@salary_note.harvesting_slip)
   - if @salary_note.pay_slip
     .label-important.label
-      = "Accounted for, by Pay Slip #" + docnolize(@salary_note.pay_slip.id) 
+      = "Cannot change, Paid by Pay Slip"
+      = link_to "##{docnolize(@salary_note.pay_slip.id)}" , edit_pay_slip_path(@salary_note.pay_slip)
   = render 'fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
