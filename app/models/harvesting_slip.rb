@@ -3,7 +3,7 @@ class HarvestingSlip < ActiveRecord::Base
   belongs_to :salary_note
   validates_presence_of :harvest_date
   belongs_to :collector, class_name: "Employee"
-
+  validate :has_detail
   before_save :save_salary_note
 
   include ValidateBelongsTo
@@ -40,6 +40,12 @@ class HarvestingSlip < ActiveRecord::Base
   end
 
 private
+
+  def has_detail
+    if harvesting_slip_details.select{ |t| !t.marked_for_destruction? }.count == 0
+      raise 'No detail Error.'
+    end
+  end
 
   def save_salary_note
     if collector
