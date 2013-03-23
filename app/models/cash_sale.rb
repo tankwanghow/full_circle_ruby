@@ -91,7 +91,9 @@ private
   def build_cash_n_pd_chq_transaction
     cash_amount = sales_amount - cheques_amount
 
-    cash_in_hand_note = ['Cheque change Cash', customer_name1, product_summary, particular_summary].join(', ').truncate(70)
+    if cash_amount < 0
+      cash_in_hand_note = ['Cheque change Cash', customer_name1, product_summary, particular_summary].join(', ').truncate(70)
+    end
 
     transactions.build(
       doc: self,
