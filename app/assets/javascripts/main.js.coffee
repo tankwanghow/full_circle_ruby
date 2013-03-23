@@ -79,7 +79,7 @@ window.app = {
     ($ 'input.string[type="text"]').attr('autocomplete', 'off')
 
   initNumeric: ->
-    ($ 'input.numeric').on 'change', ->
+    ($ 'form').on 'change', 'input.numeric', ->
       unless /[a-zA-Z]+/.test(($ this).val())
         try
           val = eval ($ this).val()
