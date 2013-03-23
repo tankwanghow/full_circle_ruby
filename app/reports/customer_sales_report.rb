@@ -91,18 +91,14 @@ class CustomerSalesReport < Dossier::Report
 
   def doc_tag_condition
     if !doc_tags.blank?
-      " AND lower(doctg.name) IN :splited_doc_tags "
+      " AND lower(doctg.name) = ALL(ARRAY[:doc_tags]) "
     else
       ''
     end
   end
 
   def doc_tags
-    @options[:doc_tags]
-  end
-
-  def splited_doc_tags
-    doc_tags ? '%$#,'.concat(doc_tags).split(',').map { |t| t.downcase } : [ '%$#' ]
+    @options[:doc_tags].try(:downcase)
   end
 
   def start_date

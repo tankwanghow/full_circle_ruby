@@ -19,6 +19,54 @@ class ProductSalesReport < Dossier::Report
     end
   end
 
+  def tagged_invoice_ids_condition
+    if tagged_invoice_ids.count > 0
+      "AND doc.id IN :tagged_invoice_ids"
+    else
+      'AND doc.id IN (-1)'
+    end
+  end
+
+  def tagged_cash_sale_ids_condition
+    if tagged_cash_sale_ids.count > 0
+      "AND doc.id IN :tagged_cash_sale_ids"
+    else
+      'AND doc.id IN (-1)'
+    end
+  end
+
+  def tagged_product_ids_condition
+    if tagged_product_ids.count > 0
+      "AND pd.id IN :tagged_product_ids"
+    else
+      'AND doc.id IN (-1)'
+    end
+  end
+
+  def tagged_invoice_ids
+    if doc_tags.try(:downcase) != 'all'
+      ids = Invoice.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('invoices.id')
+    else
+      ids = Invoice.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('invoices.id')
+    end
+  end
+
+  def tagged_cash_sale_ids
+    if doc_tags.try(:downcase) != 'all'
+      ids = CashSale.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('cash_sales.id')
+    else
+      ids = CashSale.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('cash_sales.id')
+    end
+  end
+
+  def tagged_product_ids
+    if product_tags.try(:downcase) != 'all'
+      Product.tagged_with(product_tags).pluck('products.id')
+    else
+      Product.pluck(:id)
+    end
+  end
+
   def monthly_sql
     "SELECT to_char(doc_date, 'MM') || '/' || to_char(doc_date, 'YYYY') as month, name1 as product, sum(quantity) as quantity, unit" +
     "  FROM (#{ sales_sql }) Temp" +
@@ -34,101 +82,27 @@ class ProductSalesReport < Dossier::Report
   end
 
   def sales_sql
-    cash_sale_sql + 
-    cash_product_tag_conditions +
-    cash_document_tag_conditions +
-    product_tag_condition + 
-    doc_tag_condition +
+    cash_sale_sql +
     " UNION ALL " +
-    invoice_sql + 
-    invoice_product_tag_conditions +
-    invoice_document_tag_conditions +
-    product_tag_condition + 
-    doc_tag_condition
+    invoice_sql
   end
 
   def cash_sale_sql
     "SELECT DISTINCT doc.id, doc.doc_date, pd.name1, docd.quantity, pd.unit
        FROM cash_sales doc, cash_sale_details docd, products pd
-            #{doc_tags?} #{product_tags?}
-      WHERE doc_date >= :start_date
-        AND doc_date <= :end_date
-        AND pd.id = docd.product_id
-        AND doc.id = docd.cash_sale_id"
+      WHERE pd.id = docd.product_id
+        AND doc.id = docd.cash_sale_id
+        #{tagged_product_ids_condition}
+        #{tagged_cash_sale_ids_condition}"
   end
 
   def invoice_sql
     "SELECT DISTINCT doc.id, doc.doc_date, pd.name1, docd.quantity, pd.unit
        FROM invoices doc, invoice_details docd, products pd
-            #{doc_tags?} #{product_tags?}
-      WHERE doc_date >= :start_date
-        AND doc_date <= :end_date
-        AND pd.id = docd.product_id
-        AND doc.id = docd.invoice_id"
-  end
-
-  def doc_tags?
-    if doc_tags.blank?
-      ''
-    else
-      ", tags doctg, taggings doctgs"
-    end
-  end
-
-  def product_tags?
-    if product_tags.blank?
-      ''
-    else
-      ", taggings pdtgs, tags pdtg"
-    end
-  end
-
-  def cash_product_tag_conditions
-    if !product_tags.blank?
-      <<-SQL
-        AND pd.id = pdtgs.taggable_id 
-        AND pdtgs.tag_id = pdtg.id 
-        AND pdtgs.taggable_type = 'Product' 
-      SQL
-    else
-      ''
-    end
-  end
-
-  def cash_document_tag_conditions
-    if !doc_tags.blank?
-      <<-SQL
-        AND doc.id = doctgs.taggable_id 
-        AND doctg.id = doctgs.tag_id 
-        AND doctgs.taggable_type = 'CashSale'
-      SQL
-    else
-      ''
-    end
-  end
-
-  def invoice_product_tag_conditions
-    if !product_tags.blank?
-      <<-SQL
-        AND pd.id = pdtgs.taggable_id
-        AND pdtgs.tag_id = pdtg.id
-        AND pdtgs.taggable_type = 'Product'
-      SQL
-    else
-      ''
-    end
-  end
-
-  def invoice_document_tag_conditions
-    if !doc_tags.blank?
-      <<-SQL
-        AND doc.id = doctgs.taggable_id
-        AND doctg.id = doctgs.tag_id
-        AND doctgs.taggable_type = 'Invoice'
-      SQL
-    else
-      ''
-    end
+      WHERE pd.id = docd.product_id
+        AND doc.id = docd.invoice_id
+        #{tagged_product_ids_condition}
+        #{tagged_invoice_ids_condition}"
   end
 
   def param_fields form
@@ -140,22 +114,6 @@ class ProductSalesReport < Dossier::Report
     form.input_field(:group_by_month, as: :boolean) 
   end
 
-  def doc_tag_condition
-    if !doc_tags.blank?
-      " AND lower(doctg.name) IN :splited_doc_tags "
-    else
-      ''
-    end
-  end
-
-  def product_tag_condition
-    if !product_tags.blank?
-      " AND lower(pdtg.name) IN :splited_product_tags "
-    else
-      ''
-    end
-  end
-
   def doc_tags
     @options[:doc_tags]
   end
@@ -164,24 +122,16 @@ class ProductSalesReport < Dossier::Report
     @options[:product_tags]
   end
 
-  def splited_doc_tags
-    doc_tags ? '%$#,'.concat(doc_tags).split(',').map { |t| t.downcase } : [ '%$#' ]
-  end
-
-  def splited_product_tags
-    product_tags ? '%$#,'.concat(product_tags).split(',').map { |t| t.downcase } : [ '%$#' ]
-  end
-
   def group_by_month
     @options[:group_by_month]
   end
 
   def start_date
-    @options[:start_date] ? @options[:start_date].to_date : nil
+    @options[:start_date] ? @options[:start_date].to_date : Date.today
   end
 
   def end_date
-    @options[:end_date] ? @options[:end_date].to_date : nil
+    @options[:end_date] ? @options[:end_date].to_date : Date.today
   end
 
   def format_quantity value
