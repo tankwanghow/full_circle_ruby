@@ -4,7 +4,7 @@ class HarvestingSlip < ActiveRecord::Base
   validates_presence_of :harvest_date
   belongs_to :collector, class_name: "Employee"
   validate :has_detail
-  before_save :save_salary_note
+  # before_save :save_salary_note
 
   include ValidateBelongsTo
   validate_belongs_to :collector, :name
