@@ -2,6 +2,14 @@
 = simple_nested_form_for @house, html: { class: 'form-inline well', id: 'house' } do |f|
   %legend
     = "House #" + docnolize(@house.id)
+  - if !@house.new_record? && @house.flock_at
+    .label-warning.label
+      = "Current Flock #{link_to @house.flock_at.flock_info, edit_flock_path(@house.flock_at)}".html_safe
+    .label-info.label
+      = "Current Quantity #{@house.quantity_at}"
+  - else
+    .label-success.label
+      House is Empty
   = render 'fields', f: f
   .form-actions
     = f.button(:submit, 'Save', class: 'btn btn-primary')
