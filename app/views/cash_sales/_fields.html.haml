@@ -5,7 +5,7 @@
     = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date'
   .span3
     = f.input :sale_no, input_html: { class: 'span' }
-  .span4
+  .span7
     = f.input :tag_list, input_html: { data: { tags: CashSale.tag_counts.map {|t| t.name } }, class: 'span' }
 #details
   .row-fluid
