@@ -14,6 +14,6 @@
   app.nestedFormFieldRemoved 'form', '.row-fluid', '.show-hide', '.fields:visible'
   ($ 'form').on 'change', '#harvest-details .house', ->
     elm = ($ this)
-    $.get '/flock/info', { house: elm.val() }, (data) -> 
+    $.get '/flock/info', { house: elm.val(), harvest_date: ($ '#harvesting_slip_harvest_date').val() }, (data) -> 
       elm.parents('.fields').find('[name="flock_info"]').val(data.flock_info)
       elm.parents('.fields').find('.flock_id').val(data.flock_id)

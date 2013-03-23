@@ -46,9 +46,12 @@ class FlocksController < ApplicationController
   def info
     house = House.find_by_house_no(params[:house])
     if house
-      render json: { flock_info: house.current_flock.flock_info, flock_id: house.current_flock.id }
-    else
-      render json: { flock_info: 'No Chicken!', flock_id: -9 }
+      flock = house.flock_at(params[:harvest_date].to_date)
+      if flock
+        render json: { flock_info: flock.flock_info, flock_id: flock.id }
+      else
+        render json: { flock_info: 'No Chicken!', flock_id: -9 }
+      end
     end
   end
 

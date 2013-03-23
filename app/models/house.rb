@@ -24,17 +24,22 @@ class House < ActiveRecord::Base
   include AuditString
   audit_string :eggs_harvesting_wages
 
-  def last_move_in
-    Movement.where(house_id: id).order(:move_date).last
+  def last_move_in date
+    Movement.where(house_id: id).where('move_date <= ?', date).order(:move_date).last
   end
 
-  def current_flock
-    last_move_in.flock
+  def flock_at date=Date.today
+    if quantity_at(date) > 0
+      last_move_in(date).flock
+    else
+      nil
+    end
   end
 
-  def current_quantity
-    Movement.where(house_id: id).sum(:quantity).to_i -
-    HarvestingSlipDetail.where(house_id: id).sum(:death).to_i
+  def quantity_at date=Date.today
+    Movement.where(house_id: id).where('move_date <= ?', date).sum(:quantity).to_i -
+    HarvestingSlipDetail.joins(:harvesting_slip).
+    where(house_id: id).where('harvesting_slips.harvest_date <= ?', date).sum(:death).to_i
   end
 
   def harvesting_wages_for(harvested)

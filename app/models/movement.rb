@@ -12,7 +12,7 @@ class Movement < ActiveRecord::Base
   end
 
   def cur_qty
-    house.try(:current_quantity)
+    house.try(:quantity_at)
   end
 
 end
