@@ -144,4 +144,6 @@ FullCircle::Application.routes.draw do
 
   resources :harvesting_slips, only: [:new, :edit, :update, :create]
   get 'harvesting_slip/new_or_edit' => 'harvesting_slips#new_or_edit'
+
+  resources :harvesting_reports, only: [:new, :create]
 end

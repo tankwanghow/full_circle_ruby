@@ -1,0 +1,6 @@
+= simple_form_for :harvest_report, url: harvesting_reports_path(format: :pdf), html: { target: '_blank', 'data-skip-pjax'=> true, class: 'form-search' } do |f|
+  %legend
+    Eggs Harvesting Report
+  .row-fluid
+    = f.input_field :report_date, class: 'datepicker span3', placeholder: 'date...'
+    = f.button :submit, 'Show', class: 'btn-primary'
