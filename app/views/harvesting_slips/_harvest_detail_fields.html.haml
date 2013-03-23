@@ -1,5 +1,4 @@
 .row-fluid
-  = f.hidden_field :flock_id, class: 'flock_id'
   .span2
     = f.input :house_house_no, input_html: { class: 'house span', type: :text }, wrapper: :table_field
   .span4
@@ -12,5 +11,6 @@
     = f.input :death, input_html: { class: 'numeric span', type: :text }, wrapper: :table_field
   .span4
     = f.input :note, input_html: { class: 'span' }, wrapper: :table_field
+  = f.hidden_field :flock_id, class: 'flock_id'
   .span1
     = f.link_to_remove "X", class: "btn btn-danger", tabindex: -1
