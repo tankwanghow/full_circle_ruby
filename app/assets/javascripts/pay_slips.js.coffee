@@ -9,8 +9,6 @@ window.pay_slip = {
 
     app.nestedFormFieldRemoved 'form', '.row-fluid', '.show-hide', '.fields:visible', '.row-total'
 
-    app.standard_row_total_init()
-
     ($ 'form').on 'blur', '#pay_slip_pay_from_name1', ->
       if ($ this).val() is 'Cash In Hand'
         ($ '#pay_slip_chq_no').parents('.control-group').hide()

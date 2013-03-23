@@ -1,5 +1,6 @@
 $ ->
   app.standardInit()
+  app.standard_row_total_init()
 
   ($ '[data-pjax-container]').on 'pjax:start', ->
     ($ 'body').css('cursor', 'wait')
@@ -25,19 +26,19 @@ $ ->
 window.math = {
 
   rowTotal: (qtyCls, priceCls, totalCls, rowCls, evtBubbleCls) ->
-    ($ evtBubbleCls).on 'change', qtyCls, -> calRowTotal(this) # should use 'change' event but not all browser support it
-    ($ evtBubbleCls).on 'change', priceCls, -> calRowTotal(this) # should use 'change' event but not all browser support it
+    ($ evtBubbleCls).on 'change', qtyCls, -> calRowTotal(this)
+    ($ evtBubbleCls).on 'change', priceCls, -> calRowTotal(this)
 
     calRowTotal = (elm) ->
       row_total = ($ elm).closest(rowCls).find(totalCls)
       qty = ($ elm).closest(rowCls).find(qtyCls).val()
       price = ($ elm).closest(rowCls).find(priceCls).val()
       row_total.val (qty * price).toFixed(2)
-      row_total.change() # should use 'change' event but not all browser support it
+      row_total.change()
 
 
   sum: (elements, totalElm, evtBubbleCls, checkVisible=true) ->
-    ($ evtBubbleCls).on 'change', elements, -> # should use 'change' event but not all browser support it
+    ($ evtBubbleCls).on 'change', elements, -> 
       total = 0
       ($ elements).each (index, elm) ->
         if checkVisible
@@ -46,7 +47,7 @@ window.math = {
           val = ($ elm).val()
         total = total + +val
       ($ totalElm).val total.toFixed(2)
-      ($ totalElm).change() # should use 'change' event but not all browser support it
+      ($ totalElm).change() 
 }
 
 window.main = {
@@ -78,8 +79,8 @@ window.app = {
   avoidAutocompleteForTypeahead: ->
     ($ 'input.string[type="text"]').attr('autocomplete', 'off')
 
-  initNumeric: ->
-    ($ 'form').on 'change', 'input.numeric', ->
+  initNumeric: (selector = 'input.numeric:not([readonly])')->
+    ($ selector).on 'change', ->
       unless /[a-zA-Z]+/.test(($ this).val())
         try
           val = eval ($ this).val()

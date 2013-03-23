@@ -10,6 +10,7 @@ window.matchers = {
         , (data) -> 
           ($ '#matcher-data').html(data)
           ($ '.matching').change()
+          app.initNumeric('.matching.numeric')
       e.preventDefault()
 
     ($ 'form').on 'click', '.auto_match', ->

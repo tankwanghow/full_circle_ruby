@@ -26,7 +26,6 @@ window.payment = {
     payment.shared_init()
     app.showHide '#pay-to-particulars .fields:visible', '#pay-to-particulars .show-hide'
     math.sum '#pay-to .row-total', '#payment_actual_debit_amount', 'form#payment_form'
-    app.standard_row_total_init()
     ($ '.row-total').change()
 
 }

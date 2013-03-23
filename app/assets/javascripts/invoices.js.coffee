@@ -3,8 +3,6 @@ window.invoice = {
 
     particular.init()
     detail.init()
-    app.standard_row_total_init()
-
 
     ($ '#invoice_tag_list').select2
       tags: $('#invoice_tag_list').data('tags')

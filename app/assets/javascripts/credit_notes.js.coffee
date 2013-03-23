@@ -12,7 +12,6 @@ window.credit_note = {
   shared_init: ->
     particular.init()
     matchers.init()
-    app.standard_row_total_init()
     app.showHide '#particulars .fields:visible', '#particulars .show-hide'
     ($ '.row-total').change() 
     ($ '.matching').change()
