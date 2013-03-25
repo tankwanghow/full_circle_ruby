@@ -1,8 +1,6 @@
 class HarvestingWagesReportsController < ApplicationController
 
   def new
-    # params[:harvest_wages_report] ? [:start_date] ||= Date.today
-    # params[:harvest_wages_report] ? [:end_date] ||= Date.today
   end
 
   def create

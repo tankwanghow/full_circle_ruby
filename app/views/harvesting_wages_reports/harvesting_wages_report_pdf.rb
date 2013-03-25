@@ -20,10 +20,6 @@ class HarvestingWagesReportPdf < Prawn::Document
         end
       end
     end
-    # string = "page <page> of <total>"
-    # options = { at: [bounds.right - 30.mm, bounds.top],
-    #             size: 9, start_count_at: 1 }
-    # number_pages string, options
     self
   end
 
