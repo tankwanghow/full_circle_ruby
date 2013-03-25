@@ -146,4 +146,5 @@ FullCircle::Application.routes.draw do
   get 'harvesting_slip/new_or_edit' => 'harvesting_slips#new_or_edit'
 
   resources :harvesting_reports, only: [:new, :create]
+  resources :harvesting_wages_reports, only: [:new, :create]
 end

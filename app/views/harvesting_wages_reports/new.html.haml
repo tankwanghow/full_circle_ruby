@@ -1,0 +1,7 @@
+= simple_form_for :harvest_wages_report, url: harvesting_wages_reports_path(format: :pdf), html: { target: '_blank', 'data-skip-pjax'=> true, class: 'form-search' } do |f|
+  %legend
+    Harvesting Wages Report
+  .row-fluid
+    = f.input_field :start_date, class: 'datepicker span3', placeholder: 'from...'
+    = f.input_field :end_date, class: 'datepicker span3', placeholder: 'till...'
+    = f.button :submit, 'Show', class: 'btn-primary'

@@ -1,7 +1,7 @@
 class HarvestingReportsController < ApplicationController
 
   def new
-    params[:report_date] ||= Date.today
+    params[:harvest_report][:report_date] ||= Date.today
   end
 
   def create
