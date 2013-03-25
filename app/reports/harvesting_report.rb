@@ -14,23 +14,29 @@ class HarvestingReport < Dossier::Report
               (select sum(death) from harvesting_slips ths, harvesting_slip_details thsd where thsd.house_id = h.id
                   and thsd.flock_id = f.id
                   and thsd.harvesting_slip_id = ths.id
-                  and ths.harvest_date <= :report_date)) as yield
+                  and ths.harvest_date <= hs.harvest_date)) as yield
         from flocks f, houses h, harvesting_slips hs, harvesting_slip_details hsd
        where hsd.house_id = h.id
          and hsd.flock_id = f.id
          and hsd.harvesting_slip_id = hs.id
-         and hs.harvest_date = :report_date
+         and hs.harvest_date >= :start_date
+         and hs.harvest_date <= :end_date
          and h.id IN (select distinct house_id from eggs_harvesting_wages)
        order by 2
     SQL
   end
 
   def param_fields form
-    form.input_field(:report_date, class: 'datepicker span3', placeholder: 'report date...') 
+    form.input_field(:start_date, class: 'datepicker span3', placeholder: 'from...') +
+    form.input_field(:end_date, class: 'datepicker span3', placeholder: 'till...')
   end
 
-  def report_date
-    @options[:report_date] ? @options[:report_date].to_date : Date.today
+  def start_date
+    @options[:start_date] ? @options[:start_date].to_date : Date.today
+  end
+
+  def end_date
+    @options[:end_date] ? @options[:end_date].to_date : Date.today
   end
   
 end
