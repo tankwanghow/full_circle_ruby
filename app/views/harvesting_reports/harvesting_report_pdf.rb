@@ -3,7 +3,7 @@ class HarvestingReportPdf < Prawn::Document
   include Prawn::Helper
 
   def initialize(rows, report_date, view)
-    super(page_size: [210.mm, 295.mm], margin: [5.mm, 0.mm, 5.mm, 0.mm], skip_page_creation: true)
+    super(page_size: [210.mm, 295.mm], margin: [5.mm, 0.mm, 10.mm, 0.mm], skip_page_creation: true)
     @view = view
     @report_date = report_date
     @rows = rows
