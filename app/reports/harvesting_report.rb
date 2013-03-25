@@ -3,7 +3,7 @@ class HarvestingReport < Dossier::Report
 
   def sql
     <<-SQL
-      select harvest_date, house_no, dob, (current_date - dob)/7 as age, 
+      select house_no, dob, (harvest_date - dob)/7 as age, 
              harvest_1 + harvest_2 as production, death, 
             (harvest_1 + harvest_2) * 30.0 /(
               (select sum(quantity) 
@@ -22,7 +22,7 @@ class HarvestingReport < Dossier::Report
          and hs.harvest_date >= :start_date
          and hs.harvest_date <= :end_date
          and h.id IN (select distinct house_id from eggs_harvesting_wages)
-       order by 2
+       order by 3
     SQL
   end
 
