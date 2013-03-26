@@ -23,7 +23,7 @@ class ProductSalesReport < Dossier::Report
     if tagged_invoice_ids.count > 0
       "AND doc.id IN :tagged_invoice_ids"
     else
-      'AND doc.id IN (-1)'
+      'AND 1=0'
     end
   end
 
@@ -31,7 +31,7 @@ class ProductSalesReport < Dossier::Report
     if tagged_cash_sale_ids.count > 0
       "AND doc.id IN :tagged_cash_sale_ids"
     else
-      'AND doc.id IN (-1)'
+      'AND 1=0'
     end
   end
 
@@ -39,7 +39,7 @@ class ProductSalesReport < Dossier::Report
     if tagged_product_ids.count > 0
       "AND pd.id IN :tagged_product_ids"
     else
-      'AND doc.id IN (-1)'
+      'AND 1=0'
     end
   end
 
@@ -106,8 +106,8 @@ class ProductSalesReport < Dossier::Report
   end
 
   def param_fields form
-    form.input_field(:doc_tags, class: 'span5', placeholder: 'document tags...', data: { tags: sales_doc_tags }) +
-    form.input_field(:product_tags, class: 'span5', placeholder: 'product tags...', data: { tags: Product.category_counts.map {|t| t.name } }) +
+    form.input_field(:doc_tags, class: 'span6', placeholder: 'document tags...', data: { tags: sales_doc_tags }) +
+    form.input_field(:product_tags, class: 'span6', placeholder: 'product tags...', data: { tags: Product.category_counts.map {|t| t.name } }) +
     form.input_field(:start_date, class: 'datepicker span3', placeholder: 'start date...') +
     form.input_field(:end_date, class: 'datepicker span3', placeholder: 'end date...') +
     form.label('Group by Month', class: 'checkbox') +

@@ -22,15 +22,12 @@ class CustomerSalesReport < Dossier::Report
     <<-SQL
       select doc.id, doc.doc_date, ac.name1 as customer, pd.name1 as product, quantity,
              pd.unit, unit_price, quantity * unit_price as amount
-        from cash_sales doc, cash_sale_details docd, products pd, accounts ac #{doc_tags?}
+        from cash_sales doc, cash_sale_details docd, products pd, accounts ac
        where doc.id = docd.cash_sale_id
          and pd.id = docd.product_id
          and ac.id = doc.customer_id
          and ac.name1 ilike :customer
-         and doc.doc_date >= :start_date
-         and doc.doc_date <= :end_date
-         #{cash_document_tag_conditions}
-         #{doc_tag_condition}
+         #{tagged_cash_sale_ids_condition}
     SQL
   end
 
@@ -38,62 +35,51 @@ class CustomerSalesReport < Dossier::Report
     <<-SQL
       select doc.id, doc.doc_date, ac.name1 as customer, pd.name1 as product, quantity,
              pd.unit, unit_price, quantity * unit_price as amount
-        from invoices doc, invoice_details docd, products pd, accounts ac #{doc_tags?}
+        from invoices doc, invoice_details docd, products pd, accounts ac
        where doc.id = docd.invoice_id
          and pd.id = docd.product_id
          and ac.id = doc.customer_id
          and ac.name1 ilike :customer
-         and doc.doc_date >= :start_date
-         and doc.doc_date <= :end_date
-         #{invoice_document_tag_conditions}
-         #{doc_tag_condition}
+         #{tagged_invoice_ids_condition}
     SQL
   end
 
   def param_fields form
-    form.input_field(:doc_tags, class: 'span4', placeholder: 'document tags...', data: { tags: sales_doc_tags }) +
+    form.input_field(:doc_tags, class: 'span6', placeholder: 'document tags...', data: { tags: sales_doc_tags }) +
     form.input_field(:customer, class: 'span5', placeholder: 'customer...') +
     form.input_field(:start_date, class: 'datepicker span3', placeholder: 'start date...') +
     form.input_field(:end_date, class: 'datepicker span3', placeholder: 'end date...')
   end
 
-  def cash_document_tag_conditions
-    if !doc_tags.blank?
-      <<-SQL
-        AND doc.id = doctgs.taggable_id 
-        AND doctg.id = doctgs.tag_id 
-        AND doctgs.taggable_type = 'CashSale'
-      SQL
+  def tagged_invoice_ids_condition
+    if tagged_invoice_ids.count > 0
+      "AND doc.id IN :tagged_invoice_ids"
     else
-      ''
+      'AND 1=0'
     end
   end
 
-  def invoice_document_tag_conditions
-    if !doc_tags.blank?
-      <<-SQL
-        AND doc.id = doctgs.taggable_id
-        AND doctg.id = doctgs.tag_id
-        AND doctgs.taggable_type = 'Invoice'
-      SQL
+  def tagged_cash_sale_ids_condition
+    if tagged_cash_sale_ids.count > 0
+      "AND doc.id IN :tagged_cash_sale_ids"
     else
-      ''
+      'AND 1=0'
     end
   end
 
-  def doc_tags?
-    if doc_tags.blank?
-      ''
+  def tagged_invoice_ids
+    if doc_tags.try(:downcase) != 'all'
+      ids = Invoice.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('invoices.id')
     else
-      ", tags doctg, taggings doctgs"
+      ids = Invoice.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('invoices.id')
     end
   end
 
-  def doc_tag_condition
-    if !doc_tags.blank?
-      " AND lower(doctg.name) = ALL(ARRAY[:doc_tags]) "
+  def tagged_cash_sale_ids
+    if doc_tags.try(:downcase) != 'all'
+      ids = CashSale.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('cash_sales.id')
     else
-      ''
+      ids = CashSale.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('cash_sales.id')
     end
   end
 
@@ -102,15 +88,15 @@ class CustomerSalesReport < Dossier::Report
   end
 
   def start_date
-    @options[:start_date] ? @options[:start_date].to_date : nil
+    @options[:start_date] ? @options[:start_date].to_date : Date.today
   end
 
   def customer
-    @options[:customer]
+    @options[:customer].blank? ? '%' : @options[:customer]
   end
 
   def end_date
-    @options[:end_date] ? @options[:end_date].to_date : nil
+    @options[:end_date] ? @options[:end_date].to_date : Date.today
   end
 
   def format_amount value
