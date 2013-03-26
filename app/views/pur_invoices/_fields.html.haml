@@ -5,6 +5,8 @@
     = f.input :credit_terms, label: 'Terms(days)', input_html: { type: :text, class: 'span' }
   .span3
     = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date'
+  .span7
+    = f.input :tag_list, input_html: { data: { tags: PurInvoice.tag_counts.map {|t| t.name } }, class: 'span' }
 #details
   .row-fluid
     = render_invoice_details_fields f, :details

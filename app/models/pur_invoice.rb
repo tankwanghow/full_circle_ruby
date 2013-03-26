@@ -14,6 +14,8 @@ class PurInvoice < ActiveRecord::Base
   include ValidateBelongsTo
   validate_belongs_to :supplier, :name1
 
+  acts_as_taggable
+
   include ValidateTransactionsBalance
 
   include Searchable
