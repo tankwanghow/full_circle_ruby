@@ -131,9 +131,9 @@ class EggTransCommission < Commission
   @unloading_commission_percentage = 0.6
 end
 
-class EggSaleCommission < Commission
-  @less_5_customer_commission = 1.2
-  @more_5_customer_commission = 1.2
+class EggSalesCommission < Commission
+  @less_5_customer_commission = 0.12 / 30
+  @more_5_customer_commission = 0.12 / 30
   @loading_commission_percentage = 0.4
   @unloading_commission_percentage = 0.6
 end
