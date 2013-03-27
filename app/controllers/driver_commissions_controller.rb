@@ -2,6 +2,7 @@ class DriverCommissionsController < ApplicationController
 
   def show
     new_results = []
+    params[:options] ||= {}
     @headers = []
     @body = []
     @footers = []
