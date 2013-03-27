@@ -9,8 +9,7 @@ class Particular < ActiveRecord::Base
   validate_belongs_to :particular_type, :name
 
   def simple_audit_string
-    [ particular_type.name, note, quantity.to_s,
-      unit, unit_price.to_money.format ].join ' '
+    [ particular_type.name, note ].join ' '
   end
 
   def total

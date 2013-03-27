@@ -13,9 +13,7 @@ class PurInvoiceDetail < ActiveRecord::Base
   end
 
   def simple_audit_string
-    [ product.name1, note, packaging_name,
-      package_qty.to_s, quantity.to_s,
-      product.unit, unit_price.to_money.format ].join ' '
+    [ product.name1, note, packaging_name ].join ' '
   end
 
   def unit

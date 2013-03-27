@@ -22,7 +22,7 @@ class Invoice < ActiveRecord::Base
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :invoice_amount,
              content: [:id, :customer_name1, :credit_terms, :details_audit_string, :invoice_amount, 
-                       :note, :particulars_audit_string]
+                       :note, :particulars_audit_string, :tag_list, :loader_list, :unloader_list]
 
   simple_audit username_method: :username do |r|
      {
@@ -32,7 +32,9 @@ class Invoice < ActiveRecord::Base
       details: r.details_audit_string,
       note: r.note,
       particulars: r.particulars_audit_string,
-      tag_list: r.tag_list
+      tag_list: r.tag_list,
+      loader_list: r.loader_list,
+      unloader_list: r.unloader_list
      }
   end
 

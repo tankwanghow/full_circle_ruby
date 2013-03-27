@@ -24,7 +24,8 @@ class CashSale < ActiveRecord::Base
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :sales_amount,
              content: [:id, :customer_name1, :details_audit_string, :sales_amount, 
-                       :note, :particulars_audit_string, :cheques_audit_string]
+                       :note, :particulars_audit_string, :cheques_audit_string, 
+                       :tag_list, :loader_list, :unloader_list]
 
   simple_audit username_method: :username do |r|
      {
@@ -34,7 +35,9 @@ class CashSale < ActiveRecord::Base
       note: r.note,
       particulars: r.particulars_audit_string,
       cheques: r.cheques_audit_string,
-      tag_list: r.tag_list
+      tag_list: r.tag_list,
+      loader_list: r.loader_list,
+      unloader_list: r.unloader_list
      }
   end
 
