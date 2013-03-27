@@ -72,6 +72,7 @@ FullCircle::Application.routes.draw do
 
   resource :pay_slip_generations, only: [:new, :create]
 
+  get 'cash_sales/new_with_template' => 'cash_sales#new_with_template'
   resources :cash_sales, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]
   end
@@ -147,4 +148,5 @@ FullCircle::Application.routes.draw do
 
   resources :harvesting_reports, only: [:new, :create]
   resources :harvesting_wages_reports, only: [:new, :create]
+  get 'driver_commissions' => 'driver_commissions#show'
 end

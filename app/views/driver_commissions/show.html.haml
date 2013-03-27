@@ -1,0 +1,31 @@
+%h3 Driver Commission
+
+= simple_form_for :options, url: url_for, html: { method: :get, class: 'form-inline well' } do |f|
+  = f.input_field :employee_tags, class: 'span6', placeholder: 'employee tags...', value: params[:options][:employee_tags], data: { tags: loader_unloader_tags }
+  = f.input_field :start_date, class: 'datepicker span3', placeholder: 'start date...', value: params[:options][:start_date]
+  = f.input_field :end_date, class: 'datepicker span3', placeholder: 'end date...', value: params[:options][:end_date]
+  = f.button :submit, 'Show', class: 'btn-primary'
+
+- if @headers.count > 0
+  %table.table.table-condensed.table-bordered#report
+    %thead
+      %tr
+        - @headers.each do |header|
+          %th= header
+    %tbody
+      - @body.each do |row|
+        %tr
+          - row.each do |value|
+            %td= value
+    %tfoot
+      - @footers.each do |row|
+        %tr
+          - row.each do |value|
+            %th= value
+
+:coffee
+  ($ '#options_employee_tags').select2
+    tags: $('#options_employee_tags').data('tags')
+    closeOnSelect: true
+    openOnEnter: false
+    minimumInputLength: 2

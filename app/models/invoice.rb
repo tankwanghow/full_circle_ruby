@@ -15,6 +15,7 @@ class Invoice < ActiveRecord::Base
   validate_belongs_to :customer, :name1
 
   acts_as_taggable
+  acts_as_taggable_on :loader, :unloader
 
   include ValidateTransactionsBalance
 

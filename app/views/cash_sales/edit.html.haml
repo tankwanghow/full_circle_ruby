@@ -5,4 +5,5 @@
   = render 'fields', f: f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
+    = link_to 'Copy as New', cash_sales_new_with_template_path(id: @cashsale), class: 'btn btn-info'
     = link_to_edit_action_buttons @cashsale, cash_sale_journal_entries_path(@cashsale)

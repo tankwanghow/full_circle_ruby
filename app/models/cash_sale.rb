@@ -8,6 +8,7 @@ class CashSale < ActiveRecord::Base
   validates_presence_of :customer_name1, :doc_date
 
   acts_as_taggable
+  acts_as_taggable_on :loader, :unloader
 
   before_save :build_transactions
 
@@ -47,6 +48,13 @@ class CashSale < ActiveRecord::Base
 
   def sales_amount
     particulars_amount + details_amount
+  end
+
+  def self.new_like id
+    like = find(id)
+    a = new(like.attributes.merge(tag_list: like.tag_list, loader_list: like.loader_list, unloader_list: like.unloader_list))
+    a.details.build
+    a
   end
 
 private

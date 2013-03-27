@@ -42,4 +42,9 @@ class CashSalesController < ApplicationController
       redirect_to new_cash_sale_path
     end
   end
+
+  def new_with_template
+    @cashsale = CashSale.new_like(params[:id])
+    render :new
+  end
 end
