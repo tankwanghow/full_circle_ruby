@@ -8,7 +8,7 @@ class DriverCommissionsController < ApplicationController
     @footers = []
 
     if params[:options]
-      results = DriverCommission.new(params[:options] || {}).results.hashes
+      results = DriverCommission.new(params[:options]).results.hashes
       results.map do |r|
         new_results << commission_decider(r).calculate_commission(r, params[:options][:employee_tags])
       end
@@ -64,9 +64,18 @@ private
       FeedTransTonsCommission
     when 'traytranscomm'
       TrayTransCommission
+    else
+      NoCommission
     end
   end
+end
 
+class NoCommission
+  def self.calculate_commission row, employee_tags
+    row.merge!(loading_commission: 0.to_money)
+    row.merge!(unloading_commission: 0.to_money)
+    row.merge!(status: 'Not Found!')
+  end
 end
 
 class Commission
@@ -78,7 +87,7 @@ class Commission
   def self.calculate_commission row, employee_tags
     row.merge!(loading_commission: loaders_commission(row, employee_tags))
     row.merge!(unloading_commission: unloaders_commission(row, employee_tags))
-    row.merge!(status: 'ok')
+    row.merge!(status: 'OK')
   end
 
 private
@@ -116,7 +125,7 @@ private
 end
 
 class EggTransCommission < Commission
-  @less_5_customer_commission = 0.02 / 30
+  @less_5_customer_commission = 0.03 / 30
   @more_5_customer_commission = 0.03 / 30
   @loading_commission_percentage = 0.4
   @unloading_commission_percentage = 0.6
