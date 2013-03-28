@@ -37,8 +37,8 @@ private
     val =[]
     unload_amount = 0.to_money
     load_amount = 0.to_money
-    hash_array.each { |h| unload_amount += h['unloading_commission'].to_money; load_amount += h['loading_commission'].to_money; }
-    val << [nil, nil, nil, nil, nil, nil, nil, nil, nil, load_amount.format, unload_amount.format, nil]
+    hash_array.each { |h| unload_amount += h['unload_pay'].to_money; load_amount += h['load_pay'].to_money; }
+    val << [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, load_amount.format, unload_amount.format, nil]
   end
 
   def commission_decider row
@@ -72,8 +72,8 @@ end
 
 class NoCommission
   def self.calculate_commission row, employee_tags
-    row.merge!(loading_commission: 0.to_money)
-    row.merge!(unloading_commission: 0.to_money)
+    row.merge!(load_pay: 0.to_money)
+    row.merge!(unload_pay: 0.to_money)
     row.merge!(status: 'Not Found!')
   end
 end
@@ -85,8 +85,8 @@ class Commission
   @unloading_commission_percentage = 0
 
   def self.calculate_commission row, employee_tags
-    row.merge!(loading_commission: loaders_commission(row, employee_tags))
-    row.merge!(unloading_commission: unloaders_commission(row, employee_tags))
+    row.merge!(load_pay: loaders_commission(row, employee_tags))
+    row.merge!(unload_pay: unloaders_commission(row, employee_tags))
     row.merge!(status: 'OK')
   end
 
@@ -102,7 +102,7 @@ private
 
   def self.handlers_commission row, employee_tags, handler_tags, percentage
     if has_commission?(row[handler_tags], employee_tags)
-      row['qty'].to_money * commission(row['doc'].to_i) * percentage / handlers_divider(row[handler_tags])
+      row['qty'].to_money * commission(row['doc'].to_i, row['city']) * percentage / handlers_divider(row[handler_tags])
     else
       0.to_money
     end
@@ -118,7 +118,7 @@ private
     a.include?(e.map { |t| t.strip }.first) ? true : false
   end
 
-  def self.commission customers_count
+  def self.commission customers_count, city
     customers_count > 5 ? @more_5_customer_commission : @less_5_customer_commission
   end
 
@@ -129,6 +129,11 @@ class EggTransCommission < Commission
   @more_5_customer_commission = 0.03 / 30
   @loading_commission_percentage = 0.4
   @unloading_commission_percentage = 0.6
+
+  def self.commission customers_count, city
+    return @less_5_customer_commission if city.downcase == 'kampar'
+    customers_count > 5 ? @more_5_customer_commission : @less_5_customer_commission
+  end
 end
 
 class EggSalesCommission < Commission

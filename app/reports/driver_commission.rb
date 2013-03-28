@@ -86,26 +86,37 @@ class DriverCommission < Dossier::Report
   def field_selects
     "doc.doc_date, count(distinct doc.id) as doc,
      string_agg(distinct ac.name1, '|' order by ac.name1) as customers,
+     case when lower(city) = 'kampar' then city else 'others' end as city,
      sum(docd.quantity) as qty, pd.unit, 
      string_agg(distinct pd.name1, '|' order by pd.name1) as particulars"
   end
 
   def group_bys
-    "group by doc.doc_date, pd.unit, tags, loader_tags, unloader_tags"
+    "group by doc.doc_date, pd.unit, tags, loader_tags, unloader_tags, city"
   end
 
   def sale_sql
     <<-SQL
       select doc_date, sum(doc) as doc, 
              string_agg(customers, '|') as customers,
+             case when lower(city) = 'kampar' then city else 'others' end as city,
              sum(qty) as qty, unit,
              string_agg(particulars, ', ') as particulars,
              string_agg(distinct tags, ' ') as tags,
              string_agg(distinct loader_tags, ' ') as loader_tags,
              string_agg(distinct unloader_tags, ' ') as unloader_tags
         from (#{cash_sale_sql} union all #{invoice_sql}) as sales
-       group by doc_date, unit, tags, loader_tags, unloader_tags
+       group by doc_date, unit, tags, loader_tags, unloader_tags, city
     SQL
+  end
+
+  def account_city_sql
+    "(select acc.id, acc.name1, ad.city
+        from accounts acc 
+       inner join addresses ad 
+          on ad.addressable_type = 'Account' 
+         and ad.addressable_id = acc.id
+       group by acc.id, acc.name1, ad.city) as ac"
   end
 
   def cash_sale_sql
@@ -113,7 +124,7 @@ class DriverCommission < Dossier::Report
             #{string_agg_tag_names('CashSale')},
             #{string_agg_loader_tag_names('CashSale')},
             #{string_agg_unloader_tag_names('CashSale')}
-       from cash_sales doc, accounts ac, cash_sale_details docd, products pd
+       from cash_sales doc, cash_sale_details docd, products pd, #{account_city_sql}
       where ac.id = doc.customer_id
         and doc.id = docd.cash_sale_id
         and pd.id = docd.product_id
@@ -127,7 +138,7 @@ class DriverCommission < Dossier::Report
             #{string_agg_tag_names('Invoice')},
             #{string_agg_loader_tag_names('Invoice')},
             #{string_agg_unloader_tag_names('Invoice')}
-       from invoices doc, accounts ac, invoice_details docd, products pd
+       from invoices doc, invoice_details docd, products pd, #{account_city_sql}
       where ac.id = doc.customer_id
         and doc.id = docd.invoice_id
         and pd.id = docd.product_id
@@ -141,7 +152,7 @@ class DriverCommission < Dossier::Report
             #{string_agg_tag_names('PurInvoice')},
             #{string_agg_loader_tag_names('PurInvoice')},
             #{string_agg_unloader_tag_names('PurInvoice')}
-       from pur_invoices doc, accounts ac, pur_invoice_details docd, products pd
+       from pur_invoices doc, pur_invoice_details docd, products pd, #{account_city_sql}
       where ac.id = doc.supplier_id
         and doc.id = docd.pur_invoice_id
         and pd.id = docd.product_id
