@@ -102,26 +102,28 @@ private
   def build_cash_n_pd_chq_transaction
     cash_amount = sales_amount - cheques_amount
     
-    cash_in_hand_note = [customer_name1, product_summary, particular_summary].join(', ').truncate(70)
+    cash_in_hand_note = [customer_name1, product_summary, particular_summary].join(' ').truncate(70)
     
     if cash_amount < 0
-      cash_in_hand_note = ['Cheque change cash', cash_in_hand_note].join(', ').truncate(70)
+      cash_in_hand_note = ['Cheque change cash', cash_in_hand_note].join(' ').truncate(70)
     end
 
-    transactions.build(
-      doc: self,
-      transaction_date: doc_date,
-      account: Account.find_by_name1('Cash In Hand'),
-      note: cash_in_hand_note,
-      amount: cash_amount,
-      user: User.current)
+    if cash_amount != 0
+      transactions.build(
+        doc: self,
+        transaction_date: doc_date,
+        account: Account.find_by_name1('Cash In Hand'),
+        note: cash_in_hand_note,
+        amount: cash_amount,
+        user: User.current)
+    end
 
     cheques.select { |t| !t.marked_for_destruction? }.each do |t|
       transactions.build(
         doc: self,
         transaction_date: doc_date,
         account: Account.find_by_name1('Post Dated Cheques'),
-        note: [customer_name1, t.bank, t.chq_no, t.city, t.due_date].join(' '),
+        note: [customer_name1, t.bank, t.chq_no].join(' '),
         amount: t.amount,
         user: User.current)
     end
