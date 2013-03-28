@@ -158,7 +158,7 @@ class DungTransLoadCommission < Commission
 
   def self.handlers_commission row, employee_tags, handler_tags, percentage
     if has_commission?(row[handler_tags], employee_tags)
-      row['doc'].to_i * commission(row['doc'].to_i) * percentage / handlers_divider(row[handler_tags])
+      row['doc'].to_i * commission(row['doc'].to_i, row['city']) * percentage / handlers_divider(row[handler_tags])
     else
       0.to_money
     end
@@ -177,4 +177,4 @@ class TrayTransCommission < Commission
   @more_5_customer_commission = 0.1 / 140
   @loading_commission_percentage = 0.5
   @unloading_commission_percentage = 0.5
-end
+end 
