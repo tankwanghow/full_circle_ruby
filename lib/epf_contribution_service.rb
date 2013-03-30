@@ -38,8 +38,8 @@ private
   def addition_notes
     @payslip.salary_notes.select do |t| 
       !t.marked_for_destruction? and 
-      t.salary_type.classifiaction == 'Addition' and
-      EPFABLE_ADDITION_NAMES.include?(t.salary_type.name)
+      t.salary_type.classifiaction == 'Addition' #and
+      #EPFABLE_ADDITION_NAMES.include?(t.salary_type.name)
     end
   end
 

@@ -183,8 +183,8 @@ class PcbCalculationService
   def current_month_taxable_income_notes
     @payslip.salary_notes.select do |t| 
       !t.marked_for_destruction? and 
-      t.salary_type.classifiaction == 'Addition' and
-      TAXABLE_INCOME_NAMES.include?(t.salary_type.name)
+      t.salary_type.classifiaction == 'Addition' #and
+      #TAXABLE_INCOME_NAMES.include?(t.salary_type.name)
     end
   end
 
@@ -196,7 +196,7 @@ class PcbCalculationService
     SalaryNote.where(employee_id: @payslip.employee_id).
       where("date_part('year', doc_date) = ?", @payslip.pay_date.year).
       where("date_part('month', doc_date) < ?", @payslip.pay_date.month).
-      where(salary_type_id: SalaryType.where(name: TAXABLE_INCOME_NAMES))
+      where(salary_type_id: SalaryType.where(classifiaction: 'Addition'))
   end
 
   def current_year_taxable_income
