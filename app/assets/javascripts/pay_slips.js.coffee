@@ -1,6 +1,8 @@
 window.pay_slip = {
   init: ->
 
+    # math.sum '#notes .row-total', '#total_notes ', 'form'
+
     app.typeahead_init '#pay_slip_pay_from_name1', '/account/typeahead_name1'
     app.typeahead_init '.salary_type', '/salary_type/typeahead_name'
 
@@ -30,8 +32,8 @@ window.pay_slip = {
       deduction = pay_slip.sum_element('#notes .row-fluid.Deduction .row-total')
       advance = pay_slip.sum_element('#advances .row-fluid.Advance .row-total')
       $('#total_advances').val(advance)
-      $('#total_notes').val(addition - deduction)
-      $('#total_pay').val(addition - deduction - advance)
+      $('#total_notes').val((addition - deduction).toFixed 2)
+      $('#total_pay').val((addition - deduction - advance).toFixed 2)
 
     $('.quantity').change()
 
