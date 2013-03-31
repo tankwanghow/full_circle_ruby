@@ -49,7 +49,6 @@ class PcbCalculationService
     n = remaning_working_month_in_a_year
     cz = current_month_zakat
     pcb = nearest_five_cents((((((pp-m)*r)+b)-(z+x))/(n+1)) - cz)
-    binding.pry
     pcb < 0 ? 0 : pcb
   end
 
