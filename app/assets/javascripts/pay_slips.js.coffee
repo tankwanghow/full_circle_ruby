@@ -1,8 +1,6 @@
 window.pay_slip = {
   init: ->
 
-    # math.sum '#notes .row-total', '#total_notes ', 'form'
-
     app.typeahead_init '#pay_slip_pay_from_name1', '/account/typeahead_name1'
     app.typeahead_init '.salary_type', '/salary_type/typeahead_name'
 
@@ -27,7 +25,7 @@ window.pay_slip = {
         row.addClass(data.classifiaction)
         elm.parents('.fields').find('.quantity').change()
 
-    ($ 'form').on 'change', '.quantity, .unit-price', ->
+    ($ 'form').on 'change', '.row-total', ->
       addition = pay_slip.sum_element('#notes .row-fluid.Addition .row-total')
       deduction = pay_slip.sum_element('#notes .row-fluid.Deduction .row-total')
       advance = pay_slip.sum_element('#advances .row-fluid.Advance .row-total')
