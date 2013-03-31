@@ -49,6 +49,7 @@ class PcbCalculationService
     n = remaning_working_month_in_a_year
     cz = current_month_zakat
     pcb = nearest_five_cents((((((pp-m)*r)+b)-(z+x))/(n+1)) - cz)
+    binding.pry
     pcb < 0 ? 0 : pcb
   end
 
@@ -107,10 +108,11 @@ class PcbCalculationService
     k1 = current_month_epf
     kt = 0
     n = remaning_working_month_in_a_year
-    return 0 if n == 0
-    val = (EPF_INSURANCE_DEDUCTION_LIMIT - (k+k1+kt))/n
-    val > k1 ? k1 : val
-    val > 0 ? val : 0
+    (if k + (k1 * n) <= EPF_INSURANCE_DEDUCTION_LIMIT
+      k1 * n
+    else
+      (EPF_INSURANCE_DEDUCTION_LIMIT - (k+k1+kt))/n
+    end)/n
   end
 
   def current_month_epf_notes

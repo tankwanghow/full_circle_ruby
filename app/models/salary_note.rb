@@ -14,7 +14,7 @@ class SalaryNote < ActiveRecord::Base
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :amount,
              content: [:id, :employee_name , :salary_type_name, :note, :quantity,
-                       :unit, :unit_price, :pay_slip_id, :recurring_note_id]
+                       :unit, :unit_price, :pay_slip_id, :recurring_note_id, :no_transactions]
 
   simple_audit username_method: :username do |r|
     {
@@ -26,7 +26,8 @@ class SalaryNote < ActiveRecord::Base
       unit: r.unit,
       unit_price: r.unit_price.to_money.format,
       pay_slip: r.pay_slip_id,
-      recurring_note: r.recurring_note_id
+      recurring_note: r.recurring_note_id,
+      no_transactions: r.no_transactions
     }
   end
 
@@ -43,7 +44,7 @@ class SalaryNote < ActiveRecord::Base
   scope :addition, -> { joins(:salary_type).where("salary_types.classifiaction = ?", 'Addition') }
   scope :deduction, -> { joins(:salary_type).where("salary_types.classifiaction = ?", 'Deduction') }
   scope :contribution, -> { joins(:salary_type).where("salary_types.classifiaction = ?", 'Contribution') }
-  scope :unpaid, -> { where(pay_slip_id: nil) }
+  scope :unpaid, -> { where(pay_slip_id: nil, no_transactions: false) }
   scope :larger_eq, ->(start_date) { where('doc_date >= ?', start_date.to_date) }
   scope :smaller_eq, ->(end_date) { where('doc_date <= ?', end_date.to_date) }
   scope :between, ->(start_date, end_date) { larger_eq(start_date).smaller_eq(end_date) }
@@ -64,9 +65,11 @@ private
 
   def build_transactions
     transactions.destroy_all
-    db_transaction
-    cr_transaction
-    validates_transactions_balance
+    if !no_transactions
+      db_transaction
+      cr_transaction
+      validates_transactions_balance
+    end
   end
 
   def transaction_note

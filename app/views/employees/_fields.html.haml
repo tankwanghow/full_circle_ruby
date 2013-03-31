@@ -18,8 +18,8 @@
     = f.input :service_since, as: :datepicker, input_html: { class: 'span19' }
   .span3
     = f.input :marital_status, collection: ['Single', 'Married'], include_blank: false, input_html: { class: 'span' }
-  .span2
-    = f.input :partner_working, collection: ['Yes', 'No'], include_blank: false, input_html: { class: 'span' }
+  .span3
+    = f.input :partner_working, collection: ['true', 'false'], include_blank: false, input_html: { class: 'span' }
   .span2
     = f.input :children, input_html: { class: 'numeric span', type: :text }
   .span3
