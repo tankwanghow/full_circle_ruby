@@ -7,7 +7,9 @@ class HarvestingReportPdf < Prawn::Document
     @view = view
     @report_date = report_date
     @rows = rows
-    draw(rows)
+    if rows.count > 0
+      draw(rows)
+    end
   end
 
   def draw(rows)
