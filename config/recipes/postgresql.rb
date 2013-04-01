@@ -31,6 +31,25 @@ namespace :postgresql do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
   end
   after "deploy:finalize_update", "postgresql:symlink"
+
+  desc "Backup Database for this application."
+  task :dump, roles: :db do
+    run "pg_dump -U #{postgresql_user} -h #{postgresql_host} #{postgresql_database} --format=tar -f #{application}_backup.tar"
+  end
+
+  desc "Copy Production pg_dump to current dir."
+  task :copy_dump, roles: :db do
+    `scp #{user}@#{application_server}:#{application}_backup.tar ./`
+  end  
+  after "postgresql:dump", "postgresql:copy_dump"
+
+  desc "Restore Production Database to Development Database"
+  task :prod_to_dev do
+    `rake db:drop; rake db:create;`
+    `pg_restore -h localhost -U full_circle -d #{application}_development -v '#{application}_backup.tar'`
+  end
+  after "postgresql:copy_dump", "postgresql:prod_to_dev"
+
 end
 
 namespace :dossier do

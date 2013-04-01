@@ -8,7 +8,9 @@ load "config/recipes/postgresql"
 load "config/recipes/rbenv"
 load "config/recipes/check"
 
-server "kpst01", :web, :app, :db, primary: true
+set :application_server, "kpst01"
+
+server application_server, :web, :app, :db, primary: true
 
 set :user, "deployer"
 set :application, "full_circle"
@@ -19,7 +21,7 @@ set :scm, :git
 set :git_shallow_clone, 1
 set :scm_verbose, true
 set :deploy_via, :remote_cache
-set :repository, "ssh://deployer@kpst01/home/#{user}/#{application}.git"
+set :repository, "ssh://#{user}@#{application_server}/home/#{user}/#{application}.git"
 set :branch, "master"
 
 default_run_options[:pty] = true
