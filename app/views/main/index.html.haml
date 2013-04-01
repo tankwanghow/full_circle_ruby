@@ -22,6 +22,7 @@
 - for doc in @docs
   .row-fluid.searchable
     .span6
+      = link_to 'New', url_for(controller: doc.searchable_type.pluralize.underscore, action: :new), class: 'label label-success'
       - if doc.searchable_type == 'Post'
         = link_to 'Post', post_path(doc.searchable_id), class: 'btn btn-info'
       - else
