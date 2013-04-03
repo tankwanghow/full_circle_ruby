@@ -4,6 +4,7 @@ class House < ActiveRecord::Base
   validates_numericality_of :capacity, :filling_wages, :feeding_wages, :cleaning_wages, greater_than: -0.0001
   has_many :eggs_harvesting_wages
   has_many :movements
+  has_many :harvesting_slip_details
 
   accepts_nested_attributes_for :eggs_harvesting_wages, allow_destroy: true
 
@@ -36,10 +37,30 @@ class House < ActiveRecord::Base
     end
   end
 
+  def yield_between date_1, date_2
+    yields = []
+    while(date_1 < date_2)
+      yields << yield_at(date_1)
+      date_1 += 1
+    end
+    yields.sum / yields.count
+  end
+
   def quantity_at date=Date.today
     Movement.where(house_id: id).where('move_date <= ?', date).sum(:quantity).to_i -
     HarvestingSlipDetail.joins(:harvesting_slip).
     where(house_id: id).where('harvesting_slips.harvest_date <= ?', date).sum(:death).to_i
+  end
+
+  def yield_at date=Date.today
+    production_at(date).to_f * 30 / quantity_at(date).to_f
+  end
+
+  def production_at date=Date.today
+    harvesting_slip_details.joins(:harvesting_slip).
+      where('harvesting_slips.harvest_date = ?', date).inject(0) do |sum, t|
+      sum += t.harvest_2 + t.harvest_1
+    end
   end
 
   def harvesting_wages_for(harvested)

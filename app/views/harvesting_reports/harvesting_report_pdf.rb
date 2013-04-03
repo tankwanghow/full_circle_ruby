@@ -34,9 +34,9 @@ class HarvestingReportPdf < Prawn::Document
     repeat :all do
       text_box "Layer Production Report for *#{@report_date}*", at: [15.mm, bounds.top], size: 12, style: :bold
       font "Courier" do
-        text_box "Hou D.O.B  Wks Trys Die Perc", at: [10.mm, bounds.top - 6.mm], size: 10, style: :bold
-        text_box "Hou D.O.B  Wks Trys Die Perc", at: [76.mm, bounds.top - 6.mm], size: 10, style: :bold
-        text_box "Hou D.O.B  Wks Trys Die Perc", at: [142  .mm, bounds.top - 6.mm], size: 10, style: :bold
+        text_box "Hou DOB Wks Try Die  Now 7day", at: [10.mm, bounds.top - 6.mm], size: 10, style: :bold
+        text_box "Hou DOB Wks Try Die  Now 7day", at: [76.mm, bounds.top - 6.mm], size: 10, style: :bold
+        text_box "Hou DOB Wks Try Die  Now 7day", at: [142  .mm, bounds.top - 6.mm], size: 10, style: :bold
       end
     end
   end
@@ -50,17 +50,19 @@ class HarvestingReportPdf < Prawn::Document
       end
       text(
         @rows.map do |r|
-          prec = r['production'].to_i * 30.0 / House.find_by_house_no(r['house_no']).quantity_at(@report_date) * 100
+          house = House.find_by_house_no(r['house_no'])
+          prec = house.yield_at(@report_date) * 100
+          yield_avg = house.yield_between(@report_date - 7, @report_date) * 100
           sum_perc += prec
-          "#{r['house_no']} #{r['dob'].to_date.strftime('%y%m%d')} #{("%3d") % r['age'].to_i.to_s} " + 
-          "#{("%4d") % r['production']} #{("%3d") % r['death']} #{("%3d%") % prec}"
+          "#{r['house_no']} #{r['dob'].to_date.strftime('%m%d')} #{("%2d") % r['age'].to_i.to_s} " + 
+          "#{("%3d") % r['production']} #{("%3d") % r['death']} #{("%3d%") % prec} #{("%3d%") % yield_avg}"
         end.join("\n"))
-      text("===========================", style: :bold)
+      text("=============================", style: :bold)
       text("Sum Production: #{sum_prod}", style: :bold)
       text("Sum Death     : #{sum_dea}", style: :bold)
       text("Sum House     : #{@rows.count}", style: :bold)
       text("Avg Yield %   : #{(sum_perc / @rows.count).round 2}", style: :bold)
-      text("===========================", style: :bold)
+      text("=============================", style: :bold)
     end
   end
 
