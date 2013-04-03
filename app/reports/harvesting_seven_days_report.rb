@@ -4,8 +4,8 @@ class HarvestingSevenDaysReport < Dossier::Report
   def sql
     <<-SQL
       select house_no, count(*) as Days, dob, avg(age) as age, 
-             avg(production) as production, avg(QtyLeft) as alive,
-             avg(production)/avg(QtyLeft) as yield
+             sum(production)/7 as production, avg(QtyLeft) as alive,
+             sum(production)/7/avg(QtyLeft) as yield
         from (select house_no, dob, (harvest_date - dob)/7 as age, 
                      (harvest_1 + harvest_2) * 30 as production,
                      (select sum(quantity) from movements m 
