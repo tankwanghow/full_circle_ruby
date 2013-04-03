@@ -51,4 +51,8 @@ class Employee < ActiveRecord::Base
     marital_status == 'Married' ? true : false
   end
 
+  def age_at date=Date.today
+    (date - birth_date).to_i/365.0
+  end
+
 end
