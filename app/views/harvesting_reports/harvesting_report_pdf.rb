@@ -34,16 +34,17 @@ class HarvestingReportPdf < Prawn::Document
     repeat :all do
       text_box "Layer Production Report for *#{@report_date}*", at: [15.mm, bounds.top], size: 12, style: :bold
       font "Courier" do
-        text_box "Hou DOB Wks Try Die  Now 7day", at: [10.mm, bounds.top - 6.mm], size: 10, style: :bold
-        text_box "Hou DOB Wks Try Die  Now 7day", at: [76.mm, bounds.top - 6.mm], size: 10, style: :bold
-        text_box "Hou DOB Wks Try Die  Now 7day", at: [142  .mm, bounds.top - 6.mm], size: 10, style: :bold
+        text_box "Hou  D.O.B   Wks  Try Die   Now  1day  2day  3day  4day  5day  6day   Avg  Collector", 
+                 at: [15.mm, bounds.top - 6.mm], size: 10, style: :bold
+        text_box "======================================================================================", 
+                 at: [15.mm, bounds.top - 9.mm], size: 10
       end
     end
   end
 
   def draw_detail
-    sum_prod = sum_perc = sum_dea = 0
-    column_box([10.mm, bounds.top - 10.mm], columns: 3, width: 198.mm) do
+    sum_prod = sum_yield_1 = sum_dea = 0
+    bounding_box [15.mm, bounds.top - 12.mm], width: 250.mm do
       @rows.each do |r|
         sum_prod += r['production'].to_i
         sum_dea  += r['death'].to_i
@@ -51,18 +52,42 @@ class HarvestingReportPdf < Prawn::Document
       text(
         @rows.map do |r|
           house = House.find_by_house_no(r['house_no'])
-          prec = house.yield_at(@report_date) * 100
-          yield_avg = house.yield_between(@report_date - 7, @report_date) * 100
-          sum_perc += prec
-          "#{r['house_no']} #{r['dob'].to_date.strftime('%m%d')} #{("%2d") % r['age'].to_i.to_s} " + 
-          "#{("%3d") % r['production']} #{("%3d") % r['death']} #{("%3d%") % prec} #{("%3d%") % yield_avg}"
-        end.join("\n"))
-      text("=============================", style: :bold)
-      text("Sum Production: #{sum_prod}", style: :bold)
-      text("Sum Death     : #{sum_dea}", style: :bold)
-      text("Sum House     : #{@rows.count}", style: :bold)
-      text("Avg Yield %   : #{(sum_perc / @rows.count).round 2}", style: :bold)
-      text("=============================", style: :bold)
+          yield_1 = house.yield_at(@report_date) * 100
+          yield_2 = house.yield_at(@report_date - 1) * 100
+          yield_3 = house.yield_at(@report_date - 2) * 100
+          yield_4 = house.yield_at(@report_date - 3) * 100
+          yield_5 = house.yield_at(@report_date - 4) * 100
+          yield_6 = house.yield_at(@report_date - 5) * 100
+          yield_7 = house.yield_at(@report_date - 6) * 100
+          avg_yield = (yield_1 + yield_2 + yield_3 + yield_4 + yield_5 + yield_6 + yield_7)/7
+          sum_yield_1 += yield_1
+          "#{r['house_no']}  #{r['dob'].to_date.strftime('%y%m%d')}   #{("%2d") % r['age'].to_i.to_s}  " + 
+          "#{("%3d") % r['production']} #{("%3d") % r['death']}  " + 
+          "#{display_yield_with_warning(yield_1, avg_yield)}  " + 
+          "#{display_yield_with_warning(yield_2, avg_yield)}  " + 
+          "#{display_yield_with_warning(yield_3, avg_yield)}  " + 
+          "#{display_yield_with_warning(yield_4, avg_yield)}  " + 
+          "#{display_yield_with_warning(yield_5, avg_yield)}  " + 
+          "#{display_yield_with_warning(yield_6, avg_yield)}  " + 
+          "#{display_yield_with_warning(yield_7, avg_yield)}  " +
+          "<b>#{("%3d%") % avg_yield}</b>  " +
+          "#{(r['name'] || 'Company').downcase.titleize.slice(0..10)}"
+        end.join("\n"), inline_format: true)
+      text("======================================================================================", style: :bold)
+      text(
+           "=  <b>Sum Production:</b><u>#{sum_prod}</u>    " +
+           "<b>Sum Death:</b><u>#{sum_dea}</u>    " + 
+           "<b>Sum House:</b><u>#{@rows.count}</u>    " +
+           "<b>Avg Yield:</b><u>#{(sum_yield_1 / @rows.count).round 2}%</u>   =", inline_format: true, size: 11)
+      text("======================================================================================", style: :bold)
+    end
+  end
+
+  def display_yield_with_warning current_yield, avg_yield
+    if current_yield - avg_yield > 10
+      "<i><u>#{("%3d%") % current_yield}</u></i>"
+    else
+      "#{("%3d%") % current_yield}"
     end
   end
 

@@ -7,8 +7,9 @@ class HarvestingReportsController < ApplicationController
     @report_date = params[:harvest_report][:report_date].try(:to_date)
     @reports = HarvestingSlip.find_by_sql(["
         select house_no, dob, (harvest_date - dob)/7 as age, 
-               harvest_1 + harvest_2 as production, death
-          from flocks f, houses h, harvesting_slips hs, harvesting_slip_details hsd
+               harvest_1 + harvest_2 as production, death, name
+          from flocks f, houses h, harvesting_slip_details hsd,
+               harvesting_slips hs left outer join employees e on e.id = hs.collector_id
          where hsd.house_id = h.id
            and hsd.flock_id = f.id
            and hsd.harvesting_slip_id = hs.id

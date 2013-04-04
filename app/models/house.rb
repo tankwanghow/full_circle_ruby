@@ -38,12 +38,15 @@ class House < ActiveRecord::Base
   end
 
   def yield_between date_1, date_2
-    yields = []
-    while(date_1 < date_2)
-      yields << yield_at(date_1)
-      date_1 += 1
-    end
-    yields.sum / yields.count
+    prod = production_between(date_1, date_2)
+    move_in = Movement.where(house_id: id).where('move_date <= ?', date_2).sum(:quantity).to_i
+    alive_1 = move_in - HarvestingSlipDetail.joins(:harvesting_slip).where(house_id: id).
+                          where('harvesting_slips.harvest_date <= ?', date_1).
+                          sum(:death).to_i
+    alive_2 = move_in - HarvestingSlipDetail.joins(:harvesting_slip).where(house_id: id).
+                          where('harvesting_slips.harvest_date <= ?', date_2).
+                          sum(:death).to_i
+    prod * 30.0 / (date_2.to_date - date_1.to_date + 1).to_f / ((alive_1 + alive_2) / 2.0)
   end
 
   def quantity_at date=Date.today
@@ -58,9 +61,13 @@ class House < ActiveRecord::Base
 
   def production_at date=Date.today
     harvesting_slip_details.joins(:harvesting_slip).
-      where('harvesting_slips.harvest_date = ?', date).inject(0) do |sum, t|
-      sum += t.harvest_2 + t.harvest_1
-    end
+      where('harvesting_slips.harvest_date = ?', date).sum('harvest_2 + harvest_1').to_i
+  end
+
+  def production_between date_1, date_2
+    harvesting_slip_details.joins(:harvesting_slip).
+      where('harvesting_slips.harvest_date >= ?', date_1).
+      where('harvesting_slips.harvest_date <= ?', date_2).sum('harvest_2 + harvest_1').to_i
   end
 
   def harvesting_wages_for(harvested)
