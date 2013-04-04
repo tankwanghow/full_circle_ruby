@@ -84,8 +84,13 @@ class HarvestingReportPdf < Prawn::Document
   end
 
   def display_yield_with_warning current_yield, avg_yield
-    if current_yield - avg_yield > 10
-      "<i><u>#{("%3d%") % current_yield}</u></i>"
+    diff = current_yield - avg_yield
+    if diff.abs >= 10 and avg_yield >= 30
+      if diff > 0
+        "<b><color rgb='00BC32'><i><u>#{("%3d%") % current_yield}</u></i></color></b>"
+      else
+        "<b><color rgb='D6001F'><i><u>#{("%3d%") % current_yield}</u></i></color></b>"
+      end
     else
       "#{("%3d%") % current_yield}"
     end
