@@ -19,6 +19,7 @@ private
 
   def store_param name
     if params[name]
+      session[name.to_sym] = {}
       params[name].each do |k,v|
         session[name.to_sym][k.to_sym] = v.blank? ? nil : v
       end
