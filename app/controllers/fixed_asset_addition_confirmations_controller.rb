@@ -24,7 +24,7 @@ class FixedAssetAdditionConfirmationsController < ApplicationController
     else
       flash[:error] = "Failed to create addition."
     end
-    redirect_to fixed_asset_addition_confirmations_path(end_date: @addition.entry_date)
+    redirect_to fixed_asset_addition_confirmations_path(assets: { end_date: @addition.entry_date })
   end
 
 end
