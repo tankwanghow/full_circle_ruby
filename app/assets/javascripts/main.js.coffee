@@ -5,7 +5,7 @@ $ ->
   ($ '[data-pjax-container]').on 'pjax:start', ->
     ($ 'body').css('cursor', 'wait')
   
-  $(document).on 'click', 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax]):not([data-method="delete"])', (event) ->
+  $(document).on 'click', 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax]):not([data-method])', (event) ->
     container = $('[data-pjax-container]')
     $.pjax.click(event, container)
 
