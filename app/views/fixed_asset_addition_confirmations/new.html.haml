@@ -1,0 +1,6 @@
+= simple_form_for :assets, url: fixed_asset_addition_confirmations_path, html: { method: :get, class: 'form-search' } do |f|
+  %legend
+    Fixed Assets Addition Confirmation
+  .row-fluid
+    = f.input_field :end_date, class: 'datepicker span3', placeholder: 'date...'
+    = f.button :submit, 'Show', class: 'btn-primary'
