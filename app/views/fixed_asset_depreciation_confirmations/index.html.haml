@@ -1,0 +1,35 @@
+= simple_form_for :assets, url: fixed_asset_depreciation_confirmations_path, html: { method: :get, class: 'form-search' } do |f|
+  %legend
+    Fixed Assets Depreciation Confirmation
+  .row-fluid
+    = f.input_field :end_date, class: 'datepicker span3', placeholder: 'date...'
+    = f.button :submit, 'Show', class: 'btn-primary'
+
+= render_flash
+%h3 Fixed Assets Depreciation Confirmation
+#asset_depreciation_confirmation
+  .row-fluid.center-text.bold
+    .span5.header Account
+    .span2.header Addition Date
+    .span3.header Cost
+    .span3.header Previous Depreciation
+    .span2.header Depreciation Until Date
+    .span1.header Rate
+    .span2.header Current Depreciation
+    - if @depreciations.count > 0
+      .span2= link_to 'Confirm All', fixed_asset_depreciation_confirmations_confirm_all_path(assets: { end_date: @end_date}), class: 'btn btn-danger', method: :post, confirm: 'CONFIRM ALL. Are You Sure?'
+  - if @depreciations.count > 0
+    - @depreciations.each do |t|
+      .row-fluid.center-text
+        .span5.field= link_to t.asset_addition.asset.account.name1, edit_account_path(t.asset_addition.asset.account)
+        .span2.field= t.asset_addition.entry_date
+        .span3.field= t.asset_addition.amount.to_money.format
+        .span3.field= t.asset_addition.cum_depreciation_at(t.entry_date - 1.year).to_money.format
+        .span2.field= t.entry_date
+        .span1.field= (t.asset_addition.asset.depreciation_rate * 100).to_s + '%'
+        .span2.field= t.amount.to_money.format
+        .span2= link_to 'Confirm', fixed_asset_depreciation_confirmations_path(depreciation: { entry_date: t.entry_date, amount: t.amount, asset_addition_id: t.asset_addition.id }), method: :post, confirm: 'Are You Sure?', class: 'btn btn-warning'
+  - else
+    .row-fluid.center-text
+      .span15
+        %h2 No Addition Found.

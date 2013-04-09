@@ -21,14 +21,23 @@ class AssetAddition < ActiveRecord::Base
     }
   end
 
-  def generate_annual_depreciation to_year
-    (entry_date.year..to_year).each do |t|
+  def generate_annual_depreciation year
+    values = annual_depreciation_for(year)
+    if values.count > 0
+      values.each { |t| depreciations.build(t) }
+    end
+  end
+
+  def annual_depreciation_for year
+    rtnval = []
+    (entry_date.year..year).each do |t|
       edate = "#{t}-#{ClosingMonth}-#{ClosingDay}".to_date
       if !depreciation_for_year_exists?(t)
         dep = depreciation_for(edate)
-          depreciations.build(entry_date: edate, amount: dep) if dep > 0
+        rtnval << { entry_date: edate, amount: dep } if dep > 0
       end
     end
+    rtnval
   end
 
   def net_book_value_at in_date=prev_close_date(Date.today)

@@ -5,6 +5,7 @@ class FixedAsset < ActiveRecord::Base
   validate :is_fixed_assets?
   has_many :additions, class_name: "AssetAddition", order: 'entry_date', dependent: :destroy
   validates_numericality_of :depreciation_rate, greater_than_or_equal_to: 0, less_than_or_equal_to: 1
+  default_scope includes(:additions)
 
   accepts_nested_attributes_for :additions, allow_destroy: true
 

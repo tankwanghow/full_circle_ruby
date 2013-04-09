@@ -1,17 +1,30 @@
 = render_flash
-%h3 Fixed Assets Addition Confirmation
+= simple_form_for :assets, url: fixed_asset_addition_confirmations_path, html: { method: :get, class: 'form-search' } do |f|
+  %legend
+    Fixed Assets Addition Confirmation
+  .row-fluid
+    = f.input_field :end_date, class: 'datepicker span3', placeholder: 'date...'
+    = f.button :submit, 'Show', class: 'btn-primary'
+
 #asset_addition_confirmation
   .row-fluid.center-text.bold
-    .span5.field Account
-    .span3.field Start Date
-    .span3.field End Date
-    .span3.field Addition Amount
-  - @additions.each do |t|
+    .span5.header Account
+    .span3.header Start Date
+    .span3.header End Date
+    .span3.header Addition Amount
+    - if @additions.count > 0
+      .span4= link_to 'Confirm All', fixed_asset_addition_confirmations_confirm_all_path(assets: { end_date: @end_date}), class: 'btn btn-danger', method: :post, confirm: 'CONFIRM ALL. Are You Sure?'
+  - if @additions.count > 0
+    - @additions.each do |t|
+      .row-fluid.center-text
+        .span5.field= link_to t.asset.account.name1, edit_account_path(t.asset.account)
+        .span3.field= prev_close_date(t.entry_date) + 1
+        .span3.field= t.entry_date
+        .span3.field= t.amount.to_money.format
+        .span4
+          = link_to 'Transactions', transactions_path(transactions_query: { start_date: prev_close_date(t.entry_date) + 1, end_date: t.entry_date, name: t.asset.account.name1 }), class: 'btn btn-info'
+          = link_to 'Confirm', fixed_asset_addition_confirmations_path(addition: { entry_date: t.entry_date, amount: t.amount, fixed_asset_id: t.asset.id }), method: :post, confirm: 'Are You Sure?', class: 'btn btn-warning'
+  - else
     .row-fluid.center-text
-      .span5.field= link_to t.asset.account.name1, edit_account_path(t.asset.account)
-      .span3.field= prev_close_date(t.entry_date) + 1
-      .span3.field= t.entry_date
-      .span3.field= t.amount.to_money.format
-      .span4
-        = link_to 'Transactions', transactions_path(transactions_query: { start_date: prev_close_date(t.entry_date) + 1, end_date: t.entry_date, name: t.asset.account.name1 }), class: 'btn btn-info'
-        = link_to 'Confirm', fixed_asset_addition_confirmations_path(addition: { entry_date: t.entry_date, amount: t.amount, fixed_asset_id: t.asset.id }), method: :post, confirm: 'Are You Sure?', class: 'btn btn-warning'
+      .span15
+        %h2 No Addition Found.
