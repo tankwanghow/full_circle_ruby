@@ -39,6 +39,29 @@ class HarvestingSlip < ActiveRecord::Base
     sum
   end
 
+  def self.harvesting_slips_for date=Date.today - 1
+    find_by_sql(["
+      select e.name, string_agg(DISTINCT h.house_no, ' ' ORDER BY h.house_no) as houses
+        from houses h
+       inner join harvesting_slip_details hsd 
+          on hsd.house_id = h.id
+       inner join harvesting_slips hs 
+          on hs.id = hsd.harvesting_slip_id
+       inner join employees e
+          on hs.collector_id = e.id 
+       where hs.harvest_date = ?
+       group by e.name", date.to_date - 1]).concat(
+    find_by_sql ["
+      select '' as name, string_agg(DISTINCT h.house_no, ' ' ORDER BY h.house_no) as houses
+        from houses h
+       inner join harvesting_slip_details hsd 
+          on hsd.house_id = h.id
+       inner join harvesting_slips hs 
+          on hs.id = hsd.harvesting_slip_id
+       where hs.harvest_date = ?
+         and hs.collector_id is null", date.to_date - 1])
+  end
+
 private
 
   def has_detail

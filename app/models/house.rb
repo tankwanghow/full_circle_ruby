@@ -37,6 +37,22 @@ class House < ActiveRecord::Base
     end
   end
 
+  def self.yield_less_than_at perc, date_1
+    houses = []
+    House.find_each do |h|
+      houses << h if h.yield_between(date_1.to_date - 7, date_1.to_date) < perc
+    end
+    houses
+  end
+
+  def self.alive_less_than_at perc, date_1
+    houses = []
+    House.find_each do |h|
+      houses << h if h.quantity_at(date_1).to_f/h.capacity.to_f <= perc and h.movements.exists?
+    end
+    houses
+  end
+
   def yield_between date_1, date_2
     prod = production_between(date_1, date_2)
     move_in = Movement.where(house_id: id).where('move_date <= ?', date_2).sum(:quantity).to_i

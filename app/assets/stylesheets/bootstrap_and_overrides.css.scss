@@ -150,8 +150,18 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
   }
 }
 
-#asset_addition_confirmation .field {
+#asset_addition_confirmation .field,
+#asset_depreciation_confirmation .field {
   background-color: lightgray;
+  margin: 2px;
+  border-radius: 3px;
+  padding-top: 4px;
+}
+
+#asset_addition_confirmation .header,
+#asset_depreciation_confirmation .header,
+#harvesting_slips .header {
+  background-color: lightgreen;
   margin: 2px;
   border-radius: 3px;
   padding-top: 4px;

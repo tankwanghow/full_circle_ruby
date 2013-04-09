@@ -1,0 +1,59 @@
+.span14
+  - i = 0
+  = simple_form_for :harvesting_slips, url: print_harvesting_slips_path, html: { method: :post, class: 'form-search', id: 'slips' } do |f|
+    %legend 
+      Generate Harvesting Slip Form
+    .row-fluid
+      = f.input_field :at_date, class: 'datepicker', placeholder: 'when...', value: @at_date
+      = f.button :submit, 'Show', name: :submit, class: 'btn btn-primary', id: 'show_html'
+      - if @slips.count > 0
+        = f.button :submit, 'Print', name: :submit, class: 'btn btn-info', id: 'print_pdf'
+
+    #harvesting_slips
+      .row-fluid.bold.center-text
+        .span8.header Employee
+        .span15.header Houses
+    - if @slips.count > 0
+      - @slips.each do |s|
+        - i += 1
+        .row-fluid
+          .span8
+            = text_field_tag "harvesting_slips[slips][#{i}][employee]", s.name.titleize, class: 'span'
+          .span15
+            = text_field_tag "harvesting_slips[slips][#{i}][houses]", s.houses, class: 'span'
+      - (0..5).each do |s|
+        - i += 1
+        .row-fluid
+          .span8
+            = text_field_tag "harvesting_slips[slips][#{i}][employee]", nil, class: 'span'
+          .span15
+            = text_field_tag "harvesting_slips[slips][#{i}][houses]", nil, class: 'span'
+.span9
+  %h4= "Harvesting Slip for #{@at_date - 1}"
+  - @slips_yesterday.each do |s|
+    %span.bold= s.name.titleize
+    %span= s.houses
+    %br
+  %h4 Empty Houses
+  %span
+    - House.alive_less_than_at(0, @at_date).each do |h|
+      = h.house_no
+  %h4 Yield Houses Less Than 50%
+  %span
+    - House.yield_less_than_at(0.5, @at_date).each do |h|
+      = h.house_no
+  %h4 Houses with alive birds less than 50%
+  %span
+    - House.alive_less_than_at(0.5, @at_date).each do |h|
+      = h.house_no
+
+:coffee
+  ($ document).ready -> 
+    ($ 'form#slips').on 'click', '#show_html', ->
+      this.form.action = '/print_harvesting_slips'
+      this.form.target = ''
+      $(this.form).attr('data-skip-pjax', false)
+    ($ 'form#slips').on 'click', '#print_pdf', ->
+      this.form.action = '/print_harvesting_slips.pdf'
+      this.form.target = '_blank'
+      $(this.form).attr('data-skip-pjax', true)
