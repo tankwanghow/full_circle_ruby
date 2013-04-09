@@ -31,7 +31,7 @@
 .span9
   %h4= "Harvesting Slip for #{@at_date - 1}"
   - @slips_yesterday.each do |s|
-    %span.bold= s.name.titleize
+    %span.bold= s.name.blank? ? 'Company' : s.name.titleize
     %span= s.houses
     %br
   %h4 Empty Houses
