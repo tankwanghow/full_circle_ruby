@@ -2,7 +2,7 @@
   - i = 0
   = simple_form_for :harvesting_slips, url: print_harvesting_slips_path, html: { method: :post, class: 'form-search', id: 'slips' } do |f|
     %legend 
-      Generate Harvesting Slip Form
+      Generate Harvesting Slip For
     .row-fluid
       = f.input_field :at_date, class: 'datepicker', placeholder: 'when...', value: @at_date
       = f.button :submit, 'Show', name: :submit, class: 'btn btn-primary', id: 'show_html'

@@ -69,7 +69,7 @@ class HarvestingSlipsPdf < Prawn::Document
 
   def draw_dynamic_text at, row
     draw_text row['employee'], size: 12, at: [30.mm, at - 51.mm], style: :bold
-    draw_text @at_date + 1, size: 12, at: [30.mm, at - 60.mm], style: :bold
+    draw_text @at_date, size: 12, at: [30.mm, at - 60.mm], style: :bold
     draw_houses_n_production row['houses'].split(" "), at
   end
 
