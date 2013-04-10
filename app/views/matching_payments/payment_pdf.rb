@@ -89,7 +89,7 @@ class PaymentPdf < Prawn::Document
   def draw_matchers
     @payment.matchers.each do |t|
       particular = ['Payment for', t.transaction.doc_type, @view.docnolize(t.transaction.doc_id), "(#{t.transaction.transaction_date})"]
-      particular << "Due at: #{t.transaction.transaction_date + t.transaction.terms.days}"
+      particular << "Due at: #{t.transaction.transaction_date + (t.transaction.terms ? t.transaction.terms.days : 0) }"
       bounding_box [8.mm, @detail_y], height: @detail_height, width: 140.mm do
         text_box particular.compact.join(' '), overflow: :shrink_to_fit, valign: :center
       end
