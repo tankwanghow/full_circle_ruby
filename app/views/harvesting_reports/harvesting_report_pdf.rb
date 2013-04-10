@@ -64,12 +64,12 @@ class HarvestingReportPdf < Prawn::Document
           "#{r['house_no']}  #{r['dob'].to_date.strftime('%y%m%d')}   #{("%2d") % r['age'].to_i.to_s}  " + 
           "#{("%3d") % r['production']} #{("%3d") % r['death']}  " + 
           "#{display_yield_with_warning(yield_1, avg_yield)}  " + 
-          "#{display_yield_with_warning(yield_2, avg_yield)}  " + 
-          "#{display_yield_with_warning(yield_3, avg_yield)}  " + 
-          "#{display_yield_with_warning(yield_4, avg_yield)}  " + 
-          "#{display_yield_with_warning(yield_5, avg_yield)}  " + 
-          "#{display_yield_with_warning(yield_6, avg_yield)}  " + 
-          "#{display_yield_with_warning(yield_7, avg_yield)}  " +
+          "#{("%3d%") % yield_2}  " + 
+          "#{("%3d%") % yield_3}  " + 
+          "#{("%3d%") % yield_4}  " + 
+          "#{("%3d%") % yield_5}  " + 
+          "#{("%3d%") % yield_6}  " + 
+          "#{("%3d%") % yield_7}  " +
           "<b>#{("%3d%") % avg_yield}</b>  " +
           "#{(r['name'] || 'Company').downcase.titleize.slice(0..10)}"
         end.join("\n"), inline_format: true)
@@ -92,7 +92,7 @@ class HarvestingReportPdf < Prawn::Document
         "<b><color rgb='D6001F'><i><u>#{("%3d%") % current_yield}</u></i></color></b>"
       end
     else
-      "#{("%3d%") % current_yield}"
+      "<b>#{("%3d%") % current_yield}</b>"
     end
   end
 
