@@ -10,8 +10,7 @@ class HarvestingSevenDaysReport < Dossier::Report
                      (harvest_1 + harvest_2) * 30 as production,
                      (select sum(quantity) from movements m 
                        where m.house_id = h.id and m.flock_id = f.id
-                         and m.move_date = (select max(move_date) from movements 
-                                             where m.house_id = h.id and m.flock_id = f.id)) -
+                         and m.move_date <= hs.harvest_date) -
                      (select sum(death) from harvesting_slips ths, harvesting_slip_details thsd 
                        where thsd.house_id = h.id
                          and thsd.flock_id = f.id
