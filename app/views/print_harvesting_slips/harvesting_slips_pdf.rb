@@ -19,12 +19,12 @@ class HarvestingSlipsPdf < Prawn::Document
   def draw
     reset
     @rows.select{ |k,v| !v['houses'].blank? }.each do |k, v|
+      reset if 290.mm - (@box_height * @box_count) <= 50.mm
       current_point = 290.mm - (@box_height * @box_count) - (@separator * @box_count)
       draw_box(current_point, @box_height)
       draw_static_text(current_point)
       draw_dynamic_text(current_point, v)
       @box_count += 1
-      reset if 290.mm - (@box_height * @box_count) <= 5.mm
     end
     self
   end
