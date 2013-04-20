@@ -8,51 +8,39 @@ class DriverCommission < Dossier::Report
     pur_invoice_sql
   end
 
-  def tagged_invoice_ids_condition
-    if tagged_invoice_ids.count > 0
-      "AND doc.id IN :tagged_invoice_ids"
-    else
-      'AND 1=0'
-    end
+  def tagged_invoice_sql_condition
+    "AND doc.id IN (#{  tagged_invoice_sql})"
   end
 
-  def tagged_cash_sale_ids_condition
-    if tagged_cash_sale_ids.count > 0
-      "AND doc.id IN :tagged_cash_sale_ids"
-    else
-      'AND 1=0'
-    end
+  def tagged_cash_sale_sql_condition
+    "AND doc.id IN (#{tagged_cash_sale_sql})"
   end
 
-  def tagged_pur_invoice_ids_condition
-    if tagged_pur_invoice_ids.count > 0
-      "AND doc.id IN :tagged_pur_invoice_ids"
-    else
-      'AND 1=0'
-    end
+  def tagged_pur_invoice_sql_condition
+    "AND doc.id IN (#{tagged_pur_invoice_sql})"
   end
 
-  def tagged_invoice_ids
+  def tagged_invoice_sql
     if employee_tags.try(:downcase) != 'all'
-      ids = Invoice.tagged_with(employee_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('invoices.id')
+      ids = Invoice.tagged_with(employee_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('invoices.id').to_sql
     else
-      ids = Invoice.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('invoices.id')
+      ids = Invoice.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('invoices.id').to_sql
     end
   end
 
-  def tagged_cash_sale_ids
+  def tagged_cash_sale_sql
     if employee_tags.try(:downcase) != 'all'
-      ids = CashSale.tagged_with(employee_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('cash_sales.id')
+      ids = CashSale.tagged_with(employee_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('cash_sales.id').to_sql
     else
-      ids = CashSale.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('cash_sales.id')
+      ids = CashSale.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('cash_sales.id').to_sql
     end
   end
 
-  def tagged_pur_invoice_ids
+  def tagged_pur_invoice_sql
     if employee_tags.try(:downcase) != 'all'
-      ids = PurInvoice.tagged_with(employee_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('pur_invoices.id')
+      ids = PurInvoice.tagged_with(employee_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('pur_invoices.id').to_sql
     else
-      ids = PurInvoice.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('pur_invoicesinvoices.id')
+      ids = PurInvoice.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('pur_invoices.id').to_sql
     end
   end
 
@@ -129,7 +117,7 @@ class DriverCommission < Dossier::Report
         and doc.id = docd.cash_sale_id
         and pd.id = docd.product_id
         and docd.unit_price > 0
-        #{tagged_cash_sale_ids_condition}
+        #{tagged_cash_sale_sql_condition}
         #{group_bys}"
   end
 
@@ -143,7 +131,7 @@ class DriverCommission < Dossier::Report
         and doc.id = docd.invoice_id
         and pd.id = docd.product_id
         and docd.unit_price > 0
-        #{tagged_invoice_ids_condition}
+        #{tagged_invoice_sql_condition}
         #{group_bys}"
   end
 
@@ -157,7 +145,7 @@ class DriverCommission < Dossier::Report
         and doc.id = docd.pur_invoice_id
         and pd.id = docd.product_id
         and docd.unit_price > 0
-        #{tagged_pur_invoice_ids_condition}
+        #{tagged_pur_invoice_sql_condition}
         #{group_bys}"
   end
 
