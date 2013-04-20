@@ -24,7 +24,7 @@
     .span6
       = link_to 'New', url_for(controller: doc.searchable_type.pluralize.underscore, action: :new), class: 'label label-success'
       - if doc.searchable_type == 'Post'
-        = link_to 'Post', post_path(doc.searchable_id), class: 'btn btn-info'
+        = link_to 'Post', post_path(doc.searchable_id), class: 'label label-info'
       - else
         = link_to_searchable doc
       %div
