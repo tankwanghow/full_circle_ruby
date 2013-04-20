@@ -42,7 +42,7 @@ private
   end
 
   def commission_decider row
-    arys = (row['tags'].split('|') & %w(eggsalescomm eggtranscomm dungtransbagcomm dungtransloadcomm feedtranstonscomm traytranscomm))
+    arys = ((row['tags'].blank? ? '' : row['tags']).split('|') & %w(eggsalescomm eggtranscomm dungtransbagcomm dungtransloadcomm feedtranstonscomm traytranscomm))
     if arys.count > 1
       row[:status] = 'error'
     else
