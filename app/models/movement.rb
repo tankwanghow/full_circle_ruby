@@ -12,7 +12,7 @@ class Movement < ActiveRecord::Base
   end
 
   def cur_qty_n_flock
-    "#{house.try(:quantity_at)} #{flock.dob.to_s} #{flock.breed} *#{flock.id}*"
+    "#{flock.try(:dob).to_s} #{flock.try(:breed)} *#{flock.try(:id)}* (#{house.try(:quantity_at)})"
   end
 
 end

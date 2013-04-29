@@ -5,9 +5,9 @@
     = f.input :house_house_no, input_html: { class: 'span', type: :text }, wrapper: :table_field
   .span3  
     = f.input :quantity, input_html: { class: 'numeric span', type: :text }, wrapper: :table_field
-  .span5
+  .span4
     = f.input :note, input_html: { class: 'span' }, wrapper: :table_field
-  .span3
-    = f.input :cur_qty, input_html: { tabindex: -1, class: 'numeric span', name: 'cur_qty', type: :text, readOnly: true }, wrapper: :table_field
+  .span5
+    = f.input :cur_qty_n_flock, input_html: { tabindex: -1, class: 'numeric span', name: 'cur_qty', type: :text, readOnly: true }, wrapper: :table_field
   .span1
     = f.link_to_remove "X", class: "btn btn-danger", tabindex: -1

@@ -6,7 +6,7 @@ module LayersHelper
   end
 
   def render_movement_fields builder, xies_name, with_type=true
-    headers = [['Move Date', 'span3'], ['House', 'span3'], ['Quantity', 'span3'], ['Note', 'span5'], ['Current Qty', 'span3']]
+    headers = [['Move Date', 'span3'], ['House', 'span3'], ['Quantity', 'span3'], ['Note', 'span4'], ['Current Flock & Quantity', 'span5']]
     render 'share/nested_fields', f: builder, xies_name: xies_name, field: 'flocks/movement_fields',
             headers: headers, with_type: with_type, text: 'Add Move'
   end
