@@ -11,8 +11,8 @@ class Movement < ActiveRecord::Base
     [ house.house_no, move_date.to_s, quantity.to_s, note ].join ' '
   end
 
-  def cur_qty
-    house.try(:quantity_at)
+  def cur_qty_n_flock
+    "#{house.try(:quantity_at)} #{flock.dob.to_s} #{flock.breed} *#{flock.id}*"
   end
 
 end
