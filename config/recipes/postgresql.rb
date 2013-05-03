@@ -45,12 +45,12 @@ namespace :postgresql do
 
   desc "Vacuum full Production Database"
   task :vacuum_full do
-    rub %Q{ psql -U full_circle -h localhost -d full_circle_production -c "vacuum full;" }
+    run %Q{ psql -U full_circle -h localhost -d full_circle_production -c "vacuum full;" }
   end
 
   desc "Vacuum Production Database"
   task :vacuum do
-    rub %Q{ psql -U full_circle -h localhost -d full_circle_production -c "vacuum;" }
+    run %Q{ psql -U full_circle -h localhost -d full_circle_production -c "vacuum;" }
   end
 
   desc "Restore Production Database to Development Database"
