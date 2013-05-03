@@ -40,8 +40,18 @@ namespace :postgresql do
   desc "Copy Production pg_dump to current dir."
   task :copy_dump, roles: :db do
     `scp #{user}@#{application_server}:#{application}_backup.tar ./`
-  end  
+  end
   after "postgresql:dump", "postgresql:copy_dump"
+
+  desc "Vacuum full Production Database"
+  task :vacuum_full do
+    rub %Q{ psql -U full_circle -h localhost -d full_circle_production -c "vacuum full;" }
+  end
+
+  desc "Vacuum Production Database"
+  task :vacuum do
+    rub %Q{ psql -U full_circle -h localhost -d full_circle_production -c "vacuum;" }
+  end
 
   desc "Restore Production Database to Development Database"
   task :prod_to_dev do
@@ -57,5 +67,5 @@ namespace :dossier do
   task :symlink, roles: :app do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/dossier.yml"
   end
-  after "postgresql:symlink", "dossier:symlink"  
+  after "postgresql:symlink", "dossier:symlink"
 end
