@@ -55,6 +55,7 @@ private
     if !chq.cr_doc
       chq.cr_doc = self
       chq.cr_ac = return_to
+      chq.save!
     end
   end
 
