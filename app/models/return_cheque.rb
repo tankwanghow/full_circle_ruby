@@ -9,6 +9,7 @@ class ReturnCheque < ActiveRecord::Base
   validates_uniqueness_of :cheque_id, message: "already returned."
 
   before_save :build_transactions
+  after_save :update_cheque
 
   include ValidateBelongsTo
   validate_belongs_to :return_to, :name1
@@ -44,18 +45,17 @@ private
 
   def build_transactions
     transactions.destroy_all
-    set_cheque_cr_doc
+    cheque = Cheque.find cheque_id
     build_return_to_transaction
     build_return_from_transaction
     validates_transactions_balance
   end
 
-  def set_cheque_cr_doc
-    chq = Cheque.find cheque_id
-    if !chq.cr_doc
-      chq.cr_doc = self
-      chq.cr_ac = return_to
-      chq.save!
+  def update_cheque
+    if !cheque.cr_doc
+      cheque.cr_doc = self
+      cheque.cr_ac = return_to
+      cheque.save!
     end
   end
 
