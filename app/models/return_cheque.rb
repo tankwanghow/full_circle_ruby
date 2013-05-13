@@ -2,7 +2,6 @@ class ReturnCheque < ActiveRecord::Base
   belongs_to :return_to, class_name: 'Account'
   belongs_to :return_from, class_name: 'Account'
   has_many :transactions, as: :doc
-  has_one :undeposit_cheque, as: :cr_doc, class_name: 'Cheque'
   has_one :cheque, foreign_key: :id, primary_key: :cheque_id
 
   validates_presence_of :return_to_name1, :doc_date, :bank, :chq_no, :city, :state, :due_date, :amount, :reason, :return_from_name1
@@ -45,17 +44,17 @@ private
 
   def build_transactions
     transactions.destroy_all
-    set_undeposit_cheque_cr_doc
+    set_cheque_cr_doc
     build_return_to_transaction
     build_return_from_transaction
     validates_transactions_balance
   end
 
-  def set_undeposit_cheque_cr_doc
+  def set_cheque_cr_doc
     chq = Cheque.find cheque_id
     if !chq.cr_doc
-      undeposit_cheque.cr_doc = self
-      undeposit_cheque.cr_ac = return_to
+      chq.cr_doc = self
+      chq.cr_ac = return_to
     end
   end
 
