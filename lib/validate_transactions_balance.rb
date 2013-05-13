@@ -5,7 +5,7 @@ module ValidateTransactionsBalance
   def validates_transactions_balance
     transactions.each do |t| 
       raise 'Transactions generated in invalid' if !t.valid?
-    end 
+    end
     raise 'Transactions Not Balance!' if transactions.inject(0) { |sum, p| sum + p.amount.round(2) } != 0
-  end    
+  end
 end
