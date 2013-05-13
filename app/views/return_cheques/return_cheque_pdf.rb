@@ -47,8 +47,9 @@ include Prawn::Helper
       stroke_rounded_rectangle [8.mm, 83.mm], 202.mm, 55.mm, 3.mm      
       draw_text "RETURN CHEQUE INFORMATIONS", size: 8, at: [90.mm, 78.5.mm]
       draw_text "BANK:", size: 14, at: [15.mm, 68.mm]
-      draw_text "CITY:", size: 14, at: [15.mm, 58.mm]
-      draw_text "STATE:", size: 14, at: [15.mm, 48.mm]
+      draw_text "CHEQUE NO:", size: 14, at: [15.mm, 58.mm]
+      draw_text "CITY:", size: 14, at: [15.mm, 48.mm]
+      draw_text "STATE:", size: 14, at: [15.mm, 38.mm]
       draw_text "CHEQUE DATE:", size: 14, at: [100.mm, 63.mm]
       draw_text "AMOUNT:", size: 16, style: :bold, at: [100.mm, 53.mm]
       stroke_horizontal_line 8.mm, 210.mm, at: 76.mm
@@ -82,17 +83,14 @@ include Prawn::Helper
   end
 
   def draw_cheques
-    draw_text @return_cheque.bank, size: 14, at: [40.mm, 68.mm]
-    draw_text @return_cheque.city, size: 14, at: [40.mm, 58.mm]
-    draw_text @return_cheque.state, size: 14, at: [40.mm, 48.mm]
-    draw_text @return_cheque.due_date, size: 14, at: [140.mm, 63.mm]
+    draw_text @return_cheque.bank, size: 14, at: [40.mm, 68.mm], style: :bold
+    draw_text @return_cheque.chq_no, size: 14, at: [50.mm, 58.mm], style: :bold
+    draw_text @return_cheque.city, size: 14, at: [40.mm, 48.mm], style: :bold
+    draw_text @return_cheque.state, size: 14, at: [40.mm, 38.mm], style: :bold
+    draw_text @return_cheque.due_date, size: 14, at: [140.mm, 63.mm], style: :bold
     draw_text @return_cheque.amount.to_money.format, size: 16, style: :bold, at: [140.mm, 53.mm]
   end
-
-  def draw_footer
-
-  end
-
+  
   def start_new_page_for_current_return_cheque
     @total_pages = @total_pages + 1
     start_new_page
