@@ -65,115 +65,15 @@ class Account < ActiveRecord::Base
   def self.aging_lists accounts, at_date=Date.today, interval_days=15, intervals=5
     hash = {}
     accounts.each do |ac|
-      if ac.balance_at(at_date) >= 0
-        hash[ac.id] = ac.customer_aging_list at_date, interval_days, intervals
-      else
-        hash[ac.id] = ac.supplier_aging_list at_date, interval_days, intervals
+      if ac.balance_at(at_date) != 0.0
+        hash[ac.name1] = AccountAging.new(ac, at_date, interval_days, intervals).aging_list
       end
     end
     hash
   end
 
   def aging_list at_date=Date.today, interval_days=15, intervals=5
-    if balance_at(at_date) >= 0
-      customer_aging_list at_date, interval_days, intervals
-    else
-      supplier_aging_list at_date, interval_days, intervals
-    end
-  end
-
-private
-
-  def customer_aging_list at_date=Date.today, interval_days=15, intervals=5
-    hash = {}
-    (0..intervals * interval_days).step(interval_days).each do |i|
-      cur_date = at_date - i
-      if i == intervals * interval_days
-        prev_date = nil
-        key = "more than #{i + interval_days} days"
-      else
-        prev_date = cur_date - interval_days
-        key = "#{i + 1} - #{i + interval_days} days"
-      end
-      hash[key] = customer_aging_interval(at_date, cur_date, prev_date)
-    end
-    hash['payment'] = all_customer_payment(at_date - (intervals * interval_days), at_date)
-    agingify_customer hash
-  end
-
-  def supplier_aging_list at_date=Date.today, interval_days=15, intervals=5
-    hash = {}
-    (0..intervals * interval_days).step(interval_days).each do |i|
-      cur_date = at_date - i
-      if i == intervals * interval_days
-        prev_date = nil
-        key = "more than #{i + interval_days} days"
-      else
-        prev_date = cur_date - interval_days
-        key = "#{i + 1} - #{i + interval_days} days"
-      end
-      hash[key] = supplier_aging_interval(at_date, cur_date, prev_date)
-    end
-    hash['payment'] = all_supplier_payment(at_date - (intervals * interval_days), at_date)
-    agingify_supplier hash
-  end
-
-  def customer_aging_interval at_date, cur_date, prev_date=nil
-    if prev_date
-      results = transactions.smaller_eq(cur_date).bigger_eq(prev_date + 1).where('amount > 0')
-      results.inject(0.0) { |sum, t| sum += t.balance(at_date) }
-    else
-      results = transactions.smaller_eq(cur_date)
-      (results.sum(:amount) || 0).to_f
-    end
-  end
-
-  def supplier_aging_interval at_date, cur_date, prev_date=nil
-    if prev_date
-      results = transactions.smaller_eq(cur_date).bigger_eq(prev_date + 1).where('amount < 0')
-      results.inject(0.0) { |sum, t| sum += t.balance(at_date) }
-    else
-      results = transactions.smaller_eq(cur_date)
-      (results.sum(:amount) || 0).to_f
-    end
-  end
-
-  def all_customer_payment start_date, end_date
-    results = transactions.smaller_eq(end_date).bigger_eq(start_date + 1).where('amount < 0')
-    results.inject(0.0) { |sum, t| sum += t.balance(end_date) }
-  end
-
-  def all_supplier_payment start_date, end_date
-    results = transactions.smaller_eq(end_date).bigger_eq(start_date + 1).where('amount > 0')
-    results.inject(0.0) { |sum, t| sum += t.balance(end_date) }
-  end
-
-  def agingify_customer hash
-    move = hash.delete('payment')
-    hash.keys.reverse.each do |k|
-      if move + hash[k] <= 0.0
-        move += hash[k]
-        hash[k] = 0.0
-      else
-        hash[k] = hash[k] + move
-        move = 0.0
-      end
-    end
-    hash
-  end
-
-  def agingify_supplier hash
-    move = hash.delete('payment')
-    hash.keys.reverse.each do |k| 
-      if move + hash[k] >= 0.0
-        move += hash[k]
-        hash[k] = 0.0
-      else
-        hash[k] = hash[k] + move
-        move = 0.0
-      end
-    end
-    hash
+    AccountAging.new(self, at_date, interval_days, intervals).aging_list
   end
 
 end
