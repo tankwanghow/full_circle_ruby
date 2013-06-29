@@ -1,10 +1,6 @@
 class EpfContributionService
 
-  EPFABLE_ADDITION_NAMES = [
-    'Monthly Salary', 'Daily Salary', 'Hourly Salary', 'Director Salary',
-    'Overtime Salary', 'Sunday Salary', 'Holiday Salary', 'Commission',
-    'By Piece Works'
-  ]
+  NON_EPFABLE_ADDITION_NAMES = ['Employee Bonus', 'Director Bonus']
 
   def initialize payslip
     @payslip = payslip
@@ -37,8 +33,8 @@ private
   def addition_notes
     @payslip.salary_notes.select do |t| 
       !t.marked_for_destruction? and 
-      t.salary_type.classifiaction == 'Addition' #and
-      #EPFABLE_ADDITION_NAMES.include?(t.salary_type.name)
+      t.salary_type.classifiaction == 'Addition' and 
+      !NON_EPFABLE_ADDITION_NAMES.include?(t.salary_type.name)
     end
   end
 

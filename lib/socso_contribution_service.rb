@@ -1,9 +1,5 @@
 class SocsoContributionService
-  SOCSOABLE_ADDITION_NAMES = [
-    'Monthly Salary', 'Daily Salary', 'Hourly Salary', 'Director Salary',
-    'Overtime Salary', 'Sunday Salary', 'Holiday Salary', 'Commission',
-    'By Piece Works'
-  ]
+  NON_SOCSOABLE_ADDITION_NAMES = [ 'Employee Bonus', 'Director Bonus' ]
   TABLE = [
             [   1,    30,   0.4,   0.1,  0.3],
             [  30,    50,   0.7,   0.2,  0.5],
@@ -70,8 +66,8 @@ private
   def addition_notes
     @payslip.salary_notes.select do |t| 
       !t.marked_for_destruction? and 
-      t.salary_type.classifiaction == 'Addition' #and
-      #SOCSOABLE_ADDITION_NAMES.include?(t.salary_type.name)
+      t.salary_type.classifiaction == 'Addition' and
+      !NON_SOCSOABLE_ADDITION_NAMES.include?(t.salary_type.name)
     end
   end
 
