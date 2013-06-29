@@ -41,15 +41,7 @@ private
   end
 
   def generate_nested_attributes_from_recurring_note
-    RecurringNote.targeted_recurrable(@employee_name, @pay_date).each do |t|
-      @payslip.salary_notes.build(employee: t.employee, doc_date: @pay_date, salary_type: t.salary_type, quantity: 1, unit: "-", unit_price: t.amount, recurring_note: t, generated: true, note: t.note)
-    end
-    RecurringNote.not_targeted_recurrable_has_end_date(@employee_name, @pay_date).each do |t|
-      @payslip.salary_notes.build(employee: t.employee, doc_date: @pay_date, salary_type: t.salary_type, quantity: 1, unit: "-", unit_price: t.amount, recurring_note: t, generated: true, note: t.note)
-    end
-    RecurringNote.not_targeted_recurrable_dont_has_end_date(@employee_name, @pay_date).each do |t|
-      @payslip.salary_notes.build(employee: t.employee, doc_date: @pay_date, salary_type: t.salary_type, quantity: 1, unit: "-", unit_price: t.amount, recurring_note: t, generated: true, note: t.note)
-    end
+    RecurringNote.fill_note_for @payslip
   end
 
 end
