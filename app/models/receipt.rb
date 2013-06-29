@@ -18,7 +18,7 @@ class Receipt < ActiveRecord::Base
   include ValidateTransactionsBalance
 
   include Searchable
-  searchable doc_date: :doc_date, doc_amount: :cash_amount,
+  searchable doc_date: :doc_date, doc_amount: :receipt_amount,
              content: [:id, :receive_from_name1, :cash_amount, 
                        :note, :cheques_audit_string, :matchers_audit_string]
 
