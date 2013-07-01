@@ -7,11 +7,8 @@ class PcbCalculationService
   INDIVIDUAL_DEDUCTION = 9000.0
   SPOUSE_DEDUCTION = 3000.0
   EPF_INSURANCE_DEDUCTION_LIMIT = 6000.0
-  TAXABLE_INCOME_NAMES = [
-    'Monthly Salary', 'Daily Salary', 'Hourly Salary', 'Director Salary',
-    'Overtime Salary', 'Sunday Salary', 'Holiday Salary', 'Commission',
-    'By Piece Works'
-  ]
+  NON_TAXABLE_INCOME_NAMES = [ ]
+  ADDITION_TAXABLE_INCOME_NAMES = [ 'Employee Bonus', 'Director Bonus' ]
   SCHEDULE = [
                [  2500.01,   5000.0,   2500.0, 0.00,  -400.0,  -800.0],
                [  5000.01,  20000.0,   5000.0, 0.02,  -400.0,  -800.0],
@@ -24,13 +21,15 @@ class PcbCalculationService
 
   def initialize payslip
     @payslip = payslip
+    @emp = payslip.employee
+    @pay_date = payslip.pay_date
   end
 
   def pcb_current_month
     if !resident_employee?
       non_resident_pcb_current_month
     else
-      resident_pcb_current_month
+      nearest_five_cents(resident_pcb_current_month + resident_addition_pcb)
     end
   end
 
@@ -39,17 +38,12 @@ class PcbCalculationService
     false
   end
 
-  def resident_pcb_current_month
-    pp = total_taxable_income_for_the_year
-    m = amount_of_first_taxable_income
-    r = tax_rate
-    b = amount_of_tax_on_M_less_tax_rebate_self_and_spouse
-    z = zakat_paid_for_the_year
-    x = pcb_paid_current_year
-    n = remaning_working_month_in_a_year
-    cz = current_month_zakat
-    pcb = nearest_five_cents((((((pp-m)*r)+b)-(z+x))/(n+1)) - cz)
-    pcb < 0 ? 0 : pcb
+  def non_resident_pcb_current_month
+    current_month_taxable_income * NON_RESIDENT_TAX_RATE
+  end
+
+  def remaning_working_month_in_a_year
+    12.0 - @payslip.pay_date.month
   end
 
   def nearest_five_cents val
@@ -60,10 +54,60 @@ class PcbCalculationService
     else  
       return (truncate_val.round(2) + (5 - t)) / 100    
     end  
+  end
+
+  def amount_of_first_taxable_income
+    row = SCHEDULE.detect { |t| total_taxable_income_for_the_year.to_f.between?(t[0], t[1]) }
+    return row[2] if row
+    0
   end  
 
-  def non_resident_pcb_current_month
-    current_month_taxable_income * NON_RESIDENT_TAX_RATE
+  def resident_pcb_current_month
+    y  = current_year_taxable_income
+    y1 = current_month_taxable_income
+    y2 = estimated_future_taxable_income
+    k  = current_year_epf
+    k1 = current_month_epf
+    k2 = estimated_future_epf
+    n  = remaning_working_month_in_a_year
+    d  = INDIVIDUAL_DEDUCTION
+    s  = spouse_deduction
+    q  = QUALIFY_CHILDREN_DEDUCTION
+    c  = @payslip.employee.children
+    p  = (y - k) + (y1 - k1) + ((y2 - k2)*n) - d - s - (q * c)
+    m  = SCHEDULE.detect { |t| p.between?(t[0], t[1]) }[2]
+    r  = SCHEDULE.detect { |t| p.between?(t[0], t[1]) }[3]
+    b  = SCHEDULE.detect { |t| p.between?(t[0], t[1]) }[employee_pcb_category]
+    x  = pcb_paid_current_year
+    z  = current_month_zakat + zakat_paid_for_the_year
+    mtd = ((((p - m)*r) + b) - (z + x)) / (n + 1)
+  end
+
+  def resident_addition_pcb
+    if addition_taxable_income > 0
+      y  = current_year_taxable_income
+      y1 = current_month_taxable_income
+      y2 = estimated_future_taxable_income
+      yt = addition_taxable_income
+      k  = current_year_epf
+      k1 = current_month_epf
+      k2 = estimated_future_epf
+      kt = 0
+      n  = remaning_working_month_in_a_year
+      d  = INDIVIDUAL_DEDUCTION
+      s  = spouse_deduction
+      q  = QUALIFY_CHILDREN_DEDUCTION
+      c  = @payslip.employee.children
+      p  = (y - k) + (y1 - k1) + ((y2 - k2)*n) + (yt - kt) - d - s - (q * c)
+      m  = SCHEDULE.detect { |t| p.between?(t[0], t[1]) } [2]
+      r  = SCHEDULE.detect { |t| p.between?(t[0], t[1]) }[3]
+      b  = SCHEDULE.detect { |t| p.between?(t[0], t[1]) }[employee_pcb_category]
+      z  = current_month_zakat + zakat_paid_for_the_year
+      x  = pcb_paid_current_year + (resident_pcb_current_month * (n+1))
+      mtd = ((((p - m)*r) + b) - (z + x))
+    else
+      0
+    end
   end
 
   def pcb_paid_current_year
@@ -75,57 +119,64 @@ class PcbCalculationService
       sum("quantity * unit_price").to_f
   end
 
-  def total_taxable_income_for_the_year
-    ((current_year_taxable_income - current_year_epf) + 
-     (current_month_taxable_income - current_month_epf) + 
-     ((current_month_taxable_income - estimated_future_epf) * remaning_working_month_in_a_year)) -
-    (INDIVIDUAL_DEDUCTION + spouse_deduction + children_deduction)
+  def estimated_future_taxable_income
+    current_month_taxable_income
+  end
+
+  def current_month_taxable_income
+    @payslip.salary_notes.select do |t| 
+      !t.marked_for_destruction? and 
+      t.salary_type.classifiaction == 'Addition' and
+      !NON_TAXABLE_INCOME_NAMES.include?(t.salary_type.name) and
+      !ADDITION_TAXABLE_INCOME_NAMES.include?(t.salary_type.name)
+    end.inject(0) { |sum, t| sum + t.amount }
+  end
+
+  def current_year_taxable_income
+    SalaryNote.where(employee_id: @payslip.employee_id).
+      where("date_part('year', doc_date) = ?", @payslip.pay_date.year).
+      where("date_part('month', doc_date) < ?", @payslip.pay_date.month).
+      where(salary_type_id: SalaryType.where(classifiaction: 'Addition')).
+        inject(0) { |sum, t| sum + t.amount }
+  end
+
+  def current_month_epf
+    cur_epf = @payslip.salary_notes.select do |t| 
+                !t.marked_for_destruction? and 
+                t.salary_type.name == EMPLOYEE_EPF_NAME
+              end.inject(0) { |sum, t| sum + t.amount }
+    if cur_epf == 0
+      cur_epf = EpfContributionService.new(@payslip).epf_employee
+    end
+    (cur_epf + current_year_epf) <= EPF_INSURANCE_DEDUCTION_LIMIT ? cur_epf : 0
   end
 
   def current_year_epf
     year_epf = SalaryNote.
-      where(employee_id: @payslip.employee_id).
-      where("date_part('year', doc_date) = ?", @payslip.pay_date.year).
-      where("date_part('month', doc_date) < ?", @payslip.pay_date.month).
+      where(employee_id: @emp.id).
+      where("date_part('year', doc_date) = ?", @pay_date.year).
+      where("date_part('month', doc_date) < ?", @pay_date.month).
       where(salary_type_id: SalaryType.find_by_name(EMPLOYEE_EPF_NAME).id).
-      sum("quantity * unit_price").to_f
-    return year_epf > EPF_INSURANCE_DEDUCTION_LIMIT ? EPF_INSURANCE_DEDUCTION_LIMIT : year_epf
-  end
-
-  def current_month_epf
-    current = current_month_epf_notes.inject(0) { |sum, t| sum + t.amount }
-    val = EPF_INSURANCE_DEDUCTION_LIMIT - current_year_epf - current
-    if val >= 0
-      return current
-    else
-      return current + val
-    end
+      sum("quantity * unit_price")
+    BigDecimal.new(year_epf) >= EPF_INSURANCE_DEDUCTION_LIMIT ? EPF_INSURANCE_DEDUCTION_LIMIT : BigDecimal.new(year_epf)
   end
 
   def estimated_future_epf
-    k = current_year_epf
-    k1 = current_month_epf
-    kt = 0
-    n = remaning_working_month_in_a_year
-    (if k + (k1 * n) <= EPF_INSURANCE_DEDUCTION_LIMIT
-      k1 * n
+    val = (EPF_INSURANCE_DEDUCTION_LIMIT - current_month_epf - current_year_epf)/remaning_working_month_in_a_year
+    k2 = val >= EPF_INSURANCE_DEDUCTION_LIMIT ? current_year_epf : val
+    if current_month_epf + current_year_epf + (k2 * remaning_working_month_in_a_year) <= 6000
+      k2
     else
-      (EPF_INSURANCE_DEDUCTION_LIMIT - (k+k1+kt))/n
-    end)/n
-  end
-
-  def current_month_epf_notes
-    @payslip.salary_notes.select do |t| 
-      !t.marked_for_destruction? and 
-      t.salary_type.name == EMPLOYEE_EPF_NAME
+      0
     end
   end
 
-
-  def amount_of_first_taxable_income
-    row = SCHEDULE.detect { |t| total_taxable_income_for_the_year.to_f.between?(t[0], t[1]) }
-    return row[2] if row
-    0
+  def addition_taxable_income
+    @payslip.salary_notes.select do |t| 
+      !t.marked_for_destruction? and 
+      t.salary_type.classifiaction == 'Addition' and
+      ADDITION_TAXABLE_INCOME_NAMES.include?(t.salary_type.name)
+    end.inject(0) { |sum, t| sum + t.amount }
   end
 
   def zakat_paid_for_the_year
@@ -137,21 +188,11 @@ class PcbCalculationService
       sum("quantity * unit_price").to_f
   end
 
-  def current_month_zakat_notes
+  def current_month_zakat
     @payslip.salary_notes.select do |t| 
       !t.marked_for_destruction? and 
       t.salary_type.name == EMPLOYEE_ZAKAT_NAME
-    end
-  end
-
-  def current_month_zakat
-    current_month_zakat_notes.inject(0) { |sum, t| sum + t.amount }
-  end
-
-  def amount_of_tax_on_M_less_tax_rebate_self_and_spouse
-    row = SCHEDULE.detect { |t| total_taxable_income_for_the_year.between?(t[0], t[1]) }
-    return row[employee_pcb_category] if row
-    0
+    end.inject(0) { |sum, t| sum + t.amount }
   end
 
   def employee_pcb_category
@@ -164,48 +205,11 @@ class PcbCalculationService
     end
   end
 
-  def tax_rate
-    row = SCHEDULE.detect { |t| total_taxable_income_for_the_year.between?(t[0], t[1]) }
-    return row[3] if row
-    0
-  end
-
   def spouse_deduction
     if @payslip.employee.married?
       return SPOUSE_DEDUCTION if !@payslip.employee.partner_working
     end
     return 0
-  end
-
-  def children_deduction
-    return @payslip.employee.children * QUALIFY_CHILDREN_DEDUCTION
-  end
-
-  def current_month_taxable_income_notes
-    @payslip.salary_notes.select do |t| 
-      !t.marked_for_destruction? and 
-      t.salary_type.classifiaction == 'Addition' #and
-      #TAXABLE_INCOME_NAMES.include?(t.salary_type.name)
-    end
-  end
-
-  def current_month_taxable_income
-    current_month_taxable_income_notes.inject(0) { |sum, t| sum + t.amount }
-  end
-
-  def current_year_taxable_income_notes
-    SalaryNote.where(employee_id: @payslip.employee_id).
-      where("date_part('year', doc_date) = ?", @payslip.pay_date.year).
-      where("date_part('month', doc_date) < ?", @payslip.pay_date.month).
-      where(salary_type_id: SalaryType.where(classifiaction: 'Addition'))
-  end
-
-  def current_year_taxable_income
-    current_year_taxable_income_notes.inject(0) { |sum, t| sum + t.amount }
-  end
-
-  def remaning_working_month_in_a_year
-    12.0 - @payslip.pay_date.month
   end
 
 end
