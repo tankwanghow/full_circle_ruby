@@ -65,17 +65,17 @@ def initialize(payments, view, static_content=false)
     else
       text_box @payment.collector, at: [14.mm, 105.mm], width: 110.mm, height: 24.mm
     end
-    draw_text @payment.pay_from.name1, at: [130.mm, 107.mm], size: 14, style: :bold
-    draw_text [@payment.cheque_no, @payment.cheque_date].join("     "), at: [135.mm, 94.mm], style: :bold
+    draw_text @payment.pay_from.name1, at: [130.mm, 107.mm], size: 14
+    draw_text [@payment.cheque_no, @payment.cheque_date].join("     "), at: [135.mm, 94.mm]
     draw_text @payment.doc_date, at: [172.mm, 89.mm]
-    draw_text @view.docnolize(@payment.id), at: [174.mm, 83.mm]
+    draw_text @view.docnolize(@payment.id), at: [174.mm, 83.mm], style: :bold
   end
 
   def draw_page_number
     i = 0
     ((page_count - @total_pages + 1)..page_count).step(1) do |p|
       go_to_page p
-      bounding_box [bounds.right - 30.mm, bounds.top - 8.mm], width: 30.mm, height: 5.mm do
+      bounding_box [bounds.right - 50.mm, bounds.top - 8.mm], width: 30.mm, height: 5.mm do
         text "Page #{i+=1} of #{@total_pages}", size: 9
       end
     end
