@@ -25,6 +25,10 @@ class Flock < ActiveRecord::Base
     Flock.find_by_id(val.scan(/\*(.+)\*/).flatten.first.to_i)
   end
 
+  def age_at date=Date.today
+    (date - dob) / 7
+  end
+
   include AuditString
   audit_string :movements
 end

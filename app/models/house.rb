@@ -97,4 +97,10 @@ class House < ActiveRecord::Base
     end
   end
 
+  def self.production_warning date=Date.today
+    all.select do |h|
+      (h.yield_between(date - 2, date) - h.yield_between(date - 7, date - 2)).abs >= 0.1 and
+      h.flock_at(date).age_at(date) <= 79 and h.flock_at(date).age_at(date) >= 21
+    end
+  end
 end
