@@ -78,7 +78,7 @@ class HarvestingReportPdf < Prawn::Document
            "=  <b>Sum Production:</b><u>#{sum_prod}</u>    " +
            "<b>Sum Death:</b><u>#{sum_dea}</u>    " + 
            "<b>Sum House:</b><u>#{@rows.count}</u>    " +
-           "<b>Avg Yield:</b><u>#{(sum_yield_1 / @rows.count).round 2}%</u>   =", inline_format: true, size: 11)
+           "<b>Avg Yield:</b><u>#{(sum_yield_1 / @rows.count).round 2}%</u>  =", inline_format: true, size: 11)
       text("======================================================================================", style: :bold)
       draw_footer
     end
@@ -100,7 +100,8 @@ class HarvestingReportPdf < Prawn::Document
   def draw_footer
     warnings = House.production_warning(@report_date)
     if warnings.count > 0
-      text("!!PLEASE CHECK HOUSE -> " + warnings.map { |h| h.house_no }.join(", "), style: :bold)
+      text(" ")
+      text("!!!PLEASE CHECK HOUSE " + warnings.map { |h| h.house_no }.join(", ") + "!!!", style: :bold)
     end
   end
 
