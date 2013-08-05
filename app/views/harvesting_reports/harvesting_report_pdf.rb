@@ -99,9 +99,10 @@ class HarvestingReportPdf < Prawn::Document
     warning_houses = []
     warning_houses << production_warning_houses
     warning_houses << production_warning_flocks
-    if warning_houses.flatten!.uniq!.count > 0
-      text("Please Check Food, Water and Chicken Qty for the following houses:-")
-      text(warning_houses.sort_by { |t| t.house_no }.map { |h| h.house_no }.join(", "), style: :bold)
+    warning_houses.flatten!.uniq!
+    if warning_houses.count > 0
+      text("Please Check Food, Water and Chicken Qty for the following houses")
+      text(warning_houses.sort_by{ |t| t.house_no }.map{ |h| h.house_no }.join(", "), style: :bold)
     end
   end
 
