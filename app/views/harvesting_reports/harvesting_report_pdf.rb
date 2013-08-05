@@ -16,7 +16,6 @@ class HarvestingReportPdf < Prawn::Document
     @total_pages = 1
     start_new_page
     draw_header
-    fill_color "000077"
     font_size 10 do
       font "Courier" do
         draw_detail
@@ -79,8 +78,7 @@ class HarvestingReportPdf < Prawn::Document
            "<b>Sum House:</b><u>#{@rows.count}</u>    " +
            "<b>Avg Yield:</b><u>#{(sum_yield_1 / @rows.count).round 2}%</u>", inline_format: true, size: 11)
       text("======================================================================================", style: :bold)
-      draw_house_production_warning
-      draw_flock_production_warning
+      draw_warning_houses
     end
   end
 
@@ -97,34 +95,34 @@ class HarvestingReportPdf < Prawn::Document
     end
   end
 
-  def draw_house_production_warning
-    house_warnings = @rows.select do |t| 
-      ((t.yield_1.to_f + t.yield_2.to_f) / 2) -
-      ((t.yield_3.to_f + t.yield_4.to_f + t.yield_5.to_f + t.yield_6.to_f + t.yield_7.to_f) / 5) <= -0.1 and
-      t.age.to_i > 21 and t.age.to_i < 80
-    end
-    if house_warnings.count > 0
-      text("!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!", style: :bold)
-      text("Check Food, Water and Chicken Qty " + house_warnings.map { |h| h.house_no }.join(", "), style: :bold)
-      text("!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!", style: :bold)
+  def draw_warning_houses
+    warning_houses = []
+    warning_houses << production_warning_houses
+    warning_houses << production_warning_flocks
+    if warning_houses.flatten!.uniq!.count > 0
+      text("Please Check Food, Water and Chicken Qty for the following houses:-")
+      text(warning_houses.sort_by { |t| t.house_no }.map { |h| h.house_no }.join(", "), style: :bold)
     end
   end
 
-  def draw_flock_production_warning
+private
+
+  def production_warning_flocks
     warning_houses = []
     dobs = @rows.group_by { |t| t.dob }.keys
     dobs.each do |k|
       warning_houses << return_warning_houses(@rows.select { |t| t.dob == k })
     end
     warning_houses.flatten!
-    if warning_houses.count > 0
-      text("!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!", style: :bold)
-      text("Check Food, Water and Chicken Qty " + warning_houses.map { |h| h.house_no }.join(", "), style: :bold)
-      text("!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!", style: :bold)
-    end
   end
 
-private
+  def production_warning_houses
+    @rows.select do |t| 
+      ((t.yield_1.to_f + t.yield_2.to_f) / 2) -
+      ((t.yield_3.to_f + t.yield_4.to_f + t.yield_5.to_f + t.yield_6.to_f + t.yield_7.to_f) / 5) <= -0.1 and
+      t.age.to_i > 21 and t.age.to_i < 80
+    end
+  end
   
   def return_warning_houses values
     warning_houses = []
