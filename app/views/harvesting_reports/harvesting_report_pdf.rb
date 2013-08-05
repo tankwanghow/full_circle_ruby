@@ -35,7 +35,7 @@ class HarvestingReportPdf < Prawn::Document
       font "Courier" do
         text_box "Hou  D.O.B   Wks  Try Die   Now  1day  2day  3day  4day  5day  6day   Avg  Collector", 
                  at: [15.mm, bounds.top - 6.mm], size: 10, style: :bold
-        text_box "======================================================================================", 
+        text_box "=========================================================================================", 
                  at: [15.mm, bounds.top - 9.mm], size: 10
       end
     end
@@ -69,15 +69,15 @@ class HarvestingReportPdf < Prawn::Document
           "#{("%3d%") % yield_6}  " + 
           "#{("%3d%") % yield_7}  " +
           "<b>#{("%3d%") % avg_yield}</b>  " +
-          "#{(r['name'] || 'Company').downcase.titleize.slice(0..10)}"
+          "#{(r['name'] || 'Company').downcase.titleize.slice(0..13)}"
         end.join("\n"), inline_format: true)
-      text("======================================================================================", style: :bold)
+      text("=========================================================================================", style: :bold)
       text(
            "   <b>Sum Production:</b><u>#{sum_prod}</u>    " +
            "<b>Sum Death:</b><u>#{sum_dea}</u>    " + 
            "<b>Sum House:</b><u>#{@rows.count}</u>    " +
            "<b>Avg Yield:</b><u>#{(sum_yield_1 / @rows.count).round 2}%</u>", inline_format: true, size: 11)
-      text("======================================================================================", style: :bold)
+      text("=========================================================================================", style: :bold)
       draw_warning_houses
     end
   end
