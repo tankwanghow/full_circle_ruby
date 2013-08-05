@@ -51,14 +51,13 @@ class HarvestingReportPdf < Prawn::Document
       end
       text(
         @rows.map do |r|
-          house = House.find_by_house_no(r['house_no'])
-          yield_1 = house.yield_at(@report_date) * 100
-          yield_2 = house.yield_at(@report_date - 1) * 100
-          yield_3 = house.yield_at(@report_date - 2) * 100
-          yield_4 = house.yield_at(@report_date - 3) * 100
-          yield_5 = house.yield_at(@report_date - 4) * 100
-          yield_6 = house.yield_at(@report_date - 5) * 100
-          yield_7 = house.yield_at(@report_date - 6) * 100
+          yield_1 = r.yield_1.to_f * 100
+          yield_2 = r.yield_2.to_f * 100
+          yield_3 = r.yield_3.to_f * 100
+          yield_4 = r.yield_4.to_f * 100
+          yield_5 = r.yield_5.to_f * 100
+          yield_6 = r.yield_6.to_f * 100
+          yield_7 = r.yield_7.to_f * 100
           avg_yield = (yield_1 + yield_2 + yield_3 + yield_4 + yield_5 + yield_6 + yield_7)/7
           sum_yield_1 += yield_1
           "#{r['house_no']}  #{r['dob'].to_date.strftime('%y%m%d')}   #{("%2d") % r['age'].to_i.to_s}  " + 
@@ -75,12 +74,13 @@ class HarvestingReportPdf < Prawn::Document
         end.join("\n"), inline_format: true)
       text("======================================================================================", style: :bold)
       text(
-           "=  <b>Sum Production:</b><u>#{sum_prod}</u>    " +
+           "   <b>Sum Production:</b><u>#{sum_prod}</u>    " +
            "<b>Sum Death:</b><u>#{sum_dea}</u>    " + 
            "<b>Sum House:</b><u>#{@rows.count}</u>    " +
-           "<b>Avg Yield:</b><u>#{(sum_yield_1 / @rows.count).round 2}%</u>  =", inline_format: true, size: 11)
+           "<b>Avg Yield:</b><u>#{(sum_yield_1 / @rows.count).round 2}%</u>", inline_format: true, size: 11)
       text("======================================================================================", style: :bold)
-      draw_footer
+      draw_house_production_warning
+      draw_flock_production_warning
     end
   end
 
@@ -97,11 +97,54 @@ class HarvestingReportPdf < Prawn::Document
     end
   end
 
-  def draw_footer
-    warnings = House.production_warning(@report_date)
-    if warnings.count > 0
-      text(" ")
-      text("!!!PLEASE CHECK HOUSE " + warnings.map { |h| h.house_no }.join(", ") + "!!!", style: :bold)
+  def draw_house_production_warning
+    house_warnings = @rows.select do |t| 
+      ((t.yield_1.to_f + t.yield_2.to_f) / 2) -
+      ((t.yield_3.to_f + t.yield_4.to_f + t.yield_5.to_f + t.yield_6.to_f + t.yield_7.to_f) / 5) <= -0.1 and
+      t.age.to_i > 21 and t.age.to_i < 80
+    end
+    if house_warnings.count > 0
+      text("!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!", style: :bold)
+      text("Check Food, Water and Chicken Qty " + house_warnings.map { |h| h.house_no }.join(", "), style: :bold)
+      text("!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!", style: :bold)
+    end
+  end
+
+  def draw_flock_production_warning
+    warning_houses = []
+    dobs = @rows.group_by { |t| t.dob }.keys
+    dobs.each do |k|
+      warning_houses << return_warning_houses(@rows.select { |t| t.dob == k })
+    end
+    warning_houses.flatten!
+    if warning_houses.count > 0
+      text("!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!", style: :bold)
+      text("Check Food, Water and Chicken Qty " + warning_houses.map { |h| h.house_no }.join(", "), style: :bold)
+      text("!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!*!*!*!!*!", style: :bold)
+    end
+  end
+
+private
+  
+  def return_warning_houses values
+    warning_houses = []
+    values.each do |t|
+      current_house_yield = (t.yield_1.to_f + t.yield_2.to_f + t.yield_3.to_f)/3
+      others_house_yield = houses_average_yield(values.select { |v| t.house_no != v.house_no }) || current_house_yield
+      warning_houses << t if current_house_yield - others_house_yield <= -0.06 and t.age.to_i < 80  and t.age.to_i > 21
+    end
+    warning_houses
+  end
+
+  def houses_average_yield houses
+    tot = 0
+    houses.each do |t|
+      tot = tot + ((t.yield_1.to_f + t.yield_2.to_f + t.yield_3.to_f)/3)
+    end
+    if houses.count > 0
+      tot/houses.count
+    else
+      nil
     end
   end
 
