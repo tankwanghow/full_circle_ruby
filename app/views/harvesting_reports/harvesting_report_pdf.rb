@@ -101,7 +101,7 @@ class HarvestingReportPdf < Prawn::Document
     warning_houses << production_warning_flocks
     warning_houses.flatten!.uniq!
     if warning_houses.count > 0
-      text("Please Check Food, Water and Chicken Qty for the following houses")
+      text("Please Check Feed, Water and Chicken Qty for the following houses")
       text(warning_houses.sort_by{ |t| t.house_no }.map{ |h| h.house_no }.join(", "), style: :bold)
     end
   end
@@ -128,7 +128,7 @@ private
   def return_warning_houses values
     warning_houses = []
     values.each do |t|
-      current_house_yield = (t.yield_1.to_f + t.yield_2.to_f + t.yield_3.to_f)/3
+      current_house_yield = (t.yield_1.to_f + t.yield_2.to_f + t.yield_3.to_f + t.yield_4.to_f)/4
       others_house_yield = houses_average_yield(values.select { |v| t.house_no != v.house_no }) || current_house_yield
       warning_houses << t if current_house_yield - others_house_yield <= -0.06 and t.age.to_i < 80  and t.age.to_i > 21
     end
@@ -138,7 +138,7 @@ private
   def houses_average_yield houses
     tot = 0
     houses.each do |t|
-      tot = tot + ((t.yield_1.to_f + t.yield_2.to_f + t.yield_3.to_f)/3)
+      tot = tot + ((t.yield_1.to_f + t.yield_2.to_f + t.yield_3.to_f + t.yield_4.to_f)/4)
     end
     if houses.count > 0
       tot/houses.count
