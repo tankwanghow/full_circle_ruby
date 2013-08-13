@@ -10,6 +10,8 @@ FullCircle::Application.routes.draw do
   match 'get_return_cheque' => 'cheques#return_cheque'
   
   resources :statements, only: [:new, :create]
+  resources :feed_usages
+  resources :feed_productions
 
   root to: 'main#index'
   resources :audit_logs, only: :index

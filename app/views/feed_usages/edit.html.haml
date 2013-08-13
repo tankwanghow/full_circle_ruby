@@ -1,0 +1,7 @@
+= render 'usages'
+= simple_form_for @feed_usage, html: { class: 'span8 form-inline well', id: 'usage-form' } do |f|
+  %legend
+    Edit Feed Usage
+  = render 'fields', f: f
+  = f.button :submit, 'Save', class: 'btn btn-primary'
+  = link_to "New", new_feed_usage_path, class: "btn btn-info"

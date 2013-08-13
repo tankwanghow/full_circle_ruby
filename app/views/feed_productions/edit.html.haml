@@ -1,0 +1,7 @@
+= render 'productions'
+= simple_form_for @feed_production, html: { class: 'span8 form-inline well' } do |f|
+  %legend
+    Edit Feed Production
+  = render 'fields', f: f
+  = f.button :submit, 'Save', class: 'btn btn-primary'
+  = link_to "New", new_feed_production_path, class: "btn btn-info"

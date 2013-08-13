@@ -1,0 +1,7 @@
+table#usages, table#usage_summary, table#productions {
+  td { vertical-align: middle; padding: 2px; }
+  th { text-align: center; padding: 2px; }
+  thead tr, thead th { background-color: lightgray; }
+  tbody td { text-align: center }
+  tbody tr.active { background-color: lightblue; }
+}

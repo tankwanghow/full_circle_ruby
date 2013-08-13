@@ -1,0 +1,45 @@
+.row-fuild
+  = simple_form_for :feed_usages_find, url: feed_usages_path, html: { class: 'form-inline' }, method: :get do |f|
+    = label_tag 'Usage date', nil, class: :bold
+    = f.input_field :usage_date, value: session[:feed_usages_find][:usage_date], class: 'datepicker span2'
+    = f.button :submit, 'Find', class: 'btn btn-primary'
+    = link_to "New", new_feed_usage_path, class: "btn btn-info"
+
+%h3= "Feed Usages For #{session[:feed_usages_find][:usage_date]}"
+
+- summary = FeedUsage.daily_usage_summary(session[:feed_usages_find][:usage_date].to_date)
+.row-fuild
+  %table.table-bordered.table#usage_summary
+    %thead
+      - summary.each do |f|
+        %th= f.feed_type
+    %tbody
+      - summary.each do |f|
+        %td= f.qty
+
+.row-fuild.span12
+  %table.table-bordered.table#usages
+    %thead
+      %tr
+        %th.span2 Lorry
+        %th.span2 Feed Type
+        %th.span2 Gross(Kg)
+        %th.span2 Tare(Kg)
+        %th.span2 Net(Kg)
+        %th.span1 Action
+    %tbody 
+      - for t in @feed_usages
+        %tr{ class: t == @feed_usage ? 'active bold' : '' }
+          %td.lorry= t.lorry
+          %td.feed_type= t.feed_type
+          %td.gross= t.gross
+          %td.tare= t.tare
+          %td.net= t.gross - t.tare
+          %td.action
+            = link_to 'edit', edit_feed_usage_path(t)
+            | 
+            = link_to 'delete', t, method: :delete, confirm: 'Are you sure?'
+      - if @feed_usages.length == 0
+        %tr
+          %td{colspan: 10}
+            %h3 No Record found!

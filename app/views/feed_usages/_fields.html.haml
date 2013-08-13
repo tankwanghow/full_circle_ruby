@@ -1,0 +1,11 @@
+= f.hidden_field :usage_date
+.row-fluid
+  .span6
+    = f.input :lorry, label: 'Lorry', input_html: { class: 'span' }, autofocus: true
+  .span6
+    = f.input :feed_type, label: 'Feed Type', input_html: { class: 'span', type: :text }
+  .span6
+    = f.input :gross, label: 'Gross(Kg)', input_html: { class: 'numeric span', type: :text }
+  .span6
+    = f.input :tare, label: 'Tare(Kg)', input_html: { class: 'numeric span', type: :text }
+  
