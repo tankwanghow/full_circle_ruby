@@ -1,5 +1,5 @@
 class FeedUsagesController < ApplicationController
-  before_filter :fill_usages, except: [:create, :update]
+  before_filter :fill_usages
   before_filter :upcase_params, only: [:create, :update]
 
   def index

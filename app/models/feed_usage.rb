@@ -1,6 +1,7 @@
 class FeedUsage < ActiveRecord::Base
   validates :usage_date, presence: true
   validates :lorry, presence: true
+  validates_numericality_of :gross, :tare, :message => "is not a number"
 
   def self.daily_usage_summary date=Date.today
     sql = <<-SQL

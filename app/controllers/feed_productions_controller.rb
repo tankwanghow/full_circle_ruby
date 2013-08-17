@@ -1,5 +1,5 @@
 class FeedProductionsController < ApplicationController
-  before_filter :fill_productions, except: [:create, :update]
+  before_filter :fill_productions
   before_filter :upcase_params, only: [:create, :update]
 
   def index

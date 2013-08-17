@@ -1,3 +1,4 @@
+= render_flash
 .row-fuild
   = simple_form_for :feed_productions_find, url: feed_productions_path, html: { class: 'form-inline' }, method: :get do |f|
     = label_tag 'Production Date', nil, class: :bold
@@ -14,7 +15,7 @@
         %th.span2 Feed Type
         %th.span2 Qty(Kg)
         %th.span2 Silo
-        %th.span1 Action
+        %th.span2 Action
     %tbody 
       - for t in @feed_productions
         %tr{ class: t == @feed_production ? 'active bold' : '' }
