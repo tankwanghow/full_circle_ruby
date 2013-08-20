@@ -16,10 +16,10 @@ class FeedProductionsController < ApplicationController
   def create
     @feed_production = FeedProduction.new(params[:feed_production])
     if @feed_production.save
-      flash[:success] = "Feed Usage '##{@feed_production.id}' created successfully."
+      flash[:success] = "Feed Production '##{@feed_production.id}' created successfully."
       redirect_to edit_feed_production_path(@feed_production)
     else
-      flash.now[:error] = "Failed to create Feed Usage."
+      flash.now[:error] = "Failed to create Feed Production."
       render :new
     end
   end
@@ -38,7 +38,7 @@ class FeedProductionsController < ApplicationController
   def destroy
     @feed_production = FeedProduction.find(params[:id])
     @feed_production.destroy
-    flash[:success] = "Successfully deleted '#{@feed_production.lorry}'."
+    flash[:success] = "Successfully deleted '#{@feed_production.feed_type}'."
     render :index
   end
 
