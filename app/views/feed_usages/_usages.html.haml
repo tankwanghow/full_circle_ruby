@@ -1,5 +1,5 @@
 = render_flash
-.row-fuild
+.row-fluid
   = simple_form_for :feed_usages_find, url: feed_usages_path, html: { class: 'form-inline' }, method: :get do |f|
     = label_tag 'Usage date', nil, class: :bold
     = f.input_field :usage_date, value: session[:feed_usages_find][:usage_date], class: 'datepicker span2'
@@ -9,7 +9,7 @@
 %h3= "Feed Usages For #{session[:feed_usages_find][:usage_date]}"
 
 - summary = FeedUsage.daily_usage_summary(session[:feed_usages_find][:usage_date].to_date)
-.row-fuild
+.row-fluid
   %table.table-bordered.table#usage_summary
     %thead
       - summary.each do |f|
@@ -18,7 +18,7 @@
       - summary.each do |f|
         %td= f.qty
 
-.row-fuild.span12
+.row-fluid.span12
   %table.table-bordered.table#usages
     %thead
       %tr
