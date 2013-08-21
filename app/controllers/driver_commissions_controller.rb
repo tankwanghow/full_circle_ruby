@@ -166,8 +166,8 @@ class DungTransLoadCommission < Commission
 end
 
 class FeedTransTonsCommission < Commission
-  @less_5_customer_commission = 3.5
-  @more_5_customer_commission = 3.5
+  @less_5_customer_commission = 3.6
+  @more_5_customer_commission = 3.6
   @loading_commission_percentage = 0.5
   @unloading_commission_percentage = 0.5
 end
@@ -177,4 +177,4 @@ class TrayTransCommission < Commission
   @more_5_customer_commission = 0.1 / 140
   @loading_commission_percentage = 0.5
   @unloading_commission_percentage = 0.5
-end 
+end
