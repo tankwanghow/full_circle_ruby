@@ -80,8 +80,8 @@ class HarvestingSlipsPdf < Prawn::Document
     else
       houses.each do |h|
         draw_text h, size: 14, style: :bold, at: [ 28.5.mm + (15.mm * house_count), at - 6.5.mm]
-        prod = House.find_by_house_no(h).production_between(@at_date - 7, @at_date)/7
-        draw_text prod, size: 14, style: :bold, at: [ 29.mm + (15.mm * house_count), at - 42.5.mm]
+        # prod = House.find_by_house_no(h).production_between(@at_date - 7, @at_date)/7
+        # draw_text prod, size: 14, style: :bold, at: [ 29.mm + (15.mm * house_count), at - 42.5.mm]
         house_count += 1
       end
     end
