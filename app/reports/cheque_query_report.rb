@@ -1,4 +1,4 @@
-  class ChequeQueryReport < Dossier::Report
+class ChequeQueryReport < Dossier::Report
   include SharedHelpers
 
   def sql
