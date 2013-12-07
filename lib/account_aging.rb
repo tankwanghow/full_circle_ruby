@@ -100,15 +100,15 @@ class AccountAging
 
   def transactions_with_balance_sql
     <<-SQL
-with transactions_with_balance as (
-  select txn.id, txn.transaction_date, 
-         txn.amount + COALESCE(sum(tmx.amount), 0) + txn.self_matched as amount
-    from transactions txn left outer join  transaction_matchers tmx    
-      on txn.id = tmx.transaction_id  
-     and tmx.doc_date <= '#{@at_date.to_s(:db)}'
-   where txn.account_id = #{@ac.id}
-     and transaction_date <= '#{@at_date.to_s(:db)}'
-   group by txn.id, txn.transaction_date)
+      with transactions_with_balance as (
+        select txn.id, txn.transaction_date, 
+               txn.amount + COALESCE(sum(tmx.amount), 0) + txn.self_matched as amount
+          from transactions txn left outer join  transaction_matchers tmx    
+            on txn.id = tmx.transaction_id  
+           and tmx.doc_date <= '#{@at_date.to_s(:db)}'
+         where txn.account_id = #{@ac.id}
+           and transaction_date <= '#{@at_date.to_s(:db)}'
+         group by txn.id, txn.transaction_date)
     SQL
   end
   
