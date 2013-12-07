@@ -62,16 +62,6 @@ class Account < ActiveRecord::Base
       end)
   end
 
-  def self.aging_lists accounts, at_date=Date.today, interval_days=15, intervals=5
-    hash = {}
-    accounts.each do |ac|
-      if ac.balance_at(at_date) != 0.0
-        hash[ac.name1] = AccountAging.new(ac, at_date, interval_days, intervals).aging_list
-      end
-    end
-    hash
-  end
-
   def aging_list at_date=Date.today, interval_days=15, intervals=5
     AccountAging.new(self, at_date, interval_days, intervals).aging_list
   end
