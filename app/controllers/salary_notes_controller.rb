@@ -1,4 +1,5 @@
 class SalaryNotesController < ApplicationController
+  before_filter :warn_doc_date, only: [:create, :update]
 
   def edit
     @salary_note = SalaryNote.find(params[:id])

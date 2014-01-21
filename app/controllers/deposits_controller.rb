@@ -1,4 +1,6 @@
 class DepositsController < ApplicationController
+  before_filter :warn_doc_date, only: [:create, :update]
+  
   def edit
     @deposit = Deposit.find(params[:id])
   end

@@ -13,6 +13,18 @@ class ApplicationController < ActionController::Base
 
 private
 
+  def warn_doc_date
+    model = params[:controller].singularize
+    doc_date = params[model][:doc_date] ? params[model][:doc_date].to_date : nil
+    if doc_date
+      if doc_date > Date.today + 2
+        flash[:notice] = "Future Entry. Ignore this warning if you realy mean it."
+      elsif doc_date < Date.today - 30
+        flash[:notice] = "Pass Entry. Ignore this warning if you realy mean it."
+      end
+    end
+  end
+
   def admin_lock_check object
     raise 'Need Administrator Right!' if object.admin_lock and !current_user.is_admin?
   end

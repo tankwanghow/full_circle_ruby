@@ -1,4 +1,5 @@
 class AdvancesController < ApplicationController
+  before_filter :warn_doc_date, only: [:create, :update]
 
   def edit
     @advance = Advance.find(params[:id])

@@ -1,4 +1,5 @@
 class PaySlipsController < ApplicationController
+  before_filter :warn_doc_date, only: [:create, :update]
 
   def new
     @pay_slip = PaySlipGenerationService.new(params[:employee_name], params[:pay_date]).generate_pay_slip

@@ -1,4 +1,6 @@
 class InvoicesController < ApplicationController
+  before_filter :warn_doc_date, only: [:create, :update]
+  
   def edit
     @invoice = Invoice.find(params[:id])
   end

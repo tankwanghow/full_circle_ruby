@@ -1,4 +1,5 @@
 class RecurringNotesController < ApplicationController
+  before_filter :warn_doc_date, only: [:create, :update]
 
   def edit
     @recurring_note = RecurringNote.find(params[:id])

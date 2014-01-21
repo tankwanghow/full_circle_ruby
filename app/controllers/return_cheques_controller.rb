@@ -1,4 +1,6 @@
 class ReturnChequesController < ApplicationController
+  before_filter :warn_doc_date, only: [:create, :update]
+  
   def edit
     @return_cheque = ReturnCheque.find(params[:id])
   end

@@ -1,4 +1,6 @@
 class ReceiptsController < ApplicationController
+  before_filter :warn_doc_date, only: [:create, :update]
+  
   def edit
     @receipt = Receipt.find(params[:id])
   end

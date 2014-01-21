@@ -1,4 +1,6 @@
 class CashSalesController < ApplicationController
+  before_filter :warn_doc_date, only: [:create, :update]
+
   def edit
     @cashsale = CashSale.find(params[:id])
   end

@@ -1,4 +1,5 @@
 class HarvestingSlipsController < ApplicationController
+  before_filter :warn_doc_date, only: [:create, :update]
 
   def edit
     @harvesting_slip = HarvestingSlip.find(params[:id])

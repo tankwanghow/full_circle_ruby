@@ -1,4 +1,5 @@
 class PaymentsController < ApplicationController
+  before_filter :warn_doc_date, only: [:create, :update]
 
   def edit
     begin
