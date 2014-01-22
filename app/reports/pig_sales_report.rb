@@ -4,10 +4,17 @@ class PigSalesReport < Dossier::Report
   set_callback :execute, :after do
     options[:footer] = 0
     raw_results.rows.group_by{ |item| item[4] }.map do |doc, data| 
-        [ doc, data.inject(0) { |qty, value| qty += value[6].to_f } ]
+        [ doc, 
+          data.inject(0) { |qty, value| qty += value[6].to_f }, 
+          data.inject(0) { |qty, value| qty += (value[8].upcase == 'KG' ? value[7].to_f : 0) }]
       end.each do |sum|
         options[:footer] += 1
-        results.rows << [nil, nil, nil, nil, 'Total', sum[0], formatter.number_with_precision(sum[1], precision: 2, delimiter: ','), nil, nil, nil, nil]
+        results.rows << [nil, nil, nil, nil, 
+                         'Total', sum[0], 
+                         formatter.number_with_precision(sum[1], precision: 2, delimiter: ','), 
+                         formatter.number_with_precision(sum[2], precision: 2, delimiter: ','), 
+                         "Avg -> #{formatter.number_with_precision(sum[2]/sum[1], precision: 2, delimiter: ',')}",
+                         nil]
      end
   end
 
