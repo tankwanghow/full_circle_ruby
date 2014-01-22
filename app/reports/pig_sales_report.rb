@@ -52,7 +52,7 @@ class PigSalesReport < Dossier::Report
          where doc_date >= :from_date
            and doc_date <= :to_date)
 
-        select doc_date, doc, pi.id, pi.name1, pd.name1 as product, note, package_qty, quantity, pd.unit, unit_price, quantity * unit_price
+        select doc_date, doc, pi.id, pi.name1, pd.name1 as product, note, package_qty, quantity, pd.unit, unit_price 
           from sale_data pi 
          inner join product_ids pd on pd.id = pi.product_id
          order by 1,3,4,5
