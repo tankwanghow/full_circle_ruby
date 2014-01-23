@@ -37,7 +37,7 @@ class PigSalesReport < Dossier::Report
 
   def query_definitions
     <<-SQL
-      with product_ids as (
+            with product_ids as (
         select pd.id, pd.name1, pd.unit
           from products pd 
          inner join taggings tgs on tgs.taggable_id = pd.id
@@ -49,20 +49,40 @@ class PigSalesReport < Dossier::Report
           from invoices pi
          inner join invoice_details pid on pi.id = pid.invoice_id
          inner join accounts ac on pi.customer_id = ac.id
-         where doc_date >= :from_date
-           and doc_date <= :to_date
+         where doc_date >= '2013-09-01'
+           and doc_date <= '2013-12-31'
         union all
         select 'CashSale' as doc, pi.id, doc_date, ac.name1, product_id, package_qty, quantity, unit_price, pid.note
           from cash_sales pi
          inner join cash_sale_details pid on pi.id = pid.cash_sale_id
          inner join accounts ac on pi.customer_id = ac.id
-         where doc_date >= :from_date
-           and doc_date <= :to_date)
-
-        select doc_date, doc, pi.id, pi.name1, pd.name1 as product, note, package_qty, quantity, pd.unit, unit_price 
-          from sale_data pi 
-         inner join product_ids pd on pd.id = pi.product_id
-         order by 1,3,4,5
+         where doc_date >= '2013-09-01'
+           and doc_date <= '2013-12-31'),
+        pig_sales_data as (
+          select doc_date, doc, pi.id, pi.name1, pd.name1 as product, note, package_qty, quantity, pd.unit, unit_price 
+            from sale_data pi 
+           inner join product_ids pd on pd.id = pi.product_id),
+        credit_notes as (
+          select txn.doc_type, txn.doc_id, txm.doc_type as txm_type, txm.doc_id as txm_id, txm.amount
+            from transactions txn inner join transaction_matchers txm 
+              on txm.transaction_id = txn.id and txm.doc_type = 'CreditNote'
+            where txn.doc_id in (select distinct id from pig_sales_data where doc = 'CashSale')
+              and txn.doc_type = 'CashSale'
+            union all
+           select txn.doc_type, txn.doc_id, txm.doc_type as txm_type, txm.doc_id as txm_id, txm.amount
+             from transactions txn inner join transaction_matchers txm 
+               on txm.transaction_id = txn.id and txm.doc_type = 'CreditNote'
+            where txn.doc_id in (select distinct id from pig_sales_data where doc = 'Invoice')
+              and txn.doc_type = 'Invoice')
+           select doc_date, doc, id, name1, product, note, 
+                  package_qty as qty, quantity as weight, unit, 
+                  unit_price, quantity * unit_price as amount
+             from pig_sales_data psd
+            union all
+           select null, doc_type, doc_id, 'discount', null, 
+                  null, null, null, null, null, amount
+             from credit_notes cn
+            order by 2 , 3, 11 desc
       SQL
   end
   
