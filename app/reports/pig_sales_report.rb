@@ -6,15 +6,19 @@ class PigSalesReport < Dossier::Report
     raw_results.rows.group_by{ |item| item[4] }.map do |doc, data| 
         [ doc, 
           data.inject(0) { |qty, value| qty += value[6].to_f }, 
-          data.inject(0) { |qty, value| qty += (value[8].upcase == 'KG' ? value[7].to_f : 0) }]
+          data.inject(0) { |qty, value| qty += (value[8] == 'Kg' ? value[7].to_f : 0) },
+          data.inject(0) { |qty, value| qty += value[10].to_f }]
       end.each do |sum|
-        options[:footer] += 1
-        results.rows << [nil, nil, nil, nil, 
-                         'Total', sum[0], 
-                         formatter.number_with_precision(sum[1], precision: 2, delimiter: ','), 
-                         formatter.number_with_precision(sum[2], precision: 2, delimiter: ','), 
-                         "Avg -> #{formatter.number_with_precision(sum[2]/sum[1], precision: 2, delimiter: ',')}",
-                         nil]
+        if !sum[0].blank?
+          options[:footer] += 1
+          results.rows << [nil, nil, nil, nil, 
+                           'Total', sum[0], 
+                           formatter.number_with_precision(sum[1], precision: 2, delimiter: ','), 
+                           formatter.number_with_precision(sum[2], precision: 2, delimiter: ','), 
+                           "Avg -> #{formatter.number_with_precision(sum[2]/sum[1], precision: 2, delimiter: ',')}",
+                           nil,
+                           formatter.number_with_precision(sum[3], precision: 2, delimiter: ',')]
+        end
      end
   end
 
@@ -37,7 +41,7 @@ class PigSalesReport < Dossier::Report
 
   def query_definitions
     <<-SQL
-            with product_ids as (
+      with product_ids as (
         select pd.id, pd.name1, pd.unit
           from products pd 
          inner join taggings tgs on tgs.taggable_id = pd.id
@@ -49,15 +53,15 @@ class PigSalesReport < Dossier::Report
           from invoices pi
          inner join invoice_details pid on pi.id = pid.invoice_id
          inner join accounts ac on pi.customer_id = ac.id
-         where doc_date >= '2013-09-01'
-           and doc_date <= '2013-12-31'
+         where doc_date >= :from_date
+           and doc_date <= :to_date
         union all
         select 'CashSale' as doc, pi.id, doc_date, ac.name1, product_id, package_qty, quantity, unit_price, pid.note
           from cash_sales pi
          inner join cash_sale_details pid on pi.id = pid.cash_sale_id
          inner join accounts ac on pi.customer_id = ac.id
-         where doc_date >= '2013-09-01'
-           and doc_date <= '2013-12-31'),
+         where doc_date >= :from_date
+           and doc_date <= :to_date),
         pig_sales_data as (
           select doc_date, doc, pi.id, pi.name1, pd.name1 as product, note, package_qty, quantity, pd.unit, unit_price 
             from sale_data pi 
@@ -79,7 +83,7 @@ class PigSalesReport < Dossier::Report
                   unit_price, quantity * unit_price as amount
              from pig_sales_data psd
             union all
-           select null, doc_type, doc_id, 'discount', null, 
+           select null, doc_type, doc_id, txm_type || ' ' || cast(txm_id as text), null, 
                   null, null, null, null, null, amount
              from credit_notes cn
             order by 2 , 3, 11 desc
