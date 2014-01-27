@@ -3,21 +3,25 @@ class PigSalesReport < Dossier::Report
 
   set_callback :execute, :after do
     options[:footer] = 0
-    raw_results.rows.group_by{ |item| item[4] }.map do |doc, data| 
-        [ doc, 
+    raw_results.rows.group_by{ |item| item[4] }.map do |product, data| 
+        [ product, 
           data.inject(0) { |qty, value| qty += value[6].to_f }, 
           data.inject(0) { |qty, value| qty += (value[8] == 'Kg' ? value[7].to_f : 0) },
           data.inject(0) { |qty, value| qty += value[10].to_f }]
       end.each do |sum|
         if !sum[0].blank?
           options[:footer] += 1
+          total_pigs = sum[1]
+          total_weight = sum[2]
+          total_amount = sum[3]
+          average_weight = (total_pigs > 0 ? total_weight/total_pigs : 0)
           results.rows << [nil, nil, nil, nil, 
                            'Total', sum[0], 
-                           formatter.number_with_precision(sum[1], precision: 2, delimiter: ','), 
-                           formatter.number_with_precision(sum[2], precision: 2, delimiter: ','), 
-                           "Avg -> #{formatter.number_with_precision(sum[2]/sum[1], precision: 2, delimiter: ',')}",
+                           formatter.number_with_precision(total_pigs, precision: 2, delimiter: ','), 
+                           formatter.number_with_precision(total_weight, precision: 2, delimiter: ','), 
+                           "Avg -> #{formatter.number_with_precision(average_weight, precision: 2, delimiter: ',')}",
                            nil,
-                           formatter.number_with_precision(sum[3], precision: 2, delimiter: ',')]
+                           formatter.number_with_precision(total_amount, precision: 2, delimiter: ',')]
         end
      end
   end
@@ -85,7 +89,7 @@ class PigSalesReport < Dossier::Report
                  unit_price, quantity * unit_price as amount
             from pig_sales_data psd
            union all
-          select null, doc_type, doc_id, txm_type || ' ' || cast(txm_id as text), null, 
+          select null, doc_type, doc_id, txm_type || ' ' || cast(txm_id as text), 'Discount', 
                  null, null, null, null, null, amount
             from credit_notes cn
            order by 2 , 3, 11 desc
