@@ -79,6 +79,7 @@ class HarvestingReportPdf < Prawn::Document
            "<b>Avg Yield:</b><u>#{(sum_yield_1 / @rows.count).round 2}%</u>", inline_format: true, size: 11)
       text("=========================================================================================", style: :bold)
       draw_warning_houses
+      draw_collection_warning_houses
     end
   end
 
@@ -106,7 +107,18 @@ class HarvestingReportPdf < Prawn::Document
     end
   end
 
+  def draw_collection_warning_houses
+    h = House.collection_warning(@report_date)
+    if h.count > 0
+      text "<color rgb='ff0000'>House should have Eggs -> <b>#{h.map { |t| t.house_no }.join(", ")}</b></color>", inline_format: true
+    end
+  end
+
 private
+
+  def collection_warning
+    House.collection_warning report_date
+  end
 
   def production_warning_flocks
     warning_houses = []
