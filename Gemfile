@@ -26,12 +26,12 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Use unicorn as the web server
 gem 'unicorn'
-gem 'thinreports-rails'
+# gem 'thinreports-rails'
 gem 'tinymce-rails'
 gem 'dossier'
-gem 'carrierwave'
-gem 'rmagick'
-#gem 'cancan'
+# gem 'carrierwave'
+# gem 'rmagick'
+# gem 'cancan'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -41,7 +41,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-ui-rails'
   gem 'select2-rails'
-  gem 'jquery-fileupload-rails'
+  # gem 'jquery-fileupload-rails'
 end
 
 group :test do
