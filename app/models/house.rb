@@ -97,26 +97,10 @@ class House < ActiveRecord::Base
     end
   end
 
-  def self.collection_warning date=Date.today
-    find_by_sql <<-SQL
-      with house_prod_avg_vs_today as (
-        select h.*, sum(hsd.harvest_1 + hsd.harvest_2)/7 as avg,
-               (select hsd.harvest_1 + hsd.harvest_2
-                  from harvesting_slips hs 
-                 inner join harvesting_slip_details hsd on hs.id = hsd.harvesting_slip_id
-                 where hs.harvest_date = '#{date.to_s(:db)}'
-                   and hsd.house_id = h.id) as today
-                from harvesting_slips hs 
-               inner join harvesting_slip_details hsd on hs.id = hsd.harvesting_slip_id
-               inner join houses h on h.id = hsd.house_id
-               where hs.harvest_date >= '#{(date - 7).to_s(:db)}'
-                 and hs.harvest_date <= '#{date.to_s(:db)}'
-               group by h.id
-               order by 2)
-        select *
-          from house_prod_avg_vs_today
-         where avg > 50
-          and today is null
-    SQL
+  def self.production_warning date=Date.today
+    all.select do |h|
+      (h.yield_between(date - 2, date) - h.yield_between(date - 9, date - 2)) <= -0.1 and
+      h.flock_at(date).age_at(date) <= 79 and h.flock_at(date).age_at(date) >= 21
+    end
   end
 end
