@@ -17,11 +17,11 @@ module Searchable
     after_save :update_search_document
   end
 
-  def update_pg_search_document
-    if !self.pg_search_document 
-      create_pg_search_document if self.respond_to?(:searchable_options)
+  def update_search_document
+    if !self.search_document 
+      create_search_document if self.respond_to?(:searchable_options)
     else
-      self.pg_search_document.save
+      self.search_document.save
     end
   end
 end

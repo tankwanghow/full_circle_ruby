@@ -10,7 +10,7 @@ module ApplicationHelper
         content_tag(:button, '&times;'.html_safe, class: 'close', data: { dismiss: 'alert' }) +  
         content_tag(:div, content_tag(:strong, msg), id: "flash_#{name}", class: 'center-text') if msg.is_a?(String)
       end
-      top = top + 45
+      top = top + 50
     end
     flash.clear
     a.html_safe
