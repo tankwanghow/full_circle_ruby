@@ -7,7 +7,7 @@ class Employee < ActiveRecord::Base
   accepts_nested_attributes_for :salary_types, allow_destroy: true
 
   include Searchable
-  searchable content: [:name, :id_no, :birth_date, :nationality, :socso_no, :tax_no, :epf_no, :status, :service_since]
+  searchable content: [:name, :id_no, :sex, :birth_date, :nationality, :socso_no, :tax_no, :epf_no, :status, :service_since]
 
   include AuditString
   audit_string :salary_types
@@ -16,6 +16,7 @@ class Employee < ActiveRecord::Base
     {
       name: r.name,
       id_no: r.id_no,
+      sex: r.sex,
       birth_date: r.birth_date,
       epf_no: r.epf_no,
       socso_no: r.socso_no,

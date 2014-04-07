@@ -8,6 +8,8 @@
   .span3
     = f.input :nationality, input_html: { class: 'span' }
   .span3
+    = f.input :sex, collection: ['not enter', 'Male', 'Female'], include_blank: false, input_html: { class: 'span' }
+  .span3
     = f.input :epf_no, input_html: { class: 'span' }, label: 'EPF No'
 .row-fluid
   .span3
