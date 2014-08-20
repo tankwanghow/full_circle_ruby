@@ -9,7 +9,7 @@ class DriverCommission < Dossier::Report
   end
 
   def tagged_invoice_sql_condition
-    "AND doc.id IN (#{  tagged_invoice_sql})"
+    "AND doc.id IN (#{tagged_invoice_sql})"
   end
 
   def tagged_cash_sale_sql_condition

@@ -42,7 +42,7 @@ private
   end
 
   def commission_decider row
-    arys = ((row['tags'].blank? ? '' : row['tags']).split('|') & %w(eggsalescomm eggtranscomm dungtransbagcomm dungtransloadcomm feedtranstonscomm traytranscomm))
+    arys = ((row['tags'].blank? ? '' : row['tags']).split('|') & %w(eggsalescomm eggtranscomm dungtransbagcomm dungtransloadcomm feedtranstonscomm traytranscomm feedtranskgscomm))
     if arys.count > 1
       row[:status] = 'error'
     else
@@ -64,6 +64,8 @@ private
       FeedTransTonsCommission
     when 'traytranscomm'
       TrayTransCommission
+    when 'feedtranskgscomm'
+      FeedTransKGsCommission
     else
       NoCommission
     end
@@ -163,6 +165,13 @@ class DungTransLoadCommission < Commission
       0.to_money
     end
   end
+end
+
+class FeedTransKGsCommission < Commission
+  @less_5_customer_commission = 3.6/1000
+  @more_5_customer_commission = 3.6/1000
+  @loading_commission_percentage = 0.5
+  @unloading_commission_percentage = 0.5
 end
 
 class FeedTransTonsCommission < Commission
