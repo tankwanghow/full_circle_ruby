@@ -20,7 +20,6 @@
 //= require bootstrap-alert
 //= require bootstrap-typeahead
 //= require bootstrap-collapse
-//= require tinymce
 //= require_tree .
 
 $.pjax.defaults.timeout = 6000;

@@ -27,7 +27,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # Use unicorn as the web server
 gem 'unicorn'
 # gem 'thinreports-rails'
-gem 'tinymce-rails'
+# gem 'tinymce-rails'
 gem 'dossier'
 # gem 'carrierwave'
 # gem 'rmagick'

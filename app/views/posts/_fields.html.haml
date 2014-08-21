@@ -3,14 +3,4 @@
   .span16
     = f.input :title, input_html: { class: 'span' }, autofocus: true
   .span20
-    = f.input :content, input_html: { class: 'span tinymce' }
-
-:coffee
-  tinyMCE.init
-    mode: 'textareas'
-    theme: 'advanced'
-    skin: 'default'
-    width: '840px'
-    height: '380px'
-    plugins: 'preview, contextmenu'
-    theme_advanced_buttons3_add: 'preview'
+    = f.input :content, input_html: { class: 'span' }
