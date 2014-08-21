@@ -74,7 +74,7 @@ class DriverCommission < Dossier::Report
   def field_selects
     "doc.doc_date, count(distinct doc.id) as doc,
      string_agg(distinct ac.name1, '|' order by ac.name1) as customers,
-     case when lower(city) = 'kampar' then city else 'others' end as city,
+     case when lower(city) in ('kampar', 'address err') then city else 'others' end as city,
      sum(docd.quantity) as qty, pd.unit, 
      string_agg(distinct pd.name1, '|' order by pd.name1) as particulars"
   end
@@ -99,9 +99,9 @@ class DriverCommission < Dossier::Report
   end
 
   def account_city_sql
-    "(select acc.id, acc.name1, ad.city
+    "(select acc.id, acc.name1, COALESCE(ad.city, 'Address Err') as city
         from accounts acc 
-       inner join addresses ad 
+        left outer join addresses ad 
           on ad.addressable_type = 'Account' 
          and ad.addressable_id = acc.id
        group by acc.id, acc.name1, ad.city) as ac"

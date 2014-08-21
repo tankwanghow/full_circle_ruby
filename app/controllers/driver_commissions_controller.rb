@@ -87,9 +87,12 @@ class Commission
   @unloading_commission_percentage = 0
 
   def self.calculate_commission row, employee_tags
-    row.merge!(load_pay: loaders_commission(row, employee_tags))
-    row.merge!(unload_pay: unloaders_commission(row, employee_tags))
-    row.merge!(status: 'OK')
+    lc  = loaders_commission(row, employee_tags)
+    ulc = unloaders_commission(row, employee_tags)
+    st = lc < 0 || ulc < 0 ? 'ERR' : 'OK'
+    row.merge!(load_pay: lc)
+    row.merge!(unload_pay: ulc)
+    row.merge!(status: st)
   end
 
 private
@@ -121,6 +124,7 @@ private
   end
 
   def self.commission customers_count, city
+    return -1 if city.downcase == 'address err'
     customers_count > 5 ? @more_5_customer_commission : @less_5_customer_commission
   end
 
