@@ -36,7 +36,7 @@
     %br
   %h4 Empty Houses
   %span
-    - House.alive_less_than_at(0, @at_date).each do |h|
+    - House.empty_houses(@at_date).each do |h|
       = h.house_no
   %h4 Yield Houses Less Than 50%
   %span

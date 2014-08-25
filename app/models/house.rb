@@ -37,12 +37,16 @@ class House < ActiveRecord::Base
     end
   end
 
+  def self.empty_houses date
+    House.all.select { |t| t.quantity_at(date) <= 0 }
+  end
+
   def self.yield_less_than_at perc, date_1
-    find_by_sql(report_sql(date_1)).select { |t| t.yield.to_f < 0.5 }
+    find_by_sql(report_sql(date_1.to_date.to_formatted_s(:db))).select { |t| t.yield.to_f < perc }
   end
 
   def self.alive_less_than_at perc, date_1
-    find_by_sql(report_sql(date_1)).select { |t| (t.movein.to_f - t.death.to_f) / t.movein.to_f < 0.5 }
+    find_by_sql(report_sql(date_1.to_date.to_formatted_s(:db))).select { |t| (t.movein.to_f - t.death.to_f) / t.movein.to_f < perc }
   end
 
   def yield_between date_1, date_2
@@ -103,11 +107,11 @@ private
             #{production(date)} / (#{move_in(date)} - #{death(date)}) as yield,
             #{death(date)} as death, 
             #{move_in(date)} as movein
-       from flocks f, houses h, harvesting_slip_details hsd, harvesting_slips hs
-      where hsd.house_id = h.id
-        and hsd.flock_id = f.id
-        and hsd.harvesting_slip_id = hs.id
-        and hs.harvest_date = '#{date}'"
+       from houses h left outer join harvesting_slip_details hsd
+         on h.id = hsd.house_id left outer join flocks f
+         on f.id = hsd.flock_id inner join harvesting_slips hs
+         on hs.id = hsd.harvesting_slip_id
+      where hs.harvest_date = '#{date}'"
   end
 
   def self.death date
