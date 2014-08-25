@@ -38,19 +38,11 @@ class House < ActiveRecord::Base
   end
 
   def self.yield_less_than_at perc, date_1
-    houses = []
-    House.find_each do |h|
-      houses << h if h.yield_between(date_1.to_date - 7, date_1.to_date) < perc
-    end
-    houses
+    find_by_sql(report_sql(date_1)).select { |t| t.yield.to_f < 0.5 }
   end
 
   def self.alive_less_than_at perc, date_1
-    houses = []
-    House.find_each do |h|
-      houses << h if h.quantity_at(date_1).to_f/h.capacity.to_f <= perc and h.movements.exists?
-    end
-    houses
+    find_by_sql(report_sql(date_1)).select { |t| (t.movein.to_f - t.death.to_f) / t.movein.to_f < 0.5 }
   end
 
   def yield_between date_1, date_2
@@ -103,4 +95,47 @@ class House < ActiveRecord::Base
       h.flock_at(date).age_at(date) <= 79 and h.flock_at(date).age_at(date) >= 21
     end
   end
+
+private
+  
+  def self.report_sql date
+    "select house_no,
+            #{production(date)} / (#{move_in(date)} - #{death(date)}) as yield,
+            #{death(date)} as death, 
+            #{move_in(date)} as movein
+       from flocks f, houses h, harvesting_slip_details hsd, harvesting_slips hs
+      where hsd.house_id = h.id
+        and hsd.flock_id = f.id
+        and hsd.harvesting_slip_id = hs.id
+        and hs.harvest_date = '#{date}'"
+  end
+
+  def self.death date
+    "(select sum(death)
+        from harvesting_slip_details hsd1 inner join harvesting_slips hs1
+          on hs1.id = hsd1.harvesting_slip_id
+         and hsd1.flock_id = f.id 
+         and hsd1.house_id = h.id
+       where hs1.harvest_date <= '#{date}')"
+  end
+
+  def self.move_in date
+    "(select sum(mv1.quantity) 
+        from flocks f1 inner join movements mv1
+          on mv1.flock_id = f1.id
+       inner join houses h1 on h1.id = mv1.house_id
+         and mv1.move_date <= '#{date}'
+         and f1.id = f.id
+         and h1.id = h.id)"
+  end
+
+  def self.production date
+    "(select sum(hsd1.harvest_1 + hsd1.harvest_2) * 30.0
+        from harvesting_slip_details hsd1 inner join harvesting_slips hs1
+          on hs1.id = hsd1.harvesting_slip_id
+         and hsd1.flock_id = f.id 
+         and hsd1.house_id = h.id
+       where hs1.harvest_date = '#{date}')"
+  end
+
 end
