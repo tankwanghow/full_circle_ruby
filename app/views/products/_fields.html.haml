@@ -7,10 +7,15 @@
     = f.input :unit, input_html: { class: 'span' }
 .row-fluid
   .span5
+    = f.input :supply_tax_code_code, label: 'Supply Tax Code', input_html: { class: 'span' }
+  .span5
+    = f.input :purchase_tax_code_code, label: 'Purchase Tax Code', input_html: { class: 'span' }
+.row-fluid
+  .span4
     = f.input :sale_account_name1, label: 'Sale Account', input_html: { class: 'span' }
-  .span5
+  .span4
     = f.input :purchase_account_name1, label: 'Purchase Account', input_html: { class: 'span' }
-  .span5
+  .span4
     = f.input :category_list, input_html: { data: { tags: Product.tag_counts_on(:categories).map {|t| t.name } }, class: 'span' }
 #packages
   .row-fluid.nested

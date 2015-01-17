@@ -18,6 +18,10 @@ FullCircle::Application.routes.draw do
 
   resources :printing_in_batches, only: [:new, :create]
 
+  resources :tax_codes, only: [:new, :edit, :update, :create, :destroy]
+  get 'tax_code/new_or_edit' => 'tax_codes#new_or_edit'
+  get 'tax_code/typeahead_code' => 'tax_codes#typeahead_code'
+
   resources :particular_types, only: [:new, :edit, :update, :create, :destroy]
   get 'particular_type/new_or_edit' => 'particular_types#new_or_edit'
   get 'particular_type/typeahead_name' => 'particular_types#typeahead_name'

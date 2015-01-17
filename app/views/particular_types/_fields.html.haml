@@ -1,3 +1,8 @@
 = f.input :party_type, label: 'Type', collection: ['Income', 'Expense'], autofocus: true
+= f.input :supply_tax_code_code, label: 'Supply Tax Code'
+= f.input :purchase_tax_code_code, label: 'Purchase Tax Code'
 = f.input :name
 = f.input :account_name1, label: 'Account', input_html: { data: { source: Account.pluck(:name1), provide: 'typeahead' } }
+
+:coffee
+  ($ document).ready -> particular_type.init()
