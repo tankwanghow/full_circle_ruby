@@ -8,7 +8,7 @@ FullCircle::Application.routes.draw do
   match 'matchers' => 'matchers#index'
   match 'depositable_cheques' => 'cheques#depositable'
   match 'get_return_cheque' => 'cheques#return_cheque'
-  
+
   resources :statements, only: [:new, :create]
   resources :feed_usages
   resources :feed_productions
@@ -21,6 +21,7 @@ FullCircle::Application.routes.draw do
   resources :tax_codes, only: [:new, :edit, :update, :create, :destroy]
   get 'tax_code/new_or_edit' => 'tax_codes#new_or_edit'
   get 'tax_code/typeahead_code' => 'tax_codes#typeahead_code'
+  get 'tax_code/typeahead_tax_type' => 'tax_codes#typeahead_tax_type'
 
   resources :particular_types, only: [:new, :edit, :update, :create, :destroy]
   get 'particular_type/new_or_edit' => 'particular_types#new_or_edit'

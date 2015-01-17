@@ -5,5 +5,5 @@ module ReturnChequesHelper
       obj.errors.messages.merge!( chq_no: obj.errors.messages[:cheque_id] )
     end
   end
-  
+
 end

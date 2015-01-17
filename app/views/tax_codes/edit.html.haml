@@ -1,0 +1,11 @@
+= render_flash
+= simple_nested_form_for @tax_code, html: { class: 'form-horizontal well', id: 'tax_code' } do |f|
+  %legend
+    = "Tax Code #" + docnolize(@tax_code.id)
+  = render 'fields', f: f
+  .form-actions
+    = f.button(:submit, 'Save', class: 'btn btn-primary')
+    = link_to 'New', new_tax_code_path, class: 'btn btn-info'
+    = link_to 'Cancel', edit_tax_code_path(@tax_code), class: 'btn btn-warning'
+    = link_to_index(TaxCode)
+    = link_to_audits_log(@tax_code)

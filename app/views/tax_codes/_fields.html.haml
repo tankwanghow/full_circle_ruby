@@ -1,0 +1,8 @@
+= f.input :tax_type, autofocus: true
+= f.input :code
+= f.input :rate, input_html: { class: 'numeric span4', type: :text }
+= f.input :description, input_html: { rows: 4, class: 'span5' }
+
+:coffee
+  ($ document).ready ->
+    app.typeahead_init '#tax_code_tax_type', '/tax_code/typeahead_tax_type'

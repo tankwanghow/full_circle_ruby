@@ -3,7 +3,7 @@ class AssetDisposal < ActiveRecord::Base
   validates_presence_of :entry_date, :amount
   include ValidateEntryDate
   validate :valid_entry_date?
-  
+
   def simple_audit_string
     [ entry_date.to_s, amount.to_money.format ].join ' '
   end

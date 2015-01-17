@@ -18,7 +18,7 @@
   .span5
     = f.input :unit_price, input_html: { class: 'numeric span', type: :text }
   .span6
-    = f.input :amount, input_html: { class: 'numeric span bold', name: 'amount', type: :text, readOnly: true, tabIndex: -1 }, label_html: { class: 'bold' }    
-      
+    = f.input :amount, input_html: { class: 'numeric span bold', name: 'amount', type: :text, readOnly: true, tabIndex: -1 }, label_html: { class: 'bold' }
+
 :coffee
   ($ document).ready -> salary_note.init()

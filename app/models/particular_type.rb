@@ -3,7 +3,7 @@ class ParticularType < ActiveRecord::Base
   belongs_to :supply_tax_code
   belongs_to :supply_tax_code,   class_name: "TaxCode", foreign_key: "supply_tax_code_id"
   belongs_to :purchase_tax_code, class_name: "TaxCode", foreign_key: "purchase_tax_code_id"
-  
+
   has_many :particulars
   validates_uniqueness_of :name
   validates :name, presence: true
@@ -15,7 +15,7 @@ class ParticularType < ActiveRecord::Base
   validate_belongs_to :account, :name1
   validate_belongs_to :supply_tax_code, :code
   validate_belongs_to :purchase_tax_code, :code
-  
+
   include Searchable
   searchable content: [:party_type, :name, :account_name1, :supply_tax_code, :purchase_tax_code]
 

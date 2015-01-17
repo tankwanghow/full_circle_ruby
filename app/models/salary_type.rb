@@ -3,7 +3,7 @@ class SalaryType < ActiveRecord::Base
   belongs_to :db_account, class_name: 'Account'
   validates_presence_of :name, :classifiaction, :db_account_name1, :cr_account_name1
   validates_uniqueness_of :name
-  
+
   include ValidateBelongsTo
   validate_belongs_to :db_account, :name1
   validate_belongs_to :cr_account, :name1

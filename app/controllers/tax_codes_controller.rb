@@ -6,7 +6,7 @@ class TaxCodesController < ApplicationController
   def update
     @tax_code = TaxCode.find(params[:id])
     if @tax_code.update_attributes(params[:tax_code])
-      flash[:success] = "Tax Code '#{@tax_code.name}' updated successfully."
+      flash[:success] = "Tax Code '#{@tax_code.Code}' updated successfully."
       redirect_to edit_tax_code_path(@tax_code)
     else
       flash.now[:error] = "Failed to updated Tax Code."
@@ -21,7 +21,7 @@ class TaxCodesController < ApplicationController
   def create
     @tax_code = TaxCode.new(params[:tax_code])
     if @tax_code.save
-      flash[:success] = "Tax Code '#{@tax_code.name}' created successfully."
+      flash[:success] = "Tax Code '#{@tax_code.code}' created successfully."
       redirect_to edit_tax_code_path(@tax_code)
     else
       flash.now[:error] = "Failed to create Tax Code."
@@ -32,7 +32,7 @@ class TaxCodesController < ApplicationController
   def destroy
     @tax_code = TaxCode.find(params[:id])
     @tax_code.destroy
-    flash[:success] = "Successfully deleted '#{@tax_code.name}'."
+    flash[:success] = "Successfully deleted '#{@tax_code.code}'."
     redirect_to tax_code_new_or_edit_path
   end
 
@@ -47,5 +47,10 @@ class TaxCodesController < ApplicationController
   def typeahead_code
     term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
     render json: TaxCode.where('code ilike ?', term).limit(8).pluck(:code)
+  end
+
+  def typeahead_tax_type
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: TaxCode.uniq.where('tax_type ilike ?', term).limit(8).pluck(:tax_type)
   end
 end

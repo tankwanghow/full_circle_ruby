@@ -4,5 +4,5 @@ module JournalsHelper
             headers: [['Account', 'span6'], ['Note', 'span11'], ['Amount', 'span4']],
             text: 'Add Transaction'
   end
-  
+
 end

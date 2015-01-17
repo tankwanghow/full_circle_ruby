@@ -18,7 +18,7 @@ class CreditNote < ActiveRecord::Base
 
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :credit_note_amount,
-             content: [:id, :account_name1, :credit_note_amount, 
+             content: [:id, :account_name1, :credit_note_amount,
                        :particulars_audit_string, :matchers_audit_string]
 
   simple_audit username_method: :username do |r|
@@ -42,7 +42,7 @@ class CreditNote < ActiveRecord::Base
   end
 
 private
-  
+
   def dont_process(attr)
     return true if attr["id"].blank? && attr["amount"].to_f == 0
   end
