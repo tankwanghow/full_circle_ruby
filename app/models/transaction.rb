@@ -21,7 +21,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def closed?
-    raise 'Transactions closed CAN#NOT update or delete!' if closed 
+    raise 'Transactions closed CANNOT update or delete!' if closed 
   end
 
   include SumAttributes
