@@ -43,10 +43,17 @@ class PaySlip < ActiveRecord::Base
   def advances_attributes= vals
     vals.each do |k, v|
       adv = advances.detect { |t| t.id == v['id'].to_i }
-      if !adv
+      if v.class == ActiveSupport::HashWithIndifferentAccess
+        destroyed = ['1', 'true'].include?(v.delete('_destroy')) ? true :false
+      end
+      if !adv and !destroyed
         adv = Advance.where(id: v['id'].to_i, pay_slip_id: nil, employee_id: self.employee_id).first
         adv.pay_slip = self
         advances << adv
+      elsif adv and destroyed
+        adv.pay_slip = nil
+        adv.save
+        advances.delete_if { |t| t.id == adv.id }
       end
     end
   end
@@ -55,7 +62,9 @@ class PaySlip < ActiveRecord::Base
     vals.delete_if { |k, v| v['quantity'].to_f == 0 and v['unit_price'].to_f == 0 }
     vals.each do |k,v|
       note = salary_notes.detect { |t| t.id == v['id'].to_i }
-      destroyed = v.delete('_destroy') == '1' ? true : false
+      if v.class == ActiveSupport::HashWithIndifferentAccess
+        destroyed = ['1', 'true'].include?(v.delete('_destroy')) ? true :false
+      end
       if note
         if !destroyed 
           note.attributes = v
@@ -64,6 +73,8 @@ class PaySlip < ActiveRecord::Base
             note.mark_for_destruction
           else
             note.pay_slip = nil
+            note.save
+            salary_notes.delete_if { |t| t.id == note.id }
           end
         end
       else

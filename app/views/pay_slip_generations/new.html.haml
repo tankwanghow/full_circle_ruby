@@ -16,8 +16,11 @@
       = "Are you sure, you want to"
       %span= link_to 'prepare new pay slip', new_pay_slip_path(params[:gen_pay])
       %span again.
-      %br OR
       - for doc in @pay_slips
+        %br OR
+        Re-Generate Pay Slip
+        %span= link_to docnolize(doc.id, '#'), new_pay_slip_path(regen: doc)
+        %br OR
         Edit Pay Slip 
         %span= link_to docnolize(doc.id, '#'), edit_pay_slip_path(doc)
         %br

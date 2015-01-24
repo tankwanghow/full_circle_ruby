@@ -2,7 +2,12 @@ class PaySlipsController < ApplicationController
   before_filter :warn_doc_date, only: [:create, :update]
 
   def new
-    @pay_slip = PaySlipGenerationService.new(params[:employee_name], params[:pay_date]).generate_pay_slip
+    if params[:regen]
+      service = PaySlipGenerationService.new
+      @pay_slip = service.regenerate_pay_slip params[:regen]
+    else
+      @pay_slip = PaySlipGenerationService.new(params[:employee_name], params[:pay_date]).generate_pay_slip
+    end
   end
   
   def edit
@@ -25,12 +30,17 @@ class PaySlipsController < ApplicationController
 
   def update
     @pay_slip = PaySlip.find(params[:id])
-    if @pay_slip.update_attributes(params[:pay_slip])
-      flash[:success] = "Pay Slip '##{@pay_slip.id}' updated successfully."
-      redirect_to edit_pay_slip_path(@pay_slip)
+    if params[:submit] == 'Calculate'
+      @pay_slip.assign_attributes(params[:pay_slip])
+      calculate_pay
     else
-      flash.now[:error] = "Failed to update Pay Slip."
-      render :edit
+      if @pay_slip.update_attributes(params[:pay_slip])
+        flash[:success] = "Pay Slip '##{@pay_slip.id}' updated successfully."
+        redirect_to edit_pay_slip_path(@pay_slip)
+      else
+        flash.now[:error] = "Failed to update Pay Slip."
+        render :edit
+      end
     end
   end
 

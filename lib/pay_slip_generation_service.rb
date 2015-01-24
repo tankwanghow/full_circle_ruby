@@ -12,11 +12,19 @@ class PaySlipGenerationService
     @payslip
   end
 
+  def regenerate_pay_slip id
+    @payslip = PaySlip.find id
+    @employee_name = @payslip.employee.name
+    @pay_date = @payslip.pay_date
+    fill_in_payable_salary
+    @payslip
+  end
+
 private
 
   def fill_in_payable_salary
-    generate_nested_attributes_from_existing_notes(Advance, @payslip.advances)
-    generate_nested_attributes_from_existing_notes(SalaryNote, @payslip.salary_notes)
+    @payslip.advances_attributes = generate_nested_attributes_from_existing_notes(Advance)
+    @payslip.salary_notes_attributes = generate_nested_attributes_from_existing_notes(SalaryNote)
     generate_nested_attributes_from_recurring_note
     generate_nested_attributes_from_employee_salary_type
     reject_dupcilate_salary_type_with_zero_amount
@@ -28,10 +36,12 @@ private
     @payslip.salary_notes = kept.concat(zero.select { |t| !kept.map { |k| k.salary_type_id }.include? t.salary_type_id })
   end
 
-  def generate_nested_attributes_from_existing_notes klass, attributes
+  def generate_nested_attributes_from_existing_notes klass
+    hash = {}
     klass.unpaid.smaller_eq(@pay_date).employee(@employee_name).each do |t|
-      attributes << t
+      hash.merge!(t.id => t)
     end
+    hash
   end
 
   def generate_nested_attributes_from_employee_salary_type
