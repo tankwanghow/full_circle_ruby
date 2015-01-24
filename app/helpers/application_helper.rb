@@ -51,7 +51,8 @@ module ApplicationHelper
   end
 
   def link_to_edit_action_buttons object, journal_url, print_button=true
-    [ link_to('Cancel', edit_polymorphic_path(object), class: 'btn btn-warning'),
+    cancel = link_to('Cancel', edit_polymorphic_path(object), class: 'btn btn-warning') unless posted_lock?(object)
+    [ cancel,
       link_to('New', new_polymorphic_path(object.class), class: 'btn btn-info'),
       link_to_index(object.class),
       print_button ? link_to_print_buttons(object) : nil ,
@@ -60,16 +61,40 @@ module ApplicationHelper
   end
 
   def link_to_edit_action_no_journal_buttons object, print_button=true
-    [ link_to('Cancel', edit_polymorphic_path(object), class: 'btn btn-warning'),
+    cancel = link_to('Cancel', edit_polymorphic_path(object), class: 'btn btn-warning') unless posted_lock?(object)
+    [ cancel,
       link_to('New', new_polymorphic_path(object.class), class: 'btn btn-info'),
       link_to_index(object.class),
       print_button ? link_to_print_buttons(object) : nil ,
       link_to_audits_log(object) ].compact.join(' ').html_safe
   end
 
+  def posted_lock_label form
+    if posted_lock?(form.object)
+      content_tag(:span, "POSTED #{form.object.class.name} cannot edit or update", class: 'label label-important')
+    end
+  end
+
+  def post_to_account_check_box form
+    if !posted_lock?(form.object)
+      content_tag :div, class: 'checkbox' do
+        form.check_box(:posted) +
+        content_tag(:span, "Post to Account", class: 'bold')
+      end
+    end
+  end
+
   def admin_lock_show? object
     return false if object.admin_lock and !current_user.is_admin
     true
+  end
+
+  def posted_lock? object
+    if object.respond_to? :posted
+      object.posted
+    else
+      false
+    end
   end
 
   def term_string term

@@ -6,7 +6,15 @@ class CreditNote < ActiveRecord::Base
 
   validates_presence_of :account_name1, :doc_date
 
-  before_save :build_transactions
+  before_save do |r|
+    if r.changes[:posted] == [false, true] 
+      if transactions.count == 0
+        build_transactions
+      else
+        raise "Cannot update a posted document"
+      end
+    end
+  end
 
   accepts_nested_attributes_for :particulars, allow_destroy: true
   accepts_nested_attributes_for :matchers, allow_destroy: true, reject_if: :dont_process
@@ -19,14 +27,15 @@ class CreditNote < ActiveRecord::Base
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :credit_note_amount,
              content: [:id, :account_name1, :credit_note_amount,
-                       :particulars_audit_string, :matchers_audit_string]
+                       :particulars_audit_string, :matchers_audit_string, :posted]
 
   simple_audit username_method: :username do |r|
      {
       doc_date: r.doc_date.to_s,
       account: r.account_name1,
       particulars: r.particulars_audit_string,
-      matchers: r.matchers_audit_string
+      matchers: r.matchers_audit_string,
+      posted: r.posted
      }
   end
 

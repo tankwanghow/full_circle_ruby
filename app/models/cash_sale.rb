@@ -10,7 +10,17 @@ class CashSale < ActiveRecord::Base
   acts_as_taggable
   acts_as_taggable_on :loader, :unloader
 
-  before_save :build_transactions
+  before_save do |r|
+    if r.changes[:posted] == [false, true] 
+      if transactions.count == 0
+        build_transactions
+      else
+        raise "Error!! Non-Posted document has accounting transactions. TELL BOSS!!"
+      end
+    else
+      raise "Cannot update a posted document"
+    end
+  end
 
   accepts_nested_attributes_for :details, allow_destroy: true
   accepts_nested_attributes_for :particulars, allow_destroy: true
@@ -25,7 +35,7 @@ class CashSale < ActiveRecord::Base
   searchable doc_date: :doc_date, doc_amount: :sales_amount,
              content: [:id, :customer_name1, :details_audit_string, :sales_amount, 
                        :note, :particulars_audit_string, :cheques_audit_string, 
-                       :tag_list, :loader_list, :unloader_list]
+                       :tag_list, :loader_list, :unloader_list, :posted]
 
   simple_audit username_method: :username do |r|
      {
@@ -37,7 +47,8 @@ class CashSale < ActiveRecord::Base
       cheques: r.cheques_audit_string,
       tag_list: r.tag_list,
       loader_list: r.loader_list,
-      unloader_list: r.unloader_list
+      unloader_list: r.unloader_list,
+      posted: r.posted
      }
   end
 

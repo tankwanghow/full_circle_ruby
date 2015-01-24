@@ -69,7 +69,8 @@ window.main = {
 
 window.app = {
   standardInit: ->
-    ($ 'form[admin_lock=true] input, form[admin_lock=true] select, form[admin_lock=true] textarea').attr('readOnly', true)
+    ($ 'form[admin_lock=true] input, form[admin_lock=true] select, form[admin_lock=true] textarea').attr('disabled', true)
+    ($ 'form[posted_lock=true] input, form[posted_lock=true] select, form[posted_lock=true] textarea').attr('disabled', true)
     ($ 'form input[type=submit]').click -> 
       ($ this).attr('clicked', true)
     app.initDatepicker()

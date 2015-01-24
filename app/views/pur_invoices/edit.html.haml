@@ -1,8 +1,10 @@
 = render_flash
-= simple_nested_form_for @invoice, html: { class: 'form-inline well', id: 'invoice' } do |f|
+= simple_nested_form_for @invoice, html: { class: 'form-inline well', id: 'invoice', posted_lock: posted_lock?(@invocie) } do |f|
   %legend
     = "Purchase Invoice #" + docnolize(@invoice.id)
+    = posted_lock_label f
   = render 'fields', f: f
+  = post_to_account_check_box f
   .form-actions
-    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = f.button :submit, 'Save', class: 'btn btn-primary' unless posted_lock?(@invoice)
     = link_to_edit_action_buttons @invoice, pur_invoice_journal_entries_path(@invoice), false

@@ -1,8 +1,10 @@
 = render_flash
-= simple_nested_form_for @credit_note, html: { class: 'form-inline well', id: 'credit_note' } do |f|
+= simple_nested_form_for @credit_note, html: { class: 'form-inline well', id: 'credit_note', posted_lock: posted_lock?(@credit_note) } do |f|
   %legend
     = "Credit Note #" + docnolize(@credit_note.id)
+    = posted_lock_label f
   = render 'fields', f: f
+  = post_to_account_check_box f
   .form-actions
-    = f.button :submit, 'Save', class: 'btn btn-primary'
+    = f.button :submit, 'Save', class: 'btn btn-primary' unless posted_lock?(@credit_note)
     = link_to_edit_action_buttons @credit_note, credit_note_journal_entries_path(@credit_note)
