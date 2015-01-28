@@ -6,7 +6,7 @@ module ApplicationHelper
     a = ''
     top = 5
     flash.each do |name, msg|
-      a << content_tag(:div, class: "alert alert-#{name} span10 offset6", style: "display: none; top: #{top}px;") do
+      a << content_tag(:div, class: "alert alert-#{name} span20 offset12", style: "display: none; top: #{top}px;") do
         content_tag(:button, '&times;'.html_safe, class: 'close', data: { dismiss: 'alert' }) +  
         content_tag(:div, content_tag(:strong, msg), id: "flash_#{name}", class: 'center-text') if msg.is_a?(String)
       end
