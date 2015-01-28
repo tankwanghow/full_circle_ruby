@@ -2,20 +2,20 @@
 .row-fluid
   = simple_form_for :feed_productions_find, url: feed_productions_path, html: { class: 'form-inline' }, method: :get do |f|
     = label_tag 'Production Date', nil, class: :bold
-    = f.input_field :produce_date, value: session[:feed_productions_find][:produce_date], class: 'datepicker span2'
+    = f.input_field :produce_date, value: session[:feed_productions_find][:produce_date], class: 'datepicker span4'
     = f.button :submit, 'Find', class: 'btn btn-primary'
     = link_to "New", new_feed_production_path, class: "btn btn-info"
 
 %h3= "Feed Productions For #{session[:feed_productions_find][:produce_date]}"
 
-.row-fluid.span10
+.row-fluid.span20
   %table.table-bordered.table#productions
     %thead
       %tr
-        %th.span2 Feed Type
-        %th.span2 Qty(Kg)
-        %th.span2 Silo
-        %th.span2 Action
+        %th.span4 Feed Type
+        %th.span4 Qty(Kg)
+        %th.span4 Silo
+        %th.span4 Action
     %tbody 
       - for t in @feed_productions
         %tr{ class: t == @feed_production ? 'active bold' : '' }

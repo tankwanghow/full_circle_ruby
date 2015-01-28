@@ -2,7 +2,7 @@
 .row-fluid
   = simple_form_for :feed_usages_find, url: feed_usages_path, html: { class: 'form-inline' }, method: :get do |f|
     = label_tag 'Usage date', nil, class: :bold
-    = f.input_field :usage_date, value: session[:feed_usages_find][:usage_date], class: 'datepicker span2'
+    = f.input_field :usage_date, value: session[:feed_usages_find][:usage_date], class: 'datepicker span4'
     = f.button :submit, 'Find', class: 'btn btn-primary'
     = link_to "New", new_feed_usage_path, class: "btn btn-info"
 
@@ -18,16 +18,16 @@
       - summary.each do |f|
         %td= f.qty
 
-.row-fluid.span12
+.row-fluid.span24
   %table.table-bordered.table#usages
     %thead
       %tr
-        %th.span2 Lorry
-        %th.span2 Feed Type
-        %th.span2 Gross(Kg)
-        %th.span2 Tare(Kg)
-        %th.span2 Net(Kg)
-        %th.span2 Action
+        %th.span4 Lorry
+        %th.span4 Feed Type
+        %th.span4 Gross(Kg)
+        %th.span4 Tare(Kg)
+        %th.span4 Net(Kg)
+        %th.span4 Action
     %tbody 
       - for t in @feed_usages
         %tr{ class: t == @feed_usage ? 'active bold' : '' }

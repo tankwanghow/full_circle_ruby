@@ -1,15 +1,15 @@
 .row-fluid
-  .span10
+  .span20
     = f.input :employee_name, input_html: { class: 'span' }, label: 'Employee', autofocus: true
-  .span6
-    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }
+  .span12
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span38' }
 .row-fluid
-  .span10
+  .span20
     = f.input :pay_from_name1, input_html: { class: 'span' }, label: 'Pay From'
-  .span6
+  .span12
     = f.input :chq_no, wrapper_html: { style: "display: #{f.object.pay_from_name1 == 'Cash In Hand' ? 'none' : ''}" }, input_html: { class: 'span' }, label: 'Cheque No'
 .row-fluid
-  .span6
+  .span12
     = f.input :amount, input_html: { class: 'bold numeric span', type: :text }, label_html: { class: 'bold' }
 
 :coffee

@@ -1,30 +1,30 @@
 .row-fluid
-  .span5
+  .span10
     = f.input :name, input_html: { class: 'span' }, autofocus: true
-  .span3
+  .span6
     = f.input :id_no, label: 'Identity No', input_html: { class: 'span' }
-  .span3
-    = f.input :birth_date, as: :datepicker, input_html: { class: 'span19' }
-  .span3
+  .span6
+    = f.input :birth_date, as: :datepicker, input_html: { class: 'span38' }
+  .span6
     = f.input :nationality, input_html: { class: 'span' }
-  .span3
+  .span6
     = f.input :sex, collection: ['not enter', 'Male', 'Female'], include_blank: false, input_html: { class: 'span' }
-  .span3
+  .span6
     = f.input :epf_no, input_html: { class: 'span' }, label: 'EPF No'
 .row-fluid
-  .span3
+  .span6
     = f.input :socso_no, label: 'SOCSO No', input_html: { class: 'span' }
-  .span3
+  .span6
     = f.input :tax_no, input_html: { class: 'span' }, label: 'Income Tax No'
-  .span3
-    = f.input :service_since, as: :datepicker, input_html: { class: 'span19' }
-  .span3
+  .span6
+    = f.input :service_since, as: :datepicker, input_html: { class: 'span38' }
+  .span6
     = f.input :marital_status, collection: ['Single', 'Married'], include_blank: false, input_html: { class: 'span' }
-  .span3
+  .span6
     = f.input :partner_working, collection: ['true', 'false'], include_blank: false, input_html: { class: 'span' }
-  .span2
+  .span4
     = f.input :children, input_html: { class: 'numeric span', type: :text }
-  .span3
+  .span6
     = f.input :status, collection: ['Active', 'Resigned'], include_blank: false, input_html: { class: 'span' }
 #salary-types
   .row-fluid

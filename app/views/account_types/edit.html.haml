@@ -1,7 +1,7 @@
 = render_flash
-.span9
+.span18
   = render 'share/chart_of_accounts'
-.span14
+.span28
   = simple_form_for @account_type, html: { class: 'form-horizontal well', admin_lock: !admin_lock_show?(@account_type) } do |f|
     %legend
       Account Type

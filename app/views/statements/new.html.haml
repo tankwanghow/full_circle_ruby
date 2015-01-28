@@ -1,26 +1,26 @@
-= simple_form_for :statement, url: statements_path, html: { class: 'offset1 span22 form-inline', id: 'statement' } do |f|
+= simple_form_for :statement, url: statements_path, html: { class: 'offset2 span44 form-inline', id: 'statement' } do |f|
   %legend
     Batch Statements Printing
   .row-fluid
-    .span10
-      = f.input_field :account_type_name, placeholder: 'account type...', autofocus: true, class: 'span', value: params[:statement][:account_type_name] || ''
+    .span20
+      = f.input_field :account_type_name, placeholder: 'account or account type...', autofocus: true, class: 'span', value: params[:statement][:account_type_name] || ''
     = f.button :submit, 'Show Accounts', name: :submit, class: 'btn btn-primary', id: 'show-account'
 
   - if @accounts.count > 0
     #statements-accounts.row-fluid
-      .offset1
+      .offset2
         %h3 Select Accounts for Statement Printing    
         .row-fluid
-          .span6
-            = text_field_tag :start_date, nil, class: 'datepicker span21', placeholder: 'start date...', value: @start_date
-          .span6
-            = text_field_tag :end_date, nil, class: 'datepicker span21', placeholder: 'end date...', value: @end_date
           .span12
+            = text_field_tag :start_date, nil, class: 'datepicker span40', placeholder: 'start date...', value: @start_date
+          .span12
+            = text_field_tag :end_date, nil, class: 'datepicker span40', placeholder: 'end date...', value: @end_date
+          .span24
             = f.button :submit, 'Template Statement', class: 'btn btn-info', id: 'template-statement-print'
             = f.button :submit, 'Statement', name: :submit, class: 'btn btn-info', id: 'statement-print'
         .row-fluid
           - for ac in @accounts.order(:name1)
-            .account_name.span7
+            .account_name.span9{ style: 'overflow: hidden; max-height: 34px;' }
               = check_box_tag 'account_ids[]', ac.id
               = ac.name1
   - else

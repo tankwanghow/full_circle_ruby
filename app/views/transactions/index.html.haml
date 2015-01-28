@@ -2,9 +2,9 @@
 = render_flash
 .bold Transaction Query
 = simple_form_for :transactions_query, url: transactions_path, html: { class: 'form-search' } do |f|
-  = f.input_field :name, class: 'span6', placeholder: 'account name...', autofocus: true, value: session[:transactions_query][:name]
-  = f.input_field :start_date, class: 'datepicker span2', placeholder: 'start date...', value: session[:transactions_query][:start_date]
-  = f.input_field :end_date, class: 'datepicker span2', placeholder: 'end date...', value: session[:transactions_query][:end_date]
+  = f.input_field :name, class: 'span12', placeholder: 'account name...', autofocus: true, value: session[:transactions_query][:name]
+  = f.input_field :start_date, class: 'datepicker span4', placeholder: 'start date...', value: session[:transactions_query][:start_date]
+  = f.input_field :end_date, class: 'datepicker span4', placeholder: 'end date...', value: session[:transactions_query][:end_date]
   = f.button :submit, 'Query', class: 'btn-primary'
   - url_options = { controller: 'transactions', action: 'index', transactions_query: session[:transactions_query] }
   = link_to "Templated Print", url_for(url_options.merge(format: 'pdf')), class: 'btn btn-success', target: '_blank', data: { 'skip-pjax' => true }
@@ -13,12 +13,12 @@
 %table.table-bordered.table#transactions
   %thead
     %tr
-      %th.span2 Date
-      %th.span3 Doc Type
-      %th.span2 Terms
-      %th.span10 Partuculars
-      %th.span3 Debit
-      %th.span3 Credit
+      %th.span4 Date
+      %th.span6 Doc Type
+      %th.span3 Terms
+      %th.span20 Partuculars
+      %th.span6 Debit
+      %th.span6 Credit
   %tbody 
     - for t in @transactions
       - total += t.amount

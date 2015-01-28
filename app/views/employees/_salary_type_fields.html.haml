@@ -1,7 +1,7 @@
 .row-fluid
-  .span5
+  .span10
     = f.input :salary_type_name, input_html: { class: 'salary_type span' }, wrapper: :table_field
-  .span3
+  .span6
     = f.input :amount, input_html: { class: 'amount span', type: :text }, wrapper: :table_field
-  .span1
+  .span2
     = f.link_to_remove "X", class: "btn btn-danger", tabindex: -1

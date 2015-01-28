@@ -8,11 +8,11 @@
       .accordion-inner
         = simple_form_for :search, url: search_path, html: { class: 'form-search' } do |f|
           .row-fluid
-            = f.input_field :terms, class: 'span6', placeholder: 'search...', value: session[:search][:terms]
-            = f.input_field :date_from, class: 'datepicker span3', placeholder: 'date from...', value: session[:search][:date_from]
-            = f.input_field :date_to, class: 'datepicker span3', placeholder: 'date to...', value: session[:search][:date_to]
-            = f.input_field :amount_larger, class: 'numeric span3', placeholder: 'amount larger...', value: session[:search][:amount_larger]
-            = f.input_field :amount_smaller , class: 'numeric span3', placeholder: 'amount smaller...', value: session[:search][:amount_smaller]
+            = f.input_field :terms, class: 'span12', placeholder: 'search...', value: session[:search][:terms]
+            = f.input_field :date_from, class: 'datepicker span6', placeholder: 'date from...', value: session[:search][:date_from]
+            = f.input_field :date_to, class: 'datepicker span6', placeholder: 'date to...', value: session[:search][:date_to]
+            = f.input_field :amount_larger, class: 'numeric span6', placeholder: 'amount larger...', value: session[:search][:amount_larger]
+            = f.input_field :amount_smaller , class: 'numeric span6', placeholder: 'amount smaller...', value: session[:search][:amount_smaller]
             = f.button :submit, 'Search', class: 'btn-primary'
             = link_to 'Clear', '#', class: 'btn btn-danger', id: 'clear-advance-search-form', 'data-skip-pjax' => true
 - if @docs.length == 0
@@ -21,7 +21,7 @@
   = paginate @docs
 - for doc in @docs
   .row-fluid.searchable
-    .span6
+    .span12
       = link_to 'New', url_for(controller: doc.searchable_type.pluralize.underscore, action: :new), class: 'label label-success'
       - if doc.searchable_type == 'Post'
         = link_to 'Post', post_path(doc.searchable_id), class: 'label label-info'
@@ -32,7 +32,7 @@
       - if doc.created_at != doc.updated_at
         %div
           %span.label.label-warning= doc.updated_at.to_s(:long)
-    .span18
+    .span36
       .row
         %span.label= doc.doc_date
         - if doc.doc_amount

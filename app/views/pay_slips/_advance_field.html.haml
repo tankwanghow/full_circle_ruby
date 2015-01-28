@@ -1,9 +1,9 @@
 .row-fluid{class: "Advance"}
-  .offset14.span3
+  .offset28.span6
     = f.input :doc_date, as: :datepicker, input_html: { class: 'span19', readonly: true, tabindex: -1 }, wrapper: :table_field  
-  .span2
+  .span4
     = text_field_tag :id, docnolize(f.object.id, '#'), class: 'span', readonly: true, tabindex: -1
-  .span3
+  .span6
     = f.input :amount, input_html: { tabindex: -1, class: 'numeric row-total span', type: :text, readonly: true }, wrapper: :table_field
-  .span1
+  .span2
     = f.link_to_remove "X", class: "btn btn-danger", tabindex: -1

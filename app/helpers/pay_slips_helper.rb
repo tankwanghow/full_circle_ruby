@@ -1,14 +1,14 @@
 module PaySlipsHelper
   def render_salary_notes_fields builder, xies_name
     render 'share/nested_fields', f: builder, xies_name: xies_name, field: 'pay_slips/salary_note_field',
-           headers: [['Date', 'span3'], ['Doc No', 'span2'], ['Type', 'span4'], ['Note', 'span4'],
-                      ['Quantity', 'span2'], ['Unit', 'span2'], ['Price', 'span2'], ['Amount', 'span3']],
+           headers: [['Date', 'span6'], ['Doc No', 'span4'], ['Type', 'span8'], ['Note', 'span8'],
+                      ['Quantity', 'span4'], ['Unit', 'span4'], ['Price', 'span4'], ['Amount', 'span6']],
            text: 'Add Note'
   end
 
   def render_advances_fields builder, xies_name
     render 'share/nested_fields', f: builder, xies_name: xies_name, field: 'pay_slips/advance_field',
-           headers: [['Date', 'offset14 span3'], ['Advance No', 'span2'], ['Amount', 'span3']],
+           headers: [['Date', 'offset28 span6'], ['Advance No', 'span4'], ['Amount', 'span6']],
            text: 'Add Advance', can_add_row: false
   end
 

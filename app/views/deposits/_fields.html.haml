@@ -1,14 +1,14 @@
 .row-fluid
-  .span6
+  .span12
     = f.input :bank_name1, input_html: { class: 'span' }, label: 'Deposit to Bank', autofocus: true
-  .span3
-    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date'
-  .span3
+  .span6
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span38' }, label: 'Date'
+  .span6
     = f.input :cash_amount, input_html: { class: 'numeric', type: :text }
 #cheque-query
   .row-fluid
     = render 'cheques/due_cheques_query', f: f
-    .offset19.span3
+    .offset38.span6
       %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_cheques', type: 'text', readonly: true }
 
 :coffee

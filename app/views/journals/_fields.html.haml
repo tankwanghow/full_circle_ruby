@@ -1,10 +1,10 @@
 .row-fluid
-  .span3
-    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date', autofocus: true
+  .span6
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span38' }, label: 'Date', autofocus: true
 #transactions
   .row-fluid
     = render_journal_transaction_fields f, :transactions
-    .offset14.span4
+    .offset24.span8
       %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_transactions', type: 'text', readonly: true, tabindex: -1 }
 
 :coffee

@@ -1,9 +1,9 @@
 $baseFontSize: 13px;
-$gridColumns: 24;
+$gridColumns: 48;
 $gridColumnWidth: 38px;
-$gridGutterWidth: 2px;
+$gridGutterWidth: 1px;
 $gridColumnWidthLarge: 38px;
-$gridGutterWidthLarge: 2px;
+$gridGutterWidthLarge: 1px;
 $gridRowWidth: ($gridColumns * $gridColumnWidth) + ($gridGutterWidth * ($gridColumns - 1));
 
 @import "bootstrap";
@@ -18,7 +18,7 @@ legend {
   margin-bottom: 0px;
   font-weight: bold;
   border-bottom: 0px;
-  font-size: 21px;
+  font-size: $baseFontSize + 8px;
 }
 
 .well {
@@ -74,7 +74,7 @@ label { margin-bottom: 0px; }
 }
 
 .tiny {
-  font-size: 10px;
+  font-size: $baseFontSize - 3px;
   color: gray;
 }
 
@@ -138,7 +138,7 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 }
 
 .post_user {
-  font-size: 10px;
+  font-size: $baseFontSize - 3px;
   color: lightgreen;
   font-style: italic;
 }

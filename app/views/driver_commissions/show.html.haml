@@ -1,9 +1,9 @@
 %h3 Driver Commission
 
 = simple_form_for :options, url: url_for, html: { method: :get, class: 'form-inline well' } do |f|
-  = f.input_field :employee_tags, class: 'span6', placeholder: 'employee tags...', value: params[:options][:employee_tags], data: { tags: loader_unloader_tags }
-  = f.input_field :start_date, class: 'datepicker span3', placeholder: 'start date...', value: params[:options][:start_date]
-  = f.input_field :end_date, class: 'datepicker span3', placeholder: 'end date...', value: params[:options][:end_date]
+  = f.input_field :employee_tags, class: 'span12', placeholder: 'employee tags...', value: params[:options][:employee_tags], data: { tags: loader_unloader_tags }
+  = f.input_field :start_date, class: 'datepicker span6', placeholder: 'start date...', value: params[:options][:start_date]
+  = f.input_field :end_date, class: 'datepicker span6', placeholder: 'end date...', value: params[:options][:end_date]
   = f.button :submit, 'Show', class: 'btn-primary'
 
 - if @headers.count > 0

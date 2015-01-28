@@ -1,16 +1,16 @@
 = render_flash
-= simple_form_for :gen_pay, url: pay_slip_generations_path, html: { class: 'offset3 span15 form-inline well', id: 'gen_pay' } do |f|
+= simple_form_for :gen_pay, url: pay_slip_generations_path, html: { class: 'offset6 span30 form-inline well', id: 'gen_pay' } do |f|
   %legend
     Prepare Pay Slip
   .row-fluid
-    .span15
+    .span30
       = f.input_field :employee_name, placeholder: 'employee...', autofocus: true, class: 'span', value: params[:gen_pay] ? params[:gen_pay][:employee_name] : nil
-    .span6
-      = f.input_field :pay_date, class: 'datepicker span21', placeholder: 'salary until...', value: params[:gen_pay] ? params[:gen_pay][:pay_date] : nil
+    .span12
+      = f.input_field :pay_date, class: 'datepicker span40', placeholder: 'salary until...', value: params[:gen_pay] ? params[:gen_pay][:pay_date] : nil
     = f.button :submit, 'Prepare', class: 'btn btn-primary'
 
 - if @pay_slips.count > 0
-  #multi-pay-slip-warning.offset5.span10
+  #multi-pay-slip-warning.offset10.span20
     %h4= "#{@pay_slips.count} Pay Slips found, for #{@pay_slips[0].employee_name} during #{params[:gen_pay][:pay_date].to_date.strftime('%B %Y')}."
     .bold
       = "Are you sure, you want to"

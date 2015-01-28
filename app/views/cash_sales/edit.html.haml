@@ -1,5 +1,5 @@
 = render_flash
-= simple_nested_form_for @cashsale, html: { class: 'form-inline well', id: 'cashsale', posted_lock: posted_lock?(@cashsale) } do |f|
+= simple_nested_form_for @cashsale, html: { class: 'form-inline well', id: 'cashsale', data: { gst_type: 'supply' }, posted_lock: posted_lock?(@cashsale) } do |f|
   %legend
     = "Cash Sales #" + docnolize(@cashsale.id)
     = posted_lock_label f

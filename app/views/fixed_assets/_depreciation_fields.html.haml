@@ -1,7 +1,7 @@
 .row-fluid
-  .span4
-    = f.input :entry_date, as: :datepicker, input_html: { class: 'span21' }, wrapper: :table_field
-  .span4
+  .span8
+    = f.input :entry_date, as: :datepicker, input_html: { class: 'span42' }, wrapper: :table_field
+  .span8
     = f.input :amount, input_html: { class: 'amount span', type: :text }, wrapper: :table_field
   - if f.object.new_record?
     *

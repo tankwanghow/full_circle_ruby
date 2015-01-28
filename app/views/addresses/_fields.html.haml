@@ -2,33 +2,33 @@
 = f.hidden_field :addressable_type
 = f.input :address_type, label: 'Type', collection: ['Mailing', 'Shipping', 'Both'], include_blank: false, autofocus: true
 .row-fluid
-  .span7
+  .span14
     = f.input :address1, input_html: { class: 'span' }
-  .span7
+  .span14
     = f.input :address2, input_html: { class: 'span' }
-  .span7
+  .span14
     = f.input :address3, input_html: { class: 'span' }
 .row-fluid
-  .span7
+  .span14
     = f.input :area, input_html: { class: 'span' }
-  .span7
+  .span14
     = f.input :city, input_html: { class: 'span' }
-  .span7
+  .span14
     = f.input :zipcode, input_html: { class: 'span' }
 .row-fluid
-  .span7
+  .span14
     = f.input :state, input_html: { class: 'span' }
-  .span7
+  .span14
     = f.input :country, as: :string, input_html: { class: 'span' }
-  .span7
+  .span14
     = f.input :tel_no, label: 'Phone No', input_html: { class: 'span' }
 .row-fluid
-  .span7
+  .span14
     = f.input :fax_no, input_html: { class: 'span' }
-  .span7
+  .span14
     = f.input :email, input_html: { class: 'span' }
-  .span7
+  .span14
     = f.input :reg_no, label: 'Registration No', input_html: { class: 'span' }
 .row-fluid
-  .span7
+  .span14
     = f.input :note, input_html: { rows: 4, class: 'span' }

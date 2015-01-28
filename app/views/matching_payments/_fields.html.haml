@@ -1,30 +1,30 @@
 #pay-to
   .row-fluid
-    .span5
+    .span10
       = f.input :pay_to_name1, input_html: { class: 'span' }, label: 'Pay To', autofocus: true
-    .span5
+    .span10
       = f.input :collector, input_html: { class: 'span' }
-    .span3
-      = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }
-    .span4
+    .span6
+      = f.input :doc_date, as: :datepicker, input_html: { class: 'span38' }
+    .span8
       = f.input :actual_debit_amount, input_html: { class: 'bold span', type: :text, tabindex: -1}, label_html: { class: 'bold' }, readonly: true
   #matcher-query
     .row-fluid
       = render 'matchers/fields', account_element: '#payment_pay_to_name1', f: f
 #pay-from
   .row-fluid
-    .span6
+    .span12
       = f.input :pay_from_name1, input_html: { class: 'span' }, label: 'Pay From'
-    .span3
+    .span6
       = f.input :cheque_no, wrapper_html: { style: "display: #{f.object.pay_from_name1 == 'Cash In Hand' ? 'none' : ''}" }, input_html: { class: 'span' }
-    .span3
-      = f.input :cheque_date, as: :datepicker, wrapper_html: { style: "display: #{f.object.pay_from_name1 == 'Cash In Hand' ? 'none' : ''}" }, input_html: { class: 'span21' }
-    .span4
+    .span6
+      = f.input :cheque_date, as: :datepicker, wrapper_html: { style: "display: #{f.object.pay_from_name1 == 'Cash In Hand' ? 'none' : ''}" }, input_html: { class: 'span38' }
+    .span8
       = f.input :actual_credit_amount, input_html: { class: 'bold span', type: :text, tabindex: -1   }, label_html: { class: 'bold' }, readonly: true
   #pay-from-particulars
     .row-fluid
       = render_particulars_fields f, :pay_from_particulars
-      .offset18.span3
+      .offset30.span6
         %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_pay_from_particulars', type: 'text', readonly: true, tabindex: -1 }
       
 :coffee

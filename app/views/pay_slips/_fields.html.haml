@@ -1,26 +1,26 @@
 .row-fluid
-  .span5
+  .span10
     = f.input :employee_name, input_html: { class: 'span', readonly: true, tabindex: -1 }, label: 'Employee'
-  .span2
+  .span4
     = f.input :pay_date, as: :string, label: 'Salary Until', input_html: { class: 'span', readonly: true, tabindex: -1 }
-  .span3
-    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date', autofocus: true
-  .span5
+  .span6
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span38' }, label: 'Date', autofocus: true
+  .span10
     = f.input :pay_from_name1, input_html: { class: 'span' }, label: 'Pay From'
-  .span3
+  .span6
     = f.input :chq_no, wrapper_html: { style: "display: #{f.object.pay_from_name1 == 'Cash In Hand' ? 'none' : ''}" }, input_html: { class: 'span' }
-  .span3
+  .span6
     = label_tag :total_pay, 'Pay Slip Total', class: 'bold'
     = text_field_tag :total_pay, 0.00, class: 'numeric span bold', readOnly: true
 #notes
   .row-fluid
     = render_salary_notes_fields f, :salary_notes
-    .offset16.span3
+    .offset28.span6
       %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_notes', type: 'text', readonly: true }
 #advances
   .row-fluid
     = render_advances_fields f, :advances
-    .offset19.span3
+    .offset38.span6
       %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_advances', type: 'text', readonly: true }
 
 :coffee

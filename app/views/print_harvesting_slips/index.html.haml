@@ -1,4 +1,4 @@
-.span14
+.span28
   - i = 0
   = simple_form_for :harvesting_slips, url: print_harvesting_slips_path, html: { method: :post, class: 'form-search', id: 'slips' } do |f|
     %legend 
@@ -11,24 +11,24 @@
 
     #harvesting_slips
       .row-fluid.bold.center-text
-        .span8.header Employee
-        .span15.header Houses
+        .span16.header Employee
+        .span30.header Houses
     - if @slips.count > 0
       - @slips.each do |s|
         - i += 1
         .row-fluid
-          .span8
+          .span16
             = text_field_tag "harvesting_slips[slips][#{i}][employee]", s.name.titleize, class: 'span'
-          .span15
+          .span30
             = text_field_tag "harvesting_slips[slips][#{i}][houses]", s.houses, class: 'span'
       - (0..5).each do |s|
         - i += 1
         .row-fluid
-          .span8
+          .span16
             = text_field_tag "harvesting_slips[slips][#{i}][employee]", nil, class: 'span'
-          .span15
+          .span30
             = text_field_tag "harvesting_slips[slips][#{i}][houses]", nil, class: 'span'
-.span9
+.span18
   %h4= "Harvesting Slip for #{@at_date - 1}"
   - @slips_yesterday.each do |s|
     %span.bold= s.name.blank? ? 'Company' : s.name.titleize

@@ -1,17 +1,17 @@
 = hidden_field_tag :doc_type, f.object.class.name
 = hidden_field_tag :doc_id, f.object.id
 = label_tag :due_date, nil, class: 'bold'
-= text_field_tag :due_date, params[:due_date] || Date.today, {class: 'datepicker span3', placeholder: 'due date...'}
+= text_field_tag :due_date, params[:due_date] || Date.today, {class: 'datepicker span6', placeholder: 'due date...'}
 = label_tag :limit, nil, class: 'bold'
 = text_field_tag :limit, params[:limit] || 5, {class: 'span1', placeholder: 'limit...'}
 = link_to 'Get Cheques', '#', class: 'btn', id: 'cheque-query-btn'
 .row-fluid
-  .bold.table-header.span4 Bank
-  .bold.table-header.span3 Cheque No
-  .bold.table-header.span4 City
-  .bold.table-header.span4 State
-  .bold.table-header.span4 Due Date
-  .bold.table-header.span3 Amount
+  .bold.table-header.span8 Bank
+  .bold.table-header.span6 Cheque No
+  .bold.table-header.span8 City
+  .bold.table-header.span8 State
+  .bold.table-header.span8 Due Date
+  .bold.table-header.span6 Amount
 .row-fluid
   #cheque-data
     = render 'cheques/object_field', f: f
