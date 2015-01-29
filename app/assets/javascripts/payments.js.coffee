@@ -24,6 +24,9 @@ window.payment = {
   init: ->
 
     payment.shared_init()
+    app.typeahead_init '.tax_code', '/tax_code/typeahead_purchase_code'
+    app.nestedFormFieldAdded 'form', '.row-fluid', '.show-hide', (field) ->
+      app.typeahead_init field.find('.tax_code'), '/tax_code/typeahead_purchase_code'
     app.showHide '#pay-to-particulars .fields:visible', '#pay-to-particulars .show-hide'
     math.sum '#pay-to .row-total', '#payment_actual_debit_amount', 'form#payment_form'
     ($ '.row-total').change()

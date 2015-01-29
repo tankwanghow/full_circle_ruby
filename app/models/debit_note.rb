@@ -45,7 +45,7 @@ class DebitNote < ActiveRecord::Base
   audit_string :particulars, :matchers
 
   include SumAttributes
-  sum_of :particulars, "quantity * unit_price"
+  sum_of :particulars, "in_gst_total"
   sum_of :matchers, "amount"
 
   def debit_note_amount

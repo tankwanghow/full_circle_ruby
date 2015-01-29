@@ -26,6 +26,7 @@ window.detail = {
       elm = ($ this)
       $.get '/tax_code/json', { code: elm.val() }, (data) -> 
         elm.parents('.fields').find('.gst_rate').val(data.rate)    
+        elm.parents('.fields').find('.gst_rate').change()
 
     ($ 'form').on 'change', '#details .product', ->
       elm = ($ this)
@@ -35,6 +36,7 @@ window.detail = {
         elm.parents('.fields').find('.packaging').val(data.first_packaging_name)
         elm.data('product-json', data)
         elm.parents('.fields').find('.packaging').change()
+        elm.parents('.fields').find('.tax_code').change()
 
     ($ 'form').on 'change', '#details .packaging', ->
       elm = ($ this)

@@ -19,8 +19,9 @@ class Payment < ActiveRecord::Base
 
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :actual_debit_amount,
-             content: [:id, :pay_to_name1, :collector, :pay_to_particulars_audit_string, :actual_debit_amount, :matchers_audit_string,
-                       :pay_from_name1, :cheque_date, :cheque_no, :pay_from_particulars_audit_string, :actual_credit_amount]
+             content: [:id, :pay_to_name1, :collector, :pay_to_particulars_audit_string, 
+                       :actual_debit_amount, :matchers_audit_string, :pay_from_name1, :cheque_date, 
+                       :cheque_no, :pay_from_particulars_audit_string, :actual_credit_amount]
 
   simple_audit username_method: :username do |r|
     {

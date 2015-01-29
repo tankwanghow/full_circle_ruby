@@ -71,7 +71,7 @@ private
         doc: pur_invoice, 
         account: tax_code.gst_account, 
         transaction_date: pur_invoice.doc_date, 
-        note: pur_invoice.customer.name1 + ' - GST on ' + product.name1,
+        note: pur_invoice.supplier.name1 + ' - GST on ' + product.name1,
         amount: gst,
         user: User.current  
       })
