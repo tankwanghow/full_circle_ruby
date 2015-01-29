@@ -16,9 +16,9 @@ class Product < ActiveRecord::Base
   accepts_nested_attributes_for :product_packagings, allow_destroy: true
 
   include ValidateBelongsTo
-  validate_belongs_to :sale_account,     :name1
-  validate_belongs_to :purchase_account, :name1
-  validate_belongs_to :supply_tax_code, :code
+  validate_belongs_to :sale_account,      :name1
+  validate_belongs_to :purchase_account,  :name1
+  validate_belongs_to :supply_tax_code,   :code
   validate_belongs_to :purchase_tax_code, :code
   
   include Searchable
@@ -43,4 +43,19 @@ class Product < ActiveRecord::Base
   include AuditString
   audit_string :product_packagings
 
+  def supply_tax_code_code
+    supply_tax_code.code
+  end
+
+  def purchase_tax_code_code
+    purchase_tax_code.code
+  end
+
+  def supply_tax_code_rate
+    supply_tax_code.rate
+  end
+
+  def purchase_tax_code_rate
+    purchase_tax_code.rate
+  end
 end

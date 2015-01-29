@@ -93,6 +93,7 @@ module ApplicationHelper
     if object.respond_to? :posted
       object.posted
     else
+      binding.pry
       false
     end
   end

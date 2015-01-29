@@ -7,12 +7,14 @@ class Invoice < ActiveRecord::Base
   validates_presence_of :credit_terms, :customer_name1, :doc_date
 
   before_save do |r|
-    if r.changes[:posted] == [false, true] 
+    if r.changes[:posted] == [false, true]
       if transactions.count == 0
         build_transactions
       else
-        raise "Cannot update a posted document"
+        raise "Error!! Non-Posted document has accounting transactions. TELL BOSS!!"
       end
+    elsif r.posted
+      raise "Cannot update a posted document"
     end
   end
 
@@ -51,8 +53,8 @@ class Invoice < ActiveRecord::Base
   audit_string :particulars, :details
 
   include SumAttributes
-  sum_of :particulars, "quantity * unit_price"
-  sum_of :details, "quantity * unit_price"
+  sum_of :particulars, "in_gst_total"
+  sum_of :details, "in_gst_total"
 
   def invoice_amount
     particulars_amount + details_amount
@@ -69,7 +71,7 @@ private
   end
 
   def build_details_transactions
-    details.select { |t| t.total > 0 and !t.marked_for_destruction? }.each do |t|
+    details.select { |t| t.in_gst_total > 0 and !t.marked_for_destruction? }.each do |t|
       t.invoice = self
       transactions << t.transactions
     end

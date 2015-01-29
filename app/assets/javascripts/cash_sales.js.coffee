@@ -3,6 +3,10 @@ window.cash_sale = {
     invoice.shared_init()
     cheque.init()
 
+    app.typeahead_init '.tax_code', '/tax_code/typeahead_supply_code'
+    app.nestedFormFieldAdded 'form', '.row-fluid', '.show-hide', (field) ->
+      app.typeahead_init field.find('.tax_code'), '/tax_code/typeahead_supply_code'
+
     ($ '#cash_sale_tag_list').select2
       tags: $('#cash_sale_tag_list').data('tags')
       closeOnSelect: true

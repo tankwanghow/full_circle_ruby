@@ -46,11 +46,30 @@ class TaxCodesController < ApplicationController
 
   def typeahead_code
     term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
-    render json: TaxCode.where('code ilike ?', term).limit(8).pluck(:code)
+    render json: TaxCode.where('code ilike ?', term).limit(20).pluck(:code)
+  end
+
+  def typeahead_supply_code
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: TaxCode.supply.where('code ilike ?', term).limit(8).pluck(:code)
+  end
+
+  def typeahead_purchase_code
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: TaxCode.purchase.where('code ilike ?', term).limit(8).pluck(:code)
   end
 
   def typeahead_tax_type
     term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
     render json: TaxCode.uniq.where('tax_type ilike ?', term).limit(8).pluck(:tax_type)
+  end
+
+  def json
+    p = TaxCode.find_by_code(params[:code])
+    if p
+      render json: p.attributes
+    else
+      render json: 'Not Found!'
+    end
   end
 end

@@ -7,12 +7,14 @@ class CreditNote < ActiveRecord::Base
   validates_presence_of :account_name1, :doc_date
 
   before_save do |r|
-    if r.changes[:posted] == [false, true] 
+    if r.changes[:posted] == [false, true]
       if transactions.count == 0
         build_transactions
       else
-        raise "Cannot update a posted document"
+        raise "Error!! Non-Posted document has accounting transactions. TELL BOSS!!"
       end
+    elsif r.posted
+      raise "Cannot update a posted document"
     end
   end
 

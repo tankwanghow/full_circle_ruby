@@ -21,9 +21,13 @@ FullCircle::Application.routes.draw do
   resources :tax_codes, only: [:new, :edit, :update, :create, :destroy]
   get 'tax_code/new_or_edit' => 'tax_codes#new_or_edit'
   get 'tax_code/typeahead_code' => 'tax_codes#typeahead_code'
+  get 'tax_code/typeahead_supply_code' => 'tax_codes#typeahead_supply_code'
+  get 'tax_code/typeahead_purchase_code' => 'tax_codes#typeahead_purchase_code'
   get 'tax_code/typeahead_tax_type' => 'tax_codes#typeahead_tax_type'
+  get 'tax_code/json' => 'tax_codes#json'
 
   resources :particular_types, only: [:new, :edit, :update, :create, :destroy]
+  get 'particular_type/json' => 'particular_types#json'
   get 'particular_type/new_or_edit' => 'particular_types#new_or_edit'
   get 'particular_type/typeahead_name' => 'particular_types#typeahead_name'
 

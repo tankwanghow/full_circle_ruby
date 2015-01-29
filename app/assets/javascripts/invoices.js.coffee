@@ -32,6 +32,9 @@ window.invoice = {
     invoice.shared_init()
     math.sum '#total_details, #total_particulars', '#invoice_invoice_amount', 'form#invoice'
     app.typeahead_init '#invoice_customer_name1', '/account/typeahead_name1'
+    app.typeahead_init '.tax_code', '/tax_code/typeahead_supply_code'
+    app.nestedFormFieldAdded 'form', '.row-fluid', '.show-hide', (field) ->
+      app.typeahead_init field.find('.tax_code'), '/tax_code/typeahead_supply_code'
     ($ '.row-total').change()
 }
 

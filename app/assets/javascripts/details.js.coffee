@@ -22,10 +22,16 @@ window.detail = {
         product_json = field.find('.product').data('product-json')
         { product_id: product_json.id } if product_json
 
+    ($ 'form').on 'change', '#details .tax_code', ->
+      elm = ($ this)
+      $.get '/tax_code/json', { code: elm.val() }, (data) -> 
+        elm.parents('.fields').find('.gst_rate').val(data.rate)    
+
     ($ 'form').on 'change', '#details .product', ->
       elm = ($ this)
-      $.get '/product/json', { name1: elm.val() }, (data) -> 
+      $.get '/product/json', { name1: elm.val(), gst_type: elm.parents('form').data('gst-type') }, (data) -> 
         elm.parents('.fields').find('[name="row_unit"]').val(data.unit)
+        elm.parents('.fields').find('.tax_code').val(data.tax_code)
         elm.parents('.fields').find('.packaging').val(data.first_packaging_name)
         elm.data('product-json', data)
         elm.parents('.fields').find('.packaging').change()

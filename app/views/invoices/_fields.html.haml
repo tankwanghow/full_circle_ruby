@@ -1,30 +1,30 @@
 .row-fluid
-  .span6
+  .span12
     = f.input :customer_name1, input_html: { class: 'span' }, label: 'Customer', autofocus: true
-  .span3
+  .span6
     = f.input :credit_terms, label: 'Terms(days)', input_html: { type: :text, class: 'span' }
-  .span3
-    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19' }, label: 'Date'
-  .span7
+  .span6
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span38' }, label: 'Date'
+  .span14
     = f.input :tag_list, input_html: { data: { tags: Invoice.tag_counts.map {|t| t.name } }, class: 'span' }
 #details
   .row-fluid
     = render_invoice_details_fields f, :details
-    .offset17.span3
+    .offset30.span6
       %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_details', type: 'text', readonly: true }
 #particulars
   .row-fluid
     = render_particulars_fields f, :particulars
-    .offset16.span3
+    .offset30.span6
       %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_particulars', type: 'text', readonly: true }
 .row-fluid
-  .span6
+  .span12
     = f.input :note, input_html: { rows: 3, class: 'span' }
-  .span4
+  .span8
     = f.input :loader_list, input_html: { data: { tags: Invoice.loader_counts.map {|t| t.name } }, class: 'span' }
-  .span4
+  .span8
     = f.input :unloader_list, input_html: { data: { tags: Invoice.unloader_counts.map {|t| t.name } }, class: 'span' }
-  .offset17
+  .offset37
     = f.input :invoice_amount, input_html: { tabindex: -1, class: 'bold numeric', type: :text, name: 'invoice_amount' }, label_html: { class: 'bold' }, readonly: true
 
 :coffee

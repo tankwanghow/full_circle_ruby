@@ -46,6 +46,16 @@ class ParticularTypesController < ApplicationController
 
   def typeahead_name
     term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
-    render json: ParticularType.where('name ilike ?', term).limit(8).pluck(:name)
+    render json: ParticularType.using.where('name ilike ?', term).limit(8).pluck(:name)
   end
+
+  def json
+    p = ParticularType.using.find_by_name(params[:name])
+    if p
+      render json: p.attributes.merge!(gst_rate: p.tax_code.try(:rate), tax_code: p.tax_code.try(:code))
+    else
+      render json: 'Not Found!'
+    end
+  end
+
 end

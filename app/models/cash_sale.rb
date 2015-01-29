@@ -11,13 +11,13 @@ class CashSale < ActiveRecord::Base
   acts_as_taggable_on :loader, :unloader
 
   before_save do |r|
-    if r.changes[:posted] == [false, true] 
+    if r.changes[:posted] == [false, true]
       if transactions.count == 0
         build_transactions
       else
         raise "Error!! Non-Posted document has accounting transactions. TELL BOSS!!"
       end
-    else
+    elsif r.posted
       raise "Cannot update a posted document"
     end
   end
@@ -56,8 +56,8 @@ class CashSale < ActiveRecord::Base
   audit_string :details, :particulars, :cheques
 
   include SumAttributes
-  sum_of :particulars, "quantity * unit_price"
-  sum_of :details, "quantity * unit_price"
+  sum_of :particulars, "in_gst_total"
+  sum_of :details, "in_gst_total"
   sum_of :cheques, "amount"
 
   def sales_amount
@@ -89,7 +89,7 @@ private
   end
 
   def build_details_transactions
-    details.select { |t| t.total > 0 and !t.marked_for_destruction? }.each do |t|
+    details.select { |t| t.in_gst_total > 0 and !t.marked_for_destruction? }.each do |t|
       t.cash_sale = self
       transactions << t.transactions
     end

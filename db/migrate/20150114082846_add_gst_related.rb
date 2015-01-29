@@ -5,8 +5,7 @@ class AddGstRelated < ActiveRecord::Migration
     create_table :tax_codes do |t|
       t.string     :tax_type,       null: false
       t.string     :code,           null: false
-      t.decimal    :rate,           precision: 5,  scale: 4, default: 0, null: false
-      t.string     :db_cr,          null: false
+      t.decimal    :rate,           precision: 5,  scale: 2, default: 0, null: false
       t.integer    :gst_account_id, null: false
       t.text       :description
       t.integer    :lock_version,   default: 0
@@ -18,12 +17,24 @@ class AddGstRelated < ActiveRecord::Migration
     add_column :products, :supply_tax_code_id, :integer, null: false, default: 0
     add_column :products, :purchase_tax_code_id, :integer, null: false, default: 0
 
-    add_column :particular_types, :supply_tax_code_id, :integer, null: false, default: 0
-    add_column :particular_types, :purchase_tax_code_id, :integer, null: false, default: 0
+    add_column :cash_sale_details,   :discount, :decimal, precision: 12, scale: 2, default: 0
+    add_column :invoice_details,     :discount, :decimal, precision: 12, scale: 2, default: 0
+    add_column :pur_invoice_details, :discount, :decimal, precision: 12, scale: 2, default: 0
+    add_column :cash_sale_details,   :tax_code_id, :integer
+    add_column :invoice_details,     :tax_code_id, :integer
+    add_column :pur_invoice_details, :tax_code_id, :integer
+    add_column :cash_sale_details,   :gst_rate, :decimal, precision: 5, scale: 2, default: 0
+    add_column :invoice_details,     :gst_rate, :decimal, precision: 5, scale: 2, default: 0
+    add_column :pur_invoice_details, :gst_rate, :decimal, precision: 5, scale: 2, default: 0
 
-    add_column :cash_sale_details,   :discount, :decimal, precision: 12, scale: 4, default: 0
-    add_column :invoice_details,     :discount, :decimal, precision: 12, scale: 4, default: 0
-    add_column :pur_invoice_details, :discount, :decimal, precision: 12, scale: 4, default: 0
+    add_column :particular_types, :tax_code_id, :integer
+
+    add_column :particulars, :tax_code_id, :integer
+    add_column :particulars, :gst_rate, :decimal, precision: 5, scale: 2, default: 0
+
+    change_column :cash_sale_details,   :package_qty, :decimal, precision: 12, scale: 2, default: 0
+    change_column :invoice_details,     :package_qty, :decimal, precision: 12, scale: 2, default: 0
+    change_column :pur_invoice_details, :package_qty, :decimal, precision: 12, scale: 2, default: 0
 
     add_column :credit_notes, :posted, :boolean, default: false, null: false
     add_column :debit_notes , :posted, :boolean, default: false, null: false

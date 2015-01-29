@@ -2,18 +2,29 @@ class InvoiceDetail < ActiveRecord::Base
   belongs_to :invoice
   belongs_to :product
   belongs_to :product_packaging
+  belongs_to :tax_code
+  
   validates_presence_of :product_name1, :unit
   validates_numericality_of :quantity, greater_than: 0
   
   include ValidateBelongsTo
   validate_belongs_to :product, :name1
+  validate_belongs_to :tax_code, :code
 
-  def total
-    (quantity * unit_price).round 2
+  def ex_gst_total
+    ((quantity * unit_price) + discount).round(2)
+  end
+
+  def in_gst_total
+    (ex_gst_total + gst).round(2)
+  end
+
+  def gst
+    (gst_rate / 100 * ex_gst_total).round(2)
   end
 
   def simple_audit_string
-    [ product.name1, note, packaging_name ].join ' '
+    [ product.name1, quantity, unit_price, discount, tax_code.code, gst_rate ].join ' '
   end
 
   def unit
@@ -21,7 +32,7 @@ class InvoiceDetail < ActiveRecord::Base
   end
 
   def transactions
-    product_transaction
+    [product_transaction, gst_transaction]
   end
 
   def packaging_name
@@ -45,11 +56,26 @@ private
 
   def product_transaction
     Transaction.new({
-      doc: invoice, account: product.sale_account, transaction_date: invoice.doc_date, 
+      doc: invoice, 
+      account: product.sale_account, 
+      transaction_date: invoice.doc_date, 
       note: invoice.customer.name1 + ' - ' + product.name1,
-      amount: -total,
+      amount: -ex_gst_total,
       user: User.current
     })
+  end
+
+  def gst_transaction
+    if gst != 0
+      Transaction.new({
+        doc: invoice, 
+        account: tax_code.gst_account, 
+        transaction_date: invoice.doc_date, 
+        note: invoice.customer.name1 + ' - GST on ' + product.name1,
+        amount: -gst,
+        user: User.current  
+      })
+    end
   end
 
 end

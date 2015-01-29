@@ -25,15 +25,25 @@ $ ->
 
 window.math = {
 
-  rowTotal: (qtyCls, priceCls, totalCls, rowCls, evtBubbleCls) ->
-    ($ evtBubbleCls).on 'change', qtyCls, -> calRowTotal(this)
-    ($ evtBubbleCls).on 'change', priceCls, -> calRowTotal(this)
+  rowTotal: (qtyCls, priceCls, discountCls, gstRateCls, gstCls, totalCls, rowCls, evtBubbleCls) ->
+    ($ evtBubbleCls).on 'change', qtyCls,      -> calRowTotal(this)
+    ($ evtBubbleCls).on 'change', priceCls,    -> calRowTotal(this)
+    ($ evtBubbleCls).on 'change', discountCls, -> calRowTotal(this)
+    ($ evtBubbleCls).on 'change', gstRateCls,  -> calRowTotal(this)
 
     calRowTotal = (elm) ->
       row_total = ($ elm).closest(rowCls).find(totalCls)
-      qty = ($ elm).closest(rowCls).find(qtyCls).val()
-      price = ($ elm).closest(rowCls).find(priceCls).val()
-      row_total.val (qty * price).toFixed(2)
+      gst       = ($ elm).closest(rowCls).find(gstCls)
+      qty       = + ($ elm).closest(rowCls).find(qtyCls).val() || 0
+      price     = + ($ elm).closest(rowCls).find(priceCls).val() || 0
+      discount  = + ($ elm).closest(rowCls).find(discountCls).val() || 0
+      gst_rate  = + ($ elm).closest(rowCls).find(gstRateCls).val() || 0
+
+      amount   = (qty * price) + discount
+      gst_val  = amount * (gst_rate / 100)
+
+      gst.val(gst_val.toFixed(2)) if gst
+      row_total.val (amount + gst_val).toFixed(2)
       row_total.change()
 
 
@@ -118,7 +128,7 @@ window.app = {
       ($ showhide_selector).hide()
 
   standard_row_total_init: ->
-    math.rowTotal '.quantity', '.unit-price', '.row-total', '.fields', '.row-fluid'
+    math.rowTotal '.quantity', '.unit-price', '.discount', '.gst_rate', '.gst', '.row-total', '.fields', '.row-fluid'
 
   typeahead_init: (selector, url, params_func= -> {}) ->
     if selector.jquery
