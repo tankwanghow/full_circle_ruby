@@ -90,8 +90,8 @@ module ApplicationHelper
   end
 
   def posted_lock? object
-    if object.respond_to? :posted
-      object.posted
+    if object.respond_to?(:posted)
+      object.posted && GstStarted
     else
       false
     end

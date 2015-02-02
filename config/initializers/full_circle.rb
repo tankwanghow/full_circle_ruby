@@ -1,13 +1,16 @@
 # encoding: utf-8
 CompanyName = 'Kim Poh Sitt Tat Feedmill Sdn. Bhd.'
 CompanyName1 = '金宝实达饲料厂有限公司'
-GstNo   = ''
-SoftwareVersion = '1.0.0'
-GatVersion = ''
 ClosingDay = 31
 ClosingMonth = 12
 Date::DATE_FORMATS[:default] = '%d-%m-%Y'
 Money.default_currency = Money::Currency.new('MYR')
+
+# GST Stuff
+GstStarted = (Date.today >= '2015-04-01'.to_date)
+GstNo   = ''
+SoftwareVersion = '1.0.0'
+GatVersion = ''
 
 if Address.table_exists?
   CompanyAddress = Address.new do |t|

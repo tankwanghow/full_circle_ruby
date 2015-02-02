@@ -11,7 +11,7 @@ class CashSale < ActiveRecord::Base
   acts_as_taggable_on :loader, :unloader
 
   before_save do |r|
-    if r.changes[:posted] == [false, true]
+    if r.changes[:posted] == [false, true] && GstStarted && GstStarted
       if transactions.count == 0
         build_transactions
       else

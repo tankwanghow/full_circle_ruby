@@ -7,7 +7,7 @@ class PurInvoice < ActiveRecord::Base
   validates_presence_of :credit_terms, :supplier_name1, :doc_date
 
   before_save do |r|
-    if r.changes[:posted] == [false, true]
+    if r.changes[:posted] == [false, true] && GstStarted
       if transactions.count == 0
         build_transactions
       else
