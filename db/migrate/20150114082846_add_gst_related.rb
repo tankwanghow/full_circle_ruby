@@ -41,6 +41,7 @@ class AddGstRelated < ActiveRecord::Migration
     add_column :pur_invoices, :posted, :boolean, default: false, null: false
     add_column :invoices    , :posted, :boolean, default: false, null: false
     add_column :cash_sales  , :posted, :boolean, default: false, null: false
+    add_column :payments    , :posted, :boolean, default: false, null: false
   end
 
 end

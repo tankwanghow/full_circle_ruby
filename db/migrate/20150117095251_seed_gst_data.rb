@@ -86,6 +86,8 @@ class SeedGstData < ActiveRecord::Migration
     DebitNote.update_all posted: true
     Invoice.update_all posted: true
     PurInvoice.update_all posted: true
+    Payment.update_all posted: true
+
   end
 
   def down
@@ -103,6 +105,7 @@ class SeedGstData < ActiveRecord::Migration
     DebitNote.update_all posted: false
     Invoice.update_all posted: false
     PurInvoice.update_all posted: false
+    Payment.update_all posted: false
     Product.update_all        supply_tax_code_id: 0, purchase_tax_code_id: 0
     ParticularType.update_all supply_tax_code_id: 0, purchase_tax_code_id: 0
     TaxCode.destroy_all
