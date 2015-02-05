@@ -9,7 +9,7 @@
   .row-fluid
     = render 'cheques/due_cheques_query', f: f
     .offset38.span6
-      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_cheques', type: 'text', readonly: true }
+      %input.bold.show-hide.span.numeric#total_cheques{tabindex: -1, value: 0.00, type: 'text', readonly: true }
 
 :coffee
   ($ document).ready -> deposit.init()

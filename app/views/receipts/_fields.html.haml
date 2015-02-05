@@ -12,7 +12,7 @@
   .row-fluid
     = render_cheques_fields f, :cheques
     .offset28.span6
-      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_cheques', type: 'text', readonly: true }
+      %input.bold.show-hide.span.numeric#total_cheques{tabindex: -1, value: 0.00, type: 'text', readonly: true }
 .row-fluid
   .span16
     = f.input :note, input_html: { rows: 3, class: 'span' }
@@ -22,7 +22,7 @@
   .row-fluid
     = render 'matchers/fields', account_element: '#receipt_receive_from_name1', f: f
     .offset34.span6
-      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_matched', type: 'text', readonly: true }
+      %input.bold.show-hide.span.numeric#total_matched{tabindex: -1, value: 0.00, type: 'text', readonly: true }
 
 :coffee
   ($ document).ready -> receipt.init()

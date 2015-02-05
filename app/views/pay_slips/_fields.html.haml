@@ -16,12 +16,12 @@
   .row-fluid
     = render_salary_notes_fields f, :salary_notes
     .offset28.span6
-      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_notes', type: 'text', readonly: true }
+      %input.bold.show-hide.span.numeric#total_notes{tabindex: -1, value: 0.00, type: 'text', readonly: true }
 #advances
   .row-fluid
     = render_advances_fields f, :advances
     .offset38.span6
-      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_advances', type: 'text', readonly: true }
+      %input.bold.show-hide.span.numeric#total_advances{tabindex: -1, value: 0.00, type: 'text', readonly: true }
 
 :coffee
   ($ document).ready -> pay_slip.init()

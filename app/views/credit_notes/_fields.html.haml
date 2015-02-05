@@ -7,12 +7,12 @@
   .row-fluid
     = render_particulars_fields f, :particulars
     .offset30.span6
-      %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_particulars', type: 'text', readonly: true, tabindex: -1 }
+      %input.bold.show-hide.span.numeric#total_particulars{value: 0.00, type: 'text', readonly: true, tabindex: -1 }
 #matcher-query
   .row-fluid
     = render 'matchers/fields', account_element: '#credit_note_account_name1', f: f
     .offset34.span6
-      %input.bold.show-hide.span.numeric{tabindex: -1, value: 0.00, id: 'total_matched', type: 'text', readonly: true }
+      %input.bold.show-hide.span.numeric#total_matched{tabindex: -1, value: 0.00, type: 'text', readonly: true }
       
 :coffee
   ($ document).ready -> credit_note.init()
