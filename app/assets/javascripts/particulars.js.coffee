@@ -15,7 +15,10 @@ window.particular = {
     ($ 'form').on 'change', '#particulars .tax_code, #pay-to-particulars .tax_code, #pay-from-particulars .tax_code', ->
       elm = ($ this)
       $.get '/tax_code/json', { code: elm.val() }, (data) -> 
-        elm.parents('.fields').find('.gst_rate').val(data.rate)    
+        if data
+          elm.parents('.fields').find('.gst_rate').val(data.rate)    
+        else
+          elm.parents('.fields').find('.gst_rate').val(0)    
         elm.parents('.fields').find('.gst_rate').change()
 
     app.nestedFormFieldRemoved 'form', '.row-fluid', '.show-hide', '.fields:visible', '.row-total'
