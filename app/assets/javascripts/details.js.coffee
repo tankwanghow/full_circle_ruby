@@ -25,16 +25,25 @@ window.detail = {
     ($ 'form').on 'change', '#details .tax_code', ->
       elm = ($ this)
       $.get '/tax_code/json', { code: elm.val() }, (data) -> 
-        elm.parents('.fields').find('.gst_rate').val(data.rate)    
+        if data
+          elm.parents('.fields').find('.gst_rate').val(data.rate)    
+        else
+          elm.parents('.fields').find('.gst_rate').val(0)
         elm.parents('.fields').find('.gst_rate').change()
 
     ($ 'form').on 'change', '#details .product', ->
       elm = ($ this)
-      $.get '/product/json', { name1: elm.val(), gst_type: elm.parents('form').data('gst-type') }, (data) -> 
-        elm.parents('.fields').find('[name="row_unit"]').val(data.unit)
-        elm.parents('.fields').find('.tax_code').val(data.tax_code)
-        elm.parents('.fields').find('.packaging').val(data.first_packaging_name)
-        elm.data('product-json', data)
+      $.get '/product/json', { name1: elm.val(), gst_type: elm.parents('form').data('gst-type') }, (data) ->
+        if data
+          elm.parents('.fields').find('[name="row_unit"]').val(data.unit)
+          elm.parents('.fields').find('.tax_code').val(data.tax_code)
+          elm.parents('.fields').find('.packaging').val(data.first_packaging_name)
+          elm.data('product-json', data)
+        else
+          elm.parents('.fields').find('[name="row_unit"]').val('')
+          elm.parents('.fields').find('.tax_code').val('')
+          elm.parents('.fields').find('.packaging').val('')
+          elm.data('product-json', null)
         elm.parents('.fields').find('.packaging').change()
         elm.parents('.fields').find('.tax_code').change()
 
