@@ -66,10 +66,6 @@ class TaxCodesController < ApplicationController
 
   def json
     p = TaxCode.find_by_code(params[:code])
-    if p
-      render json: p.attributes
-    else
-      render json: 'Not Found!'
-    end
+    render json: p.try(:attributes)
   end
 end

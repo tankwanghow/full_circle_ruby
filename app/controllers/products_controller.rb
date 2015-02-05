@@ -55,7 +55,7 @@ class ProductsController < ApplicationController
       tax_code = params[:gst_type] == 'supply' ? p.supply_tax_code_code : p.purchase_tax_code_code
       render json: p.attributes.merge!(first_packaging_name: p.product_packagings.first.pack_qty_name, tax_code: tax_code)
     else
-      render json: 'Not Found!'
+      render json: p
     end
   end
 

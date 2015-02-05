@@ -54,7 +54,7 @@ class ParticularTypesController < ApplicationController
     if p
       render json: p.attributes.merge!(gst_rate: p.tax_code.try(:rate), tax_code: p.tax_code.try(:code))
     else
-      render json: 'Not Found!'
+      render json: p
     end
   end
 
