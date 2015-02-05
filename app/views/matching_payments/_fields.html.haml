@@ -24,8 +24,10 @@
   #pay-from-particulars
     .row-fluid
       = render_particulars_fields f, :pay_from_particulars
-      .offset30.span6
-        %input.bold.show-hide.span.numeric{value: 0.00, id: 'total_pay_from_particulars', type: 'text', readonly: true, tabindex: -1 }
+      .offset26.span4
+        %input.bold.show-hide.span.numeric#total_pay_from_gst{value: 0.00, type: 'text', readonly: true, tabindex: -1 }
+      .span6
+        %input.bold.show-hide.span.numeric#total_pay_from_particulars{value: 0.00, type: 'text', readonly: true, tabindex: -1 }
       
 :coffee
   ($ document).ready -> matching_payment.init()
