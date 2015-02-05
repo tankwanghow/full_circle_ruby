@@ -1,5 +1,5 @@
 = render_flash
-= simple_nested_form_for @payment, html: { class: 'form-inline well', id: 'payment_form' } do |f|
+= simple_nested_form_for @payment, html: { class: 'form-inline well', id: 'payment' } do |f|
   %legend
     = "Payment #" + docnolize(@payment.id)
   = render 'fields', f: f
