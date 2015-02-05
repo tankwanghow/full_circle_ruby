@@ -44,6 +44,7 @@ window.math = {
 
       gst.val(gst_val.toFixed(2)) if gst
       row_total.val (amount + gst_val).toFixed(2)
+      gst.change()
       row_total.change()
 
 
@@ -57,7 +58,7 @@ window.math = {
           val = ($ elm).val()
         total = total + +val
       ($ totalElm).val total.toFixed(2)
-      ($ totalElm).change() 
+      ($ totalElm).change()
 }
 
 window.main = {
