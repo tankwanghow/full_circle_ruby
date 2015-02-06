@@ -1,45 +1,49 @@
 class PaymentParticular < Particular
 
   def transactions
-    ptt = particular_type_transaction
-    act = account_transaction
-    if act.account == ptt.account and act.amount + ptt.amount == 0
-      nil
+    if flag == 'pay_to'
+      pay_to_gst_transaction
     else
-      [ particular_type_transaction, account_transaction ]
+      [pay_from_particulars_transaction, pay_from_gst_transaction].flatten
     end
   end
 
-private
+  private
 
-  def particular_type_transaction
-    Transaction.new( 
-      { doc: doc, account: particular_type.account || current_account, transaction_date: doc.doc_date, 
-        note: [current_account.name1, doc.collector].join(' - '),
-        user: User.current 
-      }.merge(debit_or_credit_amount(total < 0))
-    )
+  def pay_to_gst_transaction
+    if gst != 0
+      Transaction.new({
+        doc: doc, 
+        account: tax_code.gst_account, 
+        transaction_date: doc.doc_date, 
+        note: [doc.pay_to.name1, '- GST on', particular_type.name, note].join(' '),
+        amount: gst,
+        user: User.current  
+        })
+    end
   end
 
-  def account_transaction
-    Transaction.new( 
-      {
-        doc: doc, account: current_account, transaction_date: doc.doc_date, 
-        note: [particular_type.name, doc.collector].join(' - '),
-        user: User.current 
-      }.merge(debit_or_credit_amount(total > 0))
-    )
+  def pay_from_particulars_transaction
+    Transaction.new({
+      doc: doc, 
+      account: particular_type.account || doc.pay_from, 
+      transaction_date: doc.doc_date, 
+      note: [doc.pay_from.name1, particular_type.name, note].join(' '),
+      amount: ex_gst_total,
+      user: User.current
+      })
   end
 
-  def current_account
-    flag == 'pay_to' ? doc.pay_to : doc.pay_from
-  end
-
-  def debit_or_credit_amount total_flag
-    if total_flag
-      { amount: -total.abs }
-    else
-      { amount: total.abs }
+  def pay_from_gst_transaction
+    if gst != 0
+      Transaction.new({
+        doc: doc, 
+        account: tax_code.gst_account, 
+        transaction_date: doc.doc_date, 
+        note: [doc.pay_from.name1, '- GST on', particular_type.name, note].join(' '),
+        amount: gst,
+        user: User.current  
+        })
     end
   end
 

@@ -1,8 +1,10 @@
 = render_flash
-= simple_nested_form_for @payment, html: { class: 'form-inline well', id: 'payment' } do |f|
+= simple_nested_form_for @payment, html: { class: 'form-inline well', id: 'payment', data: { gst_type: 'purchase' }, posted_lock: posted_lock?(@payment) } do |f|
   %legend
     = "Payment #" + docnolize(@payment.id)
+    = posted_lock_label f
   = render 'fields', f: f
+  = post_to_account_check_box f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
     = link_to_edit_action_buttons @payment, payment_journal_entries_path(@payment)

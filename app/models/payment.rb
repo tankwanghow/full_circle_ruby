@@ -9,11 +9,26 @@ class Payment < ActiveRecord::Base
   validates_presence_of :collector, :pay_to_name1, :pay_from_name1, :doc_date
   validates_numericality_of :actual_credit_amount, greater_than: 0
   validates_numericality_of :actual_debit_amount, greater_than: 0
+  
   accepts_nested_attributes_for :pay_to_particulars, allow_destroy: true
   accepts_nested_attributes_for :pay_from_particulars, allow_destroy: true
   accepts_nested_attributes_for :matchers, allow_destroy: true, reject_if: :dont_process
 
-  before_save :build_transactions
+  before_save do |r|
+    if GstStarted
+      if r.changes[:posted] == [false, true]
+        if transactions.count == 0
+          build_transactions
+        else
+          raise "Error!! Non-Posted document has accounting transactions. TELL BOSS!!"
+        end
+      elsif r.posted
+        raise "Cannot update a posted document"
+      end
+    else
+      build_transactions
+    end
+  end
 
   include ValidateTransactionsBalance
 
@@ -70,7 +85,6 @@ private
     transactions <<
       pay_to_particulars.select { |t| !t.marked_for_destruction? }.
         map { |t| t.doc = self; t.transactions; }.select { |t| t != nil}
-
     transactions <<
       pay_from_particulars.select { |t| !t.marked_for_destruction? }.
         map { |t| t.doc = self; t.transactions; }.select { |t| t != nil}
@@ -82,7 +96,7 @@ private
       transaction_date: doc_date,
       account: pay_from,
       note: 'To ' + [pay_to.name1, collector].join(', by '),
-      amount: -actual_debit_amount,
+      amount: -actual_credit_amount,
       user: User.current
     )
   end

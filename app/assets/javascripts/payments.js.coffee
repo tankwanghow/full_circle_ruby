@@ -21,7 +21,7 @@ window.payment = {
 
     app.showHide '#pay-from-particulars .fields:visible', '#pay-from-particulars .show-hide'
 
-    math.sum '#total_pay_to_gst, #payment_actual_debit_amount, #total_pay_from_particulars, #total_pay_from_gst',
+    math.sum '#total_pay_to_gst, #payment_actual_debit_amount, #total_pay_from_particulars',
              '#payment_actual_credit_amount', 'form#payment'
 
   init: ->
@@ -44,6 +44,6 @@ window.payment = {
       ($ '#payment_actual_debit_amount').val((total + gst).toFixed(2))
       ($ '#payment_actual_debit_amount').change()
 
+    ($ '.gst').change()
     ($ '.row-total').change()
-
 }

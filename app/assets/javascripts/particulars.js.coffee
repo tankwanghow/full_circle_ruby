@@ -1,7 +1,7 @@
 window.particular = {
   init: ->
 
-    app.typeahead_init '#particulars .particular_type', '/particular_type/typeahead_name'
+    app.typeahead_init '.particular_type', '/particular_type/typeahead_name'
     
     app.nestedFormFieldAdded 'form', '.row-fluid', '.show-hide', (field) ->
       app.typeahead_init field.find('.particular_type'), '/particular_type/typeahead_name'
