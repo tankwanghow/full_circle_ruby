@@ -13,7 +13,7 @@ class ParticularType < ActiveRecord::Base
   validate_belongs_to :account,  :name1
   validate_belongs_to :tax_code, :code
 
-  scope :using, -> { where('party_type != ?', 'Stopped') }
+  scope :using, -> { where("party_type != 'Stopped' or party_type IS NULL") }
 
   include Searchable
   searchable content: [:party_type, :name, :account_name1, :tax_code]
