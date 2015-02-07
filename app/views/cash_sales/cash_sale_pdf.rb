@@ -13,7 +13,7 @@ class CashSalePdf < Prawn::Document
       @cashsale = p
       @total_pages = 1
       @page_end_at = 32.mm
-      @detail_height = 10.mm
+      @detail_height = 6.mm
       @detail_y_start_at = 208.mm
       start_new_cashsale_page
       draw_static_content if static_content
@@ -94,27 +94,8 @@ class CashSalePdf < Prawn::Document
 
     @cashsale.details.each do |t|
 
-      bounding_box [12.mm, @detail_y], height: @detail_height, width: 100.mm do
-        pack_qty = t.package_qty == 0 ? nil : @view.number_with_precision(t.package_qty, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
-        pack_name = t.try(:product_packaging).try(:pack_qty_name) ? "(#{t.product_packaging.pack_qty_name})" : nil
-        pack_qty_name = [pack_qty, pack_name].flatten.join ''
-        text_box [ pack_qty_name, t.product.name1, t.product.try(:name2), 
-                   t.note].flatten.join(' '), overflow: :shrink_to_fit, valign: :center
-      end
-
-      bounding_box [110.mm, @detail_y], height: @detail_height, width: 35.mm do
-        qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
-        text_box [ qty, t.unit ].flatten.join(''), overflow: :shrink_to_fit, valign: :center, align: :center
-      end
-
-      bounding_box [145.mm, @detail_y], height: @detail_height, width: 30.mm do
-        text_box @view.number_with_precision(t.unit_price, precision: 4, delimiter: ','), 
-                 overflow: :shrink_to_fit, valign: :center, align: :center
-      end
-
-      bounding_box [175.mm, @detail_y], height: @detail_height, width: 37.mm do
-        text_box t.total.to_money.format, overflow: :shrink_to_fit, valign: :center, align: :center
-      end
+      draw_product_line t, @detail_y, @detail_height
+      draw_gst_discount_line t
 
       @detail_y = @detail_y - @detail_height
 
@@ -122,6 +103,46 @@ class CashSalePdf < Prawn::Document
         start_new_page_for_current_cashsale
         @detail_y = @detail_y_start_at
       end
+    end
+  end
+
+  def draw_gst_discount_line detail
+    @detail_y = @detail_y - 4.5.mm if detail.gst != 0 || detail.discount != 0
+    bounding_box [12.mm, @detail_y], height: @detail_height, width: 100.mm do
+      text_box "GST #{detail.tax_code.code} #{detail.tax_code.rate}% X #{detail.ex_gst_total.to_money.format} = #{detail.gst.to_money.format}", overflow: :shrink_to_fit, valign: :center, size: 8
+     end if detail.gst != 0
+
+    if detail.discount != 0
+      bounding_box [145.mm, @detail_y], height: @detail_height, width: 30.mm do
+        text_box 'Discount', overflow: :shrink_to_fit, valign: :center, align: :center
+      end
+      bounding_box [176.mm, @detail_y], height: @detail_height, width: 33.mm do
+        text_box detail.discount.to_money.format, overflow: :shrink_to_fit, valign: :center, align: :right
+      end
+    end
+  end
+
+  def draw_product_line detail, y, h
+    bounding_box [12.mm, y], height: h, width: 100.mm do
+      pack_qty = detail.package_qty == 0 ? nil : @view.number_with_precision(detail.package_qty, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
+      pack_name = detail.try(:product_packaging).try(:pack_qty_name) ? "(#{detail.product_packaging.pack_qty_name})" : nil
+      pack_qty_name = [pack_qty, pack_name].flatten.join ''
+      text_box [ pack_qty_name, detail.product.name1, detail.product.try(:name2), 
+       detail.note].flatten.join(' '), overflow: :shrink_to_fit, valign: :center
+     end
+
+     bounding_box [110.mm, y], height: h, width: 35.mm do
+      qty = @view.number_with_precision(detail.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
+      text_box [ qty, detail.unit ].flatten.join(''), overflow: :shrink_to_fit, valign: :center, align: :center
+    end
+
+    bounding_box [145.mm, y], height: h, width: 30.mm do
+      text_box @view.number_with_precision(detail.unit_price, precision: 4, delimiter: ','), 
+      overflow: :shrink_to_fit, valign: :center, align: :center
+    end
+
+    bounding_box [176.mm, y], height: h, width: 33.mm do
+      text_box detail.goods_total.to_money.format, overflow: :shrink_to_fit, valign: :center, align: :right
     end
   end
 
