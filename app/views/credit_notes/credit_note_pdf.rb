@@ -13,7 +13,7 @@ class CreditNotePdf < Prawn::Document
       @credit_note = p
       @total_pages = 1
       @page_end_at = 32.mm
-      @detail_height = 5.mm
+      @detail_height = 4.mm
       @detail_y_start_at = 75.mm
       start_new_credit_note_page
       draw_static_content if static_content
@@ -59,7 +59,7 @@ class CreditNotePdf < Prawn::Document
 
   #Dynamic Content
   def draw_header
-    text_box @credit_note.account.name1, at: [12.mm, 113.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
+    text_box @credit_note.account.name1, at: [10.mm, 113.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
     if @credit_note.account.mailing_address
       address_box(self, @credit_note.account.mailing_address, [10.mm, 108.mm], width: 110.mm, height: 24.mm)
     end
@@ -78,8 +78,7 @@ class CreditNotePdf < Prawn::Document
     end
   end
 
-  def draw_detail
-    
+  def draw_detail 
     draw_pay_to_particulars
   end
 
@@ -99,6 +98,13 @@ class CreditNotePdf < Prawn::Document
         text_box (t.quantity * t.unit_price).to_money.format, overflow: :shrink_to_fit, align: :center, valign: :center
       end
 
+      if t.gst != 0
+        @detail_y = @detail_y - 4.mm 
+        bounding_box [15.mm, @detail_y + 0.5.mm], height: @detail_height, width: 100.mm do
+          text_box "- GST #{t.tax_code.code} #{t.tax_code.rate}% X #{@view.number_with_precision(t.ex_gst_total, precision: 2, delimiter: ',')} = #{@view.number_with_precision(t.gst, precision: 2, delimiter: ',')}", overflow: :shrink_to_fit, valign: :center, size: 9
+        end
+      end
+
       @detail_y = @detail_y - @detail_height
 
       if @detail_y <= @page_end_at
@@ -111,14 +117,34 @@ class CreditNotePdf < Prawn::Document
   def draw_footer
     group do
       line_width 1
-      stroke_horizontal_line 155.mm, 205.mm, at: @detail_y - 1.mm
+      stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 1.mm
       bounding_box [155.mm, @detail_y - 2.mm], height: 5.mm, width: 50.mm do
-        text_box @credit_note.credit_note_amount.to_money.format, overflow: :shrink_to_fit,
+        text_box @credit_note.ex_gst_amount.to_money.format, overflow: :shrink_to_fit,
+                 align: :center, valign: :center, size: 11
+      end
+      bounding_box [102.mm, @detail_y - 2.mm], height: 5.mm, width: 50.mm do
+        text_box "Total Excl. GST", overflow: :shrink_to_fit,
+                 align: :right, valign: :center, size: 11
+      end
+      stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 7.mm
+      bounding_box [155.mm, @detail_y - 8.mm], height: 5.mm, width: 50.mm do
+        text_box @credit_note.gst_amount.to_money.format, overflow: :shrink_to_fit,
+                 align: :center, valign: :center, size: 11
+      end
+      bounding_box [102.mm, @detail_y - 8.mm], height: 5.mm, width: 50.mm do
+        text_box "Total GST", overflow: :shrink_to_fit,
+                 align: :right, valign: :center, size: 11
+      end
+      stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 13.mm
+      bounding_box [155.mm, @detail_y - 14.mm], height: 5.mm, width: 50.mm do
+        text_box @credit_note.in_gst_amount.to_money.format, overflow: :shrink_to_fit,
                  align: :center, valign: :center, style: :bold, size: 11
       end
-      line_width 2
-      stroke_horizontal_line 155.mm, 205.mm, at: @detail_y - 7.5.mm
-      line_width 1
+      bounding_box [102.mm, @detail_y - 14.mm], height: 5.mm, width: 50.mm do
+        text_box "Total Incl. GST", overflow: :shrink_to_fit,
+                 align: :right, valign: :center, style: :bold, size: 11
+      end
+      stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 19.mm
     end
   end
 
