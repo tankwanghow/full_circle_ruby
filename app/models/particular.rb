@@ -12,7 +12,7 @@ class Particular < ActiveRecord::Base
   validate_belongs_to :tax_code, :code
 
   def simple_audit_string
-    [ particular_type.name, quantity, unit_price, tax_code.code, gst_rate ].join ' '
+    [ particular_type.name, quantity, unit_price, tax_code.try(:code), gst_rate ].join ' '
   end
 
   def ex_gst_total

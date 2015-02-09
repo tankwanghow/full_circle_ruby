@@ -4,7 +4,7 @@ class PaymentParticular < Particular
     if flag == 'pay_to'
       pay_to_gst_transaction
     else
-      [pay_from_particulars_transaction, pay_from_gst_transaction].flatten
+      [pay_from_particulars_transaction, pay_from_gst_transaction].compact
     end
   end
 

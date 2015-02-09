@@ -60,19 +60,30 @@ class CashSale < ActiveRecord::Base
   audit_string :details, :particulars, :cheques
 
   include SumAttributes
-  sum_of :particulars, "in_gst_total"
-  sum_of :details, "in_gst_total"
-  sum_of :cheques, "amount"
+  sum_of :details, "goods_total", "goods"
+  sum_of :details, "discount", "discount"
+  sum_of :details, "gst", "details_gst"
+  sum_of :details, "in_gst_total", "in_gst"
 
-  def sales_amount
-    particulars_amount + details_amount
-  end
+  sum_of :particulars, "in_gst_total", "particulars_in_gst"
+  sum_of :particulars, "ex_gst_total", "particulars_ex_gst"
+  sum_of :particulars, "gst", "particulars_gst"
+
+  sum_of :cheques, "amount"
 
   def self.new_like id
     like = find(id)
     a = new(like.attributes.merge(tag_list: like.tag_list, loader_list: like.loader_list, unloader_list: like.unloader_list))
     a.details.build
     a
+  end
+
+  def sales_amount
+    in_gst_amount + particulars_in_gst_amount
+  end
+
+  def gst_amount
+    details_gst_amount + particulars_gst_amount
   end
 
 private

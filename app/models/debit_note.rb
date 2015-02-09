@@ -31,8 +31,8 @@ class DebitNote < ActiveRecord::Base
   include ValidateTransactionsBalance
 
   include Searchable
-  searchable doc_date: :doc_date, doc_amount: :debit_note_amount,
-             content: [:id, :account_name1, :debit_note_amount, 
+  searchable doc_date: :doc_date, doc_amount: :in_gst_amount,
+             content: [:id, :account_name1, :in_gst_amount, 
                        :particulars_audit_string, :matchers_audit_string, :posted]
 
   simple_audit username_method: :username do |r|
@@ -49,12 +49,10 @@ class DebitNote < ActiveRecord::Base
   audit_string :particulars, :matchers
 
   include SumAttributes
-  sum_of :particulars, "in_gst_total"
+  sum_of :particulars, "ex_gst_total", "ex_gst"
+  sum_of :particulars, "gst", "gst"
+  sum_of :particulars, "in_gst_total", "in_gst"
   sum_of :matchers, "amount"
-
-  def debit_note_amount
-    particulars_amount
-  end
 
 private
   
@@ -88,7 +86,7 @@ private
       transaction_date: doc_date,
       account: account,
       note: particulars_summary,
-      amount: debit_note_amount,
+      amount: in_gst_amount,
       self_matched: -matchers_amount,
       user: User.current)
   end

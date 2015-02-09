@@ -1,7 +1,7 @@
 class CashSaleParticular < Particular
 
   def transactions
-    [particular_type_transaction, gst_transaction]
+    [particular_type_transaction, gst_transaction].compact
   end
 
 private

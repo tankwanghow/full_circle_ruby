@@ -66,6 +66,8 @@ class Payment < ActiveRecord::Base
 
   include SumAttributes
   sum_of :matchers, "amount"
+  sum_of :pay_to_particulars, "gst", "gst"
+  sum_of :pay_to_particulars, "in_gst_total", "in_gst"
 
 private
 

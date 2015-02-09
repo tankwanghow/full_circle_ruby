@@ -3,7 +3,7 @@ class DebitNoteParticular < Particular
   validates_numericality_of :quantity, :unit_price, greater_than: 0
 
   def transactions
-    [particular_type_transaction, gst_transaction]
+    [particular_type_transaction, gst_transaction].compact
   end
 
 private

@@ -23,8 +23,12 @@ class PurInvoiceDetail < ActiveRecord::Base
     (gst_rate / 100 * ex_gst_total).round(2)
   end
 
+  def goods_total
+    (quantity * unit_price).round 2
+  end
+  
   def simple_audit_string
-    [ product.name1, quantity, unit_price, discount, tax_code, gst_rate ].join ' '
+    [ product.name1, quantity, unit_price, discount, tax_code.try(:code), gst_rate ].join ' '
   end
 
   def unit
@@ -32,7 +36,7 @@ class PurInvoiceDetail < ActiveRecord::Base
   end
 
   def transactions
-    [product_transaction, gst_transaction]
+    [product_transaction, gst_transaction].compact
   end
 
   def packaging_name

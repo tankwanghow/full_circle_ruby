@@ -57,11 +57,21 @@ class Invoice < ActiveRecord::Base
   audit_string :particulars, :details
 
   include SumAttributes
-  sum_of :particulars, "in_gst_total"
-  sum_of :details, "in_gst_total"
+  sum_of :details, "goods_total", "goods"
+  sum_of :details, "discount", "discount"
+  sum_of :details, "gst", "details_gst"
+  sum_of :details, "in_gst_total", "in_gst"
+
+  sum_of :particulars, "in_gst_total", "particulars_in_gst"
+  sum_of :particulars, "ex_gst_total", "particulars_ex_gst"
+  sum_of :particulars, "gst", "particulars_gst"
 
   def invoice_amount
-    particulars_amount + details_amount
+    in_gst_amount + particulars_in_gst_amount
+  end
+
+  def gst_amount
+    details_gst_amount + particulars_gst_amount
   end
 
 private
