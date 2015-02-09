@@ -2,6 +2,11 @@
 = simple_nested_form_for @post, html: { class: 'form-horizontal well', id: 'post' } do |f|
   %legend
     = "Post #" + docnolize(@post.id)
+    .label.label-success
+      = "Created by #{@post.audits.first.user.name} at #{@post.created_at.to_s(:long)}"
+    - if @post.audits.count > 1
+      .label.label-warning
+        %span= "Updated by #{@post.audits.last.user.name} at #{@post.updated_at.to_s(:long)}"
   = render 'fields', f: f
   .form-actions
     = f.button(:submit, 'Save', class: 'btn btn-primary')
