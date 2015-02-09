@@ -5,7 +5,7 @@ window.credit_note = {
     math.sum '.matching', '#total_matched', 'form#credit_note'
  
     app.typeahead_init '#credit_note_account_name1', '/account/typeahead_name1'
-    app.typeahead_init '.tax_code', '/tax_code/typeahead_purchase_code'
+    app.typeahead_init '.tax_code', '/tax_code/typeahead_code'
     app.nestedFormFieldAdded 'form', '.row-fluid', '.show-hide', (field) ->
       app.typeahead_init field.find('.tax_code'), '/tax_code/typeahead_code'
 
