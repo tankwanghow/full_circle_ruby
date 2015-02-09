@@ -4,11 +4,12 @@ module SumAttributes
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def sum_of name, expression
+    def sum_of table, expression, sum_name=nil
       expression.gsub!(/\w+/).each{ |t| 'p.' + t }
+      sum_name ||= table
       class_eval <<-BOL
-        def #{name}_amount
-          #{name}.      
+        def #{sum_name}_amount
+          #{table}.      
           select { |t| !t.marked_for_destruction? }.
           inject(0) { |sum, p| sum + #{expression} }
         end
