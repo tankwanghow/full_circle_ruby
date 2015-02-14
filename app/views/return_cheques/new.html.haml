@@ -1,5 +1,5 @@
 = render_flash
-= simple_nested_form_for @return_cheque, html: { class: 'form-inline well', id: 'return_cheque' } do |f|
+= simple_form_for @return_cheque, html: { class: 'form-inline well', id: 'return_cheque' } do |f|
   %legend
     New Return Cheque Notice
   = render 'fields', f: f

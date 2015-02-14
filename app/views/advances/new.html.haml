@@ -1,5 +1,5 @@
 = render_flash
-= simple_nested_form_for @advance, html: { class: 'form-inline well span30', id: 'advance_form' } do |f|
+= simple_form_for @advance, html: { class: 'form-inline well span30', id: 'advance_form' } do |f|
   %legend
     New Employee Advance
   = render 'fields', f: f

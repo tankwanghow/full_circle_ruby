@@ -1,5 +1,5 @@
 = render_flash
-= simple_nested_form_for @post, html: { class: 'form-horizontal well', id: 'post' } do |f|
+= simple_form_for @post, html: { class: 'form-horizontal well', id: 'post' } do |f|
   %legend
     New Post
   = render 'fields', f: f

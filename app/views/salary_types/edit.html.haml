@@ -1,5 +1,5 @@
 = render_flash
-= simple_nested_form_for @salary_type, html: { class: 'form-horizontal well', id: 'salary_type', admin_lock: !admin_lock_show?(@salary_type) } do |f|
+= simple_form_for @salary_type, html: { class: 'form-horizontal well', id: 'salary_type', admin_lock: !admin_lock_show?(@salary_type) } do |f|
   %legend
     = "Salary Type #" + docnolize(@salary_type.id)
   = render 'fields', f: f

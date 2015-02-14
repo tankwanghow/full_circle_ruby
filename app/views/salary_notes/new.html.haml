@@ -1,5 +1,5 @@
 = render_flash
-= simple_nested_form_for @salary_note, html: { class: 'form-inline well span30', id: 'salary_note_form' } do |f|
+= simple_form_for @salary_note, html: { class: 'form-inline well span30', id: 'salary_note_form' } do |f|
   %legend
     New Salary Note
   = render 'fields', f: f

@@ -1,5 +1,5 @@
 = render_flash
-= simple_nested_form_for @tax_code, html: { class: 'form-horizontal well', id: 'tax_code' } do |f|
+= simple_form_for @tax_code, html: { class: 'form-horizontal well', id: 'tax_code' } do |f|
   %legend
     New Tax Code
   = render 'fields', f: f

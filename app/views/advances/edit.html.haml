@@ -1,5 +1,5 @@
 = render_flash
-= simple_nested_form_for @advance, html: { class: 'form-inline well span30', id: 'advance_form', admin_lock: !@advance.pay_slip.blank? } do |f|
+= simple_form_for @advance, html: { class: 'form-inline well span30', id: 'advance_form', admin_lock: !@advance.pay_slip.blank? } do |f|
   %legend
     = "Employee Advance #" + docnolize(@advance.id)
   - if @advance.pay_slip
