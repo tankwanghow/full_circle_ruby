@@ -9,6 +9,7 @@ class Product < ActiveRecord::Base
   has_many :cash_sale_details
   has_many :invoice_details
   has_many :pur_invoice_details
+  has_many :products
   validates_presence_of :sale_account_name1, :purchase_account_name1, :unit, :name1, :supply_tax_code_code, :purchase_tax_code_code
   validates_uniqueness_of :name1
   acts_as_taggable_on :categories
@@ -44,11 +45,11 @@ class Product < ActiveRecord::Base
   audit_string :product_packagings
 
   def supply_tax_code_code
-    supply_tax_code.code
+    supply_tax_code.try(:code)
   end
 
   def purchase_tax_code_code
-    purchase_tax_code.code
+    purchase_tax_code.try(:code)
   end
 
   def supply_tax_code_rate

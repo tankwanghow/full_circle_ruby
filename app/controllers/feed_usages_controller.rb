@@ -47,8 +47,7 @@ private
   def fill_usages
     store_param :feed_usages_find
     session[:feed_usages_find][:usage_date] ||= Date.today
-    @feed_usages = FeedUsage.where(usage_date: session[:feed_usages_find][:usage_date].to_date).
-                   order('id DESC')
+    @feed_usages = FeedUsage.where(usage_date: session[:feed_usages_find][:usage_date].to_date).order('id DESC')
   end
 
   def upcase_params

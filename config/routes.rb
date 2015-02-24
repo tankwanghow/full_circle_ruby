@@ -169,4 +169,9 @@ FullCircle::Application.routes.draw do
 
   resources :print_harvesting_slips, only: [:create, :index]
 
+  resources :sales_orders
+  resources :purchase_orders
+  resources :loading_orders
+  resources :arrangements
+
 end
