@@ -6,7 +6,7 @@ class Transaction < ActiveRecord::Base
   validates_numericality_of :amount
   validates_presence_of :transaction_date, :account, :note, :amount, :user
   validates_presence_of :doc, if: "!old_data"
-  
+
   before_destroy :closed?
   before_save :round_amount
 
@@ -21,7 +21,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def closed?
-    raise 'Transactions closed CANNOT update or delete!' if closed 
+    raise 'Transactions closed CANNOT update or delete!' if closed
   end
 
   include SumAttributes
@@ -34,7 +34,7 @@ class Transaction < ActiveRecord::Base
     if at.blank?
       amount + matchers_amount + self_matched
     else
-      amount + 
+      amount +
       matchers.select { |t| !t.marked_for_destruction? and t.doc_date <= at.to_date}.
         inject(0) { |sum, t| sum + t.amount } + self_matched
     end
@@ -44,7 +44,7 @@ class Transaction < ActiveRecord::Base
     ac = Account.find_by_name1(account_name1)
     in_doc_id = in_doc_id.blank? ? -1 : in_doc_id
     if ac
-      matching = <<-BOL 
+      matching = <<-BOL
         (SELECT COALESCE(SUM(amount), 0) FROM transaction_matchers
            WHERE transaction_id = transactions.id
              AND doc_type = '#{in_doc_type}'
@@ -58,9 +58,9 @@ class Transaction < ActiveRecord::Base
                                AND doc_id = #{in_doc_id})) AS matched
       BOL
       matcher_id = <<-BOL
-        (SELECT id FROM transaction_matchers 
-          WHERE transaction_id = transactions.id 
-            AND doc_type = '#{in_doc_type}' 
+        (SELECT id FROM transaction_matchers
+          WHERE transaction_id = transactions.id
+            AND doc_type = '#{in_doc_type}'
             AND doc_id = #{in_doc_id}) AS matcher_id
       BOL
        Transaction.

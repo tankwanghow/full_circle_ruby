@@ -19,7 +19,7 @@ if Address.table_exists?
     t.address3 = nil
     t.area     = nil
     t.city     = 'Kampar'
-    t.zipcode  = '31900' 
+    t.zipcode  = '31900'
     t.state    = 'Perak'
     t.country  = 'Malaysia'
     t.tel_no   = '05-2563277'
