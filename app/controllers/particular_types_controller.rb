@@ -52,7 +52,8 @@ class ParticularTypesController < ApplicationController
   def json
     p = ParticularType.using.find_by_name(params[:name])
     if p
-      render json: p.attributes.merge!(gst_rate: p.tax_code.try(:rate), tax_code: p.tax_code.try(:code))
+      tax_code = p.tax_code.try(:code) if GstStarted
+      render json: p.attributes.merge!(tax_code: tax_code)
     else
       render json: p
     end
