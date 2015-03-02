@@ -12,8 +12,10 @@ class CreateLoadingOrders < ActiveRecord::Migration
     create_table :loading_order_detail do |t|
       t.belongs_to :order_detail
       t.belongs_to :purchase_order_detail
-      t.decimal    :quantity, precision: 12, scale: 4, default: 0
       t.date       :loaded_at
+      t.decimal    :load_quantity, precision: 12, scale: 4, default: 0
+      t.date       :deliver_at
+      t.decimal    :deliver_quantity, precision: 12, scale: 4, default: 0
       t.text       :note
     end
   end
