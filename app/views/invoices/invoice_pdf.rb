@@ -14,7 +14,7 @@ class InvoicePdf < Prawn::Document
       @total_pages = 1
       @page_end_at = 64.mm
       @detail_height = 6.mm
-      @detail_y_start_at = 205.mm
+      @detail_y_start_at = 200.mm
       start_new_invoice_page
       draw_static_content if static_content
       fill_color "000077"
@@ -68,14 +68,14 @@ class InvoicePdf < Prawn::Document
 
   #Dynamic Content
   def draw_header
-    text_box @invoice.customer.name1, at: [13.mm, 250.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
+    text_box @invoice.customer.name1, at: [13.mm, 245.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
     if @invoice.customer.mailing_address
-      address_box(self, @invoice.customer.mailing_address, [13.mm, 245.mm], width: 110.mm, height: 24.mm)
+      address_box(self, @invoice.customer.mailing_address, [13.mm, 240.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text @view.docnolize(@invoice.customer.id), at: [30.mm, 216.mm], size: 10
-    draw_text @view.term_string(@invoice.credit_terms), at: [70.mm, 216.mm], style: :bold
-    draw_text @invoice.doc_date, at: [124.mm, 216.mm], style: :bold
-    draw_text @view.docnolize(@invoice.id), at: [180.mm, 216.mm], style: :bold
+    draw_text @view.docnolize(@invoice.customer.id), at: [30.mm, 211.mm], size: 10
+    draw_text @view.term_string(@invoice.credit_terms), at: [70.mm, 211.mm], style: :bold
+    draw_text @invoice.doc_date, at: [124.mm, 211.mm], style: :bold
+    draw_text @view.docnolize(@invoice.id), at: [180.mm, 211.mm], style: :bold
   end
 
   def draw_page_number

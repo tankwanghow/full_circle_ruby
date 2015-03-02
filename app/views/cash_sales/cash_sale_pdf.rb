@@ -14,7 +14,7 @@ class CashSalePdf < Prawn::Document
       @total_pages = 1
       @page_end_at = 64.mm
       @detail_height = 6.mm
-      @detail_y_start_at = 208.mm
+      @detail_y_start_at = 200.mm
       start_new_cashsale_page
       draw_static_content if static_content
       fill_color "000077"
@@ -69,14 +69,14 @@ class CashSalePdf < Prawn::Document
 
   #Dynamic Content
   def draw_header
-    text_box @cashsale.customer.name1, at: [13.mm, 253.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
+    text_box @cashsale.customer.name1, at: [13.mm, 245.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
     if @cashsale.customer.mailing_address
-      address_box(self, @cashsale.customer.mailing_address, [13.mm, 248.mm], width: 110.mm, height: 24.mm)
+      address_box(self, @cashsale.customer.mailing_address, [13.mm, 240.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text @view.docnolize(@cashsale.customer.id), at: [30.mm, 220.5.mm], size: 10, style: :bold
-    draw_text @view.term_string(0), at: [70.mm, 220.5.mm], style: :bold
-    draw_text @cashsale.doc_date, at: [124.mm, 220.5.mm], style: :bold
-    draw_text @view.docnolize(@cashsale.id), at: [180.mm, 220.5.mm], style: :bold
+    draw_text @view.docnolize(@cashsale.customer.id), at: [30.mm, 211.mm], size: 10, style: :bold
+    draw_text @view.term_string(0), at: [70.mm, 211.mm], style: :bold
+    draw_text @cashsale.doc_date, at: [124.mm, 211.mm], style: :bold
+    draw_text @view.docnolize(@cashsale.id), at: [180.mm, 211.mm], style: :bold
   end
 
   def draw_page_number
