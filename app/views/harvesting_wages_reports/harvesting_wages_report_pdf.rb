@@ -35,7 +35,7 @@ class HarvestingWagesReportPdf < Prawn::Document
       values.each do |k, v|
         details << "<b>Date: #{k}</b>"
         details << "<b><u>Hou Trys   Wages</u></b>"
-        details << v.map { |t| "#{t['house_no']} #{("%4d") % t['production']}  #{t['wages'].to_money.format}" }
+        details << v.map { |t| "#{t['house_no']} #{("%4d") % t['production']}   #{t['wages'].to_money}" }
         daily_wages = v.inject(0) { |sum, t| sum += t['wages'].to_f }
         details << "----------------"
         details << "Wages: <b>#{daily_wages.to_money.format}</b>"
