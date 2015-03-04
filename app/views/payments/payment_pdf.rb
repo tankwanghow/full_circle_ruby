@@ -12,7 +12,7 @@ def initialize(payments, view, static_content=false)
     for p in payments
       @payment = p
       @total_pages = 1
-      @page_end_at = 29.mm
+      @page_end_at = 40.mm
       @detail_height = 5.mm
       @detail_y_start_at = 72.mm
       start_new_payment_page
@@ -117,21 +117,6 @@ def initialize(payments, view, static_content=false)
       end
     end
   end
-
-  # def draw_footer
-  #   group do
-  #     line_width 1
-  #     stroke_horizontal_line 163.mm, 213.mm, at: @detail_y - 2.mm
-  #     bounding_box [163.mm, @detail_y - 3.mm], height: 5.mm, width: 50.mm do
-  #       text_box @payment.actual_debit_amount.to_money.format, overflow: :shrink_to_fit,
-  #                align: :center, valign: :center, style: :bold, size: 11
-  #     end
-  #     line_width 2
-  #     stroke_horizontal_line 163.mm, 213.mm, at: @detail_y - 8.mm
-  #     line_width 1
-  #   end
-  #   draw_text @payment.collector, at: [163.mm, 24.mm], size: 9
-  # end
 
   def draw_footer
     group do
