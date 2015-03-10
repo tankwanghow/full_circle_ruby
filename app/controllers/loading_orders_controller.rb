@@ -1,2 +1,0 @@
-class LoadingOrdersController < ApplicationController
-end
