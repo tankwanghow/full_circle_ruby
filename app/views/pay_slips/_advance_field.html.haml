@@ -1,6 +1,6 @@
 .row-fluid{class: "Advance"}
   .offset28.span6
-    = f.input :doc_date, as: :datepicker, input_html: { class: 'span19', readonly: true, tabindex: -1 }, wrapper: :table_field  
+    = f.input :doc_date, as: :datepicker, input_html: { class: 'span', readonly: true, tabindex: -1 }, wrapper: :table_field  
   .span4
     = text_field_tag :id, docnolize(f.object.id, '#'), class: 'span', readonly: true, tabindex: -1
   .span6
