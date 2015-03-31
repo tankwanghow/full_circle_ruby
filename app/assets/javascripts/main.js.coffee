@@ -4,7 +4,7 @@ $ ->
 
   ($ '[data-pjax-container]').on 'pjax:start', ->
     ($ 'body').css('cursor', 'wait')
-  
+
   $(document).on 'click', 'a:not([data-remote]):not([data-behavior]):not([data-skip-pjax]):not([data-method])', (event) ->
     container = $('[data-pjax-container]')
     $.pjax.click(event, container)
@@ -49,7 +49,7 @@ window.math = {
 
 
   sum: (elements, totalElm, evtBubbleCls, checkVisible=true) ->
-    ($ evtBubbleCls).on 'change', elements, -> 
+    ($ evtBubbleCls).on 'change', elements, ->
       total = 0
       ($ elements).each (index, elm) ->
         if checkVisible
@@ -69,7 +69,8 @@ window.main = {
       ($ 'input#search_date_from').val('')
       ($ 'input#search_date_to').val('')
       ($ 'input#search_amount_larger').val('')
-      ($ 'input#search_amount_less').val('')
+      ($ 'input#search_amount_smaller').val('')
+      ($ 'input#search_posted').val('')
       ($ '#advance-search-form .simple_form').submit()
 
     if ($ 'input#search_terms:last').val() + ($ '#search_date_from').val() +
@@ -82,7 +83,7 @@ window.app = {
   standardInit: ->
     ($ 'form[admin_lock=true] input, form[admin_lock=true] select, form[admin_lock=true] textarea').attr('disabled', true)
     ($ 'form[posted_lock=true] input, form[posted_lock=true] select, form[posted_lock=true] textarea').attr('disabled', true)
-    ($ 'form input[type=submit]').click -> 
+    ($ 'form input[type=submit]').click ->
       ($ this).attr('clicked', true)
     app.initDatepicker()
     app.initNumeric()
@@ -123,8 +124,8 @@ window.app = {
         row_parent.find(show_hide_elm).hide()
 
   showHide: (field_selector, showhide_selector) ->
-    if ($ field_selector).size() > 0 
-      ($ showhide_selector).show() 
+    if ($ field_selector).size() > 0
+      ($ showhide_selector).show()
     else
       ($ showhide_selector).hide()
 
