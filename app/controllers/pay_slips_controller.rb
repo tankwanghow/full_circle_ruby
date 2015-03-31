@@ -2,14 +2,14 @@ class PaySlipsController < ApplicationController
   before_filter :warn_doc_date, only: [:create, :update]
 
   def new
+    service = PaySlipGenerationService.new(params[:employee_name], params[:pay_date])
     if params[:regen]
-      service = PaySlipGenerationService.new
       @pay_slip = service.regenerate_pay_slip params[:regen]
     else
-      @pay_slip = PaySlipGenerationService.new(params[:employee_name], params[:pay_date]).generate_pay_slip
+      @pay_slip = service.generate_pay_slip
     end
   end
-  
+
   def edit
     @pay_slip = PaySlip.find(params[:id])
   end
@@ -60,5 +60,5 @@ private
       render :new
     end
   end
-  
+
 end

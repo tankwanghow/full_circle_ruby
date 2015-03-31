@@ -19,12 +19,12 @@
       - for doc in @pay_slips
         %br OR
         Re-Generate Pay Slip
-        %span= link_to docnolize(doc.id, '#'), new_pay_slip_path(regen: doc)
+        %span= link_to docnolize(doc.id, '#'), new_pay_slip_path(params[:gen_pay].merge(regen: doc))
         %br OR
-        Edit Pay Slip 
+        Edit Pay Slip
         %span= link_to docnolize(doc.id, '#'), edit_pay_slip_path(doc)
         %br
 
 :coffee
-  ($ document).ready -> 
+  ($ document).ready ->
     app.typeahead_init '#gen_pay_employee_name', '/employee/typeahead_name'

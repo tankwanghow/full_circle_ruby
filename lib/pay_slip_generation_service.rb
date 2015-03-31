@@ -14,9 +14,8 @@ class PaySlipGenerationService
 
   def regenerate_pay_slip id
     @payslip = PaySlip.find id
-    @employee_name = @payslip.employee.name
-    @pay_date = @payslip.pay_date
     fill_in_payable_salary
+    @payslip.pay_date = @pay_date
     @payslip
   end
 
