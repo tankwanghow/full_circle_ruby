@@ -11,7 +11,7 @@ class CashSale < ActiveRecord::Base
   acts_as_taggable_on :loader, :unloader
 
   before_save do |r|
-    if doc_date >GstStartDate
+    if doc_date >= GstStartDate
       if r.changes[:posted] == [false, true]
         if transactions.count == 0
           build_transactions
@@ -36,9 +36,9 @@ class CashSale < ActiveRecord::Base
   include ValidateTransactionsBalance
 
   include Searchable
-  searchable doc_date: :doc_date, doc_amount: :sales_amount,
-             content: [:id, :customer_name1, :details_audit_string, :sales_amount, 
-                       :note, :particulars_audit_string, :cheques_audit_string, 
+  searchable doc_date: :doc_date, doc_amount: :sales_amount, doc_posted: :posted,
+             content: [:id, :customer_name1, :details_audit_string, :sales_amount,
+                       :note, :particulars_audit_string, :cheques_audit_string,
                        :tag_list, :loader_list, :unloader_list, :posted]
 
   simple_audit username_method: :username do |r|
@@ -127,9 +127,9 @@ private
 
   def build_cash_n_pd_chq_transaction
     cash_amount = sales_amount - cheques_amount
-    
+
     cash_in_hand_note = [customer_name1, product_summary, particular_summary].join(' ').truncate(70)
-    
+
     if cash_amount < 0
       cash_in_hand_note = ['Cheque change cash', cash_in_hand_note].join(' ').truncate(70)
     end

@@ -91,7 +91,7 @@ module ApplicationHelper
 
   def posted_lock? object
     if object.respond_to?(:posted)
-      object.posted && GstStarted
+      object.posted && object.doc_date >= GstStartDate
     else
       false
     end

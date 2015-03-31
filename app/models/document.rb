@@ -6,13 +6,13 @@ class Document < ActiveRecord::Base
   before_validation :update_record_value
 
   include PgSearch
-  pg_search_scope :search, against: :content, 
-                  using: { 
+  pg_search_scope :search, against: :content,
+                  using: {
                     tsearch: { any_word: true, prefix: true },
                     dmetaphone: {}
                   }
 
-  scope :type_is, ->(val) { where('searchable_type ~* ?', val) } 
+  scope :type_is, ->(val) { where('searchable_type ~* ?', val) }
   scope :type_in, ->(values) { where('searchable_type ~* ?', values.map { |t| '^' + t + '$' }.join('|')) }
   scope :amount_between, ->(larger, smaller) { amount_larger_eq(larger).amount_smaller_eq(smaller) }
   scope :amount_larger_eq, ->(val) { where('doc_amount >= ?', val) }
@@ -20,6 +20,8 @@ class Document < ActiveRecord::Base
   scope :date_between, ->(from, to) { date_larger_eq(from.to_date).date_smaller_eq(to.to_date) }
   scope :date_larger_eq, ->(val) { where('doc_date >= ?', val.to_date) }
   scope :date_smaller_eq, ->(val) { where('doc_date <= ?', val.to_date) }
+  scope :doc_posted, -> { where(doc_posted: true) }
+  scope :doc_unposted, -> { where(doc_posted: false) }
 
   def self.searchable_by hash
     if User.current.is_admin
@@ -30,7 +32,7 @@ class Document < ActiveRecord::Base
   end
 
   def self.searchable_by_no_user_type hash
-    by_types(hash[:terms]).
+    by_types(hash[:terms]).by_posted(hash[:posted]).
       merge(by_term hash[:terms]).
       merge(by_date hash[:date_from], hash[:date_to]).
       merge(by_amount hash[:amount_larger], hash[:amount_smaller]).
@@ -38,7 +40,7 @@ class Document < ActiveRecord::Base
   end
 
   def self.searchable_by_all_types hash
-    by_types(hash[:terms]).
+    by_types(hash[:terms]).by_posted(hash[:posted]).
       merge(by_term hash[:terms]).
       merge(by_date hash[:date_from], hash[:date_to]).
       merge(by_amount hash[:amount_larger], hash[:amount_smaller])
@@ -51,6 +53,16 @@ class Document < ActiveRecord::Base
       date_larger_eq start_date
     elsif !start_date and end_date
       date_smaller_eq end_date
+    else
+      where "1=1"
+    end
+  end
+
+  def self.by_posted posted
+    if ['t', 'true'].include?(posted)
+      doc_posted
+    elsif ['f', 'false'].include?(posted)
+      doc_unposted
     else
       where "1=1"
     end
@@ -104,7 +116,11 @@ private
     else
       self.doc_date = Date.today
     end
+    if searchable.searchable_options[:doc_posted]
+      self.doc_posted = searchable.send(searchable.searchable_options[:doc_posted])
+    end
     self.doc_amount = searchable.send(searchable.searchable_options[:doc_amount]) if searchable.searchable_options[:doc_amount]
+
     methods = Array.wrap(searchable.searchable_options[:content])
     searchable_text = methods.map { |symbol| process(symbol) }.delete_if { |t| t.blank? }.join("; ")
     self.content = searchable_text

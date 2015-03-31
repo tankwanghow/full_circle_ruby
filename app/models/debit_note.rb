@@ -7,7 +7,7 @@ class DebitNote < ActiveRecord::Base
   validates_presence_of :account_name1, :doc_date
 
   before_save do |r|
-    if GstStarted
+    if doc_date >= GstStartDate
       if r.changes[:posted] == [false, true]
         if transactions.count == 0
           build_transactions
@@ -31,8 +31,8 @@ class DebitNote < ActiveRecord::Base
   include ValidateTransactionsBalance
 
   include Searchable
-  searchable doc_date: :doc_date, doc_amount: :in_gst_amount,
-             content: [:id, :account_name1, :in_gst_amount, 
+  searchable doc_date: :doc_date, doc_amount: :in_gst_amount, doc_posted: :posted,
+             content: [:id, :account_name1, :in_gst_amount,
                        :particulars_audit_string, :matchers_audit_string, :posted]
 
   simple_audit username_method: :username do |r|
@@ -55,7 +55,7 @@ class DebitNote < ActiveRecord::Base
   sum_of :matchers, "amount"
 
 private
-  
+
   def dont_process(attr)
     return true if attr["id"].blank? && attr["amount"].to_f == 0
   end

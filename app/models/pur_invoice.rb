@@ -7,7 +7,7 @@ class PurInvoice < ActiveRecord::Base
   validates_presence_of :credit_terms, :supplier_name1, :doc_date
 
   before_save do |r|
-    if GstStarted
+    if doc_date >= GstStartDate
       if r.changes[:posted] == [false, true]
         if transactions.count == 0
           build_transactions
@@ -34,8 +34,8 @@ class PurInvoice < ActiveRecord::Base
   include ValidateTransactionsBalance
 
   include Searchable
-  searchable doc_date: :doc_date, doc_amount: :invoice_amount,
-             content: [:id, :supplier_name1, :credit_terms, :details_audit_string, :invoice_amount, 
+  searchable doc_date: :doc_date, doc_amount: :invoice_amount, doc_posted: :posted,
+             content: [:id, :supplier_name1, :credit_terms, :details_audit_string, :invoice_amount,
                        :note, :particulars_audit_string, :tag_list, :loader_list, :unloader_list, :posted]
 
   simple_audit username_method: :username do |r|
