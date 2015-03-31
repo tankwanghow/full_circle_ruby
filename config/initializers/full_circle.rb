@@ -7,7 +7,8 @@ Date::DATE_FORMATS[:default] = '%d-%m-%Y'
 Money.default_currency = Money::Currency.new('MYR')
 
 # GST Stuff
-GstStarted = (Date.today >= '2015-04-01'.to_date)
+GstStartDate = '2015-04-01'.to_date
+GstStarted = (Date.today >= GstStartDate)
 GstNo   = '000162897920'
 SoftwareVersion = '1.0.0'
 GafVersion = ''
