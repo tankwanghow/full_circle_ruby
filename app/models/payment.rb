@@ -15,18 +15,10 @@ class Payment < ActiveRecord::Base
   accepts_nested_attributes_for :matchers, allow_destroy: true, reject_if: :dont_process
 
   before_save do |r|
-    if GstStarted
-      if r.changes[:posted] == [false, true]
-        if transactions.count == 0
-          build_transactions
-        else
-          raise "Error!! Non-Posted document has accounting transactions. TELL BOSS!!"
-        end
-      elsif r.posted
-        raise "Cannot update a posted document"
-      end
-    else
+    if !r.posted or (r.posted and r.changes[:posted] == [false, true])
       build_transactions
+    else
+      raise "Cannot update a posted document"
     end
   end
 

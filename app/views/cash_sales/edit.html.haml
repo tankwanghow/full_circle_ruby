@@ -4,7 +4,7 @@
     = "Cash Sales #" + docnolize(@cashsale.id)
     = posted_lock_label f
   = render 'fields', f: f
-  = post_to_account_check_box f
+  = post_and_lock_check_box f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary' unless posted_lock?(@cashsale)
     = link_to 'Copy as New', cash_sales_new_with_template_path(id: @cashsale), class: 'btn btn-info'

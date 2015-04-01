@@ -4,7 +4,7 @@
     = "Debit Note #" + docnolize(@debit_note.id)
     = posted_lock_label f
   = render 'fields', f: f
-  = post_to_account_check_box f
+  = post_and_lock_check_box f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary' unless posted_lock?(@debit_note)
     = link_to_edit_action_buttons @debit_note, debit_note_journal_entries_path(@debit_note)

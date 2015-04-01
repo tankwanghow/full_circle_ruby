@@ -4,7 +4,7 @@
     = "Credit Note #" + docnolize(@credit_note.id)
     = posted_lock_label f
   = render 'fields', f: f
-  = post_to_account_check_box f
+  = post_and_lock_check_box f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary' unless posted_lock?(@credit_note)
     = link_to_edit_action_buttons @credit_note, credit_note_journal_entries_path(@credit_note)

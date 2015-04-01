@@ -11,18 +11,10 @@ class CashSale < ActiveRecord::Base
   acts_as_taggable_on :loader, :unloader
 
   before_save do |r|
-    if doc_date >= GstStartDate
-      if r.changes[:posted] == [false, true]
-        if transactions.count == 0
-          build_transactions
-        else
-          raise "Error!! Non-Posted document has accounting transactions. TELL BOSS!!"
-        end
-      elsif r.posted
-        raise "Cannot update a posted document"
-      end
-    else
+    if !r.posted or (r.posted and r.changes[:posted] == [false, true])
       build_transactions
+    else
+      raise "Cannot update a posted document"
     end
   end
 
