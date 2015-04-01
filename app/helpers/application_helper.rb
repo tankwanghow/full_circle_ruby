@@ -75,7 +75,7 @@ module ApplicationHelper
     end
   end
 
-  def post_to_account_check_box form
+  def post_and_lock_check_box form
     if !posted_lock?(form.object)
       content_tag :div, class: 'checkbox' do
         form.check_box(:posted) +
