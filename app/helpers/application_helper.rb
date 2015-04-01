@@ -79,7 +79,7 @@ module ApplicationHelper
     if !posted_lock?(form.object)
       content_tag :div, class: 'checkbox' do
         form.check_box(:posted) +
-        content_tag(:span, "Post to Account", class: 'bold')
+        content_tag(:span, "Post and Lock", class: 'bold')
       end
     end
   end
