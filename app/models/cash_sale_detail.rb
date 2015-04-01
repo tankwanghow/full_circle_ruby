@@ -28,7 +28,7 @@ class CashSaleDetail < ActiveRecord::Base
   end
 
   def simple_audit_string
-    [ product.name1, quantity, unit_price, discount, tax_code, gst_rate ].join ' '
+    [ product.name1, quantity, unit_price, discount, tax_code.try(:code), gst_rate ].join ' '
   end
 
   def unit
