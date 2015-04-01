@@ -84,6 +84,17 @@ module ApplicationHelper
     end
   end
 
+  def doc_posted_label doc
+    d = doc.searchable_type.constantize.find(doc.searchable_id)
+    if d.respond_to?(:posted)
+      if d.posted
+        content_tag(:span, "Posted", class: 'label label-success')
+      else
+        content_tag(:span, "Not Posted", class: 'label label-info')
+      end
+    end
+  end
+
   def admin_lock_show? object
     return false if object.admin_lock and !current_user.is_admin
     true
