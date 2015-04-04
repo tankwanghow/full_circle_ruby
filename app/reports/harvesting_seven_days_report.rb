@@ -29,7 +29,7 @@ class HarvestingSevenDaysReport < Dossier::Report
   end
 
   def param_fields form
-    form.input_field(:report_date, class: 'datepicker span3', placeholder: 'Date...')
+    form.input_field(:report_date, class: 'datepicker span6', placeholder: 'Date...')
   end
 
   def report_date
