@@ -32,31 +32,31 @@ class InvoicePdf < Prawn::Document
 
   def draw_static_content
     repeat(:all) do
-      draw_text CompanyName, size: 20, style: :bold, at: [9.mm, 270.mm]
+      draw_text CompanyName, size: 20, style: :bold, at: [9.mm, 272.mm]
       draw_text @view.header_address_pdf(CompanyAddress), size: 10, at: [9.mm, 266.mm]
-      draw_text @view.header_contact_pdf(CompanyAddress), size: 10, at: [9.mm, 262.mm]
-      stroke_rounded_rectangle [8.mm, 256.mm], 203.mm, 33.mm, 1.5.mm
-      stroke_rounded_rectangle [8.mm, 223.mm], 203.mm, 9.mm, 1.5.mm
-      stroke_vertical_line 256.mm, 223.mm, at: 104.mm
-      draw_text "INVOICE", style: :bold, size: 12, at: [155.mm, 266.mm]
-      draw_text "SOLD TO", size: 8, at: [11.mm, 252.mm]
-      draw_text "DELIVERED TO", size: 8, at: [107.mm, 252.mm]
-      stroke_vertical_line 223.mm, 214.mm, at: 58.mm
-      stroke_vertical_line 223.mm, 214.mm, at: 109.mm
-      stroke_vertical_line 223.mm, 214.mm, at: 160.mm
-      draw_text "ACCOUNT ID", size: 8, at: [10.mm, 219.mm]
-      draw_text "TERMS", size: 8, at: [59.mm, 219.mm]
-      draw_text "DATE", size: 8, at: [110.mm, 219.mm]
-      draw_text "INVOICE NO", size: 8, at: [162.mm, 219.mm]
-      stroke_rounded_rectangle [8.mm, 214.mm], 203.mm, 168.mm, 1.5.mm
+      draw_text @view.header_contact_pdf(CompanyAddress), size: 10, at: [9.mm, 261.mm]
+      stroke_rounded_rectangle [8.mm, 253.mm], 203.mm, 32.mm, 1.5.mm
+      stroke_rounded_rectangle [8.mm, 221.mm], 203.mm, 9.mm, 1.5.mm
+      stroke_vertical_line 253.mm, 221.mm, at: 104.mm
+      draw_text "TAX INVOICE", style: :bold, size: 12, at: [180.mm, 257.mm]
+      draw_text "SOLD TO", size: 8, at: [11.mm, 249.mm]
+      draw_text "DELIVERED TO", size: 8, at: [107.mm, 249.mm]
+      stroke_vertical_line 221.mm, 212.mm, at: 58.mm
+      stroke_vertical_line 221.mm, 212.mm, at: 109.mm
+      stroke_vertical_line 221.mm, 212.mm, at: 160.mm
+      draw_text "ACCOUNT ID", size: 8, at: [10.mm, 218.mm]
+      draw_text "TERMS", size: 8, at: [59.mm, 218.mm]
+      draw_text "DATE", size: 8, at: [110.mm, 218.mm]
+      draw_text "INVOICE NO", size: 8, at: [162.mm, 218.mm]
+      stroke_rounded_rectangle [8.mm, 212.mm], 203.mm, 167.mm, 1.5.mm
       stroke_horizontal_line 8.mm, 211.mm, at: 205.mm
-      stroke_vertical_line 214.mm, 46.mm, at: 108.mm
-      stroke_vertical_line 214.mm, 46.mm, at: 144.mm
-      stroke_vertical_line 214.mm, 46.mm, at: 173.mm
-      draw_text "PARTICULARS", size: 8, at: [53.mm, 208.5.mm]
-      draw_text "QUANTITY", size: 8, at: [119.mm, 208.5.mm]
-      draw_text "UNIT PRICE", size: 8, at: [150.mm, 208.5.mm]
-      draw_text "AMOUNT", size: 8, at: [185.mm, 208.5.mm]
+      stroke_vertical_line 212.mm, 45.mm, at: 109.mm
+      stroke_vertical_line 212.mm, 45.mm, at: 145.mm
+      stroke_vertical_line 212.mm, 45.mm, at: 175.mm
+      draw_text "PARTICULARS", size: 8, at: [53.mm, 208.mm]
+      draw_text "QUANTITY", size: 8, at: [119.mm, 208.mm]
+      draw_text "UNIT PRICE", size: 8, at: [150.mm, 208.mm]
+      draw_text "AMOUNT", size: 8, at: [185.mm, 208.mm]
       draw_text "The above goods are delivered in good order and condition.", size: 8, at: [10.mm, 38.mm]
       draw_text "All Cheque should be made payable to the company & crossed 'A/C PAYEE ONLY'", size: 8, at: [10.mm, 33.mm]
       stroke_horizontal_line 110.mm, 150.mm, at: 23.mm
@@ -68,21 +68,23 @@ class InvoicePdf < Prawn::Document
 
   #Dynamic Content
   def draw_header
+    draw_text "TAX", style: :bold, size: 12, at: [170.mm, 257.mm]
+    draw_text "GST No. #{CompanyAddress.gst_no}", style: :bold, size: 12, at: [60.mm, 257.mm]
     text_box @invoice.customer.name1, at: [13.mm, 245.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
     if @invoice.customer.mailing_address
       address_box(self, @invoice.customer.mailing_address, [13.mm, 240.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text @view.docnolize(@invoice.customer.id), at: [30.mm, 211.mm], size: 10
-    draw_text @view.term_string(@invoice.credit_terms), at: [70.mm, 211.mm], style: :bold
-    draw_text @invoice.doc_date, at: [124.mm, 211.mm], style: :bold
-    draw_text @view.docnolize(@invoice.id), at: [180.mm, 211.mm], style: :bold
+    draw_text @view.docnolize(@invoice.customer.id), at: [30.mm, 215.mm], size: 10
+    draw_text @view.term_string(@invoice.credit_terms), at: [70.mm, 215.mm], style: :bold
+    draw_text @invoice.doc_date, at: [124.mm, 215.mm], style: :bold
+    draw_text @view.docnolize(@invoice.id), at: [180.mm, 215.mm], style: :bold
   end
 
   def draw_page_number
     i = 0
     ((page_count - @total_pages + 1)..page_count).step(1) do |p|
       go_to_page p
-      bounding_box [bounds.right - 30.mm, bounds.top - 8.mm], width: 30.mm, height: 5.mm do
+      bounding_box [bounds.right - 30.mm, bounds.top - 10.mm], width: 30.mm, height: 5.mm do
         text "Page #{i+=1} of #{@total_pages}", size: 9
       end
     end
@@ -141,9 +143,9 @@ class InvoicePdf < Prawn::Document
       overflow: :shrink_to_fit, valign: :center, align: :center
     end
 
-    bounding_box [176.mm, y], height: h, width: 33.mm do
+    bounding_box [174.mm, y], height: h, width: 37.mm do
       text_box @view.number_with_precision(detail.goods_total, precision: 2, delimiter: ','), 
-               overflow: :shrink_to_fit, valign: :center, align: :right
+               overflow: :shrink_to_fit, valign: :center, align: :center
     end
   end
 
@@ -205,8 +207,8 @@ class InvoicePdf < Prawn::Document
 
         if @invoice.discount_amount != 0
           local_y = local_y - 6.mm
-          stroke_horizontal_line 144.mm, 211.mm, at: local_y
-          bounding_box [144.mm, local_y - 0.5.mm], height: 6.mm, width: 30.mm do
+          stroke_horizontal_line 145.mm, 211.mm, at: local_y
+          bounding_box [145.mm, local_y - 0.5.mm], height: 6.mm, width: 30.mm do
             text_box "Discount", valign: :center, style: :bold, align: :center
           end
           bounding_box [174.mm, local_y - 0.5.mm], height: 6.mm, width: 34.mm do
@@ -216,28 +218,28 @@ class InvoicePdf < Prawn::Document
         end
         
         local_y = local_y - 6.mm
-        bounding_box [144.mm, local_y - 0.5.mm], height: 6.mm, width: 30.mm do
+        bounding_box [145.mm, local_y - 0.5.mm], height: 6.mm, width: 30.mm do
           text_box "GST Payable", valign: :center, style: :bold, align: :center
         end
-        stroke_horizontal_line 144.mm, 211.mm, at: local_y
+        stroke_horizontal_line 145.mm, 211.mm, at: local_y
         bounding_box [174.mm, local_y - 0.5.mm], height: 6.mm, width: 34.mm do
           text_box @invoice.gst_amount.to_money.format, overflow: :shrink_to_fit,
                    valign: :center, style: :bold, align: :right
         end
 
         local_y = local_y - 6.mm
-        stroke_horizontal_line 144.mm, 211.mm, at: local_y
-        bounding_box [144.mm, local_y - 0.5.mm], height: 6.mm, width: 30.mm do
+        stroke_horizontal_line 145.mm, 211.mm, at: local_y
+        bounding_box [145.mm, local_y - 0.5.mm], height: 6.mm, width: 30.mm do
           text_box "Sales Incl. GST", valign: :center, style: :bold, align: :center
         end
         bounding_box [174.mm, local_y - 0.5.mm], height: 6.mm, width: 34.mm do
           text_box @invoice.invoice_amount.to_money.format, overflow: :shrink_to_fit,
                    valign: :center, style: :bold, align: :right
         end
-        bounding_box [110 .mm, @detail_y], height: @detail_y - local_y + 7.mm, width: 35.mm do
+        bounding_box [109 .mm, @detail_y], height: @detail_y - local_y + 7.mm, width: 35.mm do
           text_box "TOTAL", style: :bold, size: 14, align: :center, valign: :center
         end
-        stroke_horizontal_line 108.mm, 211.mm, at: local_y - 6.mm
+        stroke_horizontal_line 109.mm, 211.mm, at: local_y - 6.mm
       end
     end
   end
