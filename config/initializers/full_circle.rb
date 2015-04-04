@@ -9,7 +9,6 @@ Money.default_currency = Money::Currency.new('MYR')
 # GST Stuff
 GstStartDate = '2015-04-01'.to_date
 GstStarted = (Date.today >= GstStartDate)
-GstNo   = '000162897920'
 SoftwareVersion = '1.0.0'
 GafVersion = ''
 
@@ -24,7 +23,8 @@ if Address.table_exists?
     t.state    = 'Perak'
     t.country  = 'Malaysia'
     t.tel_no   = '05-2563277'
-    t.fax_no   = '016-9260462'
+    t.fax_no   = nil
     t.reg_no   = '33704-U'
+    t.gst_no   = '000162897920'
   end
 end
