@@ -45,8 +45,7 @@ class ParticularTypesController < ApplicationController
   end
 
   def typeahead_name
-    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
-    render json: ParticularType.using.where('name ilike ?', term).limit(8).pluck(:name)
+    render json: typeahead_result(params[:term], "name", ParticularType)
   end
 
   def json

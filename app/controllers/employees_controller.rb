@@ -43,7 +43,6 @@ class EmployeesController < ApplicationController
   end
 
   def typeahead_name
-    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
-    render json: Employee.where("name ilike ?", term).limit(8).order(:name).pluck(:name)
+    render json: typeahead_result(params[:term], "name", Employee)
   end
 end

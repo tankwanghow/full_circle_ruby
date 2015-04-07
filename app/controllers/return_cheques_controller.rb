@@ -45,7 +45,6 @@ class ReturnChequesController < ApplicationController
   end
 
   def typeahead_reason
-    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
-    render json: ReturnCheque.uniq.where("reason ilike ?", term).limit(8).pluck(:reason)
+    render json: typeahead_result(params[:term], "reason", ReturnCheque)
   end
 end

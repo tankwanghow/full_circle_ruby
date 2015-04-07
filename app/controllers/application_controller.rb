@@ -48,4 +48,14 @@ private
     end
   end
 
+  def typeahead_result term, field, klass
+    term1 = "%#{term}%"
+    term2 = "%#{term.scan(/(\w)/).flatten.join('%')}%"
+    results = klass.uniq.where("#{field} ilike ?", term1).limit(10).order("#{field}").pluck("#{field}")
+    if results.count == 0
+      results = klass.uniq.where("#{field} ilike ?", term2).limit(10).order("#{field}").pluck("#{field}")
+    end
+    return results
+  end
+
 end

@@ -39,8 +39,7 @@ class FlocksController < ApplicationController
   end
 
   def typeahead_breed
-    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
-    render json: Flock.uniq.where('breed ilike ?', term).limit(8).pluck(:breed)
+    render json: typeahead_result(params[:term], "breed", Flock)
   end
 
   def info
