@@ -59,7 +59,7 @@ class FixedAssetsReport < AdminReportBase
   end
 
   def param_fields form
-    form.input_field :at_date, class: 'datepicker span3', placeholder: 'date...'
+    form.input_field :at_date, class: 'datepicker span5', placeholder: 'date...'
   end
 
   def at_date

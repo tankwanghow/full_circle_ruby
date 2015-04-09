@@ -46,8 +46,8 @@ class FeedProductionUsageReport < Dossier::Report
   end
 
   def param_fields form
-    form.input_field(:from_date, class: 'datepicker span3', placeholder: 'From...') +
-    form.input_field(:to_date, class: 'datepicker span3', placeholder: 'To...')
+    form.input_field(:from_date, class: 'datepicker span5', placeholder: 'From...') +
+    form.input_field(:to_date, class: 'datepicker span5', placeholder: 'To...')
   end
 
   def from_date

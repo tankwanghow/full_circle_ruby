@@ -46,8 +46,8 @@ class SalesAmountReport < Dossier::Report
 
   def param_fields form
     form.input_field(:doc_tags, class: 'span6', placeholder: 'document tags...', data: { tags: sales_doc_tags }) +
-    form.input_field(:start_date, class: 'datepicker span3', placeholder: 'start date...') +
-    form.input_field(:end_date, class: 'datepicker span3', placeholder: 'end date...')
+    form.input_field(:start_date, class: 'datepicker span5', placeholder: 'start date...') +
+    form.input_field(:end_date, class: 'datepicker span5', placeholder: 'end date...')
   end
 
   def tagged_invoice_ids_condition

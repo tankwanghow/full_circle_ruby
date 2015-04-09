@@ -40,7 +40,7 @@ class TrailBalanceReport < AdminReportBase
   end
 
   def param_fields form
-    form.input_field :end_date, class: 'datepicker span3', placeholder: 'end date...'
+    form.input_field :end_date, class: 'datepicker span5', placeholder: 'end date...'
   end
 
   def start_date

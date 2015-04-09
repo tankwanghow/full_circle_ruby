@@ -1,18 +1,18 @@
-class EpfListReport < Dossier::Report
+class SocsoListReport < Dossier::Report
 
   def sql
     <<-SQL
-      select emp.name, id_no, epf_no,
+      select emp.name, id_no, socso_no,
              (select quantity * unit_price 
                 from salary_notes sn
                inner join salary_types st on sn.salary_type_id = st.id
-               where st.name = 'EPF By Employee'
-                 and sn.pay_slip_id = ps.id) as employee_epf,
+               where st.name = 'SOCSO By Employee'
+                 and sn.pay_slip_id = ps.id) as employee_socso,
              (select quantity * unit_price 
                 from salary_notes sn
                inner join salary_types st on sn.salary_type_id = st.id
-               where st.name = 'EPF By Employer'
-                 and sn.pay_slip_id = ps.id) as employer_epf
+               where st.name = 'SOCSO By Employer'
+                 and sn.pay_slip_id = ps.id) as employer_socso
         from pay_slips ps
        inner join employees emp on emp.id = ps.employee_id
        where ps.pay_date >= :start_date

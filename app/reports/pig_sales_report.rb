@@ -39,8 +39,8 @@ class PigSalesReport < Dossier::Report
   end  
 
   def param_fields form
-    form.input_field(:from_date, class: 'datepicker span3', placeholder: 'from...') +
-    form.input_field(:to_date, class: 'datepicker span3', placeholder: 'to...')
+    form.input_field(:from_date, class: 'datepicker span5', placeholder: 'from...') +
+    form.input_field(:to_date, class: 'datepicker span5', placeholder: 'to...')
   end
 
   def query_definitions

@@ -6,8 +6,8 @@ class TradeDebtorsAgingReport < AdminReportBase
   end
 
   def param_fields form
-    form.input_field(:interval, class: 'span3', placeholder: 'Interval...') +
-    form.input_field(:report_date, class: 'datepicker span3', placeholder: 'Date...')
+    form.input_field(:interval, class: 'span5', placeholder: 'Interval...') +
+    form.input_field(:report_date, class: 'datepicker span5', placeholder: 'Date...')
   end
 
   def report_date

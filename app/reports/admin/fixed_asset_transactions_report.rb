@@ -16,7 +16,7 @@ class FixedAssetTransactionsReport < AdminReportBase
   end
 
   def param_fields form
-    form.input_field(:year, class: 'numeric span3', placeholder: 'year...')
+    form.input_field(:year, class: 'numeric span5', placeholder: 'year...')
   end
   
 end
