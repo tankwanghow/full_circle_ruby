@@ -1,5 +1,4 @@
 = render_flash
-= @invoice.posted
 = simple_nested_form_for @invoice, html: { class: 'form-inline well', id: 'invoice', data: { gst_type: 'purchase' }, posted_lock:posted_lock?(@invoice) } do |f|
   = @invoice.posted
   %legend
