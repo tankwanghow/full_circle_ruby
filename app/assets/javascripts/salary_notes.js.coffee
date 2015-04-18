@@ -6,5 +6,5 @@ window.salary_note = {
     ($ 'form').on 'change', '#salary_note_quantity, #salary_note_unit_price', ->
       qty = +($ '#salary_note_quantity').val() 
       price = +($ '#salary_note_unit_price').val()
-      ($ '#salary_note_amount').val (qty * price).toFixed(2)
+      ($ '#salary_note_amount').val (Math.round((qty * price)*100)/100).toFixed(2)
 }

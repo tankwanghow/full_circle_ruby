@@ -42,8 +42,8 @@ window.math = {
       amount   = (qty * price) + discount
       gst_val  = amount * (gst_rate / 100)
 
-      gst.val(gst_val.toFixed(2)) if gst
-      row_total.val (amount + gst_val).toFixed(2)
+      gst.val((Math.round(gst_val * 100)/100).toFixed(2)) if gst
+      row_total.val (Math.round((amount + gst_val)*100)/100).toFixed(2)
       gst.change()
       row_total.change()
 
