@@ -30,8 +30,8 @@ window.pay_slip = {
       deduction = pay_slip.sum_element('#notes .row-fluid.Deduction .row-total')
       advance = pay_slip.sum_element('#advances .row-fluid.Advance .row-total')
       $('#total_advances').val(advance)
-      $('#total_notes').val((Math.round((addition - deduction)*100)/100).toFixed 2)
-      $('#total_pay').val((Math.round((addition - deduction - advance)*100)/100).toFixed 2)
+      $('#total_notes').val math.round(addition - deduction, 2)
+      $('#total_pay').val math.round(addition - deduction - advance, 2)
 
     $('.quantity').change()
 
@@ -40,6 +40,6 @@ window.pay_slip = {
     ($ selector).each (index, elm) ->
       val = if ($ elm).is(":visible") then ($ elm).val() else 0
       total = total + +val
-    (Math.round(total*100)/100).toFixed(2)
+    math.round(total, 2)
 
 }

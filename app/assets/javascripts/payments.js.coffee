@@ -41,7 +41,7 @@ window.payment = {
     ($ 'form#payment').on 'change', '#total_pay_to_particulars', -> 
       total = + ($ '#total_pay_to_particulars').val()
       gst   = - ($ '#total_pay_to_gst') .val()
-      ($ '#payment_actual_debit_amount').val((Math.round((total + gst)*100)/100).toFixed(2))
+      ($ '#payment_actual_debit_amount').val math.round(total + gst, 2)
       ($ '#payment_actual_debit_amount').change()
 
     ($ '.gst').change()

@@ -24,6 +24,8 @@ $ ->
   $('.alert, .no-record').fadeIn(1000)
 
 window.math = {
+  round: (value, decimals) ->
+    Number(Math.round(value+'e+'+decimals)+'e-'+decimals)
 
   rowTotal: (qtyCls, priceCls, discountCls, gstRateCls, gstCls, totalCls, rowCls, evtBubbleCls) ->
     ($ evtBubbleCls).on 'change', qtyCls,      -> calRowTotal(this)
@@ -42,8 +44,8 @@ window.math = {
       amount   = (qty * price) + discount
       gst_val  = amount * (gst_rate / 100)
 
-      gst.val((Math.round(gst_val * 100)/100).toFixed(2)) if gst
-      row_total.val (Math.round((amount + gst_val)*100)/100).toFixed(2)
+      gst.val math.round(gst_val, 2) if gst
+      row_total.val math.round(amount + gst_val, 2)
       gst.change()
       row_total.change()
 
