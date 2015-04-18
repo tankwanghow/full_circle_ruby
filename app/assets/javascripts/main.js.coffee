@@ -25,7 +25,8 @@ $ ->
 
 window.math = {
   round: (value, decimals) ->
-    Number(Math.round(value+'e+'+decimals)+'e-'+decimals)
+    val = Number(Math.round(value+'e+'+(decimals+1))+'e-'+(decimals+1))
+    Number(Math.round(val+'e+'+decimals)+'e-'+decimals)
 
   rowTotal: (qtyCls, priceCls, discountCls, gstRateCls, gstCls, totalCls, rowCls, evtBubbleCls) ->
     ($ evtBubbleCls).on 'change', qtyCls,      -> calRowTotal(this)
@@ -41,11 +42,11 @@ window.math = {
       discount  = + ($ elm).closest(rowCls).find(discountCls).val() || 0
       gst_rate  = + ($ elm).closest(rowCls).find(gstRateCls).val() || 0
 
-      amount   = (qty * price) + discount
-      gst_val  = amount * (gst_rate / 100)
+      amount   = math.round(qty * price, 2) + discount
+      gst_val  = math.round(amount * (gst_rate / 100), 2)
 
-      gst.val math.round(gst_val, 2) if gst
-      row_total.val math.round(amount + gst_val, 2)
+      gst.val gst_val if gst
+      row_total.val amount + gst_val
       gst.change()
       row_total.change()
 
@@ -59,7 +60,7 @@ window.math = {
         else
           val = ($ elm).val()
         total = total + +val
-      ($ totalElm).val total.toFixed(2)
+      ($ totalElm).val math.round(total, 2)
       ($ totalElm).change()
 }
 
