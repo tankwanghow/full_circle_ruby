@@ -47,11 +47,13 @@ class Deposit < ActiveRecord::Base
       if chq
         if v['_destroy'] == '1'
           chq.cr_doc = nil
+          chq.cr_ac = nil
         end
       else
         if v['_destroy'] != '1'
           chq = Cheque.find(v['id'])
           chq.cr_doc = self
+          chq.cr_ac = bank
           cheques << chq
         end
       end
@@ -60,22 +62,11 @@ class Deposit < ActiveRecord::Base
 
 private
 
-  def process_cheque_in_current_list chq_id
-    cheques.select { |t| t.id == chq_id }.cr_doc = nil
-  end
-
   def build_transactions
     transactions.destroy_all
-    set_cheques_account
     build_cash_transaction if cash_amount > 0
     build_pd_chq_transaction if cheques_amount > 0
     validates_transactions_balance
-  end
-
-  def set_cheques_account
-    cheques.select { |t| !t.marked_for_destruction? }.each do |t|
-      t.cr_ac = bank
-    end
   end
 
   def build_cash_transaction
