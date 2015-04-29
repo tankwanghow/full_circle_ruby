@@ -8,6 +8,9 @@ class PaySlip < ActiveRecord::Base
 
   before_save :build_transactions
 
+  include ValidateCreditAccountBalance
+  validate_credit_account_balance :pay_from, :total_pay
+
   scope :employee, ->(emp_name) { joins(:employee).where("employees.name = ?", emp_name) }
   scope :month_year, ->(month, year) { where("date_part('month', pay_date) = ? and date_part('year', pay_date) = ?", month, year) }
 
@@ -100,6 +103,13 @@ class PaySlip < ActiveRecord::Base
     salary_notes.select { |t| t.salary_type.classifiaction == 'Deduction' and !t.marked_for_destruction? }.
       inject(0) { |sum, t| sum + t.amount } -
     advances.inject(0) { |sum, t| sum + t.amount }
+  end
+
+  def total_pay=val
+  end
+
+  def total_pay 
+    amount 
   end
 
 private

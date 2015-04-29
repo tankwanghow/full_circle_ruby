@@ -10,6 +10,9 @@ class Advance < ActiveRecord::Base
 
   include ValidateTransactionsBalance
 
+  include ValidateCreditAccountBalance
+  validate_credit_account_balance :pay_from, :amount
+
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :amount,
              content: [:id, :employee_name, :pay_from_name1, :chq_no]

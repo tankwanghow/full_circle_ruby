@@ -10,8 +10,7 @@
   .span6
     = f.input :chq_no, wrapper_html: { style: "display: #{f.object.pay_from_name1 == 'Cash In Hand' ? 'none' : ''}" }, input_html: { class: 'span' }
   .span6
-    = label_tag :total_pay, 'Pay Slip Total', class: 'bold'
-    = text_field_tag :total_pay, 0.00, class: 'numeric span bold', readOnly: true
+    = f.input :total_pay, input_html: { class: 'bold numeric span', type: :text, tabindex: -1 }, label_html: { class: 'bold' }, readonly: true, label: 'Pay Slip Total'
 #notes
   .row-fluid
     = render_salary_notes_fields f, :salary_notes

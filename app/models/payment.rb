@@ -14,6 +14,9 @@ class Payment < ActiveRecord::Base
   accepts_nested_attributes_for :pay_from_particulars, allow_destroy: true
   accepts_nested_attributes_for :matchers, allow_destroy: true, reject_if: :dont_process
 
+  include ValidateCreditAccountBalance
+  validate_credit_account_balance :pay_from, :actual_credit_amount
+
   before_save do |r|
     if !r.posted or (r.posted and r.changes[:posted] == [false, true])
       build_transactions
@@ -46,8 +49,8 @@ class Payment < ActiveRecord::Base
     }
   end
 
-  scope :matched, -> { where(id: TransactionMatcher.uniq.where(doc_type: 'Payment').pluck(:doc_id)) }
-  scope :not_matched, -> { where('id not in (?)', TransactionMatcher.uniq.where(doc_type: 'Payment').pluck(:doc_id) << -1) }
+  scope :matched, -> { where("id in (#{TransactionMatcher.uniq.where(doc_type: 'Payment').select(:doc_id).to_sql})") }
+  scope :not_matched, -> { where("id not in (#{TransactionMatcher.uniq.where(doc_type: 'Payment').select(:doc_id).to_sql})") }
 
   include ValidateBelongsTo
   validate_belongs_to :pay_to, :name1
