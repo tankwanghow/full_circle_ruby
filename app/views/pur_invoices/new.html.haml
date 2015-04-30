@@ -1,5 +1,5 @@
 = render_flash
-= simple_nested_form_for @invoice, html: { class: 'form-inline well', id: 'invoice', data: { gst_type: 'purchase' } } do |f|
+= simple_nested_form_for @invoice, html: { class: 'form-inline well', id: 'invoice' } do |f|
   %legend
     New Purchase Invoice
   = render 'fields', f: f
