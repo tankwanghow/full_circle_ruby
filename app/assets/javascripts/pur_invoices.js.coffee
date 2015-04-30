@@ -2,9 +2,9 @@ window.pur_invoice = {
   init: ->
     invoice.shared_init()
 
-    app.typeahead_init '.tax_code', '/tax_code/typeahead_purchase_code'
+    app.typeahead_init '.tax_code', '/tax_code/typeahead_code'
     app.nestedFormFieldAdded 'form', '.row-fluid', '.show-hide', (field) ->
-      app.typeahead_init field.find('.tax_code'), '/tax_code/typeahead_purchase_code'
+      app.typeahead_init field.find('.tax_code'), '/tax_code/typeahead_code'
     
     ($ '#pur_invoice_tag_list').select2
       tags: $('#pur_invoice_tag_list').data('tags')
