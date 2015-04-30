@@ -91,6 +91,8 @@ window.app = {
     app.initDatepicker()
     app.initNumeric()
     app.avoidAutocompleteForTypeahead()
+    ($ '.numeric').each ->
+      ($ this).val(($ this).val()/1)
 
   avoidAutocompleteForTypeahead: ->
     ($ 'input.string[type="text"]').attr('autocomplete', 'off')
