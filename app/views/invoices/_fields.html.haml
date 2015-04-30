@@ -2,6 +2,8 @@
   .span12
     = f.input :customer_name1, input_html: { class: 'span' }, label: 'Customer', autofocus: true
   .span6
+    = f.input :reference_no, input_html: { class: 'span' }
+  .span6
     = f.input :credit_terms, label: 'Terms(days)', input_html: { type: :text, class: 'span' }
   .span6
     = f.input :doc_date, as: :datepicker, input_html: { class: 'span38' }, label: 'Date'

@@ -2,9 +2,11 @@
   .span12
     = f.input :supplier_name1, input_html: { class: 'span' }, label: 'Supplier', autofocus: true
   .span6
-    = f.input :credit_terms, label: 'Terms(days)', input_html: { type: :text, class: 'span' }
+    = f.input :reference_no, input_html: { class: 'span' }
   .span6
     = f.input :doc_date, as: :datepicker, input_html: { class: 'span38' }, label: 'Date'
+  .span6
+    = f.input :credit_terms, label: 'Terms(days)', input_html: { type: :text, class: 'span' }
   .span14
     = f.input :tag_list, input_html: { data: { tags: PurInvoice.tag_counts.map {|t| t.name } }, class: 'span' }
 #details
