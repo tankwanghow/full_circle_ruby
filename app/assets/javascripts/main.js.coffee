@@ -46,7 +46,7 @@ window.math = {
       gst_val  = math.round(amount * (gst_rate / 100), 2)
 
       gst.val gst_val if gst
-      row_total.val amount + gst_val
+      row_total.val math.round(amount + gst_val, 2)
       gst.change()
       row_total.change()
 
@@ -92,7 +92,8 @@ window.app = {
     app.initNumeric()
     app.avoidAutocompleteForTypeahead()
     ($ '.numeric').each ->
-      ($ this).val(($ this).val()/1)
+      if ($ this).val() > 0
+        ($ this).val(($ this).val()/1)
 
   avoidAutocompleteForTypeahead: ->
     ($ 'input.string[type="text"]').attr('autocomplete', 'off')
