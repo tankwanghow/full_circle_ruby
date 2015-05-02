@@ -5,7 +5,7 @@ class PaySlip < ActiveRecord::Base
   has_many :salary_notes, autosave: true, include: :salary_type, order: ["salary_types.name", :doc_date]
   has_many :transactions, as: :doc
   validates_presence_of :employee_name, :pay_from_name1, :pay_date, :doc_date
-
+  validate :pay_date_vs_doc_date
   before_save :build_transactions
 
   include ValidateCreditAccountBalance
@@ -113,6 +113,10 @@ class PaySlip < ActiveRecord::Base
   end
 
 private
+
+  def pay_date_vs_doc_date
+    errors.add :pay_date, 'to big!' if pay_date > doc_date
+  end
 
   def build_transactions
     transactions.destroy_all
