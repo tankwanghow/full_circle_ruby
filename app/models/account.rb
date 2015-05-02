@@ -13,6 +13,8 @@ class Account < ActiveRecord::Base
   include Searchable
   searchable content: [:name1, :name2, :type_name, :description, :status]
 
+  scope :gst_accounts, -> { where("name1 like 'GST - %'") }
+
   simple_audit username_method: :username do |r|
     {
       account_type: r.type_name,
