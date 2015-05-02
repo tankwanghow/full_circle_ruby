@@ -9,6 +9,7 @@ class Transaction < ActiveRecord::Base
 
   before_destroy :closed?
   before_save :round_amount
+  before_save :check_account_period
 
   scope :account,    ->(val) { joins(:account).where('accounts.name1 = ?', val) }
   scope :bigger_eq,  ->(val) { where('transaction_date >= ?', val.to_date) }
@@ -21,7 +22,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def closed?
-    raise 'Transactions closed CANNOT update or delete!' if closed
+    raise 'Transactions closed CANNOT update or delete!' if closed or reconciled
   end
 
   include SumAttributes
@@ -72,6 +73,12 @@ class Transaction < ActiveRecord::Base
   end
 
 private
+
+  def check_account_period
+    closed_period = Transaction.joins(:account).where("accounts.name1 ilike '%net%profit%for%the%year%'").max { |t| t.transaction_date }.transaction_date
+    raise "Account period closed for entry #{closed_period.to_s} !" if transaction_date <= closed_period
+    raise "Entry cannot be made after #{Date.today} !" if transaction_date > Date.today
+  end
 
   def round_amount
     amount = amount.round(2) if amount
