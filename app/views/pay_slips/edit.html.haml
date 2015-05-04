@@ -6,7 +6,7 @@
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
     = link_to 'Cancel', edit_pay_slip_path(@pay_slip), class: 'btn btn-warning'
-    = link_to 'Prepare New', new_pay_slip_generations_path, class: 'btn btn-info'
+    = link_to 'Prepare New', new_pay_slip_generation_path, class: 'btn btn-info'
     = link_to_index(PaySlip)
     = link_to_print_buttons(@pay_slip)
     = link_to('Journals', pay_slip_journal_entries_path(@pay_slip), class: 'btn btn-info')
