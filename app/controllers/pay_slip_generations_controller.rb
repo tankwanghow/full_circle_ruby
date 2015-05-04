@@ -1,4 +1,12 @@
 class PaySlipGenerationsController < ApplicationController
+  def index
+    store_param :pay_slip_generations
+    session[:pay_slip_generations][:date] ||= Date.current
+    
+    @paid_employees = Employee.paid(session[:pay_slip_generations][:date].to_date)
+    @unpaid_employees = Employee.unpaid(session[:pay_slip_generations][:date].to_date)
+  end
+
   def new
     @pay_slips = []
     @gen_pay = PaySlipGenerationService.new params[:gen_pay]

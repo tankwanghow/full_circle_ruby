@@ -3,6 +3,7 @@ class Employee < ActiveRecord::Base
   validates_presence_of :name, :id_no, :service_since, :birth_date
   validates_uniqueness_of :id_no
   has_many :salary_types, class_name: "EmployeeSalaryType"
+  has_many :pay_slips
 
   accepts_nested_attributes_for :salary_types, allow_destroy: true
 
@@ -11,6 +12,18 @@ class Employee < ActiveRecord::Base
 
   include AuditString
   audit_string :salary_types
+
+  scope :active, -> { where(status: 'Active') }
+  
+  scope :active_at, ->(date) { active.where('service_since <= ?', date) }
+
+  scope :paid,   ->(date) { active_at(date).joins(:pay_slips).where('extract(month from pay_slips.pay_date) = ?', date.month).where('extract(year from pay_slips.pay_date) = ?', date.year) }
+
+  def self.unpaid date
+    ids = [-1]
+    ids << paid(date).pluck('employees.id')
+    active_at(date).where('id not in (?)', ids.flatten)
+  end
 
   simple_audit username_method: :username do |r|
     {

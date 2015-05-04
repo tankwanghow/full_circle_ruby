@@ -79,7 +79,7 @@ FullCircle::Application.routes.draw do
   end
   get 'pay_slip/new_or_edit' => 'pay_slips#new_or_edit'
 
-  resource :pay_slip_generations, only: [:new, :create]
+  resources :pay_slip_generations, only: [:new, :create, :index]
 
   get 'cash_sales/new_with_template' => 'cash_sales#new_with_template'
   resources :cash_sales, only: [:new, :edit, :update, :create, :show] do
