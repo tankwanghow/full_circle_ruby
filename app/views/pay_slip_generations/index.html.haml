@@ -4,17 +4,23 @@
   = f.input_field :date, class: 'datepicker span4', placeholder: 'date...', value: session[:pay_slip_generations][:date]
   = f.button :submit, 'Query', class: 'btn-primary'
 
+- i = 0
 .pull-right.span23
   - @paid_employees.sort_by { |t| -t.pay_slips.last.id }.each do |t|
     .row
+      - i = i + 1
+      .span4.bold.btn{disabled: "disabled"}= i.to_s
       - p = most_recent_pay_slip t, session[:pay_slip_generations][:date]
       .span24= edit_employee_link(t)
       .span8.btn{disabled: "disabled"}= p.pay_date
       .span12= link_to "Again PS-#{docnolize(p.id)}", pay_slip_generations_path(gen_pay: { employee_name: t.name, pay_date: session[:pay_slip_generations][:date]}), method: :post, class: 'btn btn-success span'
 
+- i = 0
 .pull-left.span23
   - @unpaid_employees.sort_by { |t| t.pay_slips.last.try(:pay_date) || '2000-01-01'.to_date }.each do |t|
     .row
+      - i = i + 1
+      .span4.bold.btn{disabled: "disabled"}= i.to_s
       - p = most_recent_pay_slip t, session[:pay_slip_generations][:date]
       .span24= edit_employee_link(t)
       .span8.btn{disabled: "disabled"}= p ? p.pay_date : 'No PaySlip'
