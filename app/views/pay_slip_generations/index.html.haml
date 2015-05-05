@@ -5,17 +5,17 @@
   = f.button :submit, 'Query', class: 'btn-primary'
 
 .pull-right.span23
-  - @paid_employees.sort_by { |t| t.pay_slips.last.try(:pay_date) || '2000-01-01'.to_date }.each do |t|
+  - @paid_employees.sort_by { |t| -t.pay_slips.last.id }.each do |t|
     .row
-      - p = t.pay_slips.order(:pay_date).last
-      .span24= link_to t.name, edit_employee_path(t), class: 'btn btn-info span'
-      .span8.btn{disabled: "disabled"}= p ? p.pay_date : 'No PaySlip'
+      - p = most_recent_pay_slip t, session[:pay_slip_generations][:date]
+      .span24= edit_employee_link(t)
+      .span8.btn{disabled: "disabled"}= p.pay_date
       .span12= link_to "Again PS-#{docnolize(p.id)}", pay_slip_generations_path(gen_pay: { employee_name: t.name, pay_date: session[:pay_slip_generations][:date]}), method: :post, class: 'btn btn-success span'
 
 .pull-left.span23
   - @unpaid_employees.sort_by { |t| t.pay_slips.last.try(:pay_date) || '2000-01-01'.to_date }.each do |t|
     .row
-      - p = t.pay_slips.order(:pay_date).last
-      .span24= link_to t.name, edit_employee_path(t), class: 'btn btn-info span'
+      - p = most_recent_pay_slip t, session[:pay_slip_generations][:date]
+      .span24= edit_employee_link(t)
       .span8.btn{disabled: "disabled"}= p ? p.pay_date : 'No PaySlip'
       .span12= link_to "Prepare Pay Slip", pay_slip_generations_path(gen_pay: { employee_name: t.name, pay_date: session[:pay_slip_generations][:date]}), method: :post, class: 'btn btn-danger span'

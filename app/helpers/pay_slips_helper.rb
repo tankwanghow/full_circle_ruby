@@ -19,4 +19,13 @@ module PaySlipsHelper
       false
     end
   end
+
+  def most_recent_pay_slip employee, date
+    employee.pay_slips.where('pay_date <= ?', date.to_date).order(:pay_date).last
+  end
+
+  def edit_employee_link employee
+    link_to employee.name, edit_employee_path(employee), class: 'btn btn-info span'
+  end
+
 end
