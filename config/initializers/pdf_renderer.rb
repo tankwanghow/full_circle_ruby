@@ -30,6 +30,7 @@ module Prawn
         pdf.text zip_city unless zip_city.blank?
         state_country = [address.state, address.country].compact.join(", ").strip
         pdf.text state_country unless state_country == ","
+        pdf.text "GST: #{address.gst_no}" if !address.gst_no.blank?
       end
     end
 
