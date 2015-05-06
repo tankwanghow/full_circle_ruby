@@ -20,16 +20,16 @@ class ProductSalesReport < Dossier::Report
   end
 
   def tagged_invoice_ids_condition
-    if tagged_invoice_ids.count > 0
-      "AND doc.id IN :tagged_invoice_ids"
+    if tagged_invoice_ids
+      "AND doc.id IN (#{tagged_invoice_ids})"
     else
       'AND 1=0'
     end
   end
 
   def tagged_cash_sale_ids_condition
-    if tagged_cash_sale_ids.count > 0
-      "AND doc.id IN :tagged_cash_sale_ids"
+    if tagged_cash_sale_ids
+      "AND doc.id IN (#{tagged_cash_sale_ids})"
     else
       'AND 1=0'
     end
@@ -44,18 +44,18 @@ class ProductSalesReport < Dossier::Report
   end
 
   def tagged_invoice_ids
-    if doc_tags.try(:downcase) != 'all'
-      ids = Invoice.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('invoices.id')
+    if doc_tags.try(:downcase) != 'all'      
+      ids = Invoice.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('invoices.id').to_sql
     else
-      ids = Invoice.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('invoices.id')
+      ids = Invoice.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('invoices.id').to_sql
     end
   end
 
   def tagged_cash_sale_ids
     if doc_tags.try(:downcase) != 'all'
-      ids = CashSale.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('cash_sales.id')
+      ids = CashSale.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('cash_sales.id').to_sql
     else
-      ids = CashSale.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('cash_sales.id')
+      ids = CashSale.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('cash_sales.id').to_sql
     end
   end
 
@@ -108,8 +108,8 @@ class ProductSalesReport < Dossier::Report
   def param_fields form
     form.input_field(:doc_tags, class: 'span6', placeholder: 'document tags...', data: { tags: sales_doc_tags }) +
     form.input_field(:product_tags, class: 'span6', placeholder: 'product tags...', data: { tags: Product.category_counts.map {|t| t.name } }) +
-    form.input_field(:start_date, class: 'datepicker span3', placeholder: 'start date...') +
-    form.input_field(:end_date, class: 'datepicker span3', placeholder: 'end date...') +
+    form.input_field(:start_date, class: 'datepicker span4', placeholder: 'start date...') +
+    form.input_field(:end_date, class: 'datepicker span4', placeholder: 'end date...') +
     form.label('Group by Month', class: 'checkbox') +
     form.input_field(:group_by_month, as: :boolean) 
   end

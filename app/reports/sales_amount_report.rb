@@ -51,16 +51,16 @@ class SalesAmountReport < Dossier::Report
   end
 
   def tagged_invoice_ids_condition
-    if tagged_invoice_ids.count > 0
-      "AND doc.id IN :tagged_invoice_ids"
+    if tagged_invoice_ids
+      "AND doc.id IN (#{tagged_invoice_ids})"
     else
       'AND 1=0'
     end
   end
 
   def tagged_cash_sale_ids_condition
-    if tagged_cash_sale_ids.count > 0
-      "AND doc.id IN :tagged_cash_sale_ids"
+    if tagged_cash_sale_ids
+      "AND doc.id IN (#{tagged_cash_sale_ids})"
     else
       'AND 1=0'
     end
@@ -68,17 +68,17 @@ class SalesAmountReport < Dossier::Report
 
   def tagged_invoice_ids
     if doc_tags.try(:downcase) != 'all'
-      ids = Invoice.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('invoices.id')
+      ids = Invoice.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('invoices.id').to_sql
     else
-      ids = Invoice.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('invoices.id')
+      ids = Invoice.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('invoices.id').to_sql
     end
   end
 
   def tagged_cash_sale_ids
     if doc_tags.try(:downcase) != 'all'
-      ids = CashSale.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('cash_sales.id')
+      ids = CashSale.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('cash_sales.id').to_sql
     else
-      ids = CashSale.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).pluck('cash_sales.id')
+      ids = CashSale.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('cash_sales.id').to_sql
     end
   end
 
