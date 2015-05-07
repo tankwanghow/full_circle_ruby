@@ -4,7 +4,7 @@ class PurInvoice < ActiveRecord::Base
   has_many :transactions, as: :doc
   has_many :details, order: 'product_id', class_name: "PurInvoiceDetail"
 
-  validates_presence_of :credit_terms, :supplier_name1, :doc_date
+  validates_presence_of :credit_terms, :supplier_name1, :doc_date, :reference_no
 
   before_save do |r|
     if !r.posted or (r.posted and r.changes[:posted] == [false, true])
@@ -27,13 +27,14 @@ class PurInvoice < ActiveRecord::Base
 
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :invoice_amount, doc_posted: :posted,
-             content: [:id, :supplier_name1, :credit_terms, :details_audit_string, :invoice_amount,
+             content: [:id, :supplier_name1, :reference_no, :credit_terms, :details_audit_string, :invoice_amount,
                        :note, :particulars_audit_string, :tag_list, :loader_list, :unloader_list, :posted]
 
   simple_audit username_method: :username do |r|
      {
       doc_date: r.doc_date.to_s,
       customer: r.supplier_name1,
+      reference_no: r.reference_no,
       credit_terms: r.credit_terms,
       details: r.details_audit_string,
       note: r.note,
