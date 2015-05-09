@@ -82,8 +82,10 @@ class StatementPdf < Prawn::Document
   #Dynamic Content
   def draw_header
     text_box @account.name1, at: [10.mm, 261.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
-    if @account.mailing_address
-      address_box(self, @account.mailing_address, [10.mm, 256.mm], width: 110.mm, height: 24.mm, size: 10)
+    font_size(9)do
+      if @account.mailing_address
+        address_box(self, @account.mailing_address, [10.mm, 256.mm], width: 110.mm, height: 24.mm)
+      end
     end
     draw_text @start_date, at: [155.mm, 262.5.mm], style: :bold, size: 12
     draw_text @end_date, at: [155.mm, 254.5.mm], style: :bold, size: 12
