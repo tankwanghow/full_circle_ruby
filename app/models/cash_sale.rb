@@ -44,7 +44,8 @@ class CashSale < ActiveRecord::Base
       tag_list: r.tag_list,
       loader_list: r.loader_list,
       unloader_list: r.unloader_list,
-      posted: r.posted
+      posted: r.posted,
+      sales_amount: r.sales_amount
      }
   end
 

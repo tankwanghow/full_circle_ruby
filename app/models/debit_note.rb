@@ -33,7 +33,8 @@ class DebitNote < ActiveRecord::Base
       account: r.account_name1,
       particulars: r.particulars_audit_string,
       matchers: r.matchers_audit_string,
-      posted: r.posted
+      posted: r.posted,
+      in_gst_amount: r.in_gst_amount
      }
   end
 

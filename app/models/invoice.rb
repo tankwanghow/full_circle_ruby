@@ -41,7 +41,8 @@ class Invoice < ActiveRecord::Base
       tag_list: r.tag_list,
       loader_list: r.loader_list,
       unloader_list: r.unloader_list,
-      posted: r.posted
+      posted: r.posted,
+      invoice_amount: r.invoice_amount
      }
   end
 
