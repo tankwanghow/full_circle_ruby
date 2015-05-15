@@ -118,7 +118,7 @@ class CashSalePdf < Prawn::Document
       end
       bounding_box [176.mm, @detail_y], height: @detail_height, width: 33.mm do
         text_box @view.number_with_precision(detail.discount, precision: 2, delimiter: ','),
-                 overflow: :shrink_to_fit, valign: :center, align: :right
+                 overflow: :shrink_to_fit, valign: :center, align: :center
       end
     end
   end
@@ -144,7 +144,7 @@ class CashSalePdf < Prawn::Document
 
     bounding_box [176.mm, y], height: h, width: 33.mm do
       text_box @view.number_with_precision(detail.goods_total, precision: 2, delimiter: ','), 
-               overflow: :shrink_to_fit, valign: :center, align: :right
+               overflow: :shrink_to_fit, valign: :center, align: :center
     end
   end
 
@@ -167,7 +167,7 @@ class CashSalePdf < Prawn::Document
 
       bounding_box [175.mm, @detail_y], height: @detail_height, width: 34.mm do
         text_box @view.number_with_precision(t.ex_gst_total, precision: 2, delimiter: ','),
-                 overflow: :shrink_to_fit, valign: :center, align: :right
+                 overflow: :shrink_to_fit, valign: :center, align: :center
       end
       if t.gst != 0
         @detail_y = @detail_y - 4.5.mm
@@ -219,7 +219,7 @@ class CashSalePdf < Prawn::Document
         end
         bounding_box [175.mm, local_y], height: 6.mm, width: 34.mm do
           text_box (@cashsale.goods_amount + @cashsale.particulars_ex_gst_amount).to_money.format, overflow: :shrink_to_fit,
-                   align: :center, valign: :center, style: :bold, align: :right
+                   align: :center, valign: :center, style: :bold, align: :center
         end
 
         if @cashsale.discount_amount != 0
@@ -230,7 +230,7 @@ class CashSalePdf < Prawn::Document
           end
           bounding_box [175.mm, local_y - 0.5.mm], height: 6.mm, width: 34.mm do
             text_box @cashsale.discount_amount.to_money.format, overflow: :shrink_to_fit,
-            valign: :center, style: :bold, align: :right
+            valign: :center, style: :bold, align: :center
           end
         end
         
@@ -241,7 +241,7 @@ class CashSalePdf < Prawn::Document
         stroke_horizontal_line 145.mm, 210.mm, at: local_y
         bounding_box [175.mm, local_y - 0.5.mm], height: 6.mm, width: 34.mm do
           text_box @cashsale.gst_amount.to_money.format, overflow: :shrink_to_fit,
-                   valign: :center, style: :bold, align: :right
+                   valign: :center, style: :bold, align: :center
         end
 
         local_y = local_y - 6.mm
@@ -251,7 +251,7 @@ class CashSalePdf < Prawn::Document
         end
         bounding_box [175.mm, local_y - 0.5.mm], height: 6.mm, width: 34.mm do
           text_box @cashsale.sales_amount.to_money.format, overflow: :shrink_to_fit,
-                   valign: :center, style: :bold, align: :right
+                   valign: :center, style: :bold, align: :center
         end
         bounding_box [110.mm, @detail_y], height: @detail_y - local_y + 7.mm, width: 35.mm do
           text_box "TOTAL", style: :bold, size: 14, align: :center, valign: :center
