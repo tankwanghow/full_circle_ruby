@@ -25,6 +25,10 @@ class Account < ActiveRecord::Base
     }
   end
 
+  def can_delete?
+    !transactions.exists?
+  end
+
   def is_fixed_assets?
     true if account_type.descendant_of?(AccountType.find_by_name 'Fixed Assets') or account_type.name == 'Fixed Assets'
   end

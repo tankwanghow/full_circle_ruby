@@ -10,7 +10,7 @@
       - if admin_lock_show?(@account)
         = f.button :submit, 'Save', class: 'btn btn-primary'
         = link_to 'Cancel', edit_account_path(@account), class: 'btn btn-warning'
-        = link_to 'Delete', @account, method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger'
+        = link_to 'Delete', @account, method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger' if @account.can_delete?
         = link_to 'New Address', new_address_path(address: { addressable_id: @account.id, addressable_type: 'Account' }), class: 'btn btn-success'
         = link_to('Asset Info', edit_fixed_asset_path(@account.fixed_asset), class: 'btn btn-success') if @account.fixed_asset
         = link_to('Asset Info', new_fixed_asset_path(fixed_asset: { account_id: @account.id} ), class: 'btn btn-success') if @account.is_fixed_assets? and !@account.fixed_asset
