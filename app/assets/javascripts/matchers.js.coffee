@@ -24,7 +24,7 @@ window.matchers = {
       self_matched = +($ this).closest('.fields').find('.self_matched').val()
       matching = +($ this).val()
       balance = ($ this).closest('.fields').find('.balance')
-      balance.val (amount + matched + matching + self_matched)
+      balance.val math.round((amount + matched + matching + self_matched).toFixed(10), 2)
       if matching == 0
         ($ this).closest('.fields').find('[type=hidden][name*=_destroy]').val(true)
       else
