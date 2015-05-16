@@ -78,7 +78,7 @@ private
   end
 
   def build_details_transactions
-    details.select { |t| t.in_gst_total > 0 and !t.marked_for_destruction? }.each do |t|
+    details.select { |t| t.in_gst_total != 0 and !t.marked_for_destruction? }.each do |t|
       t.invoice = self
       transactions << t.transactions
     end
