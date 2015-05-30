@@ -83,11 +83,11 @@ private
   end
 
   def product_summary
-    details.select{ |t| !t.marked_for_destruction? }.map { |t| t.product.name1 }.join(', ')
+    details.select{ |t| !t.marked_for_destruction? }.map { |t| t.product.name1 }.uniq.join(', ')
   end
 
   def particular_summary
-    particulars.select{ |t| !t.marked_for_destruction? }.map { |t| t.particular_type.name }.join(', ')
+    particulars.select{ |t| !t.marked_for_destruction? }.map { |t| t.particular_type.name }.uniq.join(', ')
   end
 
   def build_supplier_transaction
