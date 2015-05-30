@@ -19,7 +19,7 @@
       %th.span20 Partuculars
       %th.span6 Debit
       %th.span6 Credit
-  %tbody 
+  %tbody
     - for t in @transactions
       - total += t.amount
       %tr.transaction
@@ -48,6 +48,6 @@
       %td.bold= total.abs.to_money.format if total <= 0
 
 = link_to "Download CSV", url_for(url_options.merge(format: 'csv')), data: { 'skip-pjax' => true }, class: 'download-csv'
-  
+
 :coffee
   ($ document).ready -> transaction.init()
