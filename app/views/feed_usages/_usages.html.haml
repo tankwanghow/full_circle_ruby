@@ -28,9 +28,12 @@
         %th.span4 Tare(Kg)
         %th.span4 Net(Kg)
         %th.span4 Action
-    %tbody 
+    %tbody
       - for t in @feed_usages
-        %tr{ class: t == @feed_usage ? 'active bold' : '' }
+        - css_class = ''
+        - css_class = 'active' if t == @feed_usage
+        - css_class = css_class + ' entry_error' if t.gross - t.tare <= 0 || t.tare == 0
+        %tr{ class: css_class }
           %td.lorry= t.lorry
           %td.feed_type= t.feed_type
           %td.gross= t.gross
@@ -38,7 +41,7 @@
           %td.net= t.gross - t.tare
           %td.action
             = link_to 'edit', edit_feed_usage_path(t)
-            | 
+            |
             = link_to 'delete', t, method: :delete, confirm: 'Are you sure?'
       - if @feed_usages.length == 0
         %tr

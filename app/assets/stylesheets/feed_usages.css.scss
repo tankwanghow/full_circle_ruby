@@ -4,4 +4,5 @@ table#usages, table#usage_summary, table#productions {
   thead tr, thead th { background-color: lightgray; }
   tbody td { text-align: center }
   tbody tr.active { background-color: lightblue; }
+  tbody tr.entry_error { color: red; }
 }
