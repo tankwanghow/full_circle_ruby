@@ -8,8 +8,8 @@ $gridRowWidth: ($gridColumns * $gridColumnWidth) + ($gridGutterWidth * ($gridCol
 
 @import "bootstrap";
 
-body { 
-  padding-top: 100px; 
+body {
+  padding-top: 100px;
   padding-left: 30px;
   padding-right: 30px;
 }
@@ -168,4 +168,12 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 
 .fields.marked_for_destruction {
   display: none;
+}
+
+table.GST td, table.GST th {
+  text-align: center;
+}
+
+table.GST th {
+  background-color: lightgreen;
 }
