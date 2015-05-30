@@ -2,6 +2,7 @@
 .bold GST Query by Month
 = simple_form_for :gst_accounts, url: gst_accounts_path, method: :get, html: { class: 'form-search'} do |f|
   = f.input_field :month, collection: [1,2,3,4,5,6,7,8,9,10,11,12], value: session[:gst_accounts][:month], class: 'span4'
+  = f.input_field :year, value: session[:gst_accounts][:year], class: 'span4'
   = f.button :submit, 'Query', class: 'btn-primary'
 
 .span48
@@ -19,3 +20,61 @@
         = link_to 'Post to GST Control A/C', gst_accounts_path(account_id: t.id, gst_control_id: @gst_control_account.id, balance: balance), method: :post, class: 'span btn btn-success', confirm: "Will Post to #{@gst_control_account.name1}. Are you sure?"
     .span4
       = link_to "Transactions", transactions_path(transactions_query: { start_date: "#{@date.year}-#{@date.month}-01".to_date , end_date: @date, name: t.name1 }), class: 'span btn btn-warning'
+
+%h3 GST for Supply
+%table.table.table-condensed.table-bordered#transactions
+  %thead
+    %tr
+      %th Cash Sales Amount
+      %th Invoice Amount
+      %th Credit Note Amount
+      %th Debit Note Amount
+      %th Total
+  %tbody
+    %tr
+      %td= @cs[:amount]
+      %td= @iv[:amount]
+      %td= @scn[:amount]
+      %td= @sdn[:amount]
+      %td= (@cs[:amount] + @iv[:amount] + @scn[:amount] + @sdn[:amount]).round 2
+  %thead
+    %tr
+      %th Cash Sales GST
+      %th Invoice GST
+      %th Credit Note GST
+      %th Debit Note GST
+      %th Total
+  %tbody
+    %tr
+      %td= @cs[:gst]
+      %td= @iv[:gst]
+      %td= @scn[:gst]
+      %td= @sdn[:gst]
+      %td= (@cs[:gst] + @iv[:gst] + @scn[:gst] + @sdn[:gst]).round 2
+
+%h3 GST for Purchase
+%table.table.table-condensed.table-bordered#transactions
+  %thead
+    %tr
+      %th Invoice Amount
+      %th Credit Note Amount
+      %th Debit Note Amount
+      %th Total
+  %tbody
+    %tr
+      %td= @piv[:amount]
+      %td= @pcn[:amount]
+      %td= @pdn[:amount]
+      %td= (@piv[:amount] + @pcn[:amount] + @pdn[:amount]).round 2
+  %thead
+    %tr
+      %th Invoice GST
+      %th Credit Note GST
+      %th Debit Note GST
+      %th Total
+  %tbody
+    %tr
+      %td= @piv[:gst]
+      %td= @pcn[:gst]
+      %td= @pdn[:gst]
+      %td= (@piv[:gst] + @pcn[:gst] + @pdn[:gst]).round 2
