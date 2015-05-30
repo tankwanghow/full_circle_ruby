@@ -8,3 +8,5 @@
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary' unless posted_lock?(@invoice)
     = link_to_edit_action_buttons @invoice, pur_invoice_journal_entries_path(@invoice), false
+
+= render_matchers @invoice

@@ -58,6 +58,10 @@ class PurInvoice < ActiveRecord::Base
     particulars_amount + details_amount
   end
 
+  def matchers
+    transactions.where(account_id: supplier_id).first.matchers
+  end
+
 private
 
   def build_transactions

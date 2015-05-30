@@ -67,6 +67,10 @@ class Invoice < ActiveRecord::Base
     details_gst_amount + particulars_gst_amount
   end
 
+  def matchers
+    transactions.where(account_id: customer_id).first.matchers
+  end
+
 private
 
   def build_transactions

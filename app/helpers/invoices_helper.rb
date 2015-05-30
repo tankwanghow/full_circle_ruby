@@ -15,4 +15,18 @@ module InvoicesHelper
     { package_json: builder.object.product_packaging.to_json, 
       source: ProductPackaging.pack_qty_names(builder.object.product.try(:id)), provide: 'typeahead' }
   end
+
+  def render_matchers object
+    total = 0
+    if object.matchers.count > 0
+      content_tag(:div, 'Matched Documents', class: :bold) +
+      object.matchers.map do |t|
+        total = total + t.amount
+        content_tag :div, class: :span6 do
+          link_to t.doc_type + docnolize(t.doc_id, ' #') + " " + t.amount.to_money.format, url_for(controller: t.doc_type.pluralize.underscore, action: :edit, id: t.doc_id)
+        end
+      end.join(' ').html_safe +
+      content_tag(:div, "TOTAL = " + total.to_money.format, class: :bold)
+    end
+  end
 end
