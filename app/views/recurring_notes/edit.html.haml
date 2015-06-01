@@ -1,8 +1,28 @@
 = render_flash
-= simple_form_for @recurring_note, html: { class: 'form-inline well span30', id: 'recurring_note_form' } do |f|
-  %legend
-    = "Recurring Note #" + docnolize(@recurring_note.id)
-  = render 'fields', f: f
-  .form-actions
-    = f.button :submit, 'Save', class: 'btn btn-primary'
-    = link_to_edit_action_no_journal_buttons @recurring_note
+.span
+  = simple_form_for @recurring_note, html: { class: 'form-inline well span30', id: 'recurring_note_form' } do |f|
+    %legend
+      = "Recurring Note #" + docnolize(@recurring_note.id)
+    = render 'fields', f: f
+    .form-actions
+      = f.button :submit, 'Save', class: 'btn btn-primary'
+      = link_to_edit_action_no_journal_buttons @recurring_note
+  
+  %h4 Deduction Salary Notes
+  .span18
+    %table.table.table-condensed.table-bordered.GST
+      %thead
+        %tr
+          %th Note #
+          %th Date
+          %th Amount
+      %tbody
+      - @recurring_note.salary_notes.each do |t|
+        %tr
+          %td= link_to docnolize(t.id, '#'), edit_salary_note_path(t)
+          %td= t.doc_date
+          %td= t.amount.to_money.format
+      %tfoot
+        %tr
+          %td.bold{colspan:2} Total
+          %td.bold= @recurring_note.salary_notes.sum(&:amount).to_money.format

@@ -22,8 +22,8 @@ module InvoicesHelper
       content_tag(:div, 'Matched Documents', class: :bold) +
       object.matchers.map do |t|
         total = total + t.amount
-        content_tag :div, class: :span7 do
-          link_to t.doc_type + docnolize(t.doc_id, ' #') + " " + t.amount.to_money.format, url_for(controller: t.doc_type.pluralize.underscore, action: :edit, id: t.doc_id)
+        content_tag :div, class: :span10 do
+          link_to t.doc_type + docnolize(t.doc_id, '#') + " " + t.amount.to_money.format, url_for(controller: t.doc_type.pluralize.underscore, action: :edit, id: t.doc_id)
         end
       end.join(' ').html_safe +
       content_tag(:div, "TOTAL = " + total.to_money.format, class: :bold)
