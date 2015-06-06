@@ -34,9 +34,9 @@ legend {
   margin-top: 0px;
 }
 
-.batch_print_content {
+.batch_print_content .row {
   border-bottom: 1px solid lightgray;
-  vertical-align: middle;
+  padding-top: 10px;
 }
 
 ul.nav li a#nav-transactions { color: red; }
