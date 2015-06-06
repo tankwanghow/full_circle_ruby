@@ -31,12 +31,12 @@ module ApplicationHelper
     end
   end
 
-  def link_to_searchable doc
+  def link_to_searchable doc, css_class='label label-info'
     url = url_for(controller: doc.searchable_type.pluralize.underscore, action: :edit, id: doc.searchable_id)
     if doc.searchable_type == 'User'
-      link_to doc.searchable_type, url, class: 'label label-info', 'data-skip-pjax' => true
+      link_to doc.searchable_type, url, class: css_class, 'data-skip-pjax' => true
     else
-      link_to doc.searchable_type, url, class: 'label label-info'
+      link_to doc.searchable_type, url, class: css_class
     end
   end
 
