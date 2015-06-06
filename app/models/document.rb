@@ -23,6 +23,10 @@ class Document < ActiveRecord::Base
   scope :doc_posted, -> { where(doc_posted: true) }
   scope :doc_unposted, -> { where(doc_posted: false) }
 
+  def self.printable_docs
+    [Invoice, CashSale, Advance, PaySlip, Payment, SalaryNote, DebitNote, CreditNote, Journal, RecurringNote, ReturnCheque, Receipt]
+  end
+
   def self.searchable_by hash
     if User.current.is_admin
       searchable_by_all_types hash
