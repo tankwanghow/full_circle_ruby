@@ -64,6 +64,9 @@ class Payment < ActiveRecord::Base
   sum_of :pay_to_particulars, "gst", "gst"
   sum_of :pay_to_particulars, "in_gst_total", "in_gst"
 
+  def matched?
+    matchers.limit(1).count > 0
+  end
 private
 
   def dont_process(attr)
