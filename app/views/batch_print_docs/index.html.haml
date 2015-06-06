@@ -1,23 +1,38 @@
 = simple_form_for :batch_print_search, url: batch_print_docs_path, method: :get, html: { class: 'form-search'} do |f|
-  = f.input_field :terms, class: 'span14', placeholder: 'search...', value: params[:batch_print_search][:terms]
-  = f.input_field :date_from, class: 'datepicker span4', placeholder: 'date from...', value: params[:batch_print_search][:date_from]
-  = f.input_field :date_to, class: 'datepicker span4', placeholder: 'date to...', value: params[:batch_print_search][:date_to]
+  = f.input_field :terms, class: 'span14', placeholder: 'search...', value: session[:batch_print_search][:terms]
+  = f.input_field :date_from, class: 'datepicker span4', placeholder: 'date from...', value: session[:batch_print_search][:date_from]
+  = f.input_field :date_to, class: 'datepicker span4', placeholder: 'date to...', value: session[:batch_print_search][:date_to]
   = f.button :submit, 'Search', class: 'btn-primary'
 
-- for doc in @docs
+= paginate @docs
+
+= simple_form_for :batch_print, url: print_batch_print_docs_path, method: :get do |f|
   .batch_print_content
     .row
-      .span2
-        = 
-      .span5
-        = link_to_searchable doc
-      .span5
-        .label= doc.doc_date
-      - if doc.doc_amount
+      .span5.bold Document
+      .span5.bold Doc Date
+      .span5.bold Amount
+      .span3.bold Print?
+      .span30.bold Content
+
+    - for doc in @docs
+      .row
         .span5
-          .label.label-inverse= doc.doc_amount.to_money.format
-      .span
-        = sanitize strip_links strip_tags doc.content.first(50)
+          = link_to_searchable doc
+        .span5
+          = doc.doc_date
+        .span5
+          - if doc.doc_amount
+            = doc.doc_amount.to_money.format
+        .span3
+          - if Document.printable_docs.include? doc.searchable.class
+            = hidden_field_tag "doc_ids[#{doc.id}]", 0
+            = check_box_tag "doc_ids[#{doc.id}]", 1, false
+        .span30
+          = sanitize strip_links strip_tags doc.content.first(100)
+  - if @docs.count > 0
+    = f.button :submit, 'Print', class: 'btn btn-danger'
+    = f.button :submit, 'Template Print', class: 'btn btn-warning'
 
 - if @docs.length == 0
   %h1.no-record{style: 'display: none'} No record found!
