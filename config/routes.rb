@@ -9,6 +9,7 @@ FullCircle::Application.routes.draw do
   match 'depositable_cheques' => 'cheques#depositable'
   match 'get_return_cheque' => 'cheques#return_cheque'
   match 'batch_print_docs' => 'batch_print_docs#index'
+  match 'print_batch_print_docs' => 'batch_print_docs#print'
 
   resources :statements, only: [:new, :create]
   resources :feed_usages
