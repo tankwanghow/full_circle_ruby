@@ -21,16 +21,16 @@
         .span5
           = link_to_searchable doc
         .span5
-          = doc.doc_date
+          = label_tag dom_id(doc), doc.doc_date
         .span5
           - if doc.doc_amount
-            = doc.doc_amount.to_money.format
+            = label_tag dom_id(doc), doc.doc_amount.to_money.format
         .span3
           - if Document.printable_docs.include?(doc.searchable.class) && @docs.map { |t| t.searchable_type }.uniq.count == 1
             = hidden_field_tag "doc_ids[#{doc.id}]", 0
             = check_box_tag "doc_ids[#{doc.id}]", 1, false
         .span30
-          = sanitize strip_links strip_tags doc.content.first(100)
+          = label_tag dom_id(doc), sanitize(strip_links(strip_tags(doc.content.first(100))))
   - if @docs.count > 0
     = f.button :submit, 'Print', class: 'btn btn-danger'
     = f.button :submit, 'Template Print', class: 'btn btn-warning'
