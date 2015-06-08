@@ -28,7 +28,7 @@
         .span3
           - if Document.printable_docs.include?(doc.searchable.class) && @docs.map { |t| t.searchable_type }.uniq.count == 1
             = hidden_field_tag "doc_ids[#{doc.id}]", 0
-            = check_box_tag "doc_ids[#{doc.id}]", 1, false
+            = check_box_tag "doc_ids[#{doc.id}]", 1, false, id: dom_id(doc)
         .span30
           = label_tag dom_id(doc), sanitize(strip_links(strip_tags(doc.content.first(100))))
   - if @docs.count > 0
