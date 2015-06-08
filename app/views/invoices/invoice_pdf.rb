@@ -31,7 +31,7 @@ class InvoicePdf < Prawn::Document
   end
 
   def draw_static_content
-    repeat(:all) do
+    # repeat(:all) do
       draw_text CompanyName, size: 20, style: :bold, at: [9.mm, 272.mm]
       draw_text @view.header_address_pdf(CompanyAddress), size: 10, at: [9.mm, 266.mm]
       draw_text @view.header_contact_pdf(CompanyAddress), size: 10, at: [9.mm, 261.mm]
@@ -63,7 +63,7 @@ class InvoicePdf < Prawn::Document
       stroke_horizontal_line 170.mm, 210.mm, at: 23.mm
       draw_text "CUSTOMER SIGNATURE", size: 8, at: [113.mm, 20.mm]
       draw_text "AUTHORIZED SIGNATURE", size: 8, at: [172.mm, 20.mm]
-    end
+    # end
   end
 
   #Dynamic Content
