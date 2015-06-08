@@ -1,12 +1,13 @@
+= render_flash
 = simple_form_for :batch_print_search, url: batch_print_docs_path, method: :get, html: { class: 'form-search'} do |f|
-  = f.input_field :terms, class: 'span14', placeholder: 'search...', value: session[:batch_print_search][:terms]
+  = f.input_field :terms, class: 'span10', placeholder: 'search...', value: session[:batch_print_search][:terms]
   = f.input_field :date_from, class: 'datepicker span4', placeholder: 'date from...', value: session[:batch_print_search][:date_from]
   = f.input_field :date_to, class: 'datepicker span4', placeholder: 'date to...', value: session[:batch_print_search][:date_to]
   = f.button :submit, 'Search', class: 'btn-primary'
 
 = paginate @docs
 
-= simple_form_for :batch_print, url: print_batch_print_docs_path, method: :get do |f|
+= simple_form_for :batch_print, url: print_batch_print_docs_path(:pdf), method: :get, html: { target: 'blank', data: { 'skip-pjax' => true } } do |f|
   .batch_print_content
     .row
       .span5.bold Document
@@ -25,7 +26,7 @@
           - if doc.doc_amount
             = doc.doc_amount.to_money.format
         .span3
-          - if Document.printable_docs.include? doc.searchable.class
+          - if Document.printable_docs.include?(doc.searchable.class) && @docs.map { |t| t.searchable_type }.uniq.count == 1
             = hidden_field_tag "doc_ids[#{doc.id}]", 0
             = check_box_tag "doc_ids[#{doc.id}]", 1, false
         .span30

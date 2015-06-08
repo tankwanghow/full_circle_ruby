@@ -23,9 +23,30 @@ class Document < ActiveRecord::Base
   scope :doc_posted, -> { where(doc_posted: true) }
   scope :doc_unposted, -> { where(doc_posted: false) }
 
-  def self.printable_docs
-    [Invoice, CashSale, Advance, PaySlip, Payment, SalaryNote, DebitNote, CreditNote, Journal, RecurringNote, ReturnCheque, Receipt]
+  def self.printable_doc_paths
+    { 
+      invoice:        './app/views/invoices/invoice_pdf.rb',
+      cash_sale:      './app/views/cash_sales/cash_sale_pdf.rb', 
+      advance:        './app/views/advances/advance_pdf.rb', 
+      pay_slip:       './app/views/pay_slips/pay_slip_pdf.rb', 
+      payment:        './app/views/payments/payment_pdf.rb', 
+      salary_note:    './app/views/salary_notes/salary_note_pdf.rb', 
+      debit_note:     './app/views/debit_notes/debit_note_pdf.rb', 
+      credit_note:    './app/views/credit_notes/credit_note_pdf.rb', 
+      journal:        './app/views/journals/journal_pdf.rb', 
+      recurring_note: './app/views/recurring_notes/recurring_note_pdf.rb', 
+      return_cheque:  './app/views/return_cheques/return_cheque_pdf.rb', 
+      receipt:        './app/views/receipts/receipt_pdf.rb' 
+    }
   end
+
+  def self.printable_docs
+    self.printable_doc_paths.map { |k,v| k.to_s.classify.constantize }
+  end
+
+  def self.printable_doc_strings
+    self.printable_doc_paths.map { |k,v| '@' + k.to_s.classify }
+  end  
 
   def self.searchable_by hash
     if User.current.is_admin
