@@ -7,11 +7,11 @@ class BatchPrintDocsController < ApplicationController
 
   def print
     @docs = params[:doc_ids].select { |k, v| v.to_i == 1 }.map { |k,v| k.to_i }
-    if params[:submit] == 'Print'
+    if params[:commit] == 'Print'
       @static_content = true
     else
       @static_content = false
     end
   end
 
-end  
+end   
