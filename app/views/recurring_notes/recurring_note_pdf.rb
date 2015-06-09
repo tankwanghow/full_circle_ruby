@@ -25,25 +25,23 @@ class RecurringNotePdf < Prawn::Document
   end
 
   def draw_static_content
-    repeat(:all) do
-      draw_text CompanyName, size: 15, style: :bold, at: [5.mm, 64.mm]
-      draw_text @view.header_address_pdf(CompanyAddress), size: 9, at: [5.mm, 60.mm] 
-      draw_text @view.header_contact_pdf(CompanyAddress), size: 9, at: [5.mm, 55.5.mm]
-      stroke_rounded_rectangle [4.mm, 54.mm], 139.mm, 33.mm, 3.mm
-      draw_text "RECURRING NOTE NO:", size: 10, at: [8.mm, 49.mm]
-      draw_text "NOTE DATE:", size: 10, at: [90.mm, 49.mm]
-      draw_text "EMPLOYEE:", size: 10, at: [8.mm, 43.mm]
-      draw_text "TYPE:", size: 10, at: [18.mm, 37.mm]
-      draw_text "NOTE:", size: 10, at: [78.mm, 37.mm]
-      draw_text "AMOUNT:", size: 10, at: [12.mm, 31.mm]
-      draw_text "TARGET AMOUNT:", size: 10, at: [58.mm, 31.mm]
-      draw_text "START DATE:", size: 10, at: [6.5.mm, 25.mm]
-      draw_text "END DATE:", size: 10, at: [71.mm, 25.mm]
-      stroke_horizontal_line 4.mm, 60.mm, at: 4.mm
-      draw_text "Issued By", size: 9, at: [4.mm, 17.mm]
-      stroke_horizontal_line 90.mm, 143.mm, at: 4.mm
-      draw_text "Employee Signature", size: 9, at: [90.mm, 17.mm]
-    end
+    draw_text CompanyName, size: 15, style: :bold, at: [5.mm, 64.mm]
+    draw_text @view.header_address_pdf(CompanyAddress), size: 9, at: [5.mm, 60.mm] 
+    draw_text @view.header_contact_pdf(CompanyAddress), size: 9, at: [5.mm, 55.5.mm]
+    stroke_rounded_rectangle [4.mm, 54.mm], 139.mm, 33.mm, 3.mm
+    draw_text "RECURRING NOTE NO:", size: 10, at: [8.mm, 49.mm]
+    draw_text "NOTE DATE:", size: 10, at: [90.mm, 49.mm]
+    draw_text "EMPLOYEE:", size: 10, at: [8.mm, 43.mm]
+    draw_text "TYPE:", size: 10, at: [18.mm, 37.mm]
+    draw_text "NOTE:", size: 10, at: [78.mm, 37.mm]
+    draw_text "AMOUNT:", size: 10, at: [12.mm, 31.mm]
+    draw_text "TARGET AMOUNT:", size: 10, at: [58.mm, 31.mm]
+    draw_text "START DATE:", size: 10, at: [6.5.mm, 25.mm]
+    draw_text "END DATE:", size: 10, at: [71.mm, 25.mm]
+    stroke_horizontal_line 4.mm, 60.mm, at: 4.mm
+    draw_text "Issued By", size: 9, at: [4.mm, 17.mm]
+    stroke_horizontal_line 90.mm, 143.mm, at: 4.mm
+    draw_text "Employee Signature", size: 9, at: [90.mm, 17.mm]
   end
 
   #Dynamic Content

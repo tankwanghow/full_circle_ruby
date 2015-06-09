@@ -29,35 +29,33 @@ include Prawn::Helper
   end
 
   def draw_static_content
-    repeat(:all) do
-      draw_text CompanyName, size: 20, style: :bold, at: [10.mm, 131.mm]
-      draw_text @view.header_address_pdf(CompanyAddress), size: 11, at: [10.mm, 126.mm]
-      draw_text @view.header_contact_pdf(CompanyAddress), size: 10, at: [10.mm, 121.mm]
-      draw_text "RETURN CHEQUE NOTICE", style: :bold, size: 12, at: [155.mm, 124.mm]
-      stroke_rounded_rectangle [8.mm, 118 .mm], 202.mm, 35 .mm, 3.mm
-      draw_text "RETURN TO", size: 8, at: [10.mm, 114.mm]
-      stroke_vertical_line 118.mm, 83.mm, at: 115.mm
-      draw_text "ACCOUNT ID", size: 8, at: [116.mm, 114.mm]
-      stroke_horizontal_line 115.mm, 210.mm, at: 109.25.mm
-      draw_text "RETURN DATE", size: 8, at: [116.mm, 105.5.mm]
-      stroke_horizontal_line 115.mm, 210.mm, at: 100.5.mm
-      draw_text "NOTICE NO", size: 8, at: [116.mm, 97.mm]
-      stroke_horizontal_line 115.mm, 210.mm, at: 91.75.mm
-      draw_text "REASON", size: 8, at: [116.mm, 88.5.mm]
-      stroke_rounded_rectangle [8.mm, 83.mm], 202.mm, 55.mm, 3.mm      
-      draw_text "RETURN CHEQUE INFORMATIONS", size: 8, at: [90.mm, 78.5.mm]
-      draw_text "BANK:", size: 14, at: [15.mm, 68.mm]
-      draw_text "CHEQUE NO:", size: 14, at: [15.mm, 58.mm]
-      draw_text "CITY:", size: 14, at: [15.mm, 48.mm]
-      draw_text "STATE:", size: 14, at: [15.mm, 38.mm]
-      draw_text "CHEQUE DATE:", size: 14, at: [100.mm, 63.mm]
-      draw_text "AMOUNT:", size: 16, style: :bold, at: [100.mm, 53.mm]
-      stroke_horizontal_line 8.mm, 210.mm, at: 76.mm
-      stroke_horizontal_line 8.mm, 60.mm, at: 7.mm
-      draw_text "Manager/Cashier", size: 9, at: [15.mm, 4.mm]
-      stroke_horizontal_line 160.mm, 205.mm, at: 7.mm
-      draw_text "Customer", size: 9, at: [170.mm, 4.mm]
-    end
+    draw_text CompanyName, size: 20, style: :bold, at: [10.mm, 131.mm]
+    draw_text @view.header_address_pdf(CompanyAddress), size: 11, at: [10.mm, 126.mm]
+    draw_text @view.header_contact_pdf(CompanyAddress), size: 10, at: [10.mm, 121.mm]
+    draw_text "RETURN CHEQUE NOTICE", style: :bold, size: 12, at: [155.mm, 124.mm]
+    stroke_rounded_rectangle [8.mm, 118 .mm], 202.mm, 35 .mm, 3.mm
+    draw_text "RETURN TO", size: 8, at: [10.mm, 114.mm]
+    stroke_vertical_line 118.mm, 83.mm, at: 115.mm
+    draw_text "ACCOUNT ID", size: 8, at: [116.mm, 114.mm]
+    stroke_horizontal_line 115.mm, 210.mm, at: 109.25.mm
+    draw_text "RETURN DATE", size: 8, at: [116.mm, 105.5.mm]
+    stroke_horizontal_line 115.mm, 210.mm, at: 100.5.mm
+    draw_text "NOTICE NO", size: 8, at: [116.mm, 97.mm]
+    stroke_horizontal_line 115.mm, 210.mm, at: 91.75.mm
+    draw_text "REASON", size: 8, at: [116.mm, 88.5.mm]
+    stroke_rounded_rectangle [8.mm, 83.mm], 202.mm, 55.mm, 3.mm      
+    draw_text "RETURN CHEQUE INFORMATIONS", size: 8, at: [90.mm, 78.5.mm]
+    draw_text "BANK:", size: 14, at: [15.mm, 68.mm]
+    draw_text "CHEQUE NO:", size: 14, at: [15.mm, 58.mm]
+    draw_text "CITY:", size: 14, at: [15.mm, 48.mm]
+    draw_text "STATE:", size: 14, at: [15.mm, 38.mm]
+    draw_text "CHEQUE DATE:", size: 14, at: [100.mm, 63.mm]
+    draw_text "AMOUNT:", size: 16, style: :bold, at: [100.mm, 53.mm]
+    stroke_horizontal_line 8.mm, 210.mm, at: 76.mm
+    stroke_horizontal_line 8.mm, 60.mm, at: 7.mm
+    draw_text "Manager/Cashier", size: 9, at: [15.mm, 4.mm]
+    stroke_horizontal_line 160.mm, 205.mm, at: 7.mm
+    draw_text "Customer", size: 9, at: [170.mm, 4.mm]
   end
 
   #Dynamic Content
