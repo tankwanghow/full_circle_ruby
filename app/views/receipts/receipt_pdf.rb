@@ -147,6 +147,7 @@ include Prawn::Helper
   def start_new_page_for_current_receipt
     @total_pages = @total_pages + 1
     start_new_page
+    line_width 1
     draw_static_content if @static_content
     draw_header
   end
@@ -154,6 +155,7 @@ include Prawn::Helper
   def start_new_receipt_page(options={})
     @total_pages = 1
     start_new_page
+    line_width 1
     draw_static_content if @static_content
   end
 end

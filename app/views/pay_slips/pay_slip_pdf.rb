@@ -191,6 +191,7 @@ class PaySlipPdf < Prawn::Document
   def start_new_page_for_current_pay_slip
     @total_pages = @total_pages + 1
     start_new_page
+    line_width 1
     draw_static_content if @static_content
     draw_header
   end
@@ -198,6 +199,7 @@ class PaySlipPdf < Prawn::Document
   def start_new_pay_slip_page(options={})
     @total_pages = 1
     start_new_page
+    line_width 1
     draw_static_content if @static_content
   end
 end
