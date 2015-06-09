@@ -37,6 +37,7 @@
         = menu_child 'Recurring Note', recurring_note_new_or_edit_path
         = menu_child 'Driver Commission', driver_commissions_path
       = menu 'Report' do
+        = menu_child 'Batch Printing', batch_print_docs_path
         - report_filenames.each do |t|
           = menu_child t.humanize.titleize, dossier_report_path(t)
         - admin_report_filenames.each do |t|
