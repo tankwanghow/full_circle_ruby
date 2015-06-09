@@ -31,7 +31,7 @@
             = check_box_tag "doc_ids[#{doc.id}]", 1, false, id: dom_id(doc)
         .span30
           = label_tag dom_id(doc), sanitize(strip_links(strip_tags(doc.content.first(100))))
-  - if @docs.count > 0
+  - if @docs.map { |t| t.searchable_type }.uniq.count == 1
     = f.button :submit, 'Print', class: 'btn btn-danger'
     = f.button :submit, 'Template Print', class: 'btn btn-warning'
 

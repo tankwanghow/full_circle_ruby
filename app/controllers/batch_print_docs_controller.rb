@@ -12,6 +12,9 @@ class BatchPrintDocsController < ApplicationController
     else
       @static_content = false
     end
+    if @docs.count == 0
+      render text: 'Empty'
+    end
   end
 
 end   
