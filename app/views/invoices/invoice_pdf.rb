@@ -5,10 +5,11 @@ class InvoicePdf < Prawn::Document
   def initialize(invoices, view, static_content=false)
     super(page_size: [220.mm, 295.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
     @view = view
-    draw(invoices, static_content)
+    @static_content = static_content
+    draw invoices
   end
 
-  def draw(invoices, static_content)
+  def draw invoices
     for p in invoices
       @invoice = p
       @total_pages = 1
@@ -16,7 +17,6 @@ class InvoicePdf < Prawn::Document
       @detail_height = 6.mm
       @detail_y_start_at = 200.mm
       start_new_invoice_page
-      draw_static_content if static_content
       fill_color "000077"
       font_size 10 do
         draw_header
@@ -31,39 +31,37 @@ class InvoicePdf < Prawn::Document
   end
 
   def draw_static_content
-    # repeat(:all) do
-      draw_text CompanyName, size: 20, style: :bold, at: [9.mm, 272.mm]
-      draw_text @view.header_address_pdf(CompanyAddress), size: 10, at: [9.mm, 266.mm]
-      draw_text @view.header_contact_pdf(CompanyAddress), size: 10, at: [9.mm, 261.mm]
-      stroke_rounded_rectangle [8.mm, 253.mm], 203.mm, 32.mm, 1.5.mm
-      stroke_rounded_rectangle [8.mm, 221.mm], 203.mm, 9.mm, 1.5.mm
-      stroke_vertical_line 253.mm, 221.mm, at: 104.mm
-      draw_text "TAX INVOICE", style: :bold, size: 12, at: [180.mm, 257.mm]
-      draw_text "SOLD TO", size: 8, at: [11.mm, 249.mm]
-      draw_text "DELIVERED TO", size: 8, at: [107.mm, 249.mm]
-      stroke_vertical_line 221.mm, 212.mm, at: 58.mm
-      stroke_vertical_line 221.mm, 212.mm, at: 109.mm
-      stroke_vertical_line 221.mm, 212.mm, at: 160.mm
-      draw_text "ACCOUNT ID", size: 8, at: [10.mm, 218.mm]
-      draw_text "TERMS", size: 8, at: [59.mm, 218.mm]
-      draw_text "DATE", size: 8, at: [110.mm, 218.mm]
-      draw_text "INVOICE NO", size: 8, at: [162.mm, 218.mm]
-      stroke_rounded_rectangle [8.mm, 212.mm], 203.mm, 167.mm, 1.5.mm
-      stroke_horizontal_line 8.mm, 211.mm, at: 205.mm
-      stroke_vertical_line 212.mm, 45.mm, at: 109.mm
-      stroke_vertical_line 212.mm, 45.mm, at: 145.mm
-      stroke_vertical_line 212.mm, 45.mm, at: 175.mm
-      draw_text "PARTICULARS", size: 8, at: [53.mm, 208.mm]
-      draw_text "QUANTITY", size: 8, at: [119.mm, 208.mm]
-      draw_text "UNIT PRICE", size: 8, at: [150.mm, 208.mm]
-      draw_text "AMOUNT", size: 8, at: [185.mm, 208.mm]
-      draw_text "The above goods are delivered in good order and condition.", size: 8, at: [10.mm, 38.mm]
-      draw_text "All Cheque should be made payable to the company & crossed 'A/C PAYEE ONLY'", size: 8, at: [10.mm, 33.mm]
-      stroke_horizontal_line 110.mm, 150.mm, at: 23.mm
-      stroke_horizontal_line 170.mm, 210.mm, at: 23.mm
-      draw_text "CUSTOMER SIGNATURE", size: 8, at: [113.mm, 20.mm]
-      draw_text "AUTHORIZED SIGNATURE", size: 8, at: [172.mm, 20.mm]
-    # end
+    draw_text CompanyName, size: 20, style: :bold, at: [9.mm, 272.mm]
+    draw_text @view.header_address_pdf(CompanyAddress), size: 10, at: [9.mm, 266.mm]
+    draw_text @view.header_contact_pdf(CompanyAddress), size: 10, at: [9.mm, 261.mm]
+    stroke_rounded_rectangle [8.mm, 253.mm], 203.mm, 32.mm, 1.5.mm
+    stroke_rounded_rectangle [8.mm, 221.mm], 203.mm, 9.mm, 1.5.mm
+    stroke_vertical_line 253.mm, 221.mm, at: 104.mm
+    draw_text "TAX INVOICE", style: :bold, size: 12, at: [180.mm, 257.mm]
+    draw_text "SOLD TO", size: 8, at: [11.mm, 249.mm]
+    draw_text "DELIVERED TO", size: 8, at: [107.mm, 249.mm]
+    stroke_vertical_line 221.mm, 212.mm, at: 58.mm
+    stroke_vertical_line 221.mm, 212.mm, at: 109.mm
+    stroke_vertical_line 221.mm, 212.mm, at: 160.mm
+    draw_text "ACCOUNT ID", size: 8, at: [10.mm, 218.mm]
+    draw_text "TERMS", size: 8, at: [59.mm, 218.mm]
+    draw_text "DATE", size: 8, at: [110.mm, 218.mm]
+    draw_text "INVOICE NO", size: 8, at: [162.mm, 218.mm]
+    stroke_rounded_rectangle [8.mm, 212.mm], 203.mm, 167.mm, 1.5.mm
+    stroke_horizontal_line 8.mm, 211.mm, at: 205.mm
+    stroke_vertical_line 212.mm, 45.mm, at: 109.mm
+    stroke_vertical_line 212.mm, 45.mm, at: 145.mm
+    stroke_vertical_line 212.mm, 45.mm, at: 175.mm
+    draw_text "PARTICULARS", size: 8, at: [53.mm, 208.mm]
+    draw_text "QUANTITY", size: 8, at: [119.mm, 208.mm]
+    draw_text "UNIT PRICE", size: 8, at: [150.mm, 208.mm]
+    draw_text "AMOUNT", size: 8, at: [185.mm, 208.mm]
+    draw_text "The above goods are delivered in good order and condition.", size: 8, at: [10.mm, 38.mm]
+    draw_text "All Cheque should be made payable to the company & crossed 'A/C PAYEE ONLY'", size: 8, at: [10.mm, 33.mm]
+    stroke_horizontal_line 110.mm, 150.mm, at: 23.mm
+    stroke_horizontal_line 170.mm, 210.mm, at: 23.mm
+    draw_text "CUSTOMER SIGNATURE", size: 8, at: [113.mm, 20.mm]
+    draw_text "AUTHORIZED SIGNATURE", size: 8, at: [172.mm, 20.mm]
   end
 
   #Dynamic Content
@@ -247,11 +245,13 @@ class InvoicePdf < Prawn::Document
   def start_new_page_for_current_invoice
     @total_pages = @total_pages + 1
     start_new_page
+    draw_static_content if @static_content
     draw_header
   end
 
   def start_new_invoice_page(options={})
     @total_pages = 1
     start_new_page
+    draw_static_content if @static_content
   end
 end

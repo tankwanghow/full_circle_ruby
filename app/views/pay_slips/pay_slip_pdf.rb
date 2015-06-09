@@ -5,10 +5,11 @@ class PaySlipPdf < Prawn::Document
   def initialize(pay_slips, view, static_content=false)
     super(page_size: [215.mm, 280.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
     @view = view
-    draw(pay_slips, static_content)
+    @static_content = static_content
+    draw pay_slips
   end
 
-  def draw(pay_slips, static_content)
+  def draw pay_slips
     for p in pay_slips
       @pay_slip = p
       @total_pages = 1
@@ -16,7 +17,6 @@ class PaySlipPdf < Prawn::Document
       @detail_height = 3.mm
       @detail_y_start_at = 217.mm
       start_new_pay_slip_page
-      draw_static_content if static_content
       fill_color "000077"
       draw_header
       font_size 10 do
@@ -32,38 +32,36 @@ class PaySlipPdf < Prawn::Document
   end
 
   def draw_static_content
-    repeat(:all) do
-      draw_text CompanyName, size: 18, style: :bold, at: [7.mm, 270.mm]
-      draw_text @view.header_address_pdf(CompanyAddress), size: 9, at: [7.mm, 265.mm]
-      draw_text @view.header_contact_pdf(CompanyAddress), size: 9, at: [7.mm, 261.mm]
-      stroke_rounded_rectangle [7.mm, 258.mm], 200.mm, 32.mm, 3.mm
-      stroke_vertical_line 258.mm, 226.mm, at: 107.mm
-      draw_text "PAY SLIP", style: :bold, size: 12, at: [152  .mm, 264.mm]
-      draw_text "EMPLOYEE INFORMATION", size: 10, at: [9.mm, 253.mm]
-      draw_text "SLIP NO", size: 10, at: [109.mm, 253.mm]
-      stroke_horizontal_line 107.mm, 207.mm, at: 250.mm
-      draw_text "SLIP DATE", size: 10, at: [109.mm, 245.mm]
-      stroke_horizontal_line 107.mm, 207.mm, at: 242.mm
-      draw_text "PAY UNTIL", size: 10, at: [109.mm, 237.mm]
-      stroke_horizontal_line 107.mm, 207.mm, at: 234.mm
-      draw_text "PAY BY", size: 10, at: [109.mm, 229.mm]
-      stroke_vertical_line 258.mm, 226.mm, at: 130.mm
-      stroke_rounded_rectangle [7.mm, 226.mm], 200.mm, 200.mm, 3.mm
-      stroke_horizontal_line 7.mm, 207.mm, at: 218.mm
-      stroke_vertical_line 226.mm, 26.mm, at: 113.mm
-      stroke_vertical_line 226.mm, 26.mm, at: 148.mm
-      stroke_vertical_line 226.mm, 26.mm, at: 175.mm
-      draw_text "PARTICULARS", size: 10, at: [50.mm, 221.mm]
-      draw_text "QUANTITY", size: 10, at: [122.mm, 221.mm]
-      draw_text "UNIT PRICE", size: 10, at: [152.mm, 221.mm]
-      draw_text "AMOUNT", size: 10, at: [184.mm, 221.mm]
-      draw_text "Please read the above information carefully.", size: 9, at: [10.mm, 22.mm]
-      draw_text "Error reported after 7 days, will not be accepted.", size: 9, at: [10.mm, 18.mm]
-      stroke_horizontal_line 95.mm, 145.mm, at: 10.mm
-      stroke_horizontal_line 155.mm, 205.mm, at: 10.mm
-      draw_text "AUTHORIZED SIGNATURE", size: 10, at: [100.mm, 6.mm]
-      draw_text "EMPLOYEE SIGNATURE", size: 10, at: [160.mm, 6.mm]
-    end
+    draw_text CompanyName, size: 18, style: :bold, at: [7.mm, 270.mm]
+    draw_text @view.header_address_pdf(CompanyAddress), size: 9, at: [7.mm, 265.mm]
+    draw_text @view.header_contact_pdf(CompanyAddress), size: 9, at: [7.mm, 261.mm]
+    stroke_rounded_rectangle [7.mm, 258.mm], 200.mm, 32.mm, 3.mm
+    stroke_vertical_line 258.mm, 226.mm, at: 107.mm
+    draw_text "PAY SLIP", style: :bold, size: 12, at: [152  .mm, 264.mm]
+    draw_text "EMPLOYEE INFORMATION", size: 10, at: [9.mm, 253.mm]
+    draw_text "SLIP NO", size: 10, at: [109.mm, 253.mm]
+    stroke_horizontal_line 107.mm, 207.mm, at: 250.mm
+    draw_text "SLIP DATE", size: 10, at: [109.mm, 245.mm]
+    stroke_horizontal_line 107.mm, 207.mm, at: 242.mm
+    draw_text "PAY UNTIL", size: 10, at: [109.mm, 237.mm]
+    stroke_horizontal_line 107.mm, 207.mm, at: 234.mm
+    draw_text "PAY BY", size: 10, at: [109.mm, 229.mm]
+    stroke_vertical_line 258.mm, 226.mm, at: 130.mm
+    stroke_rounded_rectangle [7.mm, 226.mm], 200.mm, 200.mm, 3.mm
+    stroke_horizontal_line 7.mm, 207.mm, at: 218.mm
+    stroke_vertical_line 226.mm, 26.mm, at: 113.mm
+    stroke_vertical_line 226.mm, 26.mm, at: 148.mm
+    stroke_vertical_line 226.mm, 26.mm, at: 175.mm
+    draw_text "PARTICULARS", size: 10, at: [50.mm, 221.mm]
+    draw_text "QUANTITY", size: 10, at: [122.mm, 221.mm]
+    draw_text "UNIT PRICE", size: 10, at: [152.mm, 221.mm]
+    draw_text "AMOUNT", size: 10, at: [184.mm, 221.mm]
+    draw_text "Please read the above information carefully.", size: 9, at: [10.mm, 22.mm]
+    draw_text "Error reported after 7 days, will not be accepted.", size: 9, at: [10.mm, 18.mm]
+    stroke_horizontal_line 95.mm, 145.mm, at: 10.mm
+    stroke_horizontal_line 155.mm, 205.mm, at: 10.mm
+    draw_text "AUTHORIZED SIGNATURE", size: 10, at: [100.mm, 6.mm]
+    draw_text "EMPLOYEE SIGNATURE", size: 10, at: [160.mm, 6.mm]
   end
 
   #Dynamic Content
@@ -193,11 +191,13 @@ class PaySlipPdf < Prawn::Document
   def start_new_page_for_current_pay_slip
     @total_pages = @total_pages + 1
     start_new_page
+    draw_static_content if @static_content
     draw_header
   end
 
   def start_new_pay_slip_page(options={})
     @total_pages = 1
     start_new_page
+    draw_static_content if @static_content
   end
 end

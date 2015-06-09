@@ -5,10 +5,11 @@ class RecurringNotePdf < Prawn::Document
   def initialize(recurring_notes, view, static_content=false)
     super(page_size: [(295/2).mm, (210/3).mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
     @view = view
-    draw(recurring_notes, static_content)
+    @static_content = static_content
+    draw recurring_notes
   end
 
-  def draw(recurring_notes, static_content)
+  def draw recurring_notes
     for p in recurring_notes
       @recurring_note = p
       @total_pages = 1
@@ -16,7 +17,6 @@ class RecurringNotePdf < Prawn::Document
       @detail_height = 5.mm
       @detail_y_start_at = 75.mm
       start_new_recurring_note_page
-      draw_static_content if static_content
       fill_color "000077"
       draw_header
       fill_color "000000"
@@ -62,5 +62,6 @@ class RecurringNotePdf < Prawn::Document
   def start_new_recurring_note_page(options={})
     @total_pages = 1
     start_new_page
+    draw_static_content if @static_content
   end
 end

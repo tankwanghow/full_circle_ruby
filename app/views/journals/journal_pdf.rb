@@ -5,10 +5,11 @@ class JournalPdf < Prawn::Document
   def initialize(journals, view, static_content=false)
     super(page_size: [220.mm, 295.mm/2], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
     @view = view
-    draw(journals, static_content)
+    @static_content = static_content
+    draw journals
   end
 
-  def draw(journals, static_content)
+  def draw journals
     for p in journals
       @journal = p
       @total_pages = 1
@@ -16,7 +17,6 @@ class JournalPdf < Prawn::Document
       @detail_height = 7.mm
       @detail_y_start_at = 102.mm
       start_new_journal_page
-      draw_static_content if static_content
       fill_color "000077"
       font_size 10 do
         draw_header
@@ -29,29 +29,27 @@ class JournalPdf < Prawn::Document
   end
 
   def draw_static_content
-    repeat(:all) do
-      draw_text CompanyName, size: 18, style: :bold, at: [4.mm, 131.mm]
-      draw_text @view.header_address_pdf(CompanyAddress), size: 9, at: [4.mm, 127.mm]
-      draw_text @view.header_contact_pdf(CompanyAddress), size: 9, at: [4.mm, 123.mm]
-      stroke_rounded_rectangle [4.mm, 121.mm], 210.mm, 10.mm, 3.mm
-      stroke_vertical_line 121.mm, 111.mm, at: 110.mm
-      draw_text "JOURNAL SLIP", style: :bold, size: 12, at: [155.mm, 123.mm]
-      draw_text "DATE", size: 10, at: [10.mm, 115.mm]
-      draw_text "JOURNAL NO", size: 10, at: [115.mm, 115.mm]
-      stroke_rounded_rectangle [4.mm, 111.mm], 210.mm, 90.mm, 3.mm
-      stroke_horizontal_line 4.mm, 214.mm, at: 103.mm
-      stroke_vertical_line 111.mm, 21.mm, at: 70.mm
-      stroke_vertical_line 111.mm, 21.mm, at: 160.mm
-      stroke_vertical_line 111.mm, 21.mm, at: 188.mm
-      draw_text "ACCOUNT", size: 8, at: [30.mm, 106.mm]
-      draw_text "PARTICULARS", size: 8, at: [105.mm, 106.mm]
-      draw_text "DEBIT", size: 8, at: [170.mm, 106.mm]
-      draw_text "CREDIT", size: 8, at: [195.mm, 106.mm]
-      stroke_horizontal_line 110.mm, 150.mm, at: 8.mm
-      stroke_horizontal_line 170.mm, 210.mm, at: 8.mm
-      draw_text "ENTRY BY", size: 8, at: [113.mm, 5.mm]
-      draw_text "AUTHORIZED BY", size: 8, at: [172.mm, 5.mm]
-    end
+    draw_text CompanyName, size: 18, style: :bold, at: [4.mm, 131.mm]
+    draw_text @view.header_address_pdf(CompanyAddress), size: 9, at: [4.mm, 127.mm]
+    draw_text @view.header_contact_pdf(CompanyAddress), size: 9, at: [4.mm, 123.mm]
+    stroke_rounded_rectangle [4.mm, 121.mm], 210.mm, 10.mm, 3.mm
+    stroke_vertical_line 121.mm, 111.mm, at: 110.mm
+    draw_text "JOURNAL SLIP", style: :bold, size: 12, at: [155.mm, 123.mm]
+    draw_text "DATE", size: 10, at: [10.mm, 115.mm]
+    draw_text "JOURNAL NO", size: 10, at: [115.mm, 115.mm]
+    stroke_rounded_rectangle [4.mm, 111.mm], 210.mm, 90.mm, 3.mm
+    stroke_horizontal_line 4.mm, 214.mm, at: 103.mm
+    stroke_vertical_line 111.mm, 21.mm, at: 70.mm
+    stroke_vertical_line 111.mm, 21.mm, at: 160.mm
+    stroke_vertical_line 111.mm, 21.mm, at: 188.mm
+    draw_text "ACCOUNT", size: 8, at: [30.mm, 106.mm]
+    draw_text "PARTICULARS", size: 8, at: [105.mm, 106.mm]
+    draw_text "DEBIT", size: 8, at: [170.mm, 106.mm]
+    draw_text "CREDIT", size: 8, at: [195.mm, 106.mm]
+    stroke_horizontal_line 110.mm, 150.mm, at: 8.mm
+    stroke_horizontal_line 170.mm, 210.mm, at: 8.mm
+    draw_text "ENTRY BY", size: 8, at: [113.mm, 5.mm]
+    draw_text "AUTHORIZED BY", size: 8, at: [172.mm, 5.mm]
   end
 
   #Dynamic Content
@@ -105,11 +103,13 @@ class JournalPdf < Prawn::Document
   def start_new_page_for_current_journal
     @total_pages = @total_pages + 1
     start_new_page
+    draw_static_content if @static_content
     draw_header
   end
 
   def start_new_journal_page(options={})
     @total_pages = 1
     start_new_page
+    draw_static_content if @static_content
   end
 end

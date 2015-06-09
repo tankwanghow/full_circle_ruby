@@ -5,10 +5,11 @@ include Prawn::Helper
   def initialize(receipts, view, static_content=false)
     super(page_size: [217.mm, 150.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
     @view = view
-    draw(receipts, static_content)
+    @static_content = static_content
+    draw receipts
   end
 
-  def draw(receipts, static_content)
+  def draw receipts
     for p in receipts
       @receipt = p
       @total_pages = 1
@@ -16,7 +17,6 @@ include Prawn::Helper
       @detail_height = 4.mm
       @detail_y_start_at = 72.mm
       start_new_receipt_page
-      draw_static_content if static_content
       fill_color "000077"
       font_size 10 do
         draw_header
@@ -32,32 +32,30 @@ include Prawn::Helper
   end
 
   def draw_static_content
-    repeat(:all) do
-      draw_text CompanyName, size: 22, style: :bold, at: [10.mm, 131.mm]
-      draw_text @view.header_address_pdf(CompanyAddress), size: 10, at: [10.mm, 124.mm]
-      draw_text @view.header_contact_pdf(CompanyAddress), size: 10, at: [10.mm, 117.mm]
-      draw_text "RECEIPT", style: :bold, size: 12, at: [163.mm, 120.mm]
-      stroke_rounded_rectangle [8.mm, 115.mm], 202.mm, 35 .mm, 1.5.mm
-      draw_text "RECEIVE FROM", size: 8, at: [10.mm, 111.mm]
-      stroke_vertical_line 115.mm, 80.mm, at: 125.mm
-      draw_text "ACCOUNT ID", size: 8, at: [126.mm, 109.mm]
-      stroke_horizontal_line 125.mm, 210.mm, at: 106.mm
-      draw_text "RECEIPT DATE", size: 8, at: [126.mm, 100.mm]
-      stroke_horizontal_line 125.mm, 210.mm, at: 97.mm
-      draw_text "RECEIPT NO",  size: 8, at: [126.mm, 92.mm]
-      stroke_horizontal_line 125.mm, 210.mm, at: 89.mm
-      draw_text "REFERENCE NO", size: 8, at: [126.mm, 83.mm]
-      stroke_rounded_rectangle [8.mm, 80.mm], 202.mm, 53.mm, 1.5.mm      
-      draw_text "PARTICULARS", size: 8, at: [85.mm, 75.mm]
-      draw_text "AMOUNT", size: 8, at: [186.mm, 75.mm]
-      stroke_horizontal_line 8.mm, 210.mm, at: 73.mm
-      stroke_vertical_line 80.mm, 27.mm, at: 175.mm
-      draw_text "This receipt is only valid subjected to cheque or cheques honoured be the bank.", size: 8, at: [8.mm, 21.mm]
-      stroke_horizontal_line 8.mm, 60.mm, at: 9.mm
-      draw_text "Manager/Cashier", size: 9, at: [20.mm, 5.mm]
-      stroke_horizontal_line 160.mm, 205.mm, at: 9.mm
-      draw_text "Collected By", size: 9, at: [175.mm, 5.mm]
-    end
+    draw_text CompanyName, size: 22, style: :bold, at: [10.mm, 131.mm]
+    draw_text @view.header_address_pdf(CompanyAddress), size: 10, at: [10.mm, 124.mm]
+    draw_text @view.header_contact_pdf(CompanyAddress), size: 10, at: [10.mm, 117.mm]
+    draw_text "RECEIPT", style: :bold, size: 12, at: [163.mm, 120.mm]
+    stroke_rounded_rectangle [8.mm, 115.mm], 202.mm, 35 .mm, 1.5.mm
+    draw_text "RECEIVE FROM", size: 8, at: [10.mm, 111.mm]
+    stroke_vertical_line 115.mm, 80.mm, at: 125.mm
+    draw_text "ACCOUNT ID", size: 8, at: [126.mm, 109.mm]
+    stroke_horizontal_line 125.mm, 210.mm, at: 106.mm
+    draw_text "RECEIPT DATE", size: 8, at: [126.mm, 100.mm]
+    stroke_horizontal_line 125.mm, 210.mm, at: 97.mm
+    draw_text "RECEIPT NO",  size: 8, at: [126.mm, 92.mm]
+    stroke_horizontal_line 125.mm, 210.mm, at: 89.mm
+    draw_text "REFERENCE NO", size: 8, at: [126.mm, 83.mm]
+    stroke_rounded_rectangle [8.mm, 80.mm], 202.mm, 53.mm, 1.5.mm      
+    draw_text "PARTICULARS", size: 8, at: [85.mm, 75.mm]
+    draw_text "AMOUNT", size: 8, at: [186.mm, 75.mm]
+    stroke_horizontal_line 8.mm, 210.mm, at: 73.mm
+    stroke_vertical_line 80.mm, 27.mm, at: 175.mm
+    draw_text "This receipt is only valid subjected to cheque or cheques honoured be the bank.", size: 8, at: [8.mm, 21.mm]
+    stroke_horizontal_line 8.mm, 60.mm, at: 9.mm
+    draw_text "Manager/Cashier", size: 9, at: [20.mm, 5.mm]
+    stroke_horizontal_line 160.mm, 205.mm, at: 9.mm
+    draw_text "Collected By", size: 9, at: [175.mm, 5.mm]
   end
 
   #Dynamic Content
@@ -149,11 +147,13 @@ include Prawn::Helper
   def start_new_page_for_current_receipt
     @total_pages = @total_pages + 1
     start_new_page
+    draw_static_content if @static_content
     draw_header
   end
 
   def start_new_receipt_page(options={})
     @total_pages = 1
     start_new_page
+    draw_static_content if @static_content
   end
 end

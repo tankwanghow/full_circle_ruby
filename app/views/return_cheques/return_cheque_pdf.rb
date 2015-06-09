@@ -5,10 +5,11 @@ include Prawn::Helper
   def initialize(return_cheques, view, static_content=false)
     super(page_size: [217.mm, 149.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
     @view = view
-    draw(return_cheques, static_content)
+    @static_content = static_content
+    draw return_cheques
   end
 
-  def draw(return_cheques, static_content)
+  def draw return_cheques
     for p in return_cheques
       @return_cheque = p
       @total_pages = 1
@@ -16,7 +17,6 @@ include Prawn::Helper
       @detail_height = 5.mm
       @detail_y_start_at = 75.mm
       start_new_return_cheque_page
-      draw_static_content if static_content
       fill_color "000077"
       font_size 10 do
         draw_header
@@ -94,11 +94,13 @@ include Prawn::Helper
   def start_new_page_for_current_return_cheque
     @total_pages = @total_pages + 1
     start_new_page
+    draw_static_content if @static_content
     draw_header
   end
 
   def start_new_return_cheque_page(options={})
     @total_pages = 1
     start_new_page
+    draw_static_content if @static_content
   end
 end
