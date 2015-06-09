@@ -42,7 +42,7 @@ private
   end
 
   def commission_decider row
-    arys = ((row['tags'].blank? ? '' : row['tags']).split('|') & %w(eggsalescomm eggtranscomm dungtransbagcomm dungtransloadcomm feedtranstonscomm traytranscomm feedtranskgscomm))
+    arys = ((row['tags'].blank? ? '' : row['tags']).split('|') & %w(eggsalescomm eggtranscomm dungtransbagcomm dungtransloadcomm feedtranstonscomm traytranscomm feedtranskgscomm lqeggtranscomm))
     if arys.count > 1
       row[:status] = 'error'
     else
@@ -66,6 +66,8 @@ private
       TrayTransCommission
     when 'feedtranskgscomm'
       FeedTransKGsCommission
+    when 'lqeggtranscomm'
+      LiquidEggTransCommission
     else
       NoCommission
     end
@@ -128,6 +130,18 @@ private
     customers_count > 5 ? @more_5_customer_commission : @less_5_customer_commission
   end
 
+end
+
+class LiquidEggTransCommission < Commission
+  @less_5_customer_commission = 0.0175
+  @more_5_customer_commission = 0.0292
+  @loading_commission_percentage = 0.4
+  @unloading_commission_percentage = 0.6
+
+  def self.commission customers_count, city
+    return @less_5_customer_commission if city.downcase == 'kampar'
+    customers_count > 5 ? @more_5_customer_commission : @less_5_customer_commission
+  end
 end
 
 class EggTransCommission < Commission
