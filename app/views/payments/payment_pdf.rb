@@ -83,10 +83,44 @@ def initialize(payments, view, static_content=false)
     @detail_y = @detail_y_start_at
     draw_pay_to_particulars
     draw_matchers
+    draw_pay_from_particulars
   end
 
   def draw_pay_to_particulars
     @payment.pay_to_particulars.each do |t|
+      part_note = [t.particular_type.name_nil_if_note, t.note]
+      qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',') + t.unit
+      price = @view.number_with_precision(t.unit_price, precision: 4, delimiter: ',')
+
+      str = [part_note, qty, "X", price].compact.join(" ")
+      
+      bounding_box [13.mm, @detail_y], height: @detail_height, width: 140.mm do
+        text_box str, overflow: :shrink_to_fit, valign: :center
+      end
+      
+      bounding_box [163.mm, @detail_y], height: @detail_height, width: 50.mm do
+        text_box (t.quantity * t.unit_price).to_money.format, overflow: :shrink_to_fit, align: :center, valign: :center
+      end
+
+      if t.gst != 0
+        @detail_y = @detail_y - 4.mm 
+        bounding_box [15.mm, @detail_y + 0.5.mm], height: @detail_height, width: 100.mm do
+          text_box "- GST #{t.tax_code.code} #{t.tax_code.rate}% X #{@view.number_with_precision(t.ex_gst_total, precision: 2, delimiter: ',')} = #{@view.number_with_precision(t.gst, precision: 2, delimiter: ',')}", overflow: :shrink_to_fit, valign: :center, size: 9
+        end
+      end
+
+      @detail_y = @detail_y - @detail_height
+
+      if @detail_y <= @page_end_at
+        start_new_page_for_current_payment
+        @detail_y = @detail_y_start_at
+      end
+    end
+  end
+
+  def draw_pay_from_particulars
+    stroke_horizontal_line 11.5.mm, 213.5.mm, at: @detail_y + 0.5.mm if @payment.pay_from_particulars.count > 0
+    @payment.pay_from_particulars.each do |t|
       part_note = [t.particular_type.name_nil_if_note, t.note]
       qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',') + t.unit
       price = @view.number_with_precision(t.unit_price, precision: 4, delimiter: ',')
@@ -141,34 +175,38 @@ def initialize(payments, view, static_content=false)
   def draw_footer
     group do
       line_width 1
-      stroke_horizontal_line 163.mm, 213.5.mm, at: @detail_y - 1.mm
-      bounding_box [163.mm, @detail_y - 2.mm], height: 5.mm, width: 50.mm do
+      stroke_horizontal_line 11.5.mm, 213.5.mm, at: @detail_y - 0.5.mm
+      
+      bounding_box [12.mm, @detail_y - 7.mm], height: 5.mm, width: 50.mm do
         text_box @payment.actual_debit_amount.to_money.format, overflow: :shrink_to_fit,
                  align: :center, valign: :center, size: 11
       end
-      bounding_box [112.mm, @detail_y - 2.mm], height: 5.mm, width: 50.mm do
-        text_box "Total Excl. GST", overflow: :shrink_to_fit,
-                 align: :right, valign: :center, size: 11
+      bounding_box [12.mm, @detail_y - 2.mm], height: 5.mm, width: 50.mm do
+        text_box "To Account and Excl. GST", overflow: :shrink_to_fit,
+                 align: :center, valign: :center, size: 11, style: :bold
       end
-      stroke_horizontal_line 163.mm, 213.5.mm, at: @detail_y - 7.mm
-      bounding_box [163.mm, @detail_y - 8.mm], height: 5.mm, width: 50.mm do
+      
+      bounding_box [72.mm, @detail_y - 7.mm], height: 5.mm, width: 30.mm do
         text_box @payment.gst_amount.to_money.format, overflow: :shrink_to_fit,
                  align: :center, valign: :center, size: 11
       end
-      bounding_box [112.mm, @detail_y - 8.mm], height: 5.mm, width: 50.mm do
+      bounding_box [72.mm, @detail_y - 2.mm], height: 5.mm, width: 30.mm do
         text_box "Total GST", overflow: :shrink_to_fit,
-                 align: :right, valign: :center, size: 11
+                 align: :center, valign: :center, size: 11, style: :bold
       end
-      stroke_horizontal_line 163.mm, 213.5.mm, at: @detail_y - 13.mm
-      bounding_box [163.mm, @detail_y - 14.mm], height: 5.mm, width: 50.mm do
-        text_box @payment.in_gst_amount.to_money.format, overflow: :shrink_to_fit,
+
+
+      bounding_box [163.mm, @detail_y - 3.mm], height: 5.mm, width: 50.mm do
+        text_box @payment.actual_credit_amount.to_money.format, overflow: :shrink_to_fit,
                  align: :center, valign: :center, style: :bold, size: 11
       end
-      bounding_box [112.mm, @detail_y - 14.mm], height: 5.mm, width: 50.mm do
-        text_box "Total Incl. GST", overflow: :shrink_to_fit,
+      bounding_box [112.mm, @detail_y - 3.mm], height: 5.mm, width: 50.mm do
+        text_box "Payment Total Incl. GST", overflow: :shrink_to_fit,
                  align: :right, valign: :center, style: :bold, size: 11
       end
-      stroke_horizontal_line 163.mm, 213.5.mm, at: @detail_y - 19.mm
+
+      stroke_horizontal_line 163.mm, 213.5.mm, at: @detail_y - 9.mm
+
     end
   end
 
