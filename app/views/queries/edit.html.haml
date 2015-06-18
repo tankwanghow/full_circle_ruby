@@ -1,0 +1,21 @@
+= render_flash
+= simple_form_for @query, html: { class: 'form-inline well', id: 'query' } do |f|
+  = render 'fields', f: f
+  = f.button(:submit, 'Save', class: 'btn btn-primary')
+  = link_to 'New', new_query_path, class: 'btn btn-info'
+  = link_to 'Cancel', edit_query_path(@query), class: 'btn btn-warning'
+  = link_to 'Listing', queries_path, class: 'btn btn-success'
+  = f.button(:submit, 'Execute', class: 'btn btn-danger')
+
+
+- if @results
+  %table.table.table-condensed.table-bordered#report
+    %thead
+      %tr
+      - @results[:header].each do |h|
+        %th= h
+    %tbody
+      - @results[:data].each do |d|
+        %tr
+          - d.each do |value|
+            %td= value

@@ -1,0 +1,5 @@
+%h2 Queries Listing
+
+- @queries.each do |query|
+  = link_to query.name, edit_query_path(query), class: 'btn btn-info'
+= link_to 'New', new_query_path, class: 'btn btn-success'

@@ -1,0 +1,5 @@
+= render_flash
+= simple_form_for @query, html: { class: 'form-inline well', id: 'query' } do |f|
+  = render 'fields', f: f
+  = f.button :submit, 'Save', class: 'btn btn-primary'
+  = link_to 'Cancel', Query.last ? edit_query_path(Query.last) : queries_path, class: 'btn btn-warning'
