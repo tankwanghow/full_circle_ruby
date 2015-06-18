@@ -75,9 +75,11 @@ class Transaction < ActiveRecord::Base
 private
 
   def check_account_period
-    closed_period = Transaction.joins(:account).where("accounts.name1 ilike '%net%profit%for%the%year%'").max { |t| t.transaction_date }.transaction_date
-    raise "Account period closed for entry #{closed_period.to_s} !" if transaction_date <= closed_period
-    raise "Entry cannot be made after #{Date.today} !" if transaction_date > Date.today
+    if !User.current.is_admin
+      closed_period = Transaction.joins(:account).where("accounts.name1 ilike '%net%profit%for%the%year%'").max { |t| t.transaction_date }.transaction_date
+      raise "Account period closed for entry #{closed_period.to_s} !" if transaction_date <= closed_period
+      raise "Entry cannot be made after #{Date.today} !" if transaction_date > Date.today
+    end
   end
 
   def round_amount
