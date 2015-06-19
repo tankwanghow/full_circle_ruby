@@ -5,6 +5,7 @@ class Query < ActiveRecord::Base
   before_save :clean_up_dangerous_query
 
   def run
+    clean_up_dangerous_query
     results = connection.execute(query)
     header = results.map { |t| t.map { |k,v| k } }.uniq.flatten
     data   = results.map { |t| t.map { |k,v| v } }
@@ -16,7 +17,7 @@ class Query < ActiveRecord::Base
 private
 
   def clean_up_dangerous_query
-    
+    query.gsub!(/set|create|alter|into|update|delete|drop|truncate|insert|drop/i, '#not allowed#')    
   end
 
 end

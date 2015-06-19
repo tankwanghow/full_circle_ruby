@@ -26,8 +26,15 @@ class QueriesController < ApplicationController
   def update
     if params[:submit] == 'Save'
       update_query
-    else
+    elsif params[:submit] == 'Execute'
       run_query
+    elsif params[:submit] == "CSV"
+      request.format = :csv
+      run_query
+    end
+    respond_to do |t| 
+      t.html { render :edit }
+      t.csv  { render :edit, formats: :csv, handler: :rb }
     end
   end
 
@@ -61,7 +68,6 @@ private
     rescue ActiveRecord::StatementInvalid => e
       flash[:error] = e.message
     end
-    render :edit
   end
 
 end

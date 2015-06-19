@@ -1,12 +1,12 @@
 = render_flash
-= simple_form_for @query, html: { class: 'form-inline well', id: 'query' } do |f|
+= simple_form_for @query, html: { class: 'form-inline well', id: 'query', 'data-skip-pjax'=> true } do |f|
   = render 'fields', f: f
-  = f.button(:submit, 'Save', class: 'btn btn-primary')
+  = f.button(:submit, 'Save', name: 'submit', class: 'btn btn-primary')
   = link_to 'New', new_query_path, class: 'btn btn-info'
   = link_to 'Cancel', edit_query_path(@query), class: 'btn btn-warning'
   = link_to 'Listing', queries_path, class: 'btn btn-success'
-  = f.button(:submit, 'Execute', class: 'btn btn-danger')
-
+  = f.button(:submit, 'Execute', name: 'submit', class: 'btn btn-danger')
+  = f.button(:submit, 'CSV', name: 'submit', class: 'btn btn-inverse')
 
 - if @results
   %table.table.table-condensed.table-bordered#report
