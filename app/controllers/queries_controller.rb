@@ -1,4 +1,5 @@
 class QueriesController < ApplicationController
+  before_filter :allow_admin_only
 
   def index
     @queries = Query.where('1=1').order(:name)

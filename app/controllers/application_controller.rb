@@ -29,6 +29,10 @@ private
     raise 'Need Administrator Right!' if object.admin_lock and !current_user.is_admin?
   end
 
+  def allow_admin_only
+    raise 'Need Administrator Right!' if !current_user.is_admin?
+  end
+
   def store_param name
     if params[name]
       session[name.to_sym] = {}

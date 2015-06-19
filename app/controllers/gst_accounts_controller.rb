@@ -1,5 +1,7 @@
 class GstAccountsController < ApplicationController
 
+  before_filter :allow_admin_only
+
   def index
     store_param :gst_accounts
     session[:gst_accounts][:month] ||= Date.current.month - 1

@@ -3,8 +3,8 @@
     %ul.nav
       = menu 'Accounting' do
         = menu_child 'Chart of Account', edit_account_type_path(AccountType.first)
-        = menu_child 'Fixed Asset Addition', fixed_asset_addition_confirmations_path
-        = menu_child 'Fixed Asset Depreciation', fixed_asset_depreciation_confirmations_path
+        = menu_child 'Fixed Asset Addition', fixed_asset_addition_confirmations_path if current_user.is_admin
+        = menu_child 'Fixed Asset Depreciation', fixed_asset_depreciation_confirmations_path if current_user.is_admin
         = menu_child 'Tax Code', tax_code_new_or_edit_path
         = menu_child 'Particular Type', particular_type_new_or_edit_path
         = menu_child 'Payment', payment_new_or_edit_path
@@ -13,7 +13,7 @@
         = menu_child 'Credit Note', credit_note_new_or_edit_path
         = menu_child 'Debit Note', debit_note_new_or_edit_path
         = menu_child 'Journal', journal_new_or_edit_path
-        = menu_child 'GST Posting', gst_accounts_path
+        = menu_child 'GST Posting', gst_accounts_path if current_user.is_admin
         = menu_child 'Transactions', transactions_path
         = menu_child 'Statements', new_statement_path
       = menu 'Sales & Pruchases' do
