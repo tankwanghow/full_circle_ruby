@@ -33,10 +33,6 @@ class QueriesController < ApplicationController
       request.format = :csv
       run_query
     end
-    respond_to do |t| 
-      t.html { render :edit }
-      t.csv  { render :edit, formats: :csv, handler: :rb }
-    end
   end
 
   def new_or_edit
@@ -68,6 +64,10 @@ private
       @results = @query.run
     rescue ActiveRecord::StatementInvalid => e
       flash[:error] = e.message
+    end
+    respond_to do |t| 
+      t.html { render :edit }
+      t.csv  { render :edit, formats: :csv, handler: :rb }
     end
   end
 
