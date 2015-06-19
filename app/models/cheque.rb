@@ -6,6 +6,8 @@ class Cheque < ActiveRecord::Base
   validates_presence_of :bank, :chq_no, :city, :state, :due_date, :amount
   validates_numericality_of :amount, greater_than: 0
 
+  before_validation :validates_due_date
+
   scope :credited, -> { where('cr_doc_type <> null and cr_doc_id <> null') }
   scope :not_credited, -> { where(cr_doc_type: nil, cr_doc_id: nil) } 
   scope :dued, ->(val) { where('due_date <= ?', val.to_date) }
@@ -14,4 +16,13 @@ class Cheque < ActiveRecord::Base
   def simple_audit_string
     [ bank, chq_no, city, state, due_date.to_s, amount.to_money.format ].join ' '
   end
+
+private
+
+  def validates_due_date
+    if due_date <= db_doc.doc_date - 160 || due_date >= db_doc.doc_date + 100
+      errors.add "due_date", "unacceptable"
+    end
+  end
+
 end
