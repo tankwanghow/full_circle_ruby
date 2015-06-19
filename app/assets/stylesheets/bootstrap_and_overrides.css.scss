@@ -14,6 +14,11 @@ body {
   padding-right: 30px;
 }
 
+textarea#query_query {
+  font-family: monospace;
+  font-weight: bold;
+}
+
 legend {
   margin-bottom: 0px;
   font-weight: bold;
