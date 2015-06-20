@@ -20,7 +20,8 @@ class Cheque < ActiveRecord::Base
 private
 
   def validates_due_date
-    if due_date <= db_doc.doc_date - 160 || due_date >= db_doc.doc_date + 100
+    check_date = db_doc ? db_doc.doc_date : Date.today
+    if due_date <= check_date - 160 || due_date >= check_date + 100
       errors.add "due_date", "unacceptable"
     end
   end
