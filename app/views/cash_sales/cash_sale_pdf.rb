@@ -3,7 +3,7 @@ class CashSalePdf < Prawn::Document
   include Prawn::Helper
 
   def initialize(cash_sales, view, static_content=false)
-    super(page_size: [220.mm, 295.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
+    super(page_size: [210.mm, 297.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
     @view = view
     @static_content = static_content
     draw cash_sales
@@ -15,16 +15,16 @@ class CashSalePdf < Prawn::Document
       @total_pages = 1
       @page_end_at = 64.mm
       @detail_height = 6.mm
-      @detail_y_start_at = 200.mm
+      @detail_y_start_at = 215.mm
       start_new_cashsale_page
       fill_color "000077"
       font_size 10 do
         draw_header
         draw_detail
         draw_particular
+        draw_footer
+        draw_cheque
       end
-      draw_footer
-      draw_cheque
       draw_page_number
       fill_color "000000"
     end
@@ -33,48 +33,69 @@ class CashSalePdf < Prawn::Document
 
   def draw_static_content
     draw_text CompanyName, size: 18, style: :bold, at: [10.mm, 275.mm]
-    draw_text @view.header_address_pdf(CompanyAddress), size: 9, at: [10.mm, 270.mm]
-    draw_text @view.header_contact_pdf(CompanyAddress), size: 9, at: [10.mm, 266.mm]
-    stroke_rounded_rectangle [10.mm, 260.mm], 200.mm, 32.mm, 3.mm
-    stroke_rounded_rectangle [10.mm, 228.mm], 200.mm, 9.mm, 3.mm
-    stroke_vertical_line 260.mm, 228.mm, at: 110.mm
-    draw_text "CASH SALES", style: :bold, size: 12, at: [155.mm, 266.mm]
-    draw_text "SOLD TO", size: 8, at: [12.mm, 255.mm]
-    draw_text "DELIVERED TO", size: 8, at: [112.mm, 255.mm]
-    stroke_vertical_line 228.mm, 219.mm, at: 55.mm
-    stroke_vertical_line 228.mm, 219.mm, at: 110.mm
-    stroke_vertical_line 228.mm, 219.mm, at: 165.mm
-    draw_text "ACCOUNT ID", size: 8, at: [12.mm, 224.mm]
-    draw_text "TERMS", size: 8, at: [57.mm, 224.mm]
-    draw_text "DATE", size: 8, at: [112.mm, 224.mm]
-    draw_text "SALES NO", size: 8, at: [167.mm, 224.mm]
-    stroke_rounded_rectangle [10.mm, 219.mm], 200.mm, 174.mm, 3.mm
-    stroke_horizontal_line 10.mm, 210.mm, at: 210.mm
-    stroke_vertical_line 219.mm, 45.mm, at: 110.mm
-    stroke_vertical_line 219.mm, 45.mm, at: 145.mm
-    stroke_vertical_line 219.mm, 45.mm, at: 175.mm
-    draw_text "PARTICULARS", size: 8, at: [53.mm, 213.5.mm]
-    draw_text "QUANTITY", size: 8, at: [119.mm, 213.5.mm]
-    draw_text "UNIT PRICE", size: 8, at: [152.mm, 213.5.mm]
-    draw_text "AMOUNT", size: 8, at: [185.mm, 213.5.mm]
-    draw_text "The above goods are delivered in good order and condition.", size: 8, at: [10.mm, 41.mm]
-    draw_text "All Cheque should be made payable to the company & crossed 'A/C PAYEE ONLY'", size: 8, at: [10.mm, 37.mm]
-    stroke_horizontal_line 110.mm, 150.mm, at: 23.mm
-    stroke_horizontal_line 170.mm, 210.mm, at: 23.mm
-    draw_text "CUSTOMER SIGNATURE", size: 8, at: [113.mm, 20.mm]
-    draw_text "AUTHORIZED SIGNATURE", size: 8, at: [172.mm, 20.mm]
+    draw_text @view.header_address_pdf(CompanyAddress), size: 10, at: [10.mm, 270.mm]
+    draw_text @view.header_contact_pdf(CompanyAddress), size: 10, at: [10.mm, 265.mm]
+    draw_text "The above goods are delivered in good order and condition.", size: 8, at: [10.mm, 33.mm]
+    draw_text "All Cheque should be made payable to the company & crossed 'A/C PAYEE ONLY'", size: 8, at: [10.mm, 30.mm]
+    stroke_horizontal_line 100.mm, 150.mm, at: 13.mm
+    stroke_horizontal_line 160.mm, 200.mm, at: 13.mm
+    draw_text "RECEIVER SIGNATURE", size: 8, at: [110.mm, 9.mm]
+    draw_text "AUTHORIZED SIGNATURE", size: 8, at: [162.mm, 9.mm]
+    stroke_horizontal_line 10.mm, 200.mm, at: 260.mm
+    stroke_horizontal_line 10.mm, 200.mm, at: 40.mm
   end
 
   #Dynamic Content
   def draw_header
-    text_box @cashsale.customer.name1, at: [13.mm, 245.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
+    draw_text "TAX INVOICE", style: :bold, size: 12, at: [155.mm, 273.mm]
+    draw_text "CS NO :", size: 12, at: [150.mm, 265.mm]
+    draw_text @view.docnolize(@cashsale.id), at: [170.mm, 265.mm], size: 12, style: :bold
+    draw_text "TO", size: 10, at: [12.mm, 255.mm]
+    text_box @cashsale.customer.name1, at: [13.mm, 253.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
     if @cashsale.customer.mailing_address
-      address_box(self, @cashsale.customer.mailing_address, [13.mm, 240.mm], width: 110.mm, height: 24.mm)
+      address_box(self, @cashsale.customer.mailing_address, [13.mm, 248.mm], width: 110.mm, height: 24.mm)
     end
-    draw_text @view.docnolize(@cashsale.customer.id), at: [30.mm, 211.mm], size: 10, style: :bold
-    draw_text @view.term_string(0), at: [70.mm, 211.mm], style: :bold
-    draw_text @cashsale.doc_date, at: [124.mm, 211.mm], style: :bold
-    draw_text @view.docnolize(@cashsale.id), at: [180.mm, 211.mm], style: :bold
+    draw_text "DATE :", size: 10, at: [150.mm, 255.mm]
+    draw_text @cashsale.doc_date, at: [175.mm, 255.mm], style: :bold, size: 10  
+    draw_text "ACCOUNT ID :", size: 10, at: [150.mm, 250.mm]
+    draw_text @view.docnolize(@cashsale.customer.id), at: [175.mm, 250.mm], style: :bold, size: 10
+    
+    stroke_horizontal_line 10.mm, 200.mm, at: 226.mm
+
+    bounding_box [10.mm, 225.mm], height: 9.mm, width: 60.mm do
+      text_box 'Particulars', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    bounding_box [70.mm, 225.mm], height: 9.mm, width: 20.mm do
+      text_box 'Quantity', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    bounding_box [90.mm, 225.mm], height: 9.mm, width: 16.mm do
+      text_box 'Unit Price', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    bounding_box [106.mm, 225.mm], height: 9.mm, width: 15.mm do
+      text_box 'Disc.', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    bounding_box [121.mm, 225.mm], height: 9.mm, width: 23.mm do
+      text_box 'Amount - Disc.', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    bounding_box [144.mm, 225.mm], height: 9.mm, width: 15.mm do
+      text_box 'GST Code', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    bounding_box [159.mm, 225.mm], height: 9.mm, width: 18.mm do
+      text_box 'GST', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    bounding_box [177.mm, 225.mm], height: 9.mm, width: 23.mm do
+      text_box 'GST + Amount', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    stroke_horizontal_line 10.mm, 200.mm, at: 216.mm
+
   end
 
   def draw_page_number
@@ -93,7 +114,6 @@ class CashSalePdf < Prawn::Document
     @cashsale.details.each do |t|
 
       draw_product_line t, @detail_y, @detail_height
-      draw_gst_discount_line t
 
       @detail_y = @detail_y - @detail_height
 
@@ -104,25 +124,8 @@ class CashSalePdf < Prawn::Document
     end
   end
 
-  def draw_gst_discount_line detail
-    @detail_y = @detail_y - 4.5.mm if detail.gst != 0 || detail.discount != 0
-    bounding_box [15.mm, @detail_y + 0.5.mm], height: @detail_height, width: 100.mm do
-      text_box "- GST #{detail.tax_code.code} #{detail.tax_code.rate}% X #{@view.number_with_precision(detail.ex_gst_total, precision: 2, delimiter: ',')} = #{@view.number_with_precision(detail.gst, precision: 2, delimiter: ',')}", overflow: :shrink_to_fit, valign: :center, size: 9
-     end if detail.gst != 0
-
-    if detail.discount != 0
-      bounding_box [145.mm, @detail_y], height: @detail_height, width: 30.mm do
-        text_box 'Discount', overflow: :shrink_to_fit, valign: :center, align: :center
-      end
-      bounding_box [176.mm, @detail_y], height: @detail_height, width: 33.mm do
-        text_box @view.number_with_precision(detail.discount, precision: 2, delimiter: ','),
-                 overflow: :shrink_to_fit, valign: :center, align: :center
-      end
-    end
-  end
-
   def draw_product_line detail, y, h
-    bounding_box [12.mm, y], height: h, width: 100.mm do
+    bounding_box [10.mm, y], height: h, width: 60.mm do
       pack_qty = detail.package_qty == 0 ? nil : @view.number_with_precision(detail.package_qty, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
       pack_name = detail.try(:product_packaging).try(:pack_qty_name) ? "(#{detail.product_packaging.pack_qty_name})" : nil
       pack_qty_name = [pack_qty, pack_name].flatten.join ''
@@ -130,48 +133,79 @@ class CashSalePdf < Prawn::Document
        detail.note].flatten.join(' '), overflow: :shrink_to_fit, valign: :center
      end
 
-     bounding_box [110.mm, y], height: h, width: 35.mm do
+    bounding_box [70.mm, y], height: h, width: 20.mm do
       qty = @view.number_with_precision(detail.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
-      text_box [ qty, detail.unit ].flatten.join(''), overflow: :shrink_to_fit, valign: :center, align: :center
+      text_box [ qty, detail.unit ].flatten.join('')  , overflow: :shrink_to_fit, valign: :center, align: :center
     end
 
-    bounding_box [145.mm, y], height: h, width: 30.mm do
+    bounding_box [90.mm, y], height: h, width: 16.mm do
       text_box @view.number_with_precision(detail.unit_price, precision: 4, delimiter: ','), 
-      overflow: :shrink_to_fit, valign: :center, align: :center
+      overflow: :shrink_to_fit, valign: :center, align: :right
     end
 
-    bounding_box [176.mm, y], height: h, width: 33.mm do
-      text_box @view.number_with_precision(detail.goods_total, precision: 2, delimiter: ','), 
-               overflow: :shrink_to_fit, valign: :center, align: :center
+    bounding_box [106.mm, y], height: h, width: 15.mm do
+      text_box @view.number_with_precision(detail.discount, precision: 2, delimiter: ','), 
+               overflow: :shrink_to_fit, valign: :center, align: :right
+    end
+
+    bounding_box [121.mm, y], height: h, width: 23.mm do
+      text_box @view.number_with_precision(detail.goods_total - detail.discount, precision: 2, delimiter: ','), 
+               overflow: :shrink_to_fit, valign: :center, align: :right
+    end
+
+    if detail.gst != 0
+      bounding_box [144.mm, y], height: h, width: 15.mm do
+        text_box "#{detail.tax_code.code} #{detail.tax_code.rate}%", overflow: :shrink_to_fit, valign: :center, align: :center, size: 9
+      end
+
+      bounding_box [159.mm, y], height: h, width: 18.mm do
+          text_box @view.number_with_precision(detail.gst, precision: 2, delimiter: ','), 
+                 overflow: :shrink_to_fit, valign: :center, align: :right
+      end
+    end
+
+    bounding_box [177.mm, y], height: h, width: 23.mm do
+        text_box @view.number_with_precision(detail.in_gst_total, precision: 2, delimiter: ','), 
+               overflow: :shrink_to_fit, valign: :center, align: :right
     end
   end
 
   def draw_particular
     @cashsale.particulars.each do |t|
 
-      bounding_box [12.mm, @detail_y], height: @detail_height, width: 100.mm do
+      bounding_box [10.mm, @detail_y], height: @detail_height, width: 60.mm do
         text_box [ t.particular_type.name_nil_if_note, t.note].flatten.join(' '), overflow: :shrink_to_fit, valign: :center
       end
 
-      bounding_box [110.mm, @detail_y], height: @detail_height, width: 35.mm do
+      bounding_box [70.mm, @detail_y], height: @detail_height, width: 20.mm do
         qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
         text_box [ qty, t.unit ].flatten.join(''), overflow: :shrink_to_fit, valign: :center, align: :center
       end
 
-      bounding_box [145.mm, @detail_y], height: @detail_height, width: 30.mm do
+      bounding_box [90.mm, @detail_y], height: @detail_height, width: 16.mm do
         text_box @view.number_with_precision(t.unit_price, precision: 4, delimiter: ','), 
-                 overflow: :shrink_to_fit, valign: :center, align: :center
+                 overflow: :shrink_to_fit, valign: :center, align: :right
       end
 
-      bounding_box [175.mm, @detail_y], height: @detail_height, width: 34.mm do
+      bounding_box [121.mm, @detail_y], height: @detail_height, width: 23.mm do
         text_box @view.number_with_precision(t.ex_gst_total, precision: 2, delimiter: ','),
-                 overflow: :shrink_to_fit, valign: :center, align: :center
+                 overflow: :shrink_to_fit, valign: :center, align: :right
       end
+      
       if t.gst != 0
-        @detail_y = @detail_y - 4.5.mm
-        bounding_box [15.mm, @detail_y + 0.5.mm], height: @detail_height, width: 100.mm do
-          text_box "- GST #{t.tax_code.code} #{t.tax_code.rate}% X #{@view.number_with_precision(t.ex_gst_total, precision: 2, delimiter: ',')} = #{@view.number_with_precision(t.gst, precision: 2, delimiter: ',')}", overflow: :shrink_to_fit, valign: :center, size: 9
+        bounding_box [144.mm, @detail_y], height: @detail_height, width: 15.mm do
+          text_box "#{t.tax_code.code} #{t.tax_code.rate}%", overflow: :shrink_to_fit, valign: :center, align: :center, size: 9
         end
+
+        bounding_box [159.mm, @detail_y], height: @detail_height, width: 18.mm do
+          text_box @view.number_with_precision(t.gst, precision: 2, delimiter: ','), 
+                 overflow: :shrink_to_fit, valign: :center, align: :right
+        end
+      end
+
+      bounding_box [177.mm, @detail_y], height: @detail_height, width: 23.mm do
+        text_box @view.number_with_precision(t.in_gst_total, precision: 2, delimiter: ','), 
+               overflow: :shrink_to_fit, valign: :center, align: :right
       end
 
       @detail_y = @detail_y - @detail_height
@@ -198,65 +232,42 @@ class CashSalePdf < Prawn::Document
         @detail_y = @detail_y_start_at
       end
     end
-
+    bounding_box [12.mm, @detail_y - 31.mm], height: 5.mm, width: 98.mm do
+      text_box "Paid by Cash : #{(@cashsale.in_gst_amount - @cashsale.cheques_amount).to_money.format}", overflow: :shrink_to_fit, valign: :center, size: 10, align: :center
+    end
   end
 
   def draw_footer
-    local_y = @detail_y
-    group do
-      font_size 10 do
-        bounding_box [12.mm, local_y], height: 25.mm, width: 98.mm do
-          text_box "Note :\n" + @cashsale.note, overflow: :shrink_to_fit, valign: :center, style: :bold
-        end if !@cashsale.note.blank?
+    bounding_box [10.mm, @detail_y], height: 25.mm, width: 80.mm do
+        text_box "Note :\n" + @cashsale.note, overflow: :shrink_to_fit, valign: :center, style: :bold
+    end if !@cashsale.note.blank?
 
-        stroke_horizontal_line 10.mm, 210.mm, at: local_y
-        
-        local_y = local_y - 1.mm 
-        bounding_box [145.mm, local_y], height: 6.mm, width: 30.mm do
-          text_box "Sales Excl. GST", valign: :center, style: :bold, align: :center
-        end
-        bounding_box [175.mm, local_y], height: 6.mm, width: 34.mm do
-          text_box (@cashsale.goods_amount + @cashsale.particulars_ex_gst_amount).to_money.format, overflow: :shrink_to_fit,
-                   align: :center, valign: :center, style: :bold, align: :center
-        end
-
-        if @cashsale.discount_amount != 0
-          local_y = local_y - 6.mm
-          stroke_horizontal_line 145.mm, 210.mm, at: local_y
-          bounding_box [145.mm, local_y - 0.5.mm], height: 6.mm, width: 30.mm do
-            text_box "Discount", valign: :center, style: :bold, align: :center
-          end
-          bounding_box [175.mm, local_y - 0.5.mm], height: 6.mm, width: 34.mm do
-            text_box @cashsale.discount_amount.to_money.format, overflow: :shrink_to_fit,
-            valign: :center, style: :bold, align: :center
-          end
-        end
-        
-        local_y = local_y - 6.mm
-        bounding_box [145.mm, local_y - 0.5.mm], height: 6.mm, width: 30.mm do
-          text_box "GST Payable", valign: :center, style: :bold, align: :center
-        end
-        stroke_horizontal_line 145.mm, 210.mm, at: local_y
-        bounding_box [175.mm, local_y - 0.5.mm], height: 6.mm, width: 34.mm do
-          text_box @cashsale.gst_amount.to_money.format, overflow: :shrink_to_fit,
-                   valign: :center, style: :bold, align: :center
-        end
-
-        local_y = local_y - 6.mm
-        stroke_horizontal_line 145.mm, 210.mm, at: local_y
-        bounding_box [145.mm, local_y - 0.5.mm], height: 6.mm, width: 30.mm do
-          text_box "Sales Incl. GST", valign: :center, style: :bold, align: :center
-        end
-        bounding_box [175.mm, local_y - 0.5.mm], height: 6.mm, width: 34.mm do
-          text_box @cashsale.sales_amount.to_money.format, overflow: :shrink_to_fit,
-                   valign: :center, style: :bold, align: :center
-        end
-        bounding_box [110.mm, @detail_y], height: @detail_y - local_y + 7.mm, width: 35.mm do
-          text_box "TOTAL", style: :bold, size: 14, align: :center, valign: :center
-        end
-        stroke_horizontal_line 110.mm, 210.mm, at: local_y - 6.mm
-      end
+    stroke_horizontal_line 90.mm, 200.mm, at: @detail_y - 1.mm
+    bounding_box [90.mm, @detail_y], height: 9.mm, width: 16.mm do
+      text_box 'Total', overflow: :shrink_to_fit, valign: :center, align: :center, style: :bold 
     end
+
+    bounding_box [106.mm, @detail_y], height: 9.mm, width: 15.mm do
+      text_box @view.number_with_precision(@cashsale.discount_amount, precision: 2, delimiter: ','), 
+               overflow: :shrink_to_fit, valign: :center, align: :right, style: :bold
+    end
+
+    bounding_box [121.mm, @detail_y], height: 9.mm, width: 23.mm do
+      text_box @view.number_with_precision(@cashsale.goods_amount, precision: 2, delimiter: ','), 
+               overflow: :shrink_to_fit, valign: :center, align: :right, style: :bold
+    end
+
+    bounding_box [159.mm, @detail_y], height: 9.mm, width: 18.mm do
+      text_box @view.number_with_precision(@cashsale.gst_amount, precision: 2, delimiter: ','), 
+               overflow: :shrink_to_fit, valign: :center, align: :right, style: :bold
+    end
+
+    bounding_box [177.mm, @detail_y], height: 9.mm, width: 23.mm do
+      text_box @view.number_with_precision(@cashsale.in_gst_amount, precision: 2, delimiter: ','), 
+               overflow: :shrink_to_fit, valign: :center, align: :right, style: :bold
+    end
+    stroke_horizontal_line 90.mm, 200.mm, at: @detail_y - 8.mm
+
   end
 
   def start_new_page_for_current_cashsale
