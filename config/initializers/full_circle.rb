@@ -9,8 +9,8 @@ Money.default_currency = Money::Currency.new('MYR')
 # GST Stuff
 GstStartDate = '2015-04-01'.to_date
 GstStarted = (Date.today >= GstStartDate)
-SoftwareVersion = '1.0.0'
-GafVersion = ''
+SoftwareVersion = 'FullCircle Ver 1.0.0'
+GafVersion = 'GAF Ver 1.0.0'
 
 if Address.table_exists?
   CompanyAddress = Address.new do |t|
