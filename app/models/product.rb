@@ -9,7 +9,9 @@ class Product < ActiveRecord::Base
   has_many :cash_sale_details
   has_many :invoice_details
   has_many :pur_invoice_details
-  validates_presence_of :sale_account_name1, :purchase_account_name1, :unit, :name1, :supply_tax_code_code, :purchase_tax_code_code
+  
+  validates_presence_of :sale_account_name1, :purchase_account_name1, :unit, :name1, :supply_tax_code_code, :purchase_tax_code_code, :industry_code
+
   validates_uniqueness_of :name1
   acts_as_taggable_on :categories
 
@@ -22,7 +24,7 @@ class Product < ActiveRecord::Base
   validate_belongs_to :purchase_tax_code, :code
   
   include Searchable
-  searchable content: [:name1, :name2, :unit, :supply_tax_code, :purchase_tax_code, :sale_account_name1, 
+  searchable content: [:name1, :name2, :unit, :supply_tax_code, :purchase_tax_code, :sale_account_name1, :industry_code,
                        :purchase_account_name1, :description, :category_list, :product_packagings_audit_string]
 
   simple_audit username_method: :username do |r|
@@ -35,6 +37,7 @@ class Product < ActiveRecord::Base
       sale_account: r.sale_account_name1,
       purchase_account: r.purchase_account_name1,
       description: r.description,
+      industry_code: r.industry_code,
       categories: r.category_list,
       packagings: r.product_packagings_audit_string
     }
