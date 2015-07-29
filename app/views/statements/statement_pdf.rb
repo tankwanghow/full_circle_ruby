@@ -3,7 +3,7 @@ class StatementPdf < Prawn::Document
   include Prawn::Helper
 
   def initialize(accounts, start_date, end_date, view, static_content=false)
-    super(page_size: [210.mm, 297.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
+    super(page_size: [209.mm, 297.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
     @view = view
     @start_date = start_date
     @end_date = end_date
@@ -19,9 +19,9 @@ class StatementPdf < Prawn::Document
       @balance = a.balance_at @end_date
       @aging_list = a.aging_list @end_date
       @total_pages = 1
-      @page_end_at = 32.mm
+      @page_end_at = 50.mm
       @detail_height = 4.mm
-      @detail_y_start_at = 228.mm
+      @detail_y_start_at = 231.mm
       start_new_statement_page
       draw_static_content if @static_content and !@static_content_drawn
       fill_color "000077"
@@ -38,56 +38,56 @@ class StatementPdf < Prawn::Document
 
   def draw_static_content
     repeat(:all) do
-      draw_text CompanyName, size: 18, style: :bold, at: [6.mm, 278.mm]
-      draw_text @view.header_address_pdf(CompanyAddress), size: 9, at: [6.mm, 274.mm]
-      draw_text @view.header_contact_pdf(CompanyAddress), size: 9, at: [6.mm, 270.mm]
-      draw_text "STATEMENT OF ACCOUNT", style: :bold, size: 12, at: [140.mm, 270.mm]
-      stroke_rounded_rectangle [5.mm, 268.mm], 200.mm, 32.mm, 3.mm
-      stroke_vertical_line 268.mm, 236.mm, at: 130.mm
-      draw_text "TO", size: 10, at: [7.mm, 263.mm]
-      draw_text "FROM", size: 10, at: [132.mm, 262.5.mm]
-      stroke_horizontal_line 130.mm, 205.mm, at: 260.mm
-      draw_text "TO", size: 10, at: [132.mm, 255.mm]
-      stroke_horizontal_line 130.mm, 205.mm, at: 252.mm
-      draw_text "BALANCE", size: 10, at: [132.mm, 247.mm]
+      draw_text CompanyName, size: 18, style: :bold, at: [12.5.mm, 286.mm]
+      draw_text @view.header_address_pdf(CompanyAddress), size: 9, at: [12.5.mm, 279.mm]
+      draw_text @view.header_contact_pdf(CompanyAddress), size: 9, at: [12.5.mm, 275.mm]
+      draw_text "STATEMENT OF ACCOUNT", style: :bold, size: 12, at: [140.mm, 275.mm]
+      stroke_rounded_rectangle [12.5.mm, 271.mm], 187.mm, 31.mm, 3.mm
+      stroke_vertical_line 271.mm, 240.mm, at: 129.5.mm
+      draw_text "TO", size: 10, at: [13.5.mm, 267.mm]
+      draw_text "FROM", size: 10, at: [132.mm, 266.mm]
+      stroke_horizontal_line 129.5.mm, 199.5.mm, at: 263.5.mm
+      draw_text "TO", size: 10, at: [132.mm, 259.mm]
+      stroke_horizontal_line 129.5.mm, 199.5.mm, at: 257.5.mm
+      draw_text "BALANCE", size: 10, at: [132.mm, 253.mm]
 
-      stroke_rounded_rectangle [5.mm, 236.mm], 200.mm, 206.mm, 3.mm
-      stroke_horizontal_line 5.mm, 205.mm, at: 229.mm
+      stroke_rounded_rectangle [12.5.mm, 240.mm], 187.mm, 194.mm, 3.mm
+      stroke_horizontal_line 12.5.mm, 199.5.mm, at: 233.mm
 
-      stroke_vertical_line 236.mm, 30.mm, at: 25.mm
-      stroke_vertical_line 236.mm, 30.mm, at: 60.mm
-      stroke_vertical_line 236.mm, 30.mm, at: 75.mm
-      stroke_vertical_line 236.mm, 30.mm, at: 157.mm
-      stroke_vertical_line 236.mm, 30.mm, at: 181.mm
+      stroke_vertical_line 240.mm, 46.mm, at: 31.mm
+      stroke_vertical_line 240.mm, 46.mm, at: 64.mm
+      stroke_vertical_line 240.mm, 46.mm, at: 78.mm
+      stroke_vertical_line 240.mm, 46.mm, at: 154.5.mm
+      stroke_vertical_line 240.mm, 46.mm, at: 177.5.mm
 
-      draw_text "DATE", size: 9, at: [11.mm, 231.mm]
-      draw_text "DOCUMENT", size: 9, at: [34.mm, 231.mm]
-      draw_text "TERMS", size: 9, at: [62.mm, 231.mm]
-      draw_text "PARTICULARS", size: 9, at: [100.mm, 231.mm]
-      draw_text "DEBIT/CREDIT", size: 8.5, at: [158.5.mm, 231.mm]
-      draw_text "LINE BALANCE", size: 8.5, at: [182.mm, 231.mm]
+      draw_text "DATE", size: 9, at: [17.mm, 235.mm]
+      draw_text "DOCUMENT", size: 9, at: [38.mm, 235.mm]
+      draw_text "TERMS", size: 9, at: [65.mm, 235.mm]
+      draw_text "PARTICULARS", size: 9, at: [105.mm, 235.mm]
+      draw_text "DEBIT/CREDIT", size: 9, at: [155.mm, 235.mm]
+      draw_text "LINE BALANCE", size: 8, at: [178.5.mm, 235.mm]
       
-      stroke_rounded_rectangle [5.mm, 30.mm], 200.mm, 20.mm, 3.mm
-      stroke_horizontal_line 5.mm, 205.mm, at: 22.mm
+      stroke_rounded_rectangle [12.5.mm, 46.mm], 187.mm, 17.5.mm, 3.mm
+      stroke_horizontal_line 12.5.mm, 199.5.mm, at: 38.5.mm
 
-      stroke_vertical_line 30.mm, 10.mm, at: 38.33.mm
-      stroke_vertical_line 30.mm, 10.mm, at: 71.66.mm
-      stroke_vertical_line 30.mm, 10.mm, at: 105.mm
-      stroke_vertical_line 30.mm, 10.mm, at: 138.33.mm
-      stroke_vertical_line 30.mm, 10.mm, at: 171.66.mm
+      stroke_vertical_line 46.mm, 28.5.mm, at: 43.5.mm
+      stroke_vertical_line 46.mm, 28.5.mm, at: 74.5.mm
+      stroke_vertical_line 46.mm, 28.5.mm, at: 105.5.mm
+      stroke_vertical_line 46.mm, 28.5.mm, at: 136.5.mm
+      stroke_vertical_line 46.mm, 28.5.mm, at: 167.5.mm
     end
     @static_content_drawn = true
   end
 
   #Dynamic Content
   def draw_header
-    text_box @account.name1, at: [10.mm, 261.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
+    text_box @account.name1, at: [14.5.mm, 265.mm], size: 10, width: 100.mm, height: 20.mm, style: :bold
     if @account.mailing_address
-      address_box(self, @account.mailing_address, [10.mm, 256.mm], width: 110.mm, height: 24.mm, size: 10)
+      font_size 10 do address_box(self, @account.mailing_address, [14.5.mm, 261.mm], width: 110.mm, height: 24.mm) end
     end
-    draw_text @start_date, at: [155.mm, 262.5.mm], style: :bold, size: 12
-    draw_text @end_date, at: [155.mm, 254.5.mm], style: :bold, size: 12
-    draw_text @view.number_with_precision(@balance, precision: 2, delimiter: ','), at: [155.mm, 240.5.mm], style: :bold, size: 16
+    draw_text @start_date, at: [155.mm, 266.mm], style: :bold, size: 12
+    draw_text @end_date, at: [155.mm, 259.mm], style: :bold, size: 12
+    draw_text @view.number_with_precision(@balance, precision: 2, delimiter: ','), at: [155.mm, 245.mm], style: :bold, size: 16
   end
 
   def draw_page_number
@@ -106,19 +106,19 @@ class StatementPdf < Prawn::Document
     @transactions.each do |t|
       balance = balance + t.amount
       text_box t.transaction_date.to_s, overflow: :shrink_to_fit, valign: :center, height: @detail_height,
-               width: 20.mm, at: [5.mm, @detail_y], align: :center
+               width: 18.5.mm, at: [12.5.mm, @detail_y], align: :center
       type_id = "#{t.doc_type} #{@view.docnolize(t.doc_id, '#') if t.doc_id}"
       amount = @view.number_with_precision(t.amount, precision: 2, delimiter: ',')
       text_box type_id, overflow: :shrink_to_fit, valign: :center, height: @detail_height,
-               width: 33.mm, at: [26.mm, @detail_y], align: :center
+               width: 32.5.mm, at: [31.5.mm, @detail_y], align: :center
       text_box @view.term_string(t.terms) || '-', overflow: :shrink_to_fit, valign: :center, height: @detail_height,
-                 width: 15.mm, at: [60.mm, @detail_y], align: :center
+                 width: 13.5.mm, at: [64.5.mm, @detail_y], align: :center
       text_box t.note, overflow: :truncate, valign: :center, height: @detail_height,
-               width: 80.mm, at: [76.mm, @detail_y], align: :left
+               width: 76.mm, at: [79.5.mm, @detail_y], align: :left
       text_box amount, overflow: :shrink_to_fit, 
-               valign: :center, height: @detail_height, width: 23.mm, at: [157.mm, @detail_y], align: :right
+               valign: :center, height: @detail_height, width: 22.mm, at: [155.mm, @detail_y], align: :right
       text_box @view.number_with_precision(balance, precision: 2, delimiter: ','), overflow: :shrink_to_fit, 
-               valign: :center, height: @detail_height, width: 23.mm, at: [181.mm, @detail_y], align: :right
+               valign: :center, height: @detail_height, width: 22.mm, at: [177.mm, @detail_y], align: :right
 
       @detail_y = @detail_y - @detail_height
 
@@ -134,9 +134,9 @@ class StatementPdf < Prawn::Document
     group do
       @aging_list.each do |k,v|
         text_box k, overflow: :shrink_to_fit, size: 10,
-                 valign: :center, height: 9.mm, width: 33.33.mm, at: [(5 + (33.33 * i)).mm, 30.mm], align: :center
-        text_box @view.number_with_precision(v, precision: 2, delimiter: ','), overflow: :shrink_to_fit, size: 10,
-                 valign: :center, height: 12.mm, width: 33.33.mm, at: [(5 + (33.33 * i)).mm, 22.mm], align: :center
+                 valign: :center, height: 7.mm, width: 31.mm, at: [(12.5 + (31 * i)).mm, 45.mm], align: :center
+        text_box @view.number_with_precision(v, precision: 2, delimiter: ','), overflow: :shrink_to_fit, size: 12,
+                 valign: :center, height: 11.mm, width: 31.mm, at: [(12.5 + (31 * i)).mm, 38.mm], align: :center, style: :bold
         i += 1
       end
     end

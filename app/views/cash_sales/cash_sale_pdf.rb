@@ -57,8 +57,15 @@ class CashSalePdf < Prawn::Document
     end
     draw_text "DATE :", size: 10, at: [150.mm, 255.mm]
     draw_text @cashsale.doc_date, at: [175.mm, 255.mm], style: :bold, size: 10  
+
     draw_text "ACCOUNT ID :", size: 10, at: [150.mm, 250.mm]
     draw_text @view.docnolize(@cashsale.customer.id), at: [175.mm, 250.mm], style: :bold, size: 10
+
+    draw_text "LOADER :", size: 10, at: [150.mm, 245.mm]
+    draw_text @cashsale.loader_list.join(', '), at: [175.mm, 245.mm], style: :bold, size: 10
+    
+    draw_text "UNLOADER :", size: 10, at: [150.mm, 240.mm]
+    draw_text @cashsale.loader_list.join(', '), at: [175.mm, 240.mm], style: :bold, size: 10
     
     stroke_horizontal_line 10.mm, 200.mm, at: 226.mm
 
@@ -83,7 +90,7 @@ class CashSalePdf < Prawn::Document
     end
 
     bounding_box [144.mm, 225.mm], height: 9.mm, width: 15.mm do
-      text_box 'GST Code', overflow: :wrap, valign: :center, align: :center, style: :bold
+      text_box 'GST% Code', overflow: :wrap, valign: :center, align: :center, style: :bold
     end
 
     bounding_box [159.mm, 225.mm], height: 9.mm, width: 18.mm do
@@ -140,33 +147,33 @@ class CashSalePdf < Prawn::Document
 
     bounding_box [90.mm, y], height: h, width: 16.mm do
       text_box @view.number_with_precision(detail.unit_price, precision: 4, delimiter: ','), 
-      overflow: :shrink_to_fit, valign: :center, align: :right
+      overflow: :shrink_to_fit, valign: :center, align: :center
     end
 
     bounding_box [106.mm, y], height: h, width: 15.mm do
       text_box @view.number_with_precision(detail.discount, precision: 2, delimiter: ','), 
-               overflow: :shrink_to_fit, valign: :center, align: :right
+               overflow: :shrink_to_fit, valign: :center, align: :center
     end
 
     bounding_box [121.mm, y], height: h, width: 23.mm do
       text_box @view.number_with_precision(detail.goods_total - detail.discount, precision: 2, delimiter: ','), 
-               overflow: :shrink_to_fit, valign: :center, align: :right
+               overflow: :shrink_to_fit, valign: :center, align: :center
     end
 
-    if detail.gst != 0
+    if detail.tax_code
       bounding_box [144.mm, y], height: h, width: 15.mm do
-        text_box "#{detail.tax_code.code} #{detail.tax_code.rate}%", overflow: :shrink_to_fit, valign: :center, align: :center, size: 9
+        text_box "#{detail.tax_code.code}-#{detail.tax_code.rate}%", overflow: :shrink_to_fit, valign: :center, align: :center, size: 9
       end
 
       bounding_box [159.mm, y], height: h, width: 18.mm do
           text_box @view.number_with_precision(detail.gst, precision: 2, delimiter: ','), 
-                 overflow: :shrink_to_fit, valign: :center, align: :right
+                 overflow: :shrink_to_fit, valign: :center, align: :center
       end
     end
 
     bounding_box [177.mm, y], height: h, width: 23.mm do
         text_box @view.number_with_precision(detail.in_gst_total, precision: 2, delimiter: ','), 
-               overflow: :shrink_to_fit, valign: :center, align: :right
+               overflow: :shrink_to_fit, valign: :center, align: :center
     end
   end
 
@@ -184,28 +191,28 @@ class CashSalePdf < Prawn::Document
 
       bounding_box [90.mm, @detail_y], height: @detail_height, width: 16.mm do
         text_box @view.number_with_precision(t.unit_price, precision: 4, delimiter: ','), 
-                 overflow: :shrink_to_fit, valign: :center, align: :right
+                 overflow: :shrink_to_fit, valign: :center, align: :center
       end
 
       bounding_box [121.mm, @detail_y], height: @detail_height, width: 23.mm do
         text_box @view.number_with_precision(t.ex_gst_total, precision: 2, delimiter: ','),
-                 overflow: :shrink_to_fit, valign: :center, align: :right
+                 overflow: :shrink_to_fit, valign: :center, align: :center
       end
       
-      if t.gst != 0
+      if t.tax_code
         bounding_box [144.mm, @detail_y], height: @detail_height, width: 15.mm do
-          text_box "#{t.tax_code.code} #{t.tax_code.rate}%", overflow: :shrink_to_fit, valign: :center, align: :center, size: 9
+          text_box "#{t.tax_code.code}-#{t.tax_code.rate}%", overflow: :shrink_to_fit, valign: :center, align: :center, size: 9
         end
 
         bounding_box [159.mm, @detail_y], height: @detail_height, width: 18.mm do
           text_box @view.number_with_precision(t.gst, precision: 2, delimiter: ','), 
-                 overflow: :shrink_to_fit, valign: :center, align: :right
+                 overflow: :shrink_to_fit, valign: :center, align: :center
         end
       end
 
       bounding_box [177.mm, @detail_y], height: @detail_height, width: 23.mm do
         text_box @view.number_with_precision(t.in_gst_total, precision: 2, delimiter: ','), 
-               overflow: :shrink_to_fit, valign: :center, align: :right
+               overflow: :shrink_to_fit, valign: :center, align: :center
       end
 
       @detail_y = @detail_y - @detail_height
@@ -249,22 +256,22 @@ class CashSalePdf < Prawn::Document
 
     bounding_box [106.mm, @detail_y], height: 9.mm, width: 15.mm do
       text_box @view.number_with_precision(@cashsale.discount_amount, precision: 2, delimiter: ','), 
-               overflow: :shrink_to_fit, valign: :center, align: :right, style: :bold
+               overflow: :shrink_to_fit, valign: :center, align: :center, style: :bold
     end
 
     bounding_box [121.mm, @detail_y], height: 9.mm, width: 23.mm do
       text_box @view.number_with_precision(@cashsale.goods_amount, precision: 2, delimiter: ','), 
-               overflow: :shrink_to_fit, valign: :center, align: :right, style: :bold
+               overflow: :shrink_to_fit, valign: :center, align: :center, style: :bold
     end
 
     bounding_box [159.mm, @detail_y], height: 9.mm, width: 18.mm do
       text_box @view.number_with_precision(@cashsale.gst_amount, precision: 2, delimiter: ','), 
-               overflow: :shrink_to_fit, valign: :center, align: :right, style: :bold
+               overflow: :shrink_to_fit, valign: :center, align: :center, style: :bold
     end
 
     bounding_box [177.mm, @detail_y], height: 9.mm, width: 23.mm do
-      text_box @view.number_with_precision(@cashsale.in_gst_amount, precision: 2, delimiter: ','), 
-               overflow: :shrink_to_fit, valign: :center, align: :right, style: :bold
+      text_box @view.number_with_precision(@cashsale.sales_amount, precision: 2, delimiter: ','), 
+               overflow: :shrink_to_fit, valign: :center, align: :center, style: :bold
     end
     stroke_horizontal_line 90.mm, 200.mm, at: @detail_y - 8.mm
 
