@@ -12,5 +12,7 @@
     = csrf_meta_tags
     = yield(:head)
   %body#center
-    .contianer-fliud
-      = yield
+    .container-fluid
+      .content
+        .row-fluid
+          = yield
