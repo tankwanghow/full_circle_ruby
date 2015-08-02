@@ -12,7 +12,7 @@ class GstAccountsController < ApplicationController
     @accounts = Account.gst_accounts
     @gst_control_account = @accounts.select { |t| t.name1 =~ /Control/ }.first
     @gst_expense_account = @accounts.select { |t| t.name1 =~ /Expense/ }.first
-    
+
     @scn  = gst_debit_and_credit_note_sum 'credit_note', 'GST for Supply', start_date, end_date
     @sdn  = gst_debit_and_credit_note_sum 'debit_note', 'GST for Supply', start_date, end_date
     @cs   = gst_supply_and_acqusition_sum 'cash_sale', 'GST for Supply', start_date, end_date
@@ -46,8 +46,8 @@ private
 
   def gst_supply_and_acqusition_sum doc, tax_type, start_date, end_date
     p = Account.find_by_sql [
-      "SELECT SUM((docd.quantity * docd.unit_price) + docd.discount) as amount, 
-              SUM(((docd.quantity * docd.unit_price) + docd.discount) * tx.rate / 100) as gst
+      "SELECT SUM(docd.quantity * docd.unit_price) as amount,
+              SUM((docd.quantity * docd.unit_price) * tx.rate / 100) as gst
          FROM #{doc}s doc
         INNER JOIN #{doc}_details docd
            ON docd.#{doc}_id = doc.id
@@ -62,7 +62,7 @@ private
           AND docd.quantity * docd.unit_price > 0", start_date, end_date]
 
     k = Account.find_by_sql [
-      "SELECT SUM(docd.quantity * docd.unit_price) as amount, 
+      "SELECT SUM(docd.quantity * docd.unit_price) as amount,
               SUM(docd.quantity * docd.unit_price * tx.rate / 100) as gst
          FROM #{doc}s doc
         INNER JOIN particulars docd
@@ -82,7 +82,7 @@ private
 
   def gst_debit_and_credit_note_sum doc, tax_type, start_date, end_date
     k = Account.find_by_sql [
-      "SELECT SUM(docd.quantity * docd.unit_price) as amount, 
+      "SELECT SUM(docd.quantity * docd.unit_price) as amount,
               SUM(docd.quantity * docd.unit_price * tx.rate / 100) as gst
          FROM #{doc}s doc
         INNER JOIN particulars docd
