@@ -1,11 +1,10 @@
-= simple_form_for :session, url: sessions_path, html: { class: 'form-horizontal span16 offset2 well' } do |f|
+= render_flash
+= simple_form_for :session, url: sessions_path, html: { class: 'form-horizontal span32 offset6 well' } do |f|
   %legend= CompanyName
   %h5 Login
-  = render_flash
   = f.error_messages
   = f.input :username, autofocus: true
   = f.input :password
   .form-actions
     = f.button :submit, 'Login', class: 'btn btn-primary'
     = link_to 'Register as New User', signup_path, class: 'btn btn-success'
-
