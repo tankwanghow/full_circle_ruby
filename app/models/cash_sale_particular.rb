@@ -1,4 +1,5 @@
 class CashSaleParticular < Particular
+  validates_presence_of :tax_code_code
 
   def transactions
     [particular_type_transaction, gst_transaction].compact

@@ -1,5 +1,5 @@
 class CreditNoteParticular < Particular
-
+  validates_presence_of :tax_code_code
   validates_numericality_of :quantity, :unit_price, greater_than: 0
 
    def transactions

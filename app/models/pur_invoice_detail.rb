@@ -4,7 +4,7 @@ class PurInvoiceDetail < ActiveRecord::Base
   belongs_to :product_packaging
   belongs_to :tax_code
   
-  validates_presence_of :product_name1, :unit
+  validates_presence_of :product_name1, :unit, :tax_code_code
   validates_numericality_of :quantity, greater_than: 0
   
   include ValidateBelongsTo
