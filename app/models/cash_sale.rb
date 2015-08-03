@@ -54,6 +54,7 @@ class CashSale < ActiveRecord::Base
 
   include SumAttributes
   sum_of :details, "goods_total", "goods"
+  sum_of :details, "discount", "discount"
   sum_of :details, "gst", "details_gst"
   sum_of :details, "in_gst_total", "in_gst"
 

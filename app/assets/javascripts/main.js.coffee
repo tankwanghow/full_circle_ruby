@@ -28,9 +28,10 @@ window.math = {
     val = Number(Math.round(value+'e+'+(decimals+1))+'e-'+(decimals+1))
     Number(Math.round(val+'e+'+decimals)+'e-'+decimals)
 
-  rowTotal: (qtyCls, priceCls, gstRateCls, gstCls, totalCls, rowCls, evtBubbleCls) ->
+  rowTotal: (qtyCls, priceCls, discountCls, gstRateCls, gstCls, totalCls, rowCls, evtBubbleCls) ->
     ($ evtBubbleCls).on 'change', qtyCls,      -> calRowTotal(this)
     ($ evtBubbleCls).on 'change', priceCls,    -> calRowTotal(this)
+    ($ evtBubbleCls).on 'change', discountCls, -> calRowTotal(this)
     ($ evtBubbleCls).on 'change', gstRateCls,  -> calRowTotal(this)
 
     calRowTotal = (elm) ->
@@ -38,9 +39,10 @@ window.math = {
       gst       = ($ elm).closest(rowCls).find(gstCls)
       qty       = + ($ elm).closest(rowCls).find(qtyCls).val() || 0
       price     = + ($ elm).closest(rowCls).find(priceCls).val() || 0
+      discount  = + ($ elm).closest(rowCls).find(discountCls).val() || 0
       gst_rate  = + ($ elm).closest(rowCls).find(gstRateCls).val() || 0
 
-      amount   = math.round(qty * price, 2)
+      amount   = math.round(qty * price, 2) + discount
       gst_val  = math.round(amount * (gst_rate / 100), 2)
 
       gst.val gst_val if gst
@@ -134,7 +136,7 @@ window.app = {
       ($ showhide_selector).hide()
 
   standard_row_total_init: ->
-    math.rowTotal '.quantity', '.unit-price', '.gst_rate', '.gst', '.row-total', '.fields', '.row-fluid'
+    math.rowTotal '.quantity', '.unit-price', '.discount', '.gst_rate', '.gst', '.row-total', '.fields', '.row-fluid'
 
   typeahead_init: (selector, url, params_func= -> {}) ->
     if selector.jquery

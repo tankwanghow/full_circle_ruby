@@ -1,8 +1,8 @@
 module InvoicesHelper
   def render_invoice_details_fields builder, xies_name
     render 'share/nested_fields', f: builder, xies_name: xies_name, field: 'details/field',
-            headers: [['Product', 'span9'], ['Package', 'span5'], ['Pack', 'span3'], ['Note', 'span9'], ['Quantity', 'span4'],
-                      ['Unit', 'span2'], ['Price', 'span3'], ['Code', 'span2'], ['GST %', 'span2'],
+            headers: [['Product', 'span8'], ['Package', 'span4'], ['Pack', 'span3'], ['Note', 'span8'], ['Quantity', 'span4'],
+                      ['Unit', 'span2'], ['Price', 'span3'], ['Discount', 'span3'], ['Code', 'span2'], ['GST %', 'span2'], 
                       ['GST', 'span3'], ['Amount', 'span4']],
             text: 'Add Detail'
   end
@@ -12,7 +12,7 @@ module InvoicesHelper
   end
 
   def packaging_html_data builder
-    { package_json: builder.object.product_packaging.to_json,
+    { package_json: builder.object.product_packaging.to_json, 
       source: ProductPackaging.pack_qty_names(builder.object.product.try(:id)), provide: 'typeahead' }
   end
 

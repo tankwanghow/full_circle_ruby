@@ -94,7 +94,7 @@ class InvoicePdf < Prawn::Document
     @invoice.details.each do |t|
 
       draw_product_line t, @detail_y, @detail_height
-      draw_gst_line t
+      draw_gst_discount_line t
 
       @detail_y = @detail_y - @detail_height
 
@@ -105,11 +105,21 @@ class InvoicePdf < Prawn::Document
     end
   end
 
-  def draw_gst_line detail
-    @detail_y = @detail_y - 4.5.mm if detail.gst != 0
+  def draw_gst_discount_line detail
+    @detail_y = @detail_y - 4.5.mm if detail.gst != 0 || detail.discount != 0
     bounding_box [15.mm, @detail_y + 0.5.mm], height: @detail_height, width: 100.mm do
       text_box "- GST #{detail.tax_code.code} #{detail.tax_code.rate}% X #{@view.number_with_precision(detail.ex_gst_total, precision: 2, delimiter: ',')} = #{@view.number_with_precision(detail.gst, precision: 2, delimiter: ',')}", overflow: :shrink_to_fit, valign: :center, size: 9
      end if detail.gst != 0
+
+    if detail.discount != 0
+      bounding_box [145.mm, @detail_y], height: @detail_height, width: 30.mm do
+        text_box 'Discount', overflow: :shrink_to_fit, valign: :center, align: :center
+      end
+      bounding_box [176.mm, @detail_y], height: @detail_height, width: 33.mm do
+        text_box @view.number_with_precision(detail.discount, precision: 2, delimiter: ','),
+                 overflow: :shrink_to_fit, valign: :center, align: :center
+      end
+    end
   end
 
   def draw_product_line detail, y, h
@@ -117,7 +127,7 @@ class InvoicePdf < Prawn::Document
       pack_qty = detail.package_qty == 0 ? nil : @view.number_with_precision(detail.package_qty, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
       pack_name = detail.try(:product_packaging).try(:pack_qty_name) ? "(#{detail.product_packaging.pack_qty_name})" : nil
       pack_qty_name = [pack_qty, pack_name].flatten.join ''
-      text_box [ pack_qty_name, detail.product.name1, detail.product.try(:name2),
+      text_box [ pack_qty_name, detail.product.name1, detail.product.try(:name2), 
        detail.note].flatten.join(' '), overflow: :shrink_to_fit, valign: :center
      end
 
@@ -127,12 +137,12 @@ class InvoicePdf < Prawn::Document
     end
 
     bounding_box [145.mm, y], height: h, width: 30.mm do
-      text_box @view.number_with_precision(detail.unit_price, precision: 4, delimiter: ','),
+      text_box @view.number_with_precision(detail.unit_price, precision: 4, delimiter: ','), 
       overflow: :shrink_to_fit, valign: :center, align: :center
     end
 
     bounding_box [174.mm, y], height: h, width: 37.mm do
-      text_box @view.number_with_precision(detail.goods_total, precision: 2, delimiter: ','),
+      text_box @view.number_with_precision(detail.goods_total, precision: 2, delimiter: ','), 
                overflow: :shrink_to_fit, valign: :center, align: :center
     end
   end
@@ -150,7 +160,7 @@ class InvoicePdf < Prawn::Document
       end
 
       bounding_box [145.mm, @detail_y], height: @detail_height, width: 30.mm do
-        text_box @view.number_with_precision(t.unit_price, precision: 4, delimiter: ','),
+        text_box @view.number_with_precision(t.unit_price, precision: 4, delimiter: ','), 
                  overflow: :shrink_to_fit, valign: :center, align: :center
       end
 
@@ -183,8 +193,8 @@ class InvoicePdf < Prawn::Document
         end if !@invoice.note.blank?
 
         stroke_horizontal_line 8.mm, 211.mm, at: local_y
-
-        local_y = local_y - 1.mm
+        
+        local_y = local_y - 1.mm 
         bounding_box [144.mm, local_y], height: 6.mm, width: 30.mm do
           text_box "Sales Excl. GST", valign: :center, style: :bold, align: :center
         end
@@ -193,6 +203,18 @@ class InvoicePdf < Prawn::Document
                    align: :center, valign: :center, style: :bold, align: :center
         end
 
+        if @invoice.discount_amount != 0
+          local_y = local_y - 6.mm
+          stroke_horizontal_line 145.mm, 211.mm, at: local_y
+          bounding_box [145.mm, local_y - 0.5.mm], height: 6.mm, width: 30.mm do
+            text_box "Discount", valign: :center, style: :bold, align: :center
+          end
+          bounding_box [174.mm, local_y - 0.5.mm], height: 6.mm, width: 34.mm do
+            text_box @invoice.discount_amount.to_money.format, overflow: :shrink_to_fit,
+            valign: :center, style: :bold, align: :center
+          end
+        end
+        
         local_y = local_y - 6.mm
         bounding_box [145.mm, local_y - 0.5.mm], height: 6.mm, width: 30.mm do
           text_box "GST Payable", valign: :center, style: :bold, align: :center
