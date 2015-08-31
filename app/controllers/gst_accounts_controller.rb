@@ -46,8 +46,7 @@ private
 
   def gst_supply_and_acqusition_sum doc, tax_type, start_date, end_date
     p = Account.find_by_sql [
-      "SELECT SUM((docd.quantity * docd.unit_price) + docd.discount) as amount, 
-              SUM(((docd.quantity * docd.unit_price) + docd.discount) * tx.rate / 100) as gst
+      "SELECT SUM((docd.quantity * docd.unit_price) + docd.discount) as amount
          FROM #{doc}s doc
         INNER JOIN #{doc}_details docd
            ON docd.#{doc}_id = doc.id
@@ -62,8 +61,7 @@ private
           AND docd.quantity * docd.unit_price > 0", start_date, end_date]
 
     k = Account.find_by_sql [
-      "SELECT SUM(docd.quantity * docd.unit_price) as amount, 
-              SUM(docd.quantity * docd.unit_price * tx.rate / 100) as gst
+      "SELECT SUM(docd.quantity * docd.unit_price) as amount
          FROM #{doc}s doc
         INNER JOIN particulars docd
            ON docd.doc_id = doc.id
@@ -77,13 +75,12 @@ private
         WHERE doc.doc_date >= ?
           AND doc.doc_date <= ?
           AND docd.quantity * docd.unit_price > 0", start_date, end_date]
-    { amount: p[0].amount.to_f.round(2) + k[0].amount.to_f.round(2), gst: p[0].gst.to_f.round(2) + k[0].gst.to_f.round(2) }
+    p[0].amount.to_f.round(2) + k[0].amount.to_f.round(2)
   end
 
   def gst_debit_and_credit_note_sum doc, tax_type, start_date, end_date
     k = Account.find_by_sql [
-      "SELECT SUM(docd.quantity * docd.unit_price) as amount, 
-              SUM(docd.quantity * docd.unit_price * tx.rate / 100) as gst
+      "SELECT SUM(docd.quantity * docd.unit_price) as amount
          FROM #{doc}s doc
         INNER JOIN particulars docd
            ON docd.doc_id = doc.id
@@ -97,7 +94,7 @@ private
         WHERE doc.doc_date >= ?
           AND doc.doc_date <= ?
           AND docd.quantity * docd.unit_price > 0", start_date, end_date]
-    { amount: k[0].amount.to_f.round(2), gst: k[0].gst.to_f.round(2) }
+    k[0].amount.to_f.round(2)
   end
 
 end
