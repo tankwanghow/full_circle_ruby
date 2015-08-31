@@ -34,9 +34,9 @@
     %tr
       %td= @cs[:amount].to_money.format
       %td= @iv[:amount].to_money.format
-      %td= @scn[:amount].to_money.format
+      %td= (-@scn[:amount].to_money).format
       %td= @sdn[:amount].to_money.format
-      %td= (@cs[:amount] + @iv[:amount] + @scn[:amount] + @sdn[:amount]).round(2).to_money.format
+      %td= (@cs[:amount] + @iv[:amount] - @scn[:amount] + @sdn[:amount]).round(2).to_money.format
   %thead
     %tr
       %th Cash Sales GST
@@ -48,9 +48,9 @@
     %tr
       %td= @cs[:gst].to_money.format
       %td= @iv[:gst].to_money.format
-      %td= @scn[:gst].to_money.format
+      %td= (-@scn[:gst].to_money).format
       %td= @sdn[:gst].to_money.format
-      %td= (@cs[:gst] + @iv[:gst] + @scn[:gst] + @sdn[:gst]).round(2).to_money.format
+      %td= (@cs[:gst] + @iv[:gst] + @scn[:gst] - @sdn[:gst]).round(2).to_money.format
 
 %h3 GST for Purchase
 %table.table.table-condensed.table-bordered.GST
@@ -64,8 +64,8 @@
     %tr
       %td= @piv[:amount].to_money.format
       %td= @pcn[:amount].to_money.format
-      %td= @pdn[:amount].to_money.format
-      %td= (@piv[:amount] + @pcn[:amount] + @pdn[:amount]).round(2).to_money.format
+      %td= (-@pdn[:amount].to_money).format
+      %td= (@piv[:amount] + @pcn[:amount] - @pdn[:amount]).round(2).to_money.format
   %thead
     %tr
       %th Invoice GST
@@ -76,5 +76,5 @@
     %tr
       %td= @piv[:gst].to_money.format
       %td= @pcn[:gst].to_money.format
-      %td= @pdn[:gst].to_money.format
-      %td= (@piv[:gst] + @pcn[:gst] + @pdn[:gst]).round(2).to_money.format
+      %td= (-@pdn[:gst].to_money).format 
+      %td= (@piv[:gst] + @pcn[:gst] - @pdn[:gst]).round(2).to_money.format
