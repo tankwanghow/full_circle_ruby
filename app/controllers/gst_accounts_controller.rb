@@ -57,8 +57,7 @@ private
         INNER JOIN products p
            ON p.id = docd.product_id
         WHERE doc.doc_date >= ?
-          AND doc.doc_date <= ?
-          AND docd.quantity * docd.unit_price > 0", start_date, end_date]
+          AND doc.doc_date <= ?", start_date, end_date]
 
     k = Account.find_by_sql [
       "SELECT SUM(docd.quantity * docd.unit_price) as amount
@@ -73,8 +72,7 @@ private
         INNER JOIN particular_types p
            ON p.id = docd.particular_type_id
         WHERE doc.doc_date >= ?
-          AND doc.doc_date <= ?
-          AND docd.quantity * docd.unit_price > 0", start_date, end_date]
+          AND doc.doc_date <= ?", start_date, end_date]
     p[0].amount.to_f.round(2) + k[0].amount.to_f.round(2)
   end
 
@@ -92,8 +90,7 @@ private
         INNER JOIN particular_types p
            ON p.id = docd.particular_type_id
         WHERE doc.doc_date >= ?
-          AND doc.doc_date <= ?
-          AND docd.quantity * docd.unit_price > 0", start_date, end_date]
+          AND doc.doc_date <= ?", start_date, end_date]
     k[0].amount.to_f.round(2)
   end
 
