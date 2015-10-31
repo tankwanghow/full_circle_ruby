@@ -125,11 +125,13 @@ FullCircle::Application.routes.draw do
   end
   get 'pur_invoice/new_or_edit' => 'pur_invoices#new_or_edit'
 
+  get 'credit_notes/new_with_template' => 'credit_notes#new_with_template'
   resources :credit_notes, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]
   end
   get 'credit_note/new_or_edit' => 'credit_notes#new_or_edit'
 
+  get 'debit_notes/new_with_template' => 'debit_notes#new_with_template'
   resources :debit_notes, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]
   end

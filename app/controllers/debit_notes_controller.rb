@@ -42,4 +42,9 @@ class DebitNotesController < ApplicationController
       redirect_to new_debit_note_path
     end
   end
+
+  def new_with_template
+    @debit_note = DebitNote.new_like(params[:id])
+    render :new
+  end
 end

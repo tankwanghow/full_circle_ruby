@@ -47,6 +47,13 @@ class CreditNote < ActiveRecord::Base
   sum_of :particulars, "in_gst_total", "in_gst"
   sum_of :matchers, "amount"
 
+  def self.new_like id
+    like = find(id)
+    a = new(like.attributes)
+    like.particulars.each { |t| a.particulars.build t.attributes.merge(unit_price: 0) }
+    a
+  end
+
 private
 
   def dont_process(attr)

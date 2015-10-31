@@ -7,4 +7,5 @@
   = post_and_lock_check_box f
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary' unless posted_lock?(@debit_note)
+    = link_to 'Copy as New', debit_notes_new_with_template_path(id: @debit_note), class: 'btn btn-info'
     = link_to_edit_action_buttons @debit_note, debit_note_journal_entries_path(@debit_note)

@@ -42,4 +42,9 @@ class CreditNotesController < ApplicationController
       redirect_to new_credit_note_path
     end
   end
+
+  def new_with_template
+    @credit_note = CreditNote.new_like(params[:id])
+    render :new
+  end
 end
