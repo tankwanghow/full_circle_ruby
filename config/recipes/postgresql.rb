@@ -33,6 +33,7 @@ namespace :postgresql do
   after "deploy:finalize_update", "postgresql:symlink"
 
   desc "Backup Database for this application."
+  before "postgresql:dump", "postgresql:vacuum_full"
   task :dump, roles: :db do
     run "pg_dump -U #{postgresql_user} -h #{postgresql_host} #{postgresql_database} --format=tar -f #{application}_backup.tar"
   end
