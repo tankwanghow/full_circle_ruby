@@ -74,7 +74,7 @@ private
   end
 
   def build_transactions
-    transactions.destroy_all
+    transactions.where(old_data: false).destroy_all
     pay_to_transaction
     pay_from_transaction
     build_particulars_transactions

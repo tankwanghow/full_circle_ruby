@@ -63,7 +63,7 @@ class Deposit < ActiveRecord::Base
 private
 
   def build_transactions
-    transactions.destroy_all
+    transactions.where(old_data: false).destroy_all
     build_cash_transaction if cash_amount > 0
     build_pd_chq_transaction if cheques_amount > 0
     validates_transactions_balance

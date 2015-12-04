@@ -74,7 +74,7 @@ class Invoice < ActiveRecord::Base
 private
 
   def build_transactions
-    transactions.destroy_all
+    transactions.where(old_data: false).destroy_all
     build_customer_transaction
     build_particulars_transactions
     build_details_transactions

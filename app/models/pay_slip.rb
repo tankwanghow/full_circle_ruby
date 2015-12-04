@@ -119,7 +119,7 @@ private
   end
 
   def build_transactions
-    transactions.destroy_all
+    transactions.where(old_data: false).destroy_all
     pay_from_transaction
     salary_payable_transaction
     validates_transactions_balance

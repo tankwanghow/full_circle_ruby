@@ -51,7 +51,7 @@ private
   end
 
   def build_transactions
-    transactions.destroy_all
+    transactions.where(old_data: false).destroy_all
     set_cheques_account
     build_cash_n_pd_chq_transaction
     build_receive_from_transaction

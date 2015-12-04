@@ -65,7 +65,7 @@ class PurInvoice < ActiveRecord::Base
 private
 
   def build_transactions
-    transactions.destroy_all
+    transactions.where(old_data: false).destroy_all
     build_supplier_transaction
     build_details_transactions
     build_particulars_transactions

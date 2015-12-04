@@ -64,7 +64,7 @@ class SalaryNote < ActiveRecord::Base
 private
 
   def build_transactions
-    transactions.destroy_all
+    transactions.where(old_data: false).destroy_all
     if !no_transactions
       db_transaction
       cr_transaction

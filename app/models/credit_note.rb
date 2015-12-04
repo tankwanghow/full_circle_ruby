@@ -61,7 +61,7 @@ private
   end
 
   def build_transactions
-    transactions.destroy_all
+    transactions.where(old_data: false).destroy_all
     build_account_transaction
     build_particulars_transactions
     validates_transactions_balance

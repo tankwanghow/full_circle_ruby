@@ -44,7 +44,7 @@ private
   end
 
   def build_transactions
-    transactions.destroy_all
+    transactions.where(old_data: false).destroy_all
     cheque = Cheque.find cheque_id
     build_return_to_transaction
     build_return_from_transaction

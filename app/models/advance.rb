@@ -44,7 +44,7 @@ class Advance < ActiveRecord::Base
 private
 
   def build_transactions
-    transactions.destroy_all
+    transactions.where(old_data: false).destroy_all
     salary_payable_transaction
     pay_from_transaction
     validates_transactions_balance
