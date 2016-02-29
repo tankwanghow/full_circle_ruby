@@ -49,4 +49,9 @@ class CashSalesController < ApplicationController
     @cashsale = CashSale.new_like(params[:id])
     render :new
   end
+
+  def typeahead_code
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: TaxCode.where('tax_type ilike ?', '%supply%').where('code ilike ?', term).limit(20).pluck(:code)
+  end
 end

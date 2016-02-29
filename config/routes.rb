@@ -75,6 +75,7 @@ FullCircle::Application.routes.draw do
     resources :journal_entries, only: [:index]
   end
   get 'invoice/new_or_edit' => 'invoices#new_or_edit'
+  get 'invoice/typeahead_code' => 'invoices#typeahead_code'
 
   resources :pay_slips, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]
@@ -88,6 +89,7 @@ FullCircle::Application.routes.draw do
     resources :journal_entries, only: [:index]
   end
   get 'cash_sale/new_or_edit' => 'cash_sales#new_or_edit'
+  get 'cash_sale/typeahead_code' => 'cash_sales#typeahead_code'
 
   resources :receipts, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]
@@ -124,6 +126,7 @@ FullCircle::Application.routes.draw do
     resources :journal_entries, only: [:index]
   end
   get 'pur_invoice/new_or_edit' => 'pur_invoices#new_or_edit'
+  get 'pur_invoice/typeahead_code' => 'pur_invoices#typeahead_code'
 
   get 'credit_notes/new_with_template' => 'credit_notes#new_with_template'
   resources :credit_notes, only: [:new, :edit, :update, :create, :show] do

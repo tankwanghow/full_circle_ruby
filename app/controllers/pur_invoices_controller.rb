@@ -37,4 +37,9 @@ class PurInvoicesController < ApplicationController
       redirect_to new_pur_invoice_path
     end
   end
+
+  def typeahead_code
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: TaxCode.where('tax_type ilike ?', '%purchase%').where('code ilike ?', term).limit(20).pluck(:code)
+  end
 end

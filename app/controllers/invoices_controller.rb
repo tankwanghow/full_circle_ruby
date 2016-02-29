@@ -44,4 +44,9 @@ class InvoicesController < ApplicationController
       redirect_to new_invoice_path
     end
   end
+
+  def typeahead_code
+    term = "%#{params[:term].scan(/(\w)/).flatten.join('%')}%"
+    render json: TaxCode.where('tax_type ilike ?', '%supply%').where('code ilike ?', term).limit(20).pluck(:code)
+  end
 end
