@@ -3,7 +3,7 @@ class PaySlipPdf < Prawn::Document
   include Prawn::Helper
 
   def initialize(pay_slips, view, static_content=false)
-    super(page_size: [215.mm, 280.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
+    super(page_size: [210.mm, 297.mm], margin: [0.mm, 0.mm, 0.mm, 0.mm], skip_page_creation: true)
     @view = view
     @static_content = static_content
     draw pay_slips
@@ -14,8 +14,8 @@ class PaySlipPdf < Prawn::Document
       @pay_slip = p
       @total_pages = 1
       @page_end_at = 30.mm
-      @detail_height = 3.mm
-      @detail_y_start_at = 217.mm
+      @detail_height = 5.mm
+      @detail_y_start_at = 215.mm
       start_new_pay_slip_page
       fill_color "000077"
       draw_header
@@ -30,50 +30,66 @@ class PaySlipPdf < Prawn::Document
     end
     self
   end
-
-  def draw_static_content
-    draw_text CompanyName, size: 18, style: :bold, at: [7.mm, 270.mm]
-    draw_text @view.header_address_pdf(CompanyAddress), size: 9, at: [7.mm, 265.mm]
-    draw_text @view.header_contact_pdf(CompanyAddress), size: 9, at: [7.mm, 261.mm]
-    stroke_rounded_rectangle [7.mm, 258.mm], 200.mm, 32.mm, 3.mm
-    stroke_vertical_line 258.mm, 226.mm, at: 107.mm
-    draw_text "PAY SLIP", style: :bold, size: 12, at: [152  .mm, 264.mm]
-    draw_text "EMPLOYEE INFORMATION", size: 10, at: [9.mm, 253.mm]
-    draw_text "SLIP NO", size: 10, at: [109.mm, 253.mm]
-    stroke_horizontal_line 107.mm, 207.mm, at: 250.mm
-    draw_text "SLIP DATE", size: 10, at: [109.mm, 245.mm]
-    stroke_horizontal_line 107.mm, 207.mm, at: 242.mm
-    draw_text "PAY UNTIL", size: 10, at: [109.mm, 237.mm]
-    stroke_horizontal_line 107.mm, 207.mm, at: 234.mm
-    draw_text "PAY BY", size: 10, at: [109.mm, 229.mm]
-    stroke_vertical_line 258.mm, 226.mm, at: 130.mm
-    stroke_rounded_rectangle [7.mm, 226.mm], 200.mm, 200.mm, 3.mm
-    stroke_horizontal_line 7.mm, 207.mm, at: 218.mm
-    stroke_vertical_line 226.mm, 26.mm, at: 113.mm
-    stroke_vertical_line 226.mm, 26.mm, at: 148.mm
-    stroke_vertical_line 226.mm, 26.mm, at: 175.mm
-    draw_text "PARTICULARS", size: 10, at: [50.mm, 221.mm]
-    draw_text "QUANTITY", size: 10, at: [122.mm, 221.mm]
-    draw_text "UNIT PRICE", size: 10, at: [152.mm, 221.mm]
-    draw_text "AMOUNT", size: 10, at: [184.mm, 221.mm]
-    draw_text "Please read the above information carefully.", size: 9, at: [10.mm, 22.mm]
-    draw_text "Error reported after 7 days, will not be accepted.", size: 9, at: [10.mm, 18.mm]
-    stroke_horizontal_line 95.mm, 145.mm, at: 10.mm
-    stroke_horizontal_line 155.mm, 205.mm, at: 10.mm
-    draw_text "AUTHORIZED SIGNATURE", size: 10, at: [100.mm, 6.mm]
-    draw_text "EMPLOYEE SIGNATURE", size: 10, at: [160.mm, 6.mm]
+def draw_static_content
+    draw_text CompanyName, size: 18, style: :bold, at: [10.mm, 275.mm]
+    draw_text @view.header_address_pdf(CompanyAddress), size: 10, at: [10.mm, 270.mm]
+    draw_text @view.header_contact_pdf(CompanyAddress), size: 10, at: [10.mm, 265.mm]
+    stroke_horizontal_line 100.mm, 150.mm, at: 13.mm
+    stroke_horizontal_line 160.mm, 200.mm, at: 13.mm
+    draw_text "RECEIVER SIGNATURE", size: 8, at: [110.mm, 9.mm]
+    draw_text "AUTHORIZED SIGNATURE", size: 8, at: [162.mm, 9.mm]
+    stroke_horizontal_line 10.mm, 200.mm, at: 260.mm
+    stroke_horizontal_line 10.mm, 200.mm, at: 30.mm
   end
 
   #Dynamic Content
   def draw_header
-    text_box @pay_slip.employee.name, at: [11.mm, 251.mm], size: 13, width: 100.mm, height: 20.mm, style: :bold
+    draw_text "PAY SLIP", style: :bold, size: 12, at: [155.mm, 273.mm]
+    draw_text "SLIP NO :", size: 16, at: [145.mm, 265.mm]
+    draw_text @view.docnolize(@pay_slip.id), at: [174.mm, 265.mm], size: 16, style: :bold
+    draw_text "EMPLOYEE", size: 10, at: [12.mm, 255.mm]
+    text_box @pay_slip.employee.name, at: [13.mm, 253.mm], size: 11, width: 120.mm, height: 20.mm, style: :bold
     if @pay_slip.employee.address
-      address_box(self, @pay_slip.employee.address, [11.mm, 246.mm], width: 110.mm, height: 24.mm)
+      address_box(self, @pay_slip.employee.address, [13.mm, 248.mm], width: 110.mm, height: 24.mm)
     end
-    text_box @view.docnolize(@pay_slip.id), at: [130.mm, 258.mm], height: 8.mm, width: 70.mm, style: :bold, align: :center, valign: :center
-    text_box @pay_slip.doc_date.to_s, at: [130.mm, 250.mm], style: :bold, height: 8.mm, width: 70.mm, style: :bold, align: :center, valign: :center
-    text_box @pay_slip.pay_date.to_s, at: [130.mm, 242.mm], style: :bold, height: 8.mm, width: 70.mm, style: :bold, align: :center, valign: :center
-    text_box "#{@pay_slip.pay_from.name1} #{@pay_slip.chq_no}", at: [130.mm, 234.mm], style: :bold, height: 8.mm, width: 70.mm, style: :bold, align: :center, valign: :center
+    draw_text "SLIP DATE :", size: 10, at: [130.mm, 255.mm]
+    draw_text @pay_slip.doc_date, at: [155.mm, 255.mm], style: :bold, size: 10
+
+    draw_text "PAY UNTIL :", size: 10, at: [130.mm, 250.mm]
+    draw_text @pay_slip.pay_date, at: [155.mm, 250.mm], style: :bold, size: 10
+
+    draw_text "EMP ID :", size: 10, at: [130.mm, 245.mm]
+    draw_text @view.docnolize(@pay_slip.employee.id), at: [155.mm, 245.mm], style: :bold, size: 10
+
+    draw_text "PAY BY :", size: 10, at: [10.mm, 33.mm]
+    draw_text "#{@pay_slip.pay_from.name1} #{@pay_slip.chq_no}", at: [40.mm, 33.mm], style: :bold, size: 10
+
+    stroke_horizontal_line 10.mm, 200.mm, at: 226.mm
+
+    bounding_box [10.mm, 225.mm], height: 9.mm, width: 100.mm do
+      text_box 'Particulars', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    bounding_box [110.mm, 225.mm], height: 9.mm, width: 40.mm do
+      text_box 'Quantity', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    bounding_box [140.mm, 225.mm], height: 9.mm, width: 30.mm do
+      text_box 'Price', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    bounding_box [170.mm, 225.mm], height: 9.mm, width: 30.mm do
+      text_box 'Amount', overflow: :wrap, valign: :center, align: :center, style: :bold
+    end
+
+    stroke_horizontal_line 10.mm, 200.mm, at: 216.mm
+
+    draw_text "Please read the above information carefully.", size: 9, at: [10.mm, 26.mm]
+    draw_text "Error reported after 7 days, will not be accepted.", size: 9, at: [10.mm, 22.mm]
+
+    draw_text "ISSUED BY :", size: 8, at: [10.mm, 17.mm]
+    draw_text @pay_slip.audits.last.user.name, at: [30.mm, 17.mm], size: 8
+
   end
 
   def draw_page_number
@@ -90,19 +106,19 @@ class PaySlipPdf < Prawn::Document
     @detail_y = @detail_y_start_at
 
     @pay_slip.salary_notes.addition.each do |t|
-      text_box [t.doc_date, t.salary_type.name, t.note].flatten.join(' '), overflow: :shrink_to_fit, 
-               valign: :center, height:@detail_height, width: 106.mm, at: [10.mm, @detail_y]
-      
+      text_box [t.doc_date, t.salary_type.name, t.note].flatten.join(' '), overflow: :shrink_to_fit,
+               valign: :center, height:@detail_height, width: 100.mm, at: [10.mm, @detail_y]
+
       qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
       text_box [qty, t.unit].flatten.join(' '), overflow: :shrink_to_fit, valign: :center,
-               align: :center, height: @detail_height, width: 35.mm, at: [113.mm, @detail_y]
+               align: :center, height: @detail_height, width: 40.mm, at: [110.mm, @detail_y]
 
-      text_box @view.number_with_precision(t.unit_price, precision: 4, delimiter: ','), 
+      text_box @view.number_with_precision(t.unit_price, precision: 4, delimiter: ','),
                overflow: :shrink_to_fit, valign: :center, align: :center,
-               height: @detail_height, width: 27.mm, at: [148.mm, @detail_y]
-      
+               height: @detail_height, width: 30.mm, at: [140.mm, @detail_y]
+
       text_box t.amount.to_money.format, overflow: :shrink_to_fit, valign: :center, align: :center,
-               height: @detail_height, width: 33.mm, at: [175.mm, @detail_y]
+               height: @detail_height, width: 30.mm, at: [170.mm, @detail_y]
 
       @detail_y = @detail_y - @detail_height
 
@@ -114,12 +130,12 @@ class PaySlipPdf < Prawn::Document
 
     group do
       line_width 1
-      stroke_horizontal_line 175.mm, 207.mm, at: @detail_y 
-      text_box @pay_slip.salary_notes.addition.inject(0) { |sum, t| sum + t.amount }.to_money.format, 
-               overflow: :shrink_to_fit, align: :center, valign: :center, style: :bold, size: 10, at: [175.mm, @detail_y - 1.mm],
-               height: 5.mm, width: 33.mm
+      stroke_horizontal_line 170.mm, 200.mm, at: @detail_y
+      text_box @pay_slip.salary_notes.addition.inject(0) { |sum, t| sum + t.amount }.to_money.format,
+               overflow: :shrink_to_fit, align: :center, valign: :center, style: :bold, at: [170.mm, @detail_y - 1.mm],
+               height: 5.mm, width: 30.mm
       line_width 1
-      stroke_horizontal_line 175.mm, 207.mm, at: @detail_y - 6.mm
+      stroke_horizontal_line 170.mm, 200.mm, at: @detail_y - 6.mm
       @detail_y = @detail_y - 7.mm
     end
   end
@@ -128,19 +144,19 @@ class PaySlipPdf < Prawn::Document
 
     @pay_slip.salary_notes.deduction.each do |t|
 
-      text_box [t.doc_date, t.salary_type.name, t.note].flatten.join(' '), overflow: :shrink_to_fit, 
-               valign: :center, height:@detail_height, width: 106.mm, at: [10.mm, @detail_y]
-      
+      text_box [t.doc_date, t.salary_type.name, t.note].flatten.join(' '), overflow: :shrink_to_fit,
+               valign: :center, height:@detail_height, width: 100.mm, at: [10.mm, @detail_y]
+
       qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',')
       text_box [qty, t.unit].flatten.join(' '), overflow: :shrink_to_fit, valign: :center,
-               align: :center, height: @detail_height, width: 35.mm, at: [113.mm, @detail_y]
+               align: :center, height: @detail_height, width: 40.mm, at: [110.mm, @detail_y]
 
-      text_box @view.number_with_precision(-(t.unit_price), precision: 4, delimiter: ','), 
+      text_box @view.number_with_precision(-(t.unit_price), precision: 4, delimiter: ','),
                overflow: :shrink_to_fit, valign: :center, align: :center,
-               height: @detail_height, width: 27.mm, at: [148.mm, @detail_y]
-      
+               height: @detail_height, width: 30.mm, at: [140.mm, @detail_y]
+
       text_box (-t.amount).to_money.format, overflow: :shrink_to_fit, valign: :center, align: :center,
-               height: @detail_height, width: 33.mm, at: [175.mm, @detail_y]
+               height: @detail_height, width: 30.mm, at: [170.mm, @detail_y]
 
       @detail_y = @detail_y - @detail_height
 
@@ -155,17 +171,17 @@ class PaySlipPdf < Prawn::Document
 
     @pay_slip.advances.each do |t|
 
-    text_box [t.doc_date, 'Advance'].flatten.join(' '), overflow: :shrink_to_fit, 
-             valign: :center, height:@detail_height, width: 106.mm, at: [10.mm, @detail_y]
-    
+    text_box [t.doc_date, 'Advance'].flatten.join(' '), overflow: :shrink_to_fit,
+             valign: :center, height:@detail_height, width: 100.mm, at: [10.mm, @detail_y]
+
     text_box '-', overflow: :shrink_to_fit, valign: :center,
-             align: :center, height: @detail_height, width: 35.mm, at: [113.mm, @detail_y]
+             align: :center, height: @detail_height, width: 40.mm, at: [110.mm, @detail_y]
 
     text_box '-', overflow: :shrink_to_fit, valign: :center, align: :center,
-             height: @detail_height, width: 27.mm, at: [148.mm, @detail_y]
-    
+             height: @detail_height, width: 30.mm, at: [140.mm, @detail_y]
+
     text_box (-t.amount).to_money.format, overflow: :shrink_to_fit, valign: :center, align: :center,
-             height: @detail_height, width: 33.mm, at: [175.mm, @detail_y]
+             height: @detail_height, width: 30.mm, at: [170.mm, @detail_y]
 
       @detail_y = @detail_y - @detail_height
 
@@ -179,12 +195,12 @@ class PaySlipPdf < Prawn::Document
   def draw_footer
     group do
       line_width 2
-      stroke_horizontal_line 175.mm, 207.mm, at: @detail_y - 1.mm
+      stroke_horizontal_line 170.mm, 200.mm, at: @detail_y - 1.mm
       text_box @pay_slip.amount.to_money.format, overflow: :shrink_to_fit,
-               align: :center, valign: :center, style: :bold, size: 12, at: [175.mm, @detail_y - 2.5.mm],
-               height: 5.mm, width: 33.mm
+               align: :center, valign: :center, style: :bold, at: [170.mm, @detail_y - 2.5.mm],
+               height: 5.mm, width: 30.mm
       line_width 2
-      stroke_horizontal_line 175.mm, 207.mm, at: @detail_y - 8.5.mm
+      stroke_horizontal_line 170.mm, 200.mm, at: @detail_y - 8.5.mm
     end
   end
 
