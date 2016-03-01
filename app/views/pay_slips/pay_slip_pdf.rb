@@ -39,7 +39,6 @@ def draw_static_content
     draw_text "RECEIVER SIGNATURE", size: 8, at: [110.mm, 9.mm]
     draw_text "AUTHORIZED SIGNATURE", size: 8, at: [162.mm, 9.mm]
     stroke_horizontal_line 10.mm, 200.mm, at: 260.mm
-    stroke_horizontal_line 10.mm, 200.mm, at: 30.mm
   end
 
   #Dynamic Content
@@ -61,8 +60,8 @@ def draw_static_content
     draw_text "EMP ID :", size: 10, at: [130.mm, 245.mm]
     draw_text @view.docnolize(@pay_slip.employee.id), at: [155.mm, 245.mm], style: :bold, size: 10
 
-    draw_text "PAY BY :", size: 10, at: [10.mm, 33.mm]
-    draw_text "#{@pay_slip.pay_from.name1} #{@pay_slip.chq_no}", at: [40.mm, 33.mm], style: :bold, size: 10
+    draw_text "PAY BY :", size: 10, at: [10.mm, 35.mm]
+    draw_text "#{@pay_slip.pay_from.name1} #{@pay_slip.chq_no}", at: [35.mm, 35.mm], style: :bold, size: 10
 
     stroke_horizontal_line 10.mm, 200.mm, at: 226.mm
 
@@ -83,12 +82,13 @@ def draw_static_content
     end
 
     stroke_horizontal_line 10.mm, 200.mm, at: 216.mm
+    stroke_horizontal_line 10.mm, 200.mm, at: 32.mm
 
-    draw_text "Please read the above information carefully.", size: 9, at: [10.mm, 26.mm]
-    draw_text "Error reported after 7 days, will not be accepted.", size: 9, at: [10.mm, 22.mm]
+    draw_text "Please read the above information carefully.", size: 9, at: [10.mm, 28.mm]
+    draw_text "Error reported after 7 days, will not be accepted.", size: 9, at: [10.mm, 24.mm]
 
-    draw_text "ISSUED BY :", size: 8, at: [10.mm, 17.mm]
-    draw_text @pay_slip.audits.last.user.name, at: [30.mm, 17.mm], size: 8
+    draw_text "ISSUED BY :", size: 8, at: [10.mm, 19.mm]
+    draw_text @pay_slip.audits.last.user.name, at: [30.mm, 19.mm], size: 8
 
   end
 
