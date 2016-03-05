@@ -1,4 +1,5 @@
 class PurInvoice < ActiveRecord::Base
+  include SharedHelpers
   belongs_to :supplier, class_name: "Account"
   has_many :particulars, as: :doc, class_name: "PurInvoiceParticular"
   has_many :transactions, as: :doc
@@ -7,6 +8,7 @@ class PurInvoice < ActiveRecord::Base
   validates_presence_of :credit_terms, :supplier_name1, :doc_date, :reference_no
 
   before_save do |r|
+    raise "Cannot update a posted document" if !can_save?(Date.today, r.doc_date)
     if !r.posted or (r.posted and r.changes[:posted] == [false, true])
       build_transactions
     else

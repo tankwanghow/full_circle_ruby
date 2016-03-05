@@ -1,4 +1,5 @@
 class CashSale < ActiveRecord::Base
+  include SharedHelpers
   belongs_to :customer, class_name: "Account"
   has_many :particulars, as: :doc, class_name: "CashSaleParticular"
   has_many :transactions, as: :doc
@@ -11,6 +12,7 @@ class CashSale < ActiveRecord::Base
   acts_as_taggable_on :loader, :unloader
 
   before_save do |r|
+    raise "Cannot update a posted document" if !can_save?(Date.today, r.doc_date)
     if !r.posted or (r.posted and r.changes[:posted] == [false, true])
       build_transactions
     else
