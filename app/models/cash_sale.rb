@@ -12,7 +12,7 @@ class CashSale < ActiveRecord::Base
   acts_as_taggable_on :loader, :unloader
 
   before_save do |r|
-    raise "Cannot update a posted document" if !can_save?(Date.today, r.doc_date)
+    raise "Cannot update a posted document" if !can_save?(Date.today, r.doc_date) and !User.current.is_admin?
     if !r.posted or (r.posted and r.changes[:posted] == [false, true])
       build_transactions
     else
