@@ -2,7 +2,7 @@ module InvoicesHelper
   def render_invoice_details_fields builder, xies_name
     render 'share/nested_fields', f: builder, xies_name: xies_name, field: 'details/field',
             headers: [['Product', 'span8'], ['Package', 'span4'], ['Pack', 'span3'], ['Note', 'span8'], ['Quantity', 'span4'],
-                      ['Unit', 'span2'], ['Price', 'span3'], ['Discount', 'span3'], ['Code', 'span2'], ['GST %', 'span2'], 
+                      ['Unit', 'span2'], ['Price', 'span3'], ['Discount', 'span3'], ['Code', 'span2'], ['GST %', 'span2'],
                       ['GST', 'span3'], ['Amount', 'span4']],
             text: 'Add Detail'
   end
@@ -12,12 +12,11 @@ module InvoicesHelper
   end
 
   def packaging_html_data builder
-    { package_json: builder.object.product_packaging.to_json, 
+    { package_json: builder.object.product_packaging.to_json,
       source: ProductPackaging.pack_qty_names(builder.object.product.try(:id)), provide: 'typeahead' }
   end
 
-  def render_matchers object
-    balance = object.invoice_amount
+  def render_matchers object, balance
     if object.matchers.count > 0
       content_tag(:div, 'Matched Documents', class: :bold) +
       object.matchers.map do |t|
@@ -28,5 +27,13 @@ module InvoicesHelper
       end.join(' ').html_safe +
       content_tag(:div, "BALANCE = " + balance.to_money.format, class: :bold)
     end
+  end
+
+  def render_invoice_matchers object
+    render_matchers object, object.invoice_amount
+  end
+
+  def render_pur_invoice_matchers object
+    render_matchers object, -object.invoice_amount
   end
 end
