@@ -8,6 +8,7 @@ class SalaryNote < ActiveRecord::Base
   validates_numericality_of :quantity, :unit_price, greater_than: 0
   before_save :build_transactions
   has_one :harvesting_slip
+  after_destroy :destroy_transactions
 
   include ValidateTransactionsBalance
 
@@ -63,8 +64,12 @@ class SalaryNote < ActiveRecord::Base
 
 private
 
-  def build_transactions
+  def destroy_transactions
     transactions.where(old_data: false).destroy_all
+  end
+
+  def build_transactions
+    destroy_transactions
     if !no_transactions
       db_transaction
       cr_transaction

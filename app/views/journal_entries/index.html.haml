@@ -7,8 +7,8 @@
       %th.span4 Partuculars
       %th.span2 Debit
       %th.span2 Credit
-  %tbody 
-    - for t in @journal_entries
+  %tbody
+    - for t in @journal_entries.where(old_data: false)
       %tr.transaction
         %td.transaction_date= t.transaction_date
         %td.account= t.account.name1

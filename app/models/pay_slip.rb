@@ -21,7 +21,7 @@ class PaySlip < ActiveRecord::Base
   simple_audit username_method: :username do |r|
     {
       doc_date: r.doc_date.to_s,
-      pay_date: r.pay_date.to_s, 
+      pay_date: r.pay_date.to_s,
       employee: r.employee_name,
       pay_from: r.pay_from_name1,
       chq_no: r.chq_no,
@@ -69,7 +69,7 @@ class PaySlip < ActiveRecord::Base
         destroyed = ['1', 'true'].include?(v.delete('_destroy')) ? true :false
       end
       if note
-        if !destroyed 
+        if !destroyed
           note.attributes = v
         else
           if note.generated
@@ -108,8 +108,8 @@ class PaySlip < ActiveRecord::Base
   def total_pay=val
   end
 
-  def total_pay 
-    amount 
+  def total_pay
+    amount
   end
 
 private
