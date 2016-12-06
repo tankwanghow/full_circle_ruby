@@ -84,7 +84,7 @@ class HarvestingReportPdf < Prawn::Document
   end
 
   def start_mark_for_warning current_prod, avg_prod
-    if (avg_prod - current_prod).abs > 10
+    if avg_prod - current_prod > 10
       "<color rgb='00BC32'>"
     else
       ""
@@ -92,7 +92,7 @@ class HarvestingReportPdf < Prawn::Document
   end
 
   def end_mark_for_warning current_prod, avg_prod
-    if (avg_prod - current_prod).abs > 10
+    if avg_prod - current_prod > 10
       "</color>"
     else
       ""
