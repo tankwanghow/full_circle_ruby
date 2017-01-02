@@ -4,15 +4,15 @@ class GstAccountsController < ApplicationController
 
   def index
     store_param :gst_accounts
-    session[:gst_accounts][:month] ||= Date.current.month - 1
-    session[:gst_accounts][:year] ||= Date.current.year
+    session[:gst_accounts][:month] ||= Date.current.prev_month.month
+    session[:gst_accounts][:year] ||= Date.current.month == 1 ? Date.current.year - 1 : Date.current.year
     @date = "#{session[:gst_accounts][:year]}-#{session[:gst_accounts][:month]}-01".to_date.end_of_month
     start_date = @date.end_of_month.advance(days: -(@date.end_of_month.day - 1))
     end_date   = @date.end_of_month
     @accounts = Account.gst_accounts
     @gst_control_account = @accounts.select { |t| t.name1 =~ /Control/ }.first
     @gst_expense_account = @accounts.select { |t| t.name1 =~ /Expense/ }.first
-    
+
     @scn  = gst_debit_and_credit_note_sum 'credit_note', 'GST for Supply', start_date, end_date
     @sdn  = gst_debit_and_credit_note_sum 'debit_note', 'GST for Supply', start_date, end_date
     @cs   = gst_supply_and_acqusition_sum 'cash_sale', 'GST for Supply', start_date, end_date
