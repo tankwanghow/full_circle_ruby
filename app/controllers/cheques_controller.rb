@@ -1,5 +1,5 @@
 class ChequesController < ApplicationController
-  
+
   def depositable
     @cheques = Cheque.not_credited.dued(params[:due_date]).limit(params[:limit]).order(:due_date, :amount) |
                Cheque.cr_doc_is(params[:doc_type], params[:doc_id]).order(:due_date, :amount)

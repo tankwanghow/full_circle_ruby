@@ -4,7 +4,7 @@ class HarvestingSlip < ActiveRecord::Base
   validates_presence_of :harvest_date
   belongs_to :collector, class_name: "Employee"
   validate :has_detail
-  # before_save :save_salary_note
+  # after_save :save_salary_note
 
   include ValidateBelongsTo
   validate_belongs_to :collector, :name
@@ -27,7 +27,7 @@ class HarvestingSlip < ActiveRecord::Base
 
   def house_wages_summary
     harvesting_slip_details.select { |t| !t.marked_for_destruction? }.map do |t|
-      "#{t.house.house_no}(#{t.house.harvesting_wages_for(t.harvested)})"
+      "#{t.house.house_no}($#{t.house.harvesting_wages_for(t.harvested)})"
     end.join ' '
   end
 
@@ -43,20 +43,20 @@ class HarvestingSlip < ActiveRecord::Base
     find_by_sql(["
       select e.name, string_agg(DISTINCT h.house_no, ' ' ORDER BY h.house_no) as houses
         from houses h
-       inner join harvesting_slip_details hsd 
+       inner join harvesting_slip_details hsd
           on hsd.house_id = h.id
-       inner join harvesting_slips hs 
+       inner join harvesting_slips hs
           on hs.id = hsd.harvesting_slip_id
        inner join employees e
-          on hs.collector_id = e.id 
+          on hs.collector_id = e.id
        where hs.harvest_date = ?
        group by e.name", date.to_date - 1]).concat(
     find_by_sql ["
       select '' as name, string_agg(DISTINCT h.house_no, ' ' ORDER BY h.house_no) as houses
         from houses h
-       inner join harvesting_slip_details hsd 
+       inner join harvesting_slip_details hsd
           on hsd.house_id = h.id
-       inner join harvesting_slips hs 
+       inner join harvesting_slips hs
           on hs.id = hsd.harvesting_slip_id
        where hs.harvest_date = ?
          and hs.collector_id is null", date.to_date - 1])
@@ -80,6 +80,7 @@ private
           note: house_wages_summary,
           quantity: 1,
           unit: '-',
+          no_transactions: false,
           unit_price: harvesting_wages)
       else
         salary_note.update_attributes(
@@ -89,6 +90,7 @@ private
           note: house_wages_summary,
           quantity: 1,
           unit: '-',
+          no_transactions: false,
           unit_price: harvesting_wages)
       end
     end

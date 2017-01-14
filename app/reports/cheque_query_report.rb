@@ -3,9 +3,12 @@ class ChequeQueryReport < Dossier::Report
 
   def sql
     <<-SQL
-    select db_doc_type as debit_doc, db_doc_id as debit_no, cr_doc_type as credit_doc, cr_doc_id as credit_no,
+    select ac.name1 as from_ac, db_doc_type as debit_doc, db_doc_id as debit_no,
+           ac1.name1 as to_ac, cr_doc_type as credit_doc, cr_doc_id as credit_no,
            bank, chq_no, city, state, due_date, amount
-      from cheques
+      from cheques chq inner join accounts ac
+        on chq.db_ac_id = ac.id left outer join accounts ac1
+        on chq.cr_ac_id = ac1.id
      where 1 = 1
        #{start_date_condition}
        #{end_date_condition}
@@ -61,5 +64,5 @@ class ChequeQueryReport < Dossier::Report
   def end_date
     @options[:end_date] ? @options[:end_date].to_date : Date.today
   end
-  
+
 end

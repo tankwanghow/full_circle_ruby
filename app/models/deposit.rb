@@ -15,7 +15,7 @@ class Deposit < ActiveRecord::Base
 
   include Searchable
   searchable doc_date: :doc_date, doc_amount: :deposit_amount,
-             content: [:id, :bank_name1, :cash_amount, 
+             content: [:id, :bank_name1, :cash_amount,
                        :cheques_audit_string]
 
   simple_audit username_method: :username do |r|
@@ -43,15 +43,12 @@ class Deposit < ActiveRecord::Base
 
   def cheques_attributes= vals
     vals.each do |k, v|
-      chq = cheques.detect { |t| t.id == v['id'].to_i }
+      chq = Cheque.find(v['id'].to_i)
       if chq
         if v['_destroy'] == '1'
           chq.cr_doc = nil
           chq.cr_ac = nil
-        end
-      else
-        if v['_destroy'] != '1'
-          chq = Cheque.find(v['id'])
+       else
           chq.cr_doc = self
           chq.cr_ac = bank
           cheques << chq
