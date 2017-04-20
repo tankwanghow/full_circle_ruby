@@ -8,7 +8,7 @@ class DebitNote < ActiveRecord::Base
   validates_presence_of :account_name1, :doc_date
 
   before_save do |r|
-    raise "Cannot update a posted document" if !can_save?(Date.today, r.doc_date) and !User.current.is_admin?
+    raise "Cannot update a posted document" if !can_save?(Date.today, r.doc_date)
     if !r.posted or (r.posted and r.changes[:posted] == [false, true])
       build_transactions
     else
