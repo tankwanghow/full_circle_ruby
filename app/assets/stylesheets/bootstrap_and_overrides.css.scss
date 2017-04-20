@@ -154,7 +154,7 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 }
 
 #report {
-  thead, tfoot { 
+  thead, tfoot {
     background-color: lightgreen;
   }
 }
@@ -180,10 +180,6 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
   display: none;
 }
 
-table.GST td, table.GST th {
-  text-align: center;
-}
-
-table.GST th {
-  background-color: lightgreen;
+td.align-right {
+  text-align: right;
 }
