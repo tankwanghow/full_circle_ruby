@@ -48,7 +48,7 @@ private
     if (current_user and !current_user.is_admin) or !current_user
       params.require(:user).permit(:username, :name, :password, :password_confirmation)
     else
-      params.require(:user).permit(:username, :name, :password, :password_confirmation, :status, :is_admin)
+      params.require(:user).permit(:username, :name, :password, :password_confirmation, :status, :is_admin, :is_manager)
     end
   end
 

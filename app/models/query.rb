@@ -17,7 +17,7 @@ class Query < ActiveRecord::Base
 private
 
   def clean_up_dangerous_query
-    query.gsub!(/set|create|alter|into|update|delete|drop|truncate|insert|drop/i, '#not allowed#')    
+    query.gsub!(/\sset\s|\screate\s|\salter\s|\sinto\s|\supdate\s|\sdelete\s|\sdrop\s|\struncate\s|\sinsert\s|\sdrop\s/i, '#not allowed#')    
   end
 
 end

@@ -13,6 +13,6 @@ module SharedHelpers
   end
 
   def can_save? date2, date1
-    diff_month(date2, date1) <= 1
+    diff_month(date2, date1) <= 1 || User.current.is_manager
   end
 end
