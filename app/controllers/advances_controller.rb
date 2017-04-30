@@ -21,7 +21,7 @@ class AdvancesController < ApplicationController
       redirect_to edit_advance_path(@advance)
     else
       flash.now[:error] = "Failed to create Advance."
-      render :new 
+      render :new
     end
   end
 
@@ -43,6 +43,4 @@ class AdvancesController < ApplicationController
       redirect_to new_advance_path
     end
   end
-
 end
-
