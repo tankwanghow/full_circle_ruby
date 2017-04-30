@@ -51,14 +51,14 @@ FullCircle::Application.routes.draw do
   resources :addresses, only: [:new, :edit, :update, :create, :destroy]
   resources :fixed_assets, only: [:new, :edit, :update, :create, :destroy]
   resources :asset_additions, only: [:edit, :update]
-  
+
   resources :salary_types, only: [:new, :edit, :update, :create, :destroy]
   get 'salary_type/new_or_edit' => 'salary_types#new_or_edit'
   get 'salary_type/json' => 'salary_types#json'
   get 'salary_type/typeahead_name' => 'salary_types#typeahead_name'
 
   resources :employees, only: [:new, :edit, :update, :create, :destroy]
-  get 'employee/typeahead_name' => 'employees#typeahead_name'    
+  get 'employee/typeahead_name' => 'employees#typeahead_name'
   get 'employee/new_or_edit' => 'employees#new_or_edit'
   get 'employees/new_with_template' => 'employees#new_with_template'
 
@@ -70,7 +70,7 @@ FullCircle::Application.routes.draw do
 
   resources :matching_payments, only: [:new, :edit, :show]
   get 'matching_payment/new_or_edit' => 'matching_payments#new_or_edit'
-  
+
   resources :invoices, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]
   end
@@ -149,7 +149,7 @@ FullCircle::Application.routes.draw do
   resources :journals, only: [:new, :edit, :update, :create, :show] do
     resources :journal_entries, only: [:index]
   end
-  get 'journal/new_or_edit' => 'journals#new_or_edit' 
+  get 'journal/new_or_edit' => 'journals#new_or_edit'
 
   resources :flocks, only: [:new, :edit, :update, :create]
   get 'flock/new_or_edit' => 'flocks#new_or_edit'

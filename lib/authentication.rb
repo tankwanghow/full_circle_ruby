@@ -45,4 +45,3 @@ module Authentication
     session[:return_to] = request.fullpath
   end
 end
-
