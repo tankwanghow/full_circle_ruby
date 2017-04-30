@@ -8,6 +8,7 @@ class HarvestingSlip < ActiveRecord::Base
 
   include ValidateBelongsTo
   validate_belongs_to :collector, :name
+  validate :no_double_harvesting_slip_details
 
   accepts_nested_attributes_for :harvesting_slip_details, allow_destroy: true
 
@@ -63,6 +64,14 @@ class HarvestingSlip < ActiveRecord::Base
   end
 
 private
+
+  def no_double_harvesting_slip_details
+    ungroup_size = harvesting_slip_details.size
+    grouped_size = harvesting_slip_details.group_by(&:house_id).size
+    if ungroup_size > grouped_size
+      raise 'Double house entry'
+    end
+  end
 
   def has_detail
     if harvesting_slip_details.select{ |t| !t.marked_for_destruction? }.count == 0
