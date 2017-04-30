@@ -68,6 +68,14 @@ class SocsoContributionService
     end
   end
 
+  def socso_employee_no_age
+    grab_row_where_salary_between[3]
+  end
+
+  def socso_employer_no_age
+    grab_row_where_salary_between[2]
+  end
+
 private
 
   def grab_row_where_salary_between

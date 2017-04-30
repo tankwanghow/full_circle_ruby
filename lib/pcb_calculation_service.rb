@@ -1,6 +1,6 @@
 class PcbCalculationService
   EMPLOYEE_ZAKAT_NAME = 'Employee Zakat'
-  EMPLOYEE_EPF_NAME = 'EPF By Employee'
+  EMPLOYEE_EPF_NAME= 'EPF By Employee'
   EMPLOYEE_PCB_NAME = 'Employee PCB'
   NON_RESIDENT_TAX_RATE = 0.26
   QUALIFY_CHILDREN_DEDUCTION = 1000.0
@@ -49,18 +49,18 @@ class PcbCalculationService
   def nearest_five_cents val
     truncate_val = (val * 100).to_i
     t = truncate_val % 5
-    if t == 0  
+    if t == 0
       return (truncate_val/100).round 2
-    else  
-      return (truncate_val.round(2) + (5 - t)) / 100    
-    end  
+    else
+      return (truncate_val.round(2) + (5 - t)) / 100
+    end
   end
 
   def amount_of_first_taxable_income
     row = SCHEDULE.detect { |t| total_taxable_income_for_the_year.to_f.between?(t[0], t[1]) }
     return row[2] if row
     0
-  end  
+  end
 
   def resident_pcb_current_month
     y  = current_year_taxable_income
@@ -104,7 +104,7 @@ class PcbCalculationService
       b  = SCHEDULE.detect { |t| p.between?(t[0], t[1]) }[employee_pcb_category]
       z  = current_month_zakat + zakat_paid_for_the_year
       x  = pcb_paid_current_year + (resident_pcb_current_month * (n+1))
-      mtd = ((((p - m)*r) + b) - (z + x))
+      md = ((((p - m)*r) + b) - (z + x))
     else
       0
     end
@@ -124,8 +124,8 @@ class PcbCalculationService
   end
 
   def current_month_taxable_income
-    @payslip.salary_notes.select do |t| 
-      !t.marked_for_destruction? and 
+    @payslip.salary_notes.select do |t|
+      !t.marked_for_destruction? and
       t.salary_type.classifiaction == 'Addition' and
       !NON_TAXABLE_INCOME_NAMES.include?(t.salary_type.name) and
       !ADDITION_TAXABLE_INCOME_NAMES.include?(t.salary_type.name)
@@ -141,8 +141,8 @@ class PcbCalculationService
   end
 
   def current_month_epf
-    cur_epf = @payslip.salary_notes.select do |t| 
-                !t.marked_for_destruction? and 
+    cur_epf = @payslip.salary_notes.select do |t|
+                !t.marked_for_destruction? and
                 t.salary_type.name == EMPLOYEE_EPF_NAME
               end.inject(0) { |sum, t| sum + t.amount }
     if cur_epf == 0
@@ -172,8 +172,8 @@ class PcbCalculationService
   end
 
   def addition_taxable_income
-    @payslip.salary_notes.select do |t| 
-      !t.marked_for_destruction? and 
+    @payslip.salary_notes.select do |t|
+      !t.marked_for_destruction? and
       t.salary_type.classifiaction == 'Addition' and
       ADDITION_TAXABLE_INCOME_NAMES.include?(t.salary_type.name)
     end.inject(0) { |sum, t| sum + t.amount }
@@ -189,8 +189,8 @@ class PcbCalculationService
   end
 
   def current_month_zakat
-    @payslip.salary_notes.select do |t| 
-      !t.marked_for_destruction? and 
+    @payslip.salary_notes.select do |t|
+      !t.marked_for_destruction? and
       t.salary_type.name == EMPLOYEE_ZAKAT_NAME
     end.inject(0) { |sum, t| sum + t.amount }
   end

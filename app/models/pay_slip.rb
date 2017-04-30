@@ -6,6 +6,7 @@ class PaySlip < ActiveRecord::Base
   has_many :transactions, as: :doc
   validates_presence_of :employee_name, :pay_from_name1, :pay_date, :doc_date
   validate :pay_date_vs_doc_date
+  validate :one_payslip_per_month
   before_save :build_transactions
 
   include ValidateCreditAccountBalance
@@ -116,6 +117,15 @@ private
 
   def pay_date_vs_doc_date
     errors.add :pay_date, 'to big!' if pay_date > doc_date
+  end
+
+  def one_payslip_per_month
+    got_paid_this_month =
+      PaySlip.
+        where(employee_id: employee_id).
+        where("extract(year from pay_date) = ?", pay_date.year).
+        where("extract(month from pay_date) = ?", pay_date.month).first
+    errors.add :pay_date, "repeated PS-#{got_paid_this_month.id}" if got_paid_this_month
   end
 
   def build_transactions

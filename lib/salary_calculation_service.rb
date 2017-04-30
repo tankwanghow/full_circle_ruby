@@ -3,8 +3,8 @@ class SalaryCalculationService
   def self.calculate payslip
     @payslip = payslip
     @payslip.salary_notes.select{ |t| !t.marked_for_destruction? and !t.salary_type.service_method.blank? }.each do |n|
-      if respond_to?(n.salary_type.service_method)
-        value = send(n.salary_type.service_method)
+      if service_respond_to?(n.salary_type)
+        value = call_service_method(n.salary_type)
         n.quantity = value[0]
         n.unit_price = value[1]
       else
@@ -16,24 +16,12 @@ class SalaryCalculationService
 
 private
 
-  def self.epf_employer
-    [1, EpfContributionService.new(@payslip).epf_employer]
+  def self.service_respond_to? salary_type
+    salary_type.service_class.constantize.instance_method_names.include?(salary_type.service_method)
   end
 
-  def self.epf_employee
-    [1, EpfContributionService.new(@payslip).epf_employee]
-  end
-
-  def self.socso_employer
-    [1, SocsoContributionService.new(@payslip).socso_employer]
-  end
-
-  def self.socso_employee
-    [1, SocsoContributionService.new(@payslip).socso_employee]
-  end
-
-  def self.pcb_employee
-    [1, PcbCalculationService.new(@payslip).pcb_current_month]
+  def self.call_service_method salary_type
+    [1, salary_type.service_class.constantize.new(@payslip).send(salary_type.service_method)]
   end
 
 end
