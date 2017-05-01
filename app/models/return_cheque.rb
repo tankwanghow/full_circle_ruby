@@ -9,7 +9,6 @@ class ReturnCheque < ActiveRecord::Base
   validates_uniqueness_of :cheque_id, message: "already returned."
 
   before_save :build_transactions
-  after_save :update_cheque
 
   include ValidateBelongsTo
   validate_belongs_to :return_to, :name1
@@ -37,25 +36,54 @@ class ReturnCheque < ActiveRecord::Base
      }
   end
 
+  def matchers
+    if valid?
+      transactions.where(account_id: return_to_id).first.matchers
+    else
+      []
+    end
+  end
+
 private
-  
+
   def dont_process(attr)
     return true if attr["id"].blank? && attr["amount"].to_f == 0
   end
 
   def build_transactions
     transactions.where(old_data: false).destroy_all
-    cheque = Cheque.find cheque_id
+    update_cheque
     build_return_to_transaction
     build_return_from_transaction
     validates_transactions_balance
   end
 
   def update_cheque
-    if !cheque.cr_doc
-      cheque.cr_doc = self
-      cheque.cr_ac = return_to
-      cheque.save!
+    if changed.include?("cheque_id")
+      new_cheque = Cheque.find changes["cheque_id"][1]
+      if new_record?
+        new_record_update_cheque new_cheque
+      else
+        old_cheque = Cheque.find changes["cheque_id"][0]
+        new_record_update_cheque new_cheque
+        clear_old_cheque old_cheque
+      end
+    end
+  end
+
+  def new_record_update_cheque chq
+    if !chq.cr_doc
+      chq.cr_doc = self
+      chq.cr_ac = return_to
+      chq.save!
+    end
+  end
+
+  def clear_old_cheque chq
+    if chq.cr_doc_type == 'ReturnCheque'
+      chq.cr_doc = nil
+      chq.cr_ac = nil
+      chq.save!
     end
   end
 

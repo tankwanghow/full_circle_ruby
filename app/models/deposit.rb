@@ -48,7 +48,8 @@ class Deposit < ActiveRecord::Base
         if v['_destroy'] == '1'
           chq.cr_doc = nil
           chq.cr_ac = nil
-       else
+          chq.save
+        else
           chq.cr_doc = self
           chq.cr_ac = bank
           cheques << chq
