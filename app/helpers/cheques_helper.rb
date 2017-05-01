@@ -2,7 +2,7 @@ module ChequesHelper
 
   def render_cheques_fields builder, xies_name
     render 'share/nested_fields', f: builder, xies_name: xies_name, field: 'cheques/field',
-            headers: [['Bank', 'span8'], ['Cheque No', 'span6'], ['City', 'span8'], ['State', 'span8'],
+            headers: [['Bank', 'span8'], ['Cheque No', 'span4'], ['City', 'span8'], ['State', 'span8'],
                       ['Due Date', 'span8'], ['Amount', 'span6']],
             text: 'Add Cheque'
   end

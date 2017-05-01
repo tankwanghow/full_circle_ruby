@@ -1,14 +1,25 @@
 window.return_cheque = {
   init: ->
     app.typeahead_init '#return_cheque_return_to_name1', '/account/typeahead_name1'
+
+    ($ 'form').on 'change', '#return_cheque_return_to_name1', ->
+      ($ '#return_cheque_cheque_id').val(null)
+      ($ '#return_cheque_return_from_name1').val("")
+      ($ '#return_cheque_bank').val("")
+      ($ '#return_cheque_chq_no').val("")
+      ($ '#return_cheque_city').val("")
+      ($ '#return_cheque_state').val("")
+      ($ '#return_cheque_due_date').val("")
+      ($ '#return_cheque_amount').val("")
+
     app.typeahead_init '#return_cheque_reason', '/return_cheque/typeahead_reason'
 
     ($ '#rtn-cheque-query-btn').click (e) ->
-      $.get '/get_return_cheque', 
+      $.get '/get_return_cheque',
         return_to:($ '#return_cheque_return_to_name1').val()
         chq_no: ($ '#chq_no').val()
         bank: ($ '#bank').val()
-        , (data) -> 
+        , (data) ->
           if data
             ($ '#return_cheque_cheque_id').val(data.id)
             ($ '#return_cheque_return_from_name1').val(data.return_from_name1)
@@ -29,4 +40,3 @@ window.return_cheque = {
             ($ '#return_cheque_amount').val('Not Found!')
       e.preventDefault()
 }
-
