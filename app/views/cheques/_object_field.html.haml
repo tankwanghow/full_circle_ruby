@@ -5,7 +5,7 @@
       = hidden_field_tag cheque_attr_name(:id, chq.id), chq.id
       .span8
         = text_field_tag :bank, chq.bank, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
-      .span6
+      .span4
         = text_field_tag :chq_no, chq.chq_no, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
       .span8
         = text_field_tag :city, chq.city, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
@@ -15,6 +15,7 @@
         = text_field_tag :due_date, chq.due_date, class: 'span' + deposited?(chq), readOnly: true, tabindex: -1
       .span6
         = text_field_tag :amount, chq.amount, class: 'span numeric amount' + deposited?(chq), readOnly: true, tabindex: -1
-      .span2
+      .span4
         = hidden_field_tag cheque_attr_name(:_destroy, chq.id), false
         = link_to "X", 'javascript:void(0)', class: 'btn btn-danger remove_nested_fields', data: { association: 'cheques' }, tabindex: -1
+        = link_to "#{chq.db_doc_type}", polymorphic_url(chq.db_doc, action: :edit), class: 'btn btn-warning', tabindex: -1

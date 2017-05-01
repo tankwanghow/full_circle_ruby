@@ -1,7 +1,7 @@
 .row-fluid
   .span8
     = f.input :bank, input_html: { class: 'span' }, wrapper: :table_field
-  .span6
+  .span4
     = f.input :chq_no, input_html: { class: 'span' }, wrapper: :table_field
   .span8
     = f.input :city, input_html: { class: 'span' }, wrapper: :table_field
@@ -11,5 +11,8 @@
     = f.input :due_date, as: :datepicker, input_html: { class: 'span40' }, wrapper: :table_field
   .span6
     = f.input :amount, input_html: { class: 'amount span', type: :text }, wrapper: :table_field
-  .span2
-    = f.link_to_remove "X", class: "btn btn-danger", tabindex: -1
+  .span4
+    - if !f.object.credited?
+      = f.link_to_remove("X", class: "btn btn-danger", tabindex: -1)
+    - else
+      = link_to "#{f.object.cr_doc_type}", polymorphic_url(f.object.cr_doc, action: :edit), class: 'btn btn-warning', tabindex: -1
