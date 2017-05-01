@@ -6,3 +6,5 @@
   .form-actions
     = f.button :submit, 'Save', class: 'btn btn-primary'
     = link_to_edit_action_buttons @return_cheque, return_cheque_journal_entries_path(@return_cheque)
+
+= render_return_cheque_matchers @return_cheque

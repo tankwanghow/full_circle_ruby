@@ -6,4 +6,8 @@ module ReturnChequesHelper
     end
   end
 
+  def render_return_cheque_matchers object
+    render_matchers object, object.amount
+  end
+
 end
