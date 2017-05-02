@@ -124,7 +124,8 @@ private
       PaySlip.
         where(employee_id: employee_id).
         where("extract(year from pay_date) = ?", pay_date.year).
-        where("extract(month from pay_date) = ?", pay_date.month).first
+        where("extract(month from pay_date) = ?", pay_date.month).
+        where("id <> ?", id).first
     errors.add :pay_date, "repeated PS-#{got_paid_this_month.id}" if got_paid_this_month
   end
 
