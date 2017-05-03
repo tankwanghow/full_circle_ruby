@@ -6,7 +6,7 @@
 
 - i = 0
 .pull-right.span23
-  - @paid_employees.sort_by { |t| -t.pay_slips.last.id }.each do |t|
+  - @paid_employees.sort_by { |t| t.pay_slips.last.id }.reverse.each do |t|
     .row
       - i = i + 1
       .span4.bold.btn{disabled: "disabled"}= i.to_s
@@ -17,7 +17,7 @@
 
 - i = 0
 .pull-left.span23
-  - @unpaid_employees.sort_by { |t| t.pay_slips.last.try(:pay_date) || '2000-01-01'.to_date }.each do |t|
+  - @unpaid_employees.sort_by { |t| t.pay_slips.last.try(:pay_date) || '2000-01-01'.to_date }.reverse.each do |t|
     .row
       - i = i + 1
       .span4.bold.btn{disabled: "disabled"}= i.to_s
