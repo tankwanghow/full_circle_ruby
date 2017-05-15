@@ -8,6 +8,8 @@ class AssetAddition < ActiveRecord::Base
   accepts_nested_attributes_for :disposals, allow_destroy: true, reject_if: proc { |attr| attr['amount'].to_f == 0 }
   accepts_nested_attributes_for :depreciations, allow_destroy: true, reject_if: proc { |attr| attr['amount'].to_f == 0 }
 
+  scope :active, -> { joins(asset: :account).where("accounts.status != ?", 'Dormant') }
+
   include AuditString
   audit_string :disposals, :depreciations
 

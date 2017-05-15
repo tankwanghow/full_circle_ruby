@@ -6,7 +6,7 @@ class FixedAssetAdditionConfirmationsController < ApplicationController
     if params[:assets]
       @end_date = params[:assets][:end_date].to_date
       @start_date = prev_close_date(@end_date) + 1
-      FixedAsset.find_each do |t|
+      FixedAsset.active.find_each do |t|
         attrs = t.unsaved_additions_attributes(@end_date.year)
         if attrs.count > 0
           @additions << t.additions.build(attrs)
@@ -30,7 +30,7 @@ class FixedAssetAdditionConfirmationsController < ApplicationController
     @additions = []
     @end_date = params[:assets][:end_date].to_date
     @start_date = prev_close_date(@end_date) + 1
-    FixedAsset.find_each do |t|
+    FixedAsset.active.find_each do |t|
       t.fill_in_unsaved_additions_until @end_date.year
       t.save!
     end

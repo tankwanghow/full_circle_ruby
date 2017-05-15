@@ -6,7 +6,7 @@ class FixedAssetDepreciationConfirmationsController < ApplicationController
     if params[:assets]
       @end_date = params[:assets][:end_date].to_date
       @start_date = prev_close_date(@end_date) + 1
-      AssetAddition.order(:fixed_asset_id, :entry_date, :id).each do |t|
+      AssetAddition.active.order(:fixed_asset_id, :entry_date, :id).each do |t|
         attrs = t.annual_depreciation_for(@end_date.year)
         if attrs.count > 0
           @depreciations << t.depreciations.build(attrs)
@@ -29,7 +29,7 @@ class FixedAssetDepreciationConfirmationsController < ApplicationController
   def confirm_all
     @additions = []
     @end_date = params[:assets][:end_date].to_date
-    AssetAddition.find_each do |t|
+    AssetAddition.active.find_each do |t|
       t.generate_annual_depreciation(@end_date.year)
       t.save!
     end

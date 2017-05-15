@@ -7,6 +7,8 @@ class FixedAsset < ActiveRecord::Base
   validates_numericality_of :depreciation_rate, greater_than_or_equal_to: 0, less_than_or_equal_to: 1
   default_scope includes(:additions)
 
+  scope :active, -> { joins(:account).where("accounts.status != ?", 'Dormant') }
+
   accepts_nested_attributes_for :additions, allow_destroy: true
 
   simple_audit username_method: :username do |r|
