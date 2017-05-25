@@ -14,7 +14,7 @@ private
     <<-SQL
     select house_no, f.dob, (harvest_date - f.dob)/7 as age,
            harvest_1 + harvest_2 as production_1, death,
-           #{yield_by_date(date)}     as yield_1,
+           #{yield_by_date(date)}   as yield_1,
            #{yield_by_date(date-1)} as yield_2,
            #{yield_by_date(date-2)} as yield_3,
            #{yield_by_date(date-3)} as yield_4,
