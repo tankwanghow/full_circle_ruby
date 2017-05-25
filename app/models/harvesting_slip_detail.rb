@@ -25,7 +25,7 @@ private
     hs = HarvestingSlipDetail.joins(:harvesting_slip).
            where(house_id: house_id, flock_id: flock_id).
            where("harvesting_slips.harvest_date = ?", harvesting_slip.try(:harvest_date)).first
-    if hs
+    if hs and new_record?
        errors.add "house_house_no", "entered slip no #{hs.harvesting_slip.id}"
      end
   end
