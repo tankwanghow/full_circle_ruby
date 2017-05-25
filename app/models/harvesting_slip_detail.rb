@@ -22,10 +22,17 @@ class HarvestingSlipDetail < ActiveRecord::Base
 private
 
   def has_same_house_flock_and_harvest_date
-    hs = HarvestingSlipDetail.joins(:harvesting_slip).
-           where(house_id: house_id, flock_id: flock_id).
-           where("harvesting_slips.harvest_date = ?", harvesting_slip.try(:harvest_date)).first
-    if hs and new_record?
+    if new_record?
+      hs = HarvestingSlipDetail.joins(:harvesting_slip).
+            where(house_id: house_id, flock_id: flock_id).
+            where("harvesting_slips.harvest_date = ?", harvesting_slip.try(:harvest_date)).first
+    else
+      hs = HarvestingSlipDetail.joins(:harvesting_slip).
+            where(house_id: house_id, flock_id: flock_id).
+            where('harvesting_slip_details.id != ?', id).
+            where("harvesting_slips.harvest_date = ?", harvesting_slip.try(:harvest_date)).first
+    end
+    if hs
        errors.add "house_house_no", "entered slip no #{hs.harvesting_slip.id}"
      end
   end
