@@ -3,27 +3,28 @@ class HarvestingSevenDaysReport < Dossier::Report
 
   def sql
     <<-SQL
-      select house_no, count(*) as Days, dob, avg(age) as age, 
+      select house_no, count(*) as Days, dob, avg(age) as age,
              sum(production)/7 as production, avg(QtyLeft) as alive,
-             sum(production)/7/avg(QtyLeft) as yield
-        from (select house_no, dob, (harvest_date - dob)/7 as age, 
+             sum(production)/7/avg(QtyLeft) as yield, capacity
+        from (select house_no, dob, (harvest_date - dob)/7 as age,
                      (harvest_1 + harvest_2) * 30 as production,
-                     (select sum(quantity) from movements m 
-                       where m.house_id = h.id and m.flock_id = f.id
+                     (select sum(quantity) from movements m
+                       where m.house_id = h.id
+                         and m.flock_id = f.id
                          and m.move_date <= hs.harvest_date) -
-                     (select sum(death) from harvesting_slips ths, harvesting_slip_details thsd 
+                     (select sum(death) from harvesting_slips ths, harvesting_slip_details thsd
                        where thsd.house_id = h.id
                          and thsd.flock_id = f.id
                          and thsd.harvesting_slip_id = ths.id
-                         and ths.harvest_date <= hs.harvest_date) as QtyLeft
-        from flocks f, houses h, harvesting_slips hs, harvesting_slip_details hsd
-       where hsd.house_id = h.id
-         and hsd.flock_id = f.id
-         and hsd.harvesting_slip_id = hs.id
-         and hs.harvest_date <= :report_date
-         and hs.harvest_date > :report_date_minus_7
-         and h.id IN (select distinct house_id from eggs_harvesting_wages)) as step1
-       group by dob, house_no
+                         and ths.harvest_date <= hs.harvest_date) as QtyLeft, capacity
+                 from flocks f, houses h, harvesting_slips hs, harvesting_slip_details hsd
+                where hsd.house_id = h.id
+                  and hsd.flock_id = f.id
+                  and hsd.harvesting_slip_id = hs.id
+                  and hs.harvest_date <= :report_date
+                  and hs.harvest_date > :report_date_minus_7
+                 and h.id IN (select distinct house_id from eggs_harvesting_wages)) as step1
+              group by dob, house_no, capacity
        order by 3 desc, 1
     SQL
   end
@@ -38,7 +39,7 @@ class HarvestingSevenDaysReport < Dossier::Report
 
   def report_date_minus_7
     @options[:report_date] ? @options[:report_date].to_date - 7 : Date.today - 7
-  end  
+  end
 
   def format_production val
     formatter.number_with_precision(val, :precision => 2)
@@ -55,5 +56,5 @@ class HarvestingSevenDaysReport < Dossier::Report
   def format_yield val
     formatter.number_to_percentage (val.to_f*100), precision: 2
   end
-  
+
 end
