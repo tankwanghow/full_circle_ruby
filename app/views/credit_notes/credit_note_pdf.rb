@@ -57,7 +57,7 @@ class CreditNotePdf < Prawn::Document
 
   #Dynamic Content
   def draw_header
-    text_box @credit_note.account.name1, at: [10.mm, 113.mm], size: 12, width: 100.mm, height: 20.mm, style: :bold
+    text_box @credit_note.account.name1, at: [10.mm, 113.mm], size: 10, width: 100.mm, height: 20.mm, style: :bold
     if @credit_note.account.mailing_address
       address_box(self, @credit_note.account.mailing_address, [10.mm, 108.mm], width: 110.mm, height: 24.mm)
     end
@@ -76,7 +76,7 @@ class CreditNotePdf < Prawn::Document
     end
   end
 
-  def draw_detail 
+  def draw_detail
     draw_pay_to_particulars
   end
 
@@ -87,17 +87,17 @@ class CreditNotePdf < Prawn::Document
       qty = @view.number_with_precision(t.quantity, precision: 4, strip_insignificant_zeros: true, delimiter: ',') + t.unit
       price = @view.number_with_precision(t.unit_price, precision: 4, delimiter: ',')
       str = [part_note, qty, "X", price].compact.join(" ")
-      
+
       bounding_box [8.mm, @detail_y], height: @detail_height, width: 140.mm do
         text_box str, overflow: :shrink_to_fit, valign: :center
       end
-      
+
       bounding_box [155.mm, @detail_y], height: @detail_height, width: 50.mm do
         text_box (t.quantity * t.unit_price).to_money.format, overflow: :shrink_to_fit, align: :center, valign: :center
       end
 
       if t.gst != 0
-        @detail_y = @detail_y - 4.mm 
+        @detail_y = @detail_y - 4.mm
         bounding_box [15.mm, @detail_y + 0.5.mm], height: @detail_height, width: 100.mm do
           text_box "- GST #{t.tax_code.code} #{t.tax_code.rate}% X #{@view.number_with_precision(t.ex_gst_total, precision: 2, delimiter: ',')} = #{@view.number_with_precision(t.gst, precision: 2, delimiter: ',')}", overflow: :shrink_to_fit, valign: :center, size: 9
         end
