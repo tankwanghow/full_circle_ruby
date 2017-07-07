@@ -42,7 +42,7 @@ class AccountAging
       payment + value > 0
     end
   end
-  
+
   def aging_list_sql
     sql = transactions_with_balance_sql
     (0..(@intv - 1)).each do |t|
@@ -100,16 +100,26 @@ class AccountAging
 
   def transactions_with_balance_sql
     <<-SQL
-      with transactions_with_balance as (
-        select txn.id, txn.transaction_date, 
-               txn.amount + COALESCE(sum(tmx.amount), 0) + txn.self_matched as amount
-          from transactions txn left outer join  transaction_matchers tmx    
-            on txn.id = tmx.transaction_id  
-           and tmx.doc_date <= '#{@at_date.to_s(:db)}'
-         where txn.account_id = #{@ac.id}
-           and transaction_date <= '#{@at_date.to_s(:db)}'
-         group by txn.id, txn.transaction_date)
+    with
+    transactions_balance as (
+      select txn.id, txn.account_id as ac_id, txn.doc_id, txn.doc_type, txn.transaction_date,
+             txn.amount + COALESCE(sum(tmx.amount), 0) as amount
+        from transactions txn
+        left outer join transaction_matchers tmx
+          on txn.id = tmx.transaction_id
+         and tmx.doc_date <= '#{@at_date.to_s(:db)}'
+       where transaction_date <= '#{@at_date.to_s(:db)}' and txn.account_id = #{@ac.id}
+       group by txn.id, txn.account_id, txn.transaction_date, txn.doc_id, txn.doc_type),
+    transactions_with_balance as (
+      select tb.id, tb.ac_id, tb.doc_id, tb.doc_type, tb.transaction_date, tb.amount - COALESCE(sum(tmx.amount), 0) as amount
+        from transactions_balance tb
+        left outer join transaction_matchers tmx
+          on tmx.doc_id = tb.doc_id
+         and tmx.doc_type = tb.doc_type
+         and (select transaction_date from transactions txn where tmx.transaction_id = txn.id) <= '#{@at_date.to_s(:db)}'
+       group by tb.id, tb.ac_id, tb.doc_id, tb.doc_type, tb.transaction_date, tb.amount
+       order by 5)
     SQL
   end
-  
+
 end
