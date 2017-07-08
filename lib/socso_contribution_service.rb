@@ -53,7 +53,7 @@ class SocsoContributionService
   end
 
   def socso_employer
-    if @payslip.employee.age_at(@payslip.pay_date) <= 55
+    if @payslip.employee.age_at(@payslip.pay_date) <= 60
       grab_row_where_salary_between[2]
     else
       grab_row_where_salary_between[4]
@@ -61,7 +61,7 @@ class SocsoContributionService
   end
 
   def socso_employee
-    if @payslip.employee.age_at(@payslip.pay_date) <= 55
+    if @payslip.employee.age_at(@payslip.pay_date) <= 60
       grab_row_where_salary_between[3]
     else
       0
