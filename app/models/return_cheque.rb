@@ -2,7 +2,7 @@ class ReturnCheque < ActiveRecord::Base
   belongs_to :return_to, class_name: 'Account'
   belongs_to :return_from, class_name: 'Account'
   has_many :transactions, as: :doc
-  has_one :cheque, foreign_key: :id, primary_key: :cheque_id
+  has_one :cheque, foreign_key: :id, primary_key: :cheque_id, autosave: true
 
   validates_presence_of :return_to_name1, :doc_date, :bank, :chq_no, :city, :state, :due_date, :amount, :reason, :return_from_name1
   validates_numericality_of :amount, greater_than: 0
@@ -69,15 +69,15 @@ private
         clear_old_cheque old_cheque
       end
     end
+    self.cheque = new_cheque
   end
 
   def new_record_update_cheque chq
     if !chq.cr_doc
       chq.cr_doc = self
       chq.cr_ac = return_to
-      chq.save!
     end
-  end
+  end 
 
   def clear_old_cheque chq
     if chq.cr_doc_type == 'ReturnCheque'
