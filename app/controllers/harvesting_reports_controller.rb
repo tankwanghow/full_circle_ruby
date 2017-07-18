@@ -57,12 +57,12 @@ private
             on mv1.flock_id = f1.id
          inner join houses h1 on h1.id = mv1.house_id
            and mv1.move_date <= '#{date.to_s(:db)}'
-           and f1.id = f.id
+           --and f1.id = f.id
            and h1.id = h.id) -
        (select sum(death)
           from harvesting_slip_details hsd1 inner join harvesting_slips hs1
             on hs1.id = hsd1.harvesting_slip_id
-           and hsd1.flock_id = f.id
+           --and hsd1.flock_id = f.id
            and hsd1.house_id = h.id
          where hs1.harvest_date <= '#{date.to_s(:db)}'))
     SQL
