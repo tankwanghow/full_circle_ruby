@@ -33,7 +33,7 @@ private
   end
 
   def update_check_credited
-    if (changed - ["cr_doc_id", "cr_doc_type", "cr_ac_id"]).count != 0
+    if (changed - ["cr_doc_id", "cr_doc_type", "cr_ac_id", "updated_at"]).count != 0
       raise "Cannot UPDATE a credited cheque #{cr_doc_type} #{cr_doc_id}" if credited?
     end
   end
