@@ -2,7 +2,7 @@ class Account < ActiveRecord::Base
   include SharedHelpers
 
   belongs_to :account_type
-  has_many :transactions
+  has_many :transactions, dependent: :restrict
   has_many :addresses, as: :addressable, dependent: :destroy
   has_many :sales_orders, class_name: "sales_orders", foreign_key: "customer_id"
   validates :account_type_id, presence: true

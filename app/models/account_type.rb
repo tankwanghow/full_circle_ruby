@@ -2,10 +2,10 @@ class AccountType < ActiveRecord::Base
   validate :parent?
   validates :name, presence: true, uniqueness: true
   acts_as_tree_with_dotted_ids order: :name
-  has_many :accounts, dependent: :destroy
+  has_many :accounts, dependent: :restrict
 
   before_save :set_children_bf_balance
-  
+
   include Searchable
   searchable content: [:name, :parent_name, :bf_balance, :normal_balance, :description]
 
@@ -16,7 +16,7 @@ class AccountType < ActiveRecord::Base
       balance_bf: r.bf_balance,
       normal_balance: r.normal_balance,
       admin_lock: r.admin_lock,
-      description: r.description  
+      description: r.description
     }
   end
 
