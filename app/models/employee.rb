@@ -14,7 +14,7 @@ class Employee < ActiveRecord::Base
   audit_string :salary_types
 
   scope :active, -> { where(status: 'Active') }
-  
+
   scope :active_at, ->(date) { active.where('service_since <= ?', date) }
 
   scope :paid,   ->(date) { active_at(date).joins(:pay_slips).where('extract(month from pay_slips.pay_date) = ?', date.month).where('extract(year from pay_slips.pay_date) = ?', date.year) }
@@ -66,7 +66,7 @@ class Employee < ActiveRecord::Base
   end
 
   def age_at date=Date.today
-    (date - birth_date).to_i/365.0
+    date.year - birth_date.year - ((date.month > birth_date.month || (date.month == birth_date.month && date.day >= birth_date.day)) ? 0 : 1)
   end
 
 end
