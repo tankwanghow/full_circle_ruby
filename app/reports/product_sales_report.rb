@@ -3,11 +3,11 @@ class ProductSalesReport < Dossier::Report
 
   set_callback :execute, :after do
     options[:footer] = 0
-    raw_results.rows.group_by{ |item| item[3] }.map do |unit, data| 
-        [ unit, data.inject(0) { |sum, value| sum+= value[2].to_f } ]
+    raw_results.rows.group_by{ |item| item[3] }.map do |unit, data|
+        [ unit, data.inject(0) { |sum, value| sum+= value[4].to_f } ]
       end.each do |sum|
         options[:footer] += 1
-        results.rows << [nil, 'Total', formatter.number_with_precision(sum[1], precision: 2, delimiter: ','), sum[0]]
+        results.rows << [nil, nil, nil, 'Total', formatter.number_with_precision(sum[1], precision: 2, delimiter: ','), sum[0]]
      end
   end
 
@@ -44,7 +44,7 @@ class ProductSalesReport < Dossier::Report
   end
 
   def tagged_invoice_ids
-    if doc_tags.try(:downcase) != 'all'      
+    if doc_tags.try(:downcase) != 'all'
       ids = Invoice.tagged_with(doc_tags).where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('invoices.id').to_sql
     else
       ids = Invoice.where('doc_date >= ?', start_date).where('doc_date <= ?', end_date).select('invoices.id').to_sql
@@ -68,16 +68,15 @@ class ProductSalesReport < Dossier::Report
   end
 
   def monthly_sql
-    "SELECT to_char(doc_date, 'MM') || '/' || to_char(doc_date, 'YYYY') as month, name1 as product, sum(quantity) as quantity, unit" +
+    "SELECT null as x, null as y, to_char(doc_date, 'MM') || '/' || to_char(doc_date, 'YYYY') as month, name1 as product, sum(quantity) as quantity, unit" +
     "  FROM (#{ sales_sql }) Temp" +
     " GROUP BY name1, to_char(doc_date, 'MM') || '/' || to_char(doc_date, 'YYYY'), unit" +
     " ORDER BY 1, 2"
   end
 
   def daily_sql
-    "SELECT doc_date as date, name1 as product, sum(quantity) as quantity, unit" +
+    "SELECT doc_date as date, id, customer, name1 as product, quantity, unit" +
     "  FROM (#{ sales_sql }) Temp" +
-    " GROUP BY name1, doc_date, unit" +
     " ORDER BY 1, 2"
   end
 
@@ -88,19 +87,21 @@ class ProductSalesReport < Dossier::Report
   end
 
   def cash_sale_sql
-    "SELECT DISTINCT doc.id, doc.doc_date, pd.name1, docd.quantity, pd.unit
-       FROM cash_sales doc, cash_sale_details docd, products pd
+    "SELECT DISTINCT doc.id, doc.doc_date, ac.name1 as customer, pd.name1, docd.quantity, pd.unit
+       FROM cash_sales doc, cash_sale_details docd, products pd, accounts ac
       WHERE pd.id = docd.product_id
         AND doc.id = docd.cash_sale_id
+        AND ac.id = doc.customer_id
         #{tagged_product_ids_condition}
         #{tagged_cash_sale_ids_condition}"
   end
 
   def invoice_sql
-    "SELECT DISTINCT doc.id, doc.doc_date, pd.name1, docd.quantity, pd.unit
-       FROM invoices doc, invoice_details docd, products pd
+    "SELECT DISTINCT doc.id, doc.doc_date, ac.name1 as customer, pd.name1, docd.quantity, pd.unit
+       FROM invoices doc, invoice_details docd, products pd, accounts ac
       WHERE pd.id = docd.product_id
         AND doc.id = docd.invoice_id
+        AND ac.id = doc.customer_id
         #{tagged_product_ids_condition}
         #{tagged_invoice_ids_condition}"
   end
@@ -111,7 +112,7 @@ class ProductSalesReport < Dossier::Report
     form.input_field(:start_date, class: 'datepicker span4', placeholder: 'start date...') +
     form.input_field(:end_date, class: 'datepicker span4', placeholder: 'end date...') +
     form.label('Group by Month', class: 'checkbox') +
-    form.input_field(:group_by_month, as: :boolean) 
+    form.input_field(:group_by_month, as: :boolean)
   end
 
   def doc_tags
