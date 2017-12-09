@@ -40,7 +40,7 @@ namespace :postgresql do
 
   desc "Copy Production pg_dump to current dir."
   task :copy_dump, roles: :db do
-    `scp #{user}@#{application_server}:#{application}_backup.tar ./`
+    `scp #{user}@#{application_server}:#{application}_backup.tar ./#{application}_backup_#{DateTime.now.to_s(:db).gsub(/\-|\s|\:/, '')}.tar`
   end
   after "postgresql:dump", "postgresql:copy_dump"
 
