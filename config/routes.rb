@@ -166,6 +166,8 @@ FullCircle::Application.routes.draw do
   resources :harvesting_wages_reports, only: [:new, :create]
   get 'driver_commissions' => 'driver_commissions#show'
 
+  resources :house_feed_types, only: [:index]
+
   resources :fixed_asset_addition_confirmations, only: [:index, :create]
   post 'fixed_asset_addition_confirmations/confirm_all' => 'fixed_asset_addition_confirmations#confirm_all'
 
