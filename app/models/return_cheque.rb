@@ -68,8 +68,8 @@ private
         new_record_update_cheque new_cheque
         clear_old_cheque old_cheque
       end
+      self.cheque = new_cheque
     end
-    self.cheque = new_cheque
   end
 
   def new_record_update_cheque chq
@@ -77,7 +77,7 @@ private
       chq.cr_doc = self
       chq.cr_ac = return_to
     end
-  end 
+  end
 
   def clear_old_cheque chq
     if chq.cr_doc_type == 'ReturnCheque'
