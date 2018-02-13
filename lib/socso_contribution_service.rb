@@ -62,7 +62,7 @@ class SocsoContributionService
   end
 
   def socso_employee
-    pd = Date.parse()"#{@payslip.pay_date}-#{@payslip.pay_date}-01")
+    pd = Date.parse("#{@payslip.pay_date}-#{@payslip.pay_date}-01")
     if @payslip.employee.age_at(pd) < 60
       grab_row_where_salary_between[3]
     else
