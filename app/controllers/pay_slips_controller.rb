@@ -23,41 +23,44 @@ class PaySlipsController < ApplicationController
     @pay_slip = PaySlip.new(params[:pay_slip])
     if params[:submit] == 'Calculate'
       calculate_pay
+      render :calculated
     else
-      save_slip
+      create_slip
     end
   end
 
   def update
     @pay_slip = PaySlip.find(params[:id])
-    if params[:submit] == 'Calculate'
-      @pay_slip.assign_attributes(params[:pay_slip])
+    @pay_slip.assign_attributes(params[:pay_slip])
+    if params[:submit] == 'Calculate & Save'
       calculate_pay
-    else
-      if @pay_slip.update_attributes(params[:pay_slip])
-        flash[:success] = "Pay Slip '##{@pay_slip.id}' updated successfully."
-        redirect_to edit_pay_slip_path(@pay_slip)
-      else
-        flash.now[:error] = "Failed to update Pay Slip."
-        render :edit
-      end
     end
+    save_slip
   end
 
 private
 
   def calculate_pay
     SalaryCalculationService.calculate @pay_slip
-    render :calculated
   end
 
-  def save_slip
+  def create_slip
     if @pay_slip.save
       flash[:success] = "Pay Slip '##{@pay_slip.id}' created successfully."
       redirect_to edit_pay_slip_path(@pay_slip)
     else
       flash.now[:error] = "Failed to create Pay Slip."
       render :new
+    end
+  end
+
+  def save_slip
+    if @pay_slip.save
+      flash[:success] = "Pay Slip '##{@pay_slip.id}' updated successfully."
+      redirect_to edit_pay_slip_path(@pay_slip)
+    else
+      flash.now[:error] = "Failed to update Pay Slip."
+      render :edit
     end
   end
 
