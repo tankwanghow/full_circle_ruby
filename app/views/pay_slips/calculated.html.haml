@@ -4,5 +4,6 @@
     Calculated Pay Slip
   = render 'pay_slips/fields', f: f
   .form-actions
-    = f.button :submit, 'Pay', class: 'btn btn-primary'
+    = f.button :submit, 'Calculate Again', class: 'btn btn-primary'
+    = f.button :submit, 'Pay', class: 'btn btn-danger'
     = link_to 'Prepare Again', new_pay_slip_generation_path(gen_pay: { employee_name: @pay_slip.employee_name, pay_date: @pay_slip.pay_date }), class: 'btn btn-info'

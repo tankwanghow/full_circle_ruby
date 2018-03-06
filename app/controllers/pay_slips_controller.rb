@@ -21,7 +21,7 @@ class PaySlipsController < ApplicationController
 
   def create
     @pay_slip = PaySlip.new(params[:pay_slip])
-    if params[:submit] == 'Calculate'
+    if params[:submit] == 'Calculate' || params[:submit] == 'Calculate Again'
       calculate_pay
       render :calculated
     else
