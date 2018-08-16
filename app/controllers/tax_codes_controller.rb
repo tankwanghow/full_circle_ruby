@@ -6,7 +6,7 @@ class TaxCodesController < ApplicationController
   def update
     @tax_code = TaxCode.find(params[:id])
     if @tax_code.update_attributes(params[:tax_code])
-      flash[:success] = "Tax Code '#{@tax_code.Code}' updated successfully."
+      flash[:success] = "Tax Code '#{@tax_code.code}' updated successfully."
       redirect_to edit_tax_code_path(@tax_code)
     else
       flash.now[:error] = "Failed to updated Tax Code."
