@@ -51,6 +51,7 @@ private
   end
 
   def build_transactions
+    matchers.each { |t| t.doc_date = self.doc_date }
     transactions.where(old_data: false).destroy_all
     set_cheques_account
     build_cash_n_pd_chq_transaction
