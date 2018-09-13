@@ -26,6 +26,10 @@ class PaySlipPdf < Prawn::Document
       end
       draw_footer
       draw_page_number
+      font_size 10 do
+        fill_color "008800"
+        draw_contributions
+      end
       fill_color "000000"
     end
     self
@@ -202,6 +206,24 @@ def draw_static_content
       line_width 2
       stroke_horizontal_line 170.mm, 200.mm, at: @detail_y - 8.5.mm
     end
+    @detail_y = @detail_y - 8.5.mm - 2.5.mm
+  end
+
+  def draw_contributions
+    line_width 1
+    stroke_horizontal_line 10.mm, 100.mm, at: @detail_y
+    @detail_y = @detail_y - 2.5.mm
+    @pay_slip.salary_notes.contribution.each do |t|
+      text_box [t.doc_date, t.salary_type.name, t.note, t.amount.to_money.format].flatten.join(' '), overflow: :shrink_to_fit,
+               valign: :center, height:@detail_height, width: 100.mm, at: [10.mm, @detail_y]
+      @detail_y = @detail_y - @detail_height
+
+      if @detail_y <= @page_end_at
+        start_new_page_for_current_pay_slip
+        @detail_y = @detail_y_start_at
+      end
+    end
+    stroke_horizontal_line 10.mm, 100.mm, at: @detail_y - 2.5.mm
   end
 
   def start_new_page_for_current_pay_slip
