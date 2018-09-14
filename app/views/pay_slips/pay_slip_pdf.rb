@@ -26,9 +26,11 @@ class PaySlipPdf < Prawn::Document
       end
       draw_footer
       draw_page_number
-      font_size 10 do
-        fill_color "008800"
-        draw_contributions
+      if @pay_slip.salary_notes.contribution.count > 0
+        font_size 10 do
+          fill_color "008800"
+          draw_contributions
+        end
       end
       fill_color "000000"
     end
