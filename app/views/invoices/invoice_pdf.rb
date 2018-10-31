@@ -245,20 +245,20 @@ class InvoicePdf < Prawn::Document
                overflow: :shrink_to_fit, valign: :center, align: :center, style: :bold
     end
 
-    bounding_box [175.mm, @detail_y], height: 9.mm, width: 23.mm do
-      text_box @view.number_with_precision(@invoice.goods_amount, precision: 2, delimiter: ','),
-               overflow: :shrink_to_fit, valign: :center, align: :center, style: :bold
-    end
+    # bounding_box [175.mm, @detail_y], height: 9.mm, width: 23.mm do
+    #   text_box @view.number_with_precision(@invoice.goods_amount, precision: 2, delimiter: ','),
+    #            overflow: :shrink_to_fit, valign: :center, align: :center, style: :bold
+    # end
 
     # bounding_box [159.mm, @detail_y], height: 9.mm, width: 18.mm do
     #   text_box @view.number_with_precision(@invoice.gst_amount, precision: 2, delimiter: ','),
     #            overflow: :shrink_to_fit, valign: :center, align: :center, style: :bold
     # end
     #
-    # bounding_box [177.mm, @detail_y], height: 9.mm, width: 23.mm do
-    #   text_box @view.number_with_precision(@invoice.invoice_amount, precision: 2, delimiter: ','),
-    #            overflow: :shrink_to_fit, valign: :center, align: :center, style: :bold
-    # end
+    bounding_box [175.mm, @detail_y], height: 9.mm, width: 23.mm do
+      text_box @view.number_with_precision(@invoice.invoice_amount, precision: 2, delimiter: ','),
+               overflow: :shrink_to_fit, valign: :center, align: :center, style: :bold
+    end
     stroke_horizontal_line 10.mm, 200.mm, at: @detail_y - 8.mm
 
   end
