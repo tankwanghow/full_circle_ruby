@@ -34,15 +34,14 @@ private
   end
 
   def footer hash_array
-    val =[]
     unload_amount = 0.to_money
     load_amount = 0.to_money
     hash_array.each { |h| unload_amount += h['unload_pay'].to_money; load_amount += h['load_pay'].to_money; }
-    val << [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, load_amount.format, unload_amount.format, nil]
+    val = [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, load_amount, unload_amount, nil]
   end
 
   def commission_decider row
-    arys = ((row['tags'].blank? ? '' : row['tags']).split('|') & %w(eggsalescomm eggtranscomm dungtransbagcomm dungtransloadcomm feedtranstonscomm traytranscomm feedtranskgscomm lqeggtranscomm))
+    arys = ((row['tags'].blank? ? '' : row['tags']).split('|') & %w(eggsalescomm eggtranscomm dungtransbagcomm wetdungtransbagcomm dungtransloadcomm feedtranstonscomm traytranscomm feedtranskgscomm lqeggtranscomm))
     if arys.count > 1
       row[:status] = 'error'
     else
@@ -58,6 +57,8 @@ private
       EggTransCommission
     when 'dungtransbagcomm'
       DungTransBagCommission
+    when 'wetdungtransbagcomm'
+      WetDungTransBagCommission
     when 'dungtransloadcomm'
       DungTransLoadCommission
     when 'feedtranstonscomm'
@@ -145,8 +146,8 @@ class LiquidEggTransCommission < Commission
 end
 
 class EggTransCommission < Commission
-  @less_5_customer_commission = 0.03 / 30
-  @more_5_customer_commission = 0.05 / 30
+  @less_5_customer_commission = 0.04 / 30
+  @more_5_customer_commission = 0.06 / 30
   @loading_commission_percentage = 0.4
   @unloading_commission_percentage = 0.6
 
@@ -166,6 +167,13 @@ end
 class DungTransBagCommission < Commission
   @less_5_customer_commission = 0.1
   @more_5_customer_commission = 0.1
+  @loading_commission_percentage = 0.5
+  @unloading_commission_percentage = 0.5
+end
+
+class WetDungTransBagCommission < Commission
+  @less_5_customer_commission = 0.2
+  @more_5_customer_commission = 0.2
   @loading_commission_percentage = 0.5
   @unloading_commission_percentage = 0.5
 end
