@@ -34,7 +34,7 @@ class FixedAsset < ActiveRecord::Base
     additions.where('entry_date <= ?', entry_date).inject(0) { |sum, p| sum + p.net_book_value_at(entry_date) }
   end
 
-  def fill_in_unsaved_additions_until end_year=Date.today.year-1  
+  def fill_in_unsaved_additions_until end_year=Date.today.year-1
     values = unsaved_additions_attributes(end_year)
     if values.count > 0
       values.each { |t| additions.build(t) }
@@ -44,7 +44,7 @@ class FixedAsset < ActiveRecord::Base
   def unsaved_additions_attributes end_year=Date.today.year-1
     rtnval = []
     if additions.count > 0
-      start_year = additions.order(:entry_date).last.entry_date.year 
+      start_year = additions.order(:entry_date).last.entry_date.year
     else
       if account.transactions.count > 0
         start_year = account.transactions.order(:transaction_date).first.transaction_date.year
@@ -68,7 +68,8 @@ class FixedAsset < ActiveRecord::Base
 private
 
   def addition_transaction_years start_year, end_year
-    account.transactions.where('amount > 0').where("doc_type <> 'Balance'").
+    account.transactions.where('amount > 0').
+    where("doc_type not ilike '%balance%'").
     where('extract(year from transaction_date) >= ?', start_year).
     where('extract(year from transaction_date) <= ?', end_year).
     pluck('distinct extract(year from transaction_date)')
@@ -76,14 +77,14 @@ private
 
   def sum_of_unsaved_additions_from_transactions start_date, end_date
     account.transactions.where('amount > 0').
-      where("doc_type <> 'Balance'").
+      where("doc_type not ilike '%balance%'").
       where('transaction_date >= ?', start_date).
       where('transaction_date <= ?', end_date).sum(:amount)
   end
 
   def is_fixed_assets?
     unless account.is_fixed_assets?
-      errors.add :account, 'Not Fixed Assets Account.' 
+      errors.add :account, 'Not Fixed Assets Account.'
     end
   end
 
