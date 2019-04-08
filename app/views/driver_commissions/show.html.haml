@@ -5,6 +5,10 @@
   = f.input_field :start_date, class: 'datepicker span6', placeholder: 'start date...', value: params[:options][:start_date]
   = f.input_field :end_date, class: 'datepicker span6', placeholder: 'end date...', value: params[:options][:end_date]
   = f.button :submit, 'Show', class: 'btn-primary'
+  - if @body.count > 0
+    = link_to "Print PDF", url_for(url_options.merge(format: 'pdf', options: params[:options])), target: '_blank', data: { 'skip-pjax' => true }, class: 'btn btn-warning'
+    = link_to "Download CSV", url_for(url_options.merge(format: 'csv', options: params[:options])), data: { 'skip-pjax' => true }, class: 'btn btn-success'
+
 
 - if @headers.count > 0
   %table.table.table-condensed.table-bordered#report
@@ -18,10 +22,9 @@
           - row.each do |value|
             %td= value
     %tfoot
-      - @footers.each do |row|
-        %tr
-          - row.each do |value|
-            %th= value
+      %tr
+        - @footers.each do |footer|
+          %th= footer
 
 :coffee
   ($ '#options_employee_tags').select2
