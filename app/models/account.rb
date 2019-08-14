@@ -73,4 +73,12 @@ class Account < ActiveRecord::Base
     AccountAging.new(self, at_date, interval_days, intervals).aging_list
   end
 
+  def post_dated_cheque_amount at_date=Date.today
+    Cheque.where(db_ac_id: id).where('cr_doc_id is null or cr_doc_type is null').sum(:amount)
+  end
+
+  def post_dated_cheque_count at_date=Date.today
+    Cheque.where(db_ac_id: id).where('cr_doc_id is null or cr_doc_type is null').count
+  end
+
 end

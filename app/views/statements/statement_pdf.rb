@@ -66,7 +66,7 @@ class StatementPdf < Prawn::Document
       draw_text "PARTICULARS", size: 9, at: [105.mm, 235.mm]
       draw_text "DEBIT/CREDIT", size: 9, at: [155.mm, 235.mm]
       draw_text "LINE BALANCE", size: 8, at: [178.5.mm, 235.mm]
-      
+
       stroke_rounded_rectangle [12.5.mm, 46.mm], 187.mm, 17.5.mm, 3.mm
       stroke_horizontal_line 12.5.mm, 199.5.mm, at: 38.5.mm
 
@@ -115,9 +115,9 @@ class StatementPdf < Prawn::Document
                  width: 13.5.mm, at: [64.5.mm, @detail_y], align: :center
       text_box t.note, overflow: :truncate, valign: :center, height: @detail_height,
                width: 76.mm, at: [79.5.mm, @detail_y], align: :left
-      text_box amount, overflow: :shrink_to_fit, 
+      text_box amount, overflow: :shrink_to_fit,
                valign: :center, height: @detail_height, width: 22.mm, at: [155.mm, @detail_y], align: :right
-      text_box @view.number_with_precision(balance, precision: 2, delimiter: ','), overflow: :shrink_to_fit, 
+      text_box @view.number_with_precision(balance, precision: 2, delimiter: ','), overflow: :shrink_to_fit,
                valign: :center, height: @detail_height, width: 22.mm, at: [177.mm, @detail_y], align: :right
 
       @detail_y = @detail_y - @detail_height
@@ -138,6 +138,14 @@ class StatementPdf < Prawn::Document
         text_box @view.number_with_precision(v, precision: 2, delimiter: ','), overflow: :shrink_to_fit, size: 12,
                  valign: :center, height: 11.mm, width: 31.mm, at: [(12.5 + (31 * i)).mm, 38.mm], align: :center, style: :bold
         i += 1
+      end
+    end
+    if @account.post_dated_cheque_count > 0
+      bounding_box [12.5.mm, 25.mm], width: 180.mm, height: 5.mm do
+        text "Post Dated Cheques <b>#{@account.post_dated_cheque_count}</b> pcs amounted to " +
+             "<b>#{@view.number_with_precision(@account.post_dated_cheque_amount, precision: 2, delimiter: ',')}</b> " +
+             "adjusted balance should be <b>#{@view.number_with_precision(@balance + @account.post_dated_cheque_amount, precision: 2, delimiter: ',')}</b>",
+             inline_format: true
       end
     end
   end
