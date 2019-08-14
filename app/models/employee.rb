@@ -66,7 +66,15 @@ class Employee < ActiveRecord::Base
   end
 
   def age_at date=Date.today
-    date.year - birth_date.year - ((date.month > birth_date.month || (date.month == birth_date.month && date.day >= birth_date.day)) ? 0 : 1)
+    age = date.year - birth_date.year
+    birth_day = "#{date.year.to_s}-#{birth_date.month.to_s}-#{birth_date.day.to_s}".to_date
+    if date > birth_day
+      age + 0.5
+    elsif date < birth_day
+      age - 0.5
+    else
+      age
+    end
   end
 
 end
