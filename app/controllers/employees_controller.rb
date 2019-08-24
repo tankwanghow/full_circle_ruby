@@ -43,6 +43,6 @@ class EmployeesController < ApplicationController
   end
 
   def typeahead_name
-    render json: typeahead_result(params[:term], "name", Employee)
+    render json: typeahead_result(params[:term], "name", Employee.active)
   end
 end
