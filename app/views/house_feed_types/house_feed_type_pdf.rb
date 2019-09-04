@@ -2,10 +2,11 @@
 class HouseFeedTypePdf < Prawn::Document
   include Prawn::Helper
 
-  def initialize(rows, view)
+  def initialize(rows, qdate, view)
     super(page_size: [210.mm, 295.mm], margin: [5.mm, 0.mm, 10.mm, 0.mm], skip_page_creation: true)
     @view = view
     @rows = rows
+    @qdate = qdate
     @detail_height = 30.mm
     if rows.count > 0
       draw(rows)
@@ -25,7 +26,7 @@ class HouseFeedTypePdf < Prawn::Document
   end
 
   def draw_header
-    text_box "House Feed Type *#{Date.today}*", at: [10.mm, bounds.top], size: 12, style: :bold
+    text_box "House Feed Type *#{@qdate}*", at: [10.mm, bounds.top], size: 12, style: :bold
     font "Courier" do
       text_box "=========================================================================+==============",
                at: [10.mm, bounds.top - 6.mm], size: 10

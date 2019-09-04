@@ -1,0 +1,6 @@
+= simple_form_for :house_feed_type, url: house_feed_types_path(format: :pdf), html: { target: '_blank', 'data-skip-pjax'=> true, class: 'form-search' } do |f|
+  %legend
+    House Feed Types
+  .row-fluid
+    = f.input_field :qdate, class: 'datepicker span12', placeholder: 'date...'
+    = f.button :submit, 'Show', class: 'btn-primary'
