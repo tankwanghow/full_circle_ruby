@@ -1,5 +1,5 @@
 development:
-  database: full_circle_development
+  database: full_circle
   adapter: postgresql
   host: localhost
   port: 5432

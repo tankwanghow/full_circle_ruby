@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  layout "application"
   include Authentication
   include SentientController
 

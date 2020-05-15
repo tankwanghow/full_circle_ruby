@@ -1,0 +1,9 @@
+/home/tankwanghow/.asdf/installs/ruby/1.9.3-p194/bin/ruby extconf.rb
+checking for main() in -lpthread... yes
+creating Makefile
+
+make
+compiling gc.cc
+cc1plus: error: -Werror=shorten-64-to-32: no option -Wshorten-64-to-32
+Makefile:179: recipe for target 'gc.o' failed
+make: *** [gc.o] Error 1

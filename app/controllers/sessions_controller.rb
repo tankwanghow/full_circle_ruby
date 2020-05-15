@@ -11,12 +11,12 @@ class SessionsController < ApplicationController
   def create
     @user = User.find_by_username params[:session][:username]
     if @user && @user.authenticate(params[:session][:password])
-      if @user.aasm_current_state == :active
+      if @user.aasm_read_state == :active
         session[:user_id] = @user.id
         flash[:success] = "Logged in successfully."
         redirect_to_target_or_default '/'
       else
-        flash[:notice] = "Account is #{@user.aasm_current_state.to_s.capitalize}."
+        flash[:notice] = "Account is #{@user.aasm_read_state.to_s.capitalize}."
         render :new
       end
     else

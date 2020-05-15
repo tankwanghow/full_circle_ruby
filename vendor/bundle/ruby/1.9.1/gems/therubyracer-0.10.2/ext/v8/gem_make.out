@@ -1,0 +1,8 @@
+/home/tankwanghow/.asdf/installs/ruby/1.9.3-p194/bin/ruby extconf.rb
+creating Makefile
+
+make
+compiling v8.cpp
+cc1plus: error: -Werror=shorten-64-to-32: no option -Wshorten-64-to-32
+Makefile:191: recipe for target 'v8.o' failed
+make: *** [v8.o] Error 1

@@ -1,0 +1,42 @@
+/home/tankwanghow/.asdf/installs/ruby/2.2.10/bin/ruby -r ./siteconf20200514-28283-ttg1ix.rb extconf.rb
+checking for ffi_call() in -lffi... yes
+checking for ffi_closure_alloc()... yes
+checking for shlwapi.h... no
+checking for rb_thread_call_without_gvl()... yes
+checking for ruby_native_thread_p()... yes
+checking for ffi_prep_cif_var()... yes
+checking for ffi_raw_call()... yes
+checking for ffi_prep_raw_closure()... yes
+creating extconf.h
+creating Makefile
+
+make "DESTDIR=" clean
+
+make "DESTDIR="
+compiling AbstractMemory.c
+compiling Variadic.c
+compiling ffi.c
+compiling Type.c
+compiling MethodHandle.c
+compiling Function.c
+compiling Types.c
+compiling Buffer.c
+compiling ArrayType.c
+compiling StructLayout.c
+compiling LongDouble.c
+compiling MappedType.c
+compiling Thread.c
+compiling MemoryPointer.c
+compiling Platform.c
+compiling Call.c
+compiling ClosurePool.c
+compiling DynamicLibrary.c
+compiling LastError.c
+compiling Pointer.c
+compiling Struct.c
+compiling FunctionInfo.c
+compiling StructByValue.c
+linking shared-object ffi_c.so
+
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 ffi_c.so ./.gem.20200514-28283-1kwejs0

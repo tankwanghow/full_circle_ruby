@@ -4,7 +4,7 @@ CompanyName1 = '金宝实达饲料厂有限公司'
 ClosingDay = 31
 ClosingMonth = 12
 Date::DATE_FORMATS[:default] = '%d-%m-%Y'
-Money.default_currency = Money::Currency.new('MYR')
+# Money.default_currency = Money::Currency.new('MYR')
 
 # GST Stuff
 GstStartDate = '2015-04-01'.to_date
