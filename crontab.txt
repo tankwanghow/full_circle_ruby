@@ -1,0 +1,4 @@
+45 17 * * 0 psql -U full_circle -h localhost -d full_circle_production -c "vacuum full;"
+30 18 * * 0-6 pg_dump -U full_circle -h localhost full_circle_production --format=tar -f /home/deployer/full_circle_backups/current19.tar
+00 19 * * 0-6 env GZIP=-9 tar -czf /home/deployer/full_circle_backups/"backup_$(date +'%Y%m%d_%I%M%p').tar.gz" /home/deployer/full_circle_backups/current19.tar
+00 20 * * 0-6 find /home/deployer/full_circle_backups -type f -mtime +10 -exec rm -f {} \;
