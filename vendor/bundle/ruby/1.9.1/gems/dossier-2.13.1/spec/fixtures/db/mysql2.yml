@@ -1,5 +1,0 @@
-database: dossier_test
-host: localhost
-username: root
-password: rubyr3d!
-adapter: mysql2
