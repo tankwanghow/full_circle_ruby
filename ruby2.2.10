@@ -63,3 +63,22 @@ Postgresql 9.6 Installation
 
   pg_restore -h localhost -U full_circle -d full_circle_production -v 'backup_database.tar'
 
+Install Python 3.8.3
+====================
+  sudo apt-get update; sudo apt-get install --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+  asdf plugin add python
+  asdf install python 3.8.3
+
+Install Nodejs 14.4.0
+=====================
+  sudo apt install dirmngr gpg curl
+  bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
+  asdf plugin add nodejs
+  asdf install nodejs 14.4.0
+
+Setup github ssh
+================
+Follow github instruction
+# don't set passphrase for ssh_key
+
+sudo apt install nginx

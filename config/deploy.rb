@@ -8,7 +8,7 @@ set :repo_url, "git@github.com:tankwanghow/full_circle.git"
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-# set :deploy_to, "/var/www/my_app_name"
+set :deploy_to, "~/app/full_circle"
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
@@ -27,7 +27,7 @@ set :repo_url, "git@github.com:tankwanghow/full_circle.git"
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 
 # Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :default_env, { path: "/home/deploy/.asdf/shims/:$PATH" }
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
