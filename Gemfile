@@ -28,7 +28,7 @@ gem 'bcrypt-ruby', git: 'git://github.com/tankwanghow/bcrypt-ruby.git', branch: 
 gem 'unicorn'
 gem 'dossier'
 
-group :assets do
+# group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'therubyracer', :platforms => :ruby
@@ -36,7 +36,7 @@ group :assets do
   gem 'uglifier'
   gem 'jquery-ui-rails'
   gem 'select2-rails'
-end
+# end
 
 group :test do
   gem 'rspec-rails'
@@ -48,10 +48,10 @@ group :test do
   gem 'test-unit'
 end
 
-group :development, :test do
+# group :development, :test do
   # gem 'pry-rails'
   # gem 'pry-debugger'
-end
+# end
 
 group :development do
   gem 'meta_request'
