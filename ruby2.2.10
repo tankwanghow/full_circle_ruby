@@ -1,28 +1,65 @@
-sudo apt-get install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev
-sudo nano /etc/apt/sources.list
-# add this line and save
-   deb http://security.ubuntu.com/ubuntu bionic-security main
-sudo apt-get update
-sudo apt-get install libssl1.0-dev
-asdf install ruby 2.2.10
+Setting up Ubuntu 20.04 LTS
+===========================
+  Create a Linode ubuntu 20.04 LTS server => Goto linode.com follow instruction there.
 
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
-wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
-sudo apt-get update
-sudo apt-get install postgresql-9.6 postgresql-contrib-9.6 libpq-dev
+  ssh root@linodeIP
+  adduser deploy
+  usermod -aG sudo deploy
 
-bundle
+  sudo apt install zsh
 
-sudo -u postgres psql -c "create user full_circle with password 'nyhlisted' superuser;"
+  chsh -s $(which zsh) # set default shell to zsh
 
-sudo -u postgres psql -c "create database full_circle_production owner full_circle;"
+  sudo apt install curl git
 
-pg_restore -h localhost -U full_circle -d full_circle_production -v 'backup_202005081900.tar'
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-sudo -u postgres psql -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf
 
-sudo -u postgres psql -c "CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;"
+  # add asdf plugins to .zshrc
 
-sudo -u postgres psql -c "CREATE OR REPLACE FUNCTION pg_search_dmetaphone(text) RETURNS text LANGUAGE SQL IMMUTABLE STRICT AS $function$
-  SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\\\s+')))), ' ')
-$function$;"
+Install Ruby 2.2.10
+===================
+  sudo apt-get install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev
+
+  # add this line to /etc/apt/sources.list
+     deb http://security.ubuntu.com/ubuntu bionic-security main
+
+  sudo apt-get update
+
+  sudo apt-get install libssl1.0-dev
+
+  asdf plugin add ruby
+
+  asdf install ruby 2.2.10
+
+  asdf global ruby 2.2.10
+
+  gem install bundler -v 1.17.3
+
+Postgresql 9.6 Installation
+===========================
+  sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+
+  wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
+
+  sudo apt-get update
+
+  sudo apt-get install postgresql-9.6 postgresql-contrib-9.6 libpq-dev
+
+  sudo -u postgres psql -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+
+  sudo -u postgres psql -c "CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;"
+
+  sudo -u postgres psql 
+    # type following command
+    "CREATE OR REPLACE FUNCTION pg_search_dmetaphone(text) RETURNS text LANGUAGE SQL IMMUTABLE STRICT AS $function$
+      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\\\s+')))), ' ')
+    $function$;"
+
+  sudo -u postgres psql -c "create user full_circle with password 'nyhlisted' superuser;"
+
+  sudo -u postgres psql -c "create database full_circle_production owner full_circle;"
+
+  pg_restore -h localhost -U full_circle -d full_circle_production -v 'backup_database.tar'
+
