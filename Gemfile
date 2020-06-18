@@ -49,11 +49,13 @@ group :test do
 end
 
 group :development, :test do
-#  gem 'pry-rails', '0.2.2'
-#  gem 'pry-debugger', '0.2.1'
+  # gem 'pry-rails'
+  # gem 'pry-debugger'
 end
 
 group :development do
   gem 'meta_request'
-  gem 'capistrano'
+  gem "capistrano", "~> 3.14", require: false
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
 end
