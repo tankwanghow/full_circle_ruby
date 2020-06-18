@@ -47,21 +47,20 @@ Postgresql 9.6 Installation
 
   sudo apt-get install postgresql-9.6 postgresql-contrib-9.6 libpq-dev
 
-  sudo -u postgres psql -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
-
-  sudo -u postgres psql -c "CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;"
-
-  sudo -u postgres psql 
-    # type following command
-    "CREATE OR REPLACE FUNCTION pg_search_dmetaphone(text) RETURNS text LANGUAGE SQL IMMUTABLE STRICT AS $function$
-      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\\\s+')))), ' ')
-    $function$;"
-
   sudo -u postgres psql -c "create user full_circle with password 'nyhlisted' superuser;"
 
   sudo -u postgres psql -c "create database full_circle_production owner full_circle;"
 
   pg_restore -h localhost -U full_circle -d full_circle_production -v 'backup_database.tar'
+
+  sudo -u postgres psql -d full_circle_production
+  
+    # type following command
+    "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+    "CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;" 
+    "CREATE OR REPLACE FUNCTION pg_search_dmetaphone(text) RETURNS text LANGUAGE SQL IMMUTABLE STRICT AS $function$
+      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\\\s+')))), ' ')
+    $function$;"
 
 Install Python 3.8.3
 ====================
