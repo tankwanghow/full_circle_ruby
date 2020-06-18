@@ -3,7 +3,10 @@
 ===========================
 Step 1, Install git.
 ====================
-Git hub has instructions for doing it here .  Please note that the Debian User id should have sudo privileges. Webmin provides an easy way to do User Account Management. You could add sudo as secondary group to the account, so you would be able to perform all commands through sudo
+Git hub has instructions for doing it here .  Please note that the Debian User id should have sudo privileges. 
+Webmin provides an easy way to do User Account Management. You could add sudo as secondary group to the account, 
+so you would be able to perform all commands through sudo
+
 https://gist.github.com/georgeredinger/2980504
 
 Install common libraries

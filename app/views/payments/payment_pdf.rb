@@ -173,41 +173,38 @@ def initialize(payments, view, static_content=false)
   end
 
   def draw_footer
-    group do
-      line_width 1
-      stroke_horizontal_line 11.5.mm, 213.5.mm, at: @detail_y - 0.5.mm
-      
-      bounding_box [12.mm, @detail_y - 7.mm], height: 5.mm, width: 50.mm do
-        text_box @payment.actual_debit_amount.to_money.format, overflow: :shrink_to_fit,
-                 align: :center, valign: :center, size: 11
-      end
-      bounding_box [12.mm, @detail_y - 2.mm], height: 5.mm, width: 50.mm do
-        text_box "To Account and Excl. GST", overflow: :shrink_to_fit,
-                 align: :center, valign: :center, size: 11, style: :bold
-      end
-      
-      bounding_box [72.mm, @detail_y - 7.mm], height: 5.mm, width: 30.mm do
-        text_box @payment.gst_amount.to_money.format, overflow: :shrink_to_fit,
-                 align: :center, valign: :center, size: 11
-      end
-      bounding_box [72.mm, @detail_y - 2.mm], height: 5.mm, width: 30.mm do
-        text_box "Total GST", overflow: :shrink_to_fit,
-                 align: :center, valign: :center, size: 11, style: :bold
-      end
-
-
-      bounding_box [163.mm, @detail_y - 3.mm], height: 5.mm, width: 50.mm do
-        text_box @payment.actual_credit_amount.to_money.format, overflow: :shrink_to_fit,
-                 align: :center, valign: :center, style: :bold, size: 11
-      end
-      bounding_box [112.mm, @detail_y - 3.mm], height: 5.mm, width: 50.mm do
-        text_box "Payment Total Incl. GST", overflow: :shrink_to_fit,
-                 align: :right, valign: :center, style: :bold, size: 11
-      end
-
-      stroke_horizontal_line 163.mm, 213.5.mm, at: @detail_y - 9.mm
-
+    line_width 1
+    stroke_horizontal_line 11.5.mm, 213.5.mm, at: @detail_y - 0.5.mm
+    
+    bounding_box [12.mm, @detail_y - 7.mm], height: 5.mm, width: 50.mm do
+      text_box @payment.actual_debit_amount.to_money.format, overflow: :shrink_to_fit,
+                align: :center, valign: :center, size: 11
     end
+    bounding_box [12.mm, @detail_y - 2.mm], height: 5.mm, width: 50.mm do
+      text_box "To Account and Excl. GST", overflow: :shrink_to_fit,
+                align: :center, valign: :center, size: 11, style: :bold
+    end
+    
+    bounding_box [72.mm, @detail_y - 7.mm], height: 5.mm, width: 30.mm do
+      text_box @payment.gst_amount.to_money.format, overflow: :shrink_to_fit,
+                align: :center, valign: :center, size: 11
+    end
+    bounding_box [72.mm, @detail_y - 2.mm], height: 5.mm, width: 30.mm do
+      text_box "Total GST", overflow: :shrink_to_fit,
+                align: :center, valign: :center, size: 11, style: :bold
+    end
+
+
+    bounding_box [163.mm, @detail_y - 3.mm], height: 5.mm, width: 50.mm do
+      text_box @payment.actual_credit_amount.to_money.format, overflow: :shrink_to_fit,
+                align: :center, valign: :center, style: :bold, size: 11
+    end
+    bounding_box [112.mm, @detail_y - 3.mm], height: 5.mm, width: 50.mm do
+      text_box "Payment Total Incl. GST", overflow: :shrink_to_fit,
+                align: :right, valign: :center, style: :bold, size: 11
+    end
+
+    stroke_horizontal_line 163.mm, 213.5.mm, at: @detail_y - 9.mm
   end
 
   def start_new_page_for_current_payment

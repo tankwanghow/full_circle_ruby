@@ -22,7 +22,7 @@ gem 'pg_search', '0.5.7'
 gem 'pjax_rails'
 
 # To use ActiveModel has_secure_password
-gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'bcrypt-ruby', git: 'git://github.com/tankwanghow/bcrypt-ruby.git', branch: 'force_ruby_2210', tag: '3.0.1'
 
 # Use unicorn as the web server
 gem 'unicorn'

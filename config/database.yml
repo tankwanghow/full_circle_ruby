@@ -17,7 +17,7 @@ test:
   encoding: utf8
 
 production:
-  database: full_circle
+  database: full_circle_production
   adapter: postgresql
   host: localhost
   port: 5432

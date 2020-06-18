@@ -131,14 +131,12 @@ class StatementPdf < Prawn::Document
 
   def draw_footer
     i = 0
-    group do
-      @aging_list.each do |k,v|
-        text_box k, overflow: :shrink_to_fit, size: 10,
-                 valign: :center, height: 7.mm, width: 31.mm, at: [(12.5 + (31 * i)).mm, 45.mm], align: :center
-        text_box @view.number_with_precision(v, precision: 2, delimiter: ','), overflow: :shrink_to_fit, size: 12,
-                 valign: :center, height: 11.mm, width: 31.mm, at: [(12.5 + (31 * i)).mm, 38.mm], align: :center, style: :bold
-        i += 1
-      end
+    @aging_list.each do |k,v|
+      text_box k, overflow: :shrink_to_fit, size: 10,
+                valign: :center, height: 7.mm, width: 31.mm, at: [(12.5 + (31 * i)).mm, 45.mm], align: :center
+      text_box @view.number_with_precision(v, precision: 2, delimiter: ','), overflow: :shrink_to_fit, size: 12,
+                valign: :center, height: 11.mm, width: 31.mm, at: [(12.5 + (31 * i)).mm, 38.mm], align: :center, style: :bold
+      i += 1
     end
     if @account.post_dated_cheque_count > 0
       bounding_box [12.5.mm, 25.mm], width: 180.mm, height: 5.mm do

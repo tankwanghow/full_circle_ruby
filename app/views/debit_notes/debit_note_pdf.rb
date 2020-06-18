@@ -114,37 +114,36 @@ class DebitNotePdf < Prawn::Document
   end
 
   def draw_footer
-    group do
-      line_width 1
-      stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 1.mm
-      bounding_box [155.mm, @detail_y - 2.mm], height: 5.mm, width: 50.mm do
-        text_box @debit_note.ex_gst_amount.to_money.format, overflow: :shrink_to_fit,
-                 align: :center, valign: :center, size: 11
-      end
-      bounding_box [102.mm, @detail_y - 2.mm], height: 5.mm, width: 50.mm do
-        text_box "Total Excl. GST", overflow: :shrink_to_fit,
-                 align: :right, valign: :center, size: 11
-      end
-      stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 7.mm
-      bounding_box [155.mm, @detail_y - 8.mm], height: 5.mm, width: 50.mm do
-        text_box @debit_note.gst_amount.to_money.format, overflow: :shrink_to_fit,
-                 align: :center, valign: :center, size: 11
-      end
-      bounding_box [102.mm, @detail_y - 8.mm], height: 5.mm, width: 50.mm do
-        text_box "Total GST", overflow: :shrink_to_fit,
-                 align: :right, valign: :center, size: 11
-      end
-      stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 13.mm
-      bounding_box [155.mm, @detail_y - 14.mm], height: 5.mm, width: 50.mm do
-        text_box @debit_note.in_gst_amount.to_money.format, overflow: :shrink_to_fit,
-                 align: :center, valign: :center, style: :bold, size: 11
-      end
-      bounding_box [102.mm, @detail_y - 14.mm], height: 5.mm, width: 50.mm do
-        text_box "Total Incl. GST", overflow: :shrink_to_fit,
-                 align: :right, valign: :center, style: :bold, size: 11
-      end
-      stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 19.mm
+    line_width 1
+    stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 1.mm
+    bounding_box [155.mm, @detail_y - 2.mm], height: 5.mm, width: 50.mm do
+      text_box @debit_note.ex_gst_amount.to_money.format, overflow: :shrink_to_fit,
+                align: :center, valign: :center, size: 11
     end
+    bounding_box [102.mm, @detail_y - 2.mm], height: 5.mm, width: 50.mm do
+      text_box "Total Excl. GST", overflow: :shrink_to_fit,
+                align: :right, valign: :center, size: 11
+    end
+    stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 7.mm
+    bounding_box [155.mm, @detail_y - 8.mm], height: 5.mm, width: 50.mm do
+      text_box @debit_note.gst_amount.to_money.format, overflow: :shrink_to_fit,
+                align: :center, valign: :center, size: 11
+    end
+    bounding_box [102.mm, @detail_y - 8.mm], height: 5.mm, width: 50.mm do
+      text_box "Total GST", overflow: :shrink_to_fit,
+                align: :right, valign: :center, size: 11
+    end
+    stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 13.mm
+    bounding_box [155.mm, @detail_y - 14.mm], height: 5.mm, width: 50.mm do
+      text_box @debit_note.in_gst_amount.to_money.format, overflow: :shrink_to_fit,
+                align: :center, valign: :center, style: :bold, size: 11
+    end
+    bounding_box [102.mm, @detail_y - 14.mm], height: 5.mm, width: 50.mm do
+      text_box "Total Incl. GST", overflow: :shrink_to_fit,
+                align: :right, valign: :center, style: :bold, size: 11
+    end
+    stroke_horizontal_line 154.mm, 206.mm, at: @detail_y - 19.mm
+  
   end
 
   def start_new_page_for_current_debit_note

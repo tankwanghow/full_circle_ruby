@@ -128,20 +128,20 @@ include Prawn::Helper
       @detail_y = @detail_y_start_at
     end
 
-    group do
-      bounding_box [14.mm, @detail_y - 1.mm], height: 20.mm, width: 160.mm do
-        text_box txt.join("\n"), overflow: :shrink_to_fit, size: 9
-      end
-      
-      line_width 1
-      stroke_horizontal_line 175.mm, 210.mm, at: @detail_y - 1.mm
-      bounding_box [175.mm, @detail_y - 2.mm], height: 5.mm, width: 35.mm do
-        text_box @receipt.receipt_amount.to_money.format, overflow: :shrink_to_fit,
-                 align: :center, valign: :center, style: :bold, size: 11
-      end
-      line_width 2
-      stroke_horizontal_line 175.mm, 210.mm, at: @detail_y - 7.5.mm
+    
+    bounding_box [14.mm, @detail_y - 1.mm], height: 20.mm, width: 160.mm do
+      text_box txt.join("\n"), overflow: :shrink_to_fit, size: 9
     end
+    
+    line_width 1
+    stroke_horizontal_line 175.mm, 210.mm, at: @detail_y - 1.mm
+    bounding_box [175.mm, @detail_y - 2.mm], height: 5.mm, width: 35.mm do
+      text_box @receipt.receipt_amount.to_money.format, overflow: :shrink_to_fit,
+                align: :center, valign: :center, style: :bold, size: 11
+    end
+    line_width 2
+    stroke_horizontal_line 175.mm, 210.mm, at: @detail_y - 7.5.mm
+  
   end
 
   def start_new_page_for_current_receipt

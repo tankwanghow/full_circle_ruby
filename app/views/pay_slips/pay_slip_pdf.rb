@@ -134,20 +134,19 @@ def draw_static_content
       end
     end
 
-    group do
-      line_width 1
-      stroke_horizontal_line 170.mm, 200.mm, at: @detail_y
-      text_box @pay_slip.salary_notes.addition.inject(0) { |sum, t| sum + t.amount }.to_money.format,
-               overflow: :shrink_to_fit, align: :center, valign: :center, style: :bold, at: [170.mm, @detail_y - 1.mm],
-               height: 5.mm, width: 30.mm
-      line_width 1
-      stroke_horizontal_line 170.mm, 200.mm, at: @detail_y - 6.mm
-      @detail_y = @detail_y - 7.mm
-    end
+    
+    line_width 1
+    stroke_horizontal_line 170.mm, 200.mm, at: @detail_y
+    text_box @pay_slip.salary_notes.addition.inject(0) { |sum, t| sum + t.amount }.to_money.format,
+              overflow: :shrink_to_fit, align: :center, valign: :center, style: :bold, at: [170.mm, @detail_y - 1.mm],
+              height: 5.mm, width: 30.mm
+    line_width 1
+    stroke_horizontal_line 170.mm, 200.mm, at: @detail_y - 6.mm
+    @detail_y = @detail_y - 7.mm
+    
   end
 
   def draw_deductions
-
     @pay_slip.salary_notes.deduction.each do |t|
 
       text_box [t.doc_date, t.salary_type.name, t.note].flatten.join(' '), overflow: :shrink_to_fit,
@@ -199,15 +198,13 @@ def draw_static_content
   end
 
   def draw_footer
-    group do
-      line_width 2
-      stroke_horizontal_line 170.mm, 200.mm, at: @detail_y - 1.mm
-      text_box @pay_slip.amount.to_money.format, overflow: :shrink_to_fit,
-               align: :center, valign: :center, style: :bold, at: [170.mm, @detail_y - 2.5.mm],
-               height: 5.mm, width: 30.mm
-      line_width 2
-      stroke_horizontal_line 170.mm, 200.mm, at: @detail_y - 8.5.mm
-    end
+    line_width 2
+    stroke_horizontal_line 170.mm, 200.mm, at: @detail_y - 1.mm
+    text_box @pay_slip.amount.to_money.format, overflow: :shrink_to_fit,
+              align: :center, valign: :center, style: :bold, at: [170.mm, @detail_y - 2.5.mm],
+              height: 5.mm, width: 30.mm
+    line_width 2
+    stroke_horizontal_line 170.mm, 200.mm, at: @detail_y - 8.5.mm
     @detail_y = @detail_y - 8.5.mm - 2.5.mm
   end
 
