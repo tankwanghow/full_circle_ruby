@@ -8,7 +8,7 @@
 # server "db.example.com", user: "deploy", roles: %w{db}
 
 server "139.162.39.50",
-       :user => "deploy",
+       :user => "root",
        :roles => %w(app backup cron db web)
 
 # role-based syntax
