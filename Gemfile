@@ -28,7 +28,7 @@ gem 'bcrypt-ruby', git: 'git://github.com/tankwanghow/bcrypt-ruby.git', branch: 
 gem 'unicorn'
 gem 'dossier'
 
-# group :assets do
+group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'therubyracer', :platforms => :ruby
@@ -36,7 +36,7 @@ gem 'dossier'
   gem 'uglifier'
   gem 'jquery-ui-rails'
   gem 'select2-rails'
-# end
+end
 
 group :test do
   gem 'rspec-rails'
@@ -58,4 +58,6 @@ group :development do
   gem "capistrano", "~> 3.14", require: false
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
+  gem 'capistrano-unicorn-nginx'
+  gem 'capistrano-safe-deploy-to'
 end
