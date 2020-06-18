@@ -29,13 +29,13 @@ gem 'unicorn'
 gem 'dossier'
 
 group :assets do
-  gem 'sass-rails', '3.2.6'
-  gem 'coffee-rails', '3.2.2'
+  gem 'sass-rails'
+  gem 'coffee-rails'
   gem 'therubyracer', :platforms => :ruby
-  gem 'bootstrap-sass', '2.3.0.0'
+  gem 'bootstrap-sass'
   gem 'uglifier'
-  gem 'jquery-ui-rails', '4.0.1'
-  gem 'select2-rails', '3.3.0'
+  gem 'jquery-ui-rails'
+  gem 'select2-rails'
 end
 
 group :test do
