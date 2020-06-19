@@ -13,8 +13,6 @@ doc/app
 .sass-cache/
 .DS_Store
 .tags
-zeus.json
-full_circle_backup.tar
 config/database.yml 
 config/initializers/secret_token.rb
 config/initializers/full_circle.rb
