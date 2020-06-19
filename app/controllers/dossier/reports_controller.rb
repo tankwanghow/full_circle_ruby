@@ -32,7 +32,7 @@ module Dossier
     private
 
     def report_class
-      Dossier.name_to_class(params[:report])
+      Dossier::Model.name_to_class(params[:report])
     end
 
     def set_content_disposition!
