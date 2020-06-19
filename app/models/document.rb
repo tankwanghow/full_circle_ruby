@@ -10,7 +10,7 @@ class Document < ActiveRecord::Base
                   using: {
                     tsearch: { any_word: true, prefix: true },
                     dmetaphone: {}
-                  }
+                  }, order_within_rank: "updated_at DESC"
 
   scope :type_is, ->(val) { where('searchable_type ~* ?', val) }
   scope :type_in, ->(values) { where('searchable_type ~* ?', values.map { |t| '^' + t + '$' }.join('|')) }
@@ -49,11 +49,11 @@ class Document < ActiveRecord::Base
   end  
 
   def self.searchable_by hash
-    if User.current.is_admin
+    # if User.current.is_admin
       searchable_by_all_types hash
-    else
-      searchable_by_no_user_type hash
-    end
+    # else
+      # searchable_by_no_user_type hash
+    # end
   end
 
   def self.searchable_by_no_user_type hash
