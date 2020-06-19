@@ -21,7 +21,12 @@ set :deploy_to, "/home/deploy/app/full_circle"
 # set :pty, true
 
 # Default value for :linked_files is []
-# append :linked_files, "config/database.yml"
+append :linked_files, 
+       "config/database.yml", 
+       "config/initializers/secret_token.rb",
+       "config/initializers/full_circle.rb",
+       "config/initializers/session_store.rb",
+       "config/dossier.yml"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
