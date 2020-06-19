@@ -28,15 +28,13 @@ gem 'bcrypt-ruby', git: 'git://github.com/tankwanghow/bcrypt-ruby.git', branch: 
 gem 'unicorn'
 gem 'dossier'
 
-group :assets do
-  gem 'sass-rails'
-  gem 'coffee-rails'
-  gem 'therubyracer', :platforms => :ruby
-  gem 'bootstrap-sass'
-  gem 'uglifier'
-  gem 'jquery-ui-rails'
-  gem 'select2-rails', '3.3.0'
-end
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'therubyracer', :platforms => :ruby
+gem 'bootstrap-sass'
+gem 'uglifier'
+gem 'jquery-ui-rails'
+gem 'select2-rails', '3.3.0'
 
 group :test do
   gem 'rspec-rails'
