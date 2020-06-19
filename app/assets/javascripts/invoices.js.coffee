@@ -7,19 +7,19 @@ window.invoice = {
     ($ '#invoice_tag_list').select2
       tags: $('#invoice_tag_list').data('tags')
       closeOnSelect: true
-      openOnEnter: false
+      openOnEnter: true
       minimumInputLength: 2
 
     ($ '#invoice_loader_list').select2
       tags: $('#invoice_loader_list').data('tags')
       closeOnSelect: true
-      openOnEnter: false
+      openOnEnter: true
       minimumInputLength: 2
 
     ($ '#invoice_unloader_list').select2
       tags: $('#invoice_unloader_list').data('tags')
       closeOnSelect: true
-      openOnEnter: false
+      openOnEnter: true
       minimumInputLength: 2
 
     math.sum '#details .row-total', '#total_details', 'form'

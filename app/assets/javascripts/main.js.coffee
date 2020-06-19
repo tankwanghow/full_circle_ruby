@@ -64,8 +64,7 @@ window.math = {
       ($ totalElm).change()
 }
 
-window.main = {
-
+window.main = { 
   init: ->
     ($ '#clear-advance-search-form').click ->
       ($ 'input#search_terms').val('')

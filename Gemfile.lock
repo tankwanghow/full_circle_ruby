@@ -155,9 +155,8 @@ GEM
     pg_search (0.5.7)
       activerecord (>= 3)
       activesupport (>= 3)
-    pjax_rails (0.5.0)
+    pjax_rails (0.3.4)
       jquery-rails
-      railties (>= 3.2)
     polyglot (0.3.5)
     power_assert (1.2.0)
     prawn (2.2.2)
@@ -298,12 +297,12 @@ DEPENDENCIES
   nested_form
   pg (= 0.18.4)
   pg_search (= 0.5.7)
-  pjax_rails
+  pjax_rails (= 0.3.4)
   prawn
   rails (= 3.2.22.5)
   rspec-rails
   sass-rails
-  select2-rails
+  select2-rails (= 3.3.0)
   sentient_user (= 0.3.3)
   shoulda-matchers
   simple_audit!

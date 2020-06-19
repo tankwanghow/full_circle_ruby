@@ -19,7 +19,7 @@ gem 'prawn'
 gem 'simple_form'
 gem 'haml', '4.0.7'
 gem 'pg_search', '0.5.7'
-gem 'pjax_rails'
+gem 'pjax_rails', '0.3.4'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', git: 'git://github.com/tankwanghow/bcrypt-ruby.git', branch: 'force_ruby_2210', tag: '3.0.1'
@@ -28,15 +28,15 @@ gem 'bcrypt-ruby', git: 'git://github.com/tankwanghow/bcrypt-ruby.git', branch: 
 gem 'unicorn'
 gem 'dossier'
 
-# group :assets do
+group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'therubyracer', :platforms => :ruby
   gem 'bootstrap-sass'
   gem 'uglifier'
   gem 'jquery-ui-rails'
-  gem 'select2-rails'
-# end
+  gem 'select2-rails', '3.3.0'
+end
 
 group :test do
   gem 'rspec-rails'
