@@ -25,8 +25,7 @@ append :linked_files,
        "config/database.yml", 
        "config/initializers/secret_token.rb",
        "config/initializers/full_circle.rb",
-       "config/initializers/session_store.rb",
-       "config/dossier.yml"
+       "config/initializers/session_store.rb"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
