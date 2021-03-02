@@ -27,11 +27,16 @@ class FixedAssetDepreciationConfirmationsController < ApplicationController
   end
 
   def confirm_all
-    @additions = []
-    @end_date = params[:assets][:end_date].to_date
-    AssetAddition.active.find_each do |t|
-      t.generate_annual_depreciation(@end_date.year)
-      t.save!
+    if params[:assets]
+      @end_date = params[:assets][:end_date].to_date
+      @start_date = prev_close_date(@end_date) + 1
+      AssetAddition.active.order(:fixed_asset_id, :entry_date, :id).each do |t|
+        attrs = t.annual_depreciation_for(@end_date.year)
+        if attrs.count > 0
+          attrs.first.merge!(asset_addition_id: t.id)
+          AssetDepreciation.create!(attrs)
+        end
+      end
     end
     flash[:success] = "All Depreciations was successfully created."
     redirect_to fixed_asset_depreciation_confirmations_path(assets: { end_date: @end_date })

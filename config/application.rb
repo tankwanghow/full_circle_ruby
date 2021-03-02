@@ -66,3 +66,16 @@ module FullCircle
     config.assets.version = '1.0'
   end
 end
+
+## START - Monkey Patching Postgresql_Adapter so that can work with postgresql-12
+require 'active_record/connection_adapters/postgresql_adapter'
+
+class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
+  def set_standard_conforming_strings
+    old, self.client_min_messages = client_min_messages, 'warning'
+    execute('SET standard_conforming_strings = on', 'SCHEMA') rescue nil
+  ensure
+    self.client_min_messages = old
+  end
+end
+## END - Monkey Patching Postgresql_Adapter so that can work with postgresql-12

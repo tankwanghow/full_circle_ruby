@@ -19,15 +19,16 @@ class EpfContributionService
 
   def epf_employee
     return 0 if sum_additions <= 10
-    rate = @payslip.employee.age_at(@payslip.pay_date) > 60 ? 0 : 0.11
+    rate = @payslip.employee.age_at(@payslip.pay_date) > 60 ? 0 : 0.9
     (epf_calculation_mod_salary * rate).ceil
   end
 
 private
 
   def epf_calculation_mod_salary
-    mod = sum_additions % 20
-    mod > 0 ? (sum_additions - mod + 20) : sum_additions
+    mod_value = sum_additions > 5000 ? 100 : 20
+    mod = sum_additions % mod_value
+    mod > 0 ? (sum_additions - mod + mod_value) : sum_additions
   end
 
   def addition_notes
