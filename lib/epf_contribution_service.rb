@@ -19,7 +19,7 @@ class EpfContributionService
 
   def epf_employee
     return 0 if sum_additions <= 10
-    rate = @payslip.employee.age_at(@payslip.pay_date) > 60 ? 0 : 0.9
+    rate = @payslip.employee.age_at(@payslip.pay_date) > 60 ? 0 : 0.09
     (epf_calculation_mod_salary * rate).ceil
   end
 
