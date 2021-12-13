@@ -3,20 +3,22 @@ class PcbCalculationService
   EMPLOYEE_EPF_NAME= 'EPF By Employee'
   EMPLOYEE_PCB_NAME = 'Employee PCB'
   NON_RESIDENT_TAX_RATE = 0.26
-  QUALIFY_CHILDREN_DEDUCTION = 1000.0
+  QUALIFY_CHILDREN_DEDUCTION = 2000.0
   INDIVIDUAL_DEDUCTION = 9000.0
-  SPOUSE_DEDUCTION = 3000.0
-  EPF_INSURANCE_DEDUCTION_LIMIT = 6000.0
+  SPOUSE_DEDUCTION = 4000.0
+  EPF_INSURANCE_DEDUCTION_LIMIT = 4000.0
   NON_TAXABLE_INCOME_NAMES = [ ]
   ADDITION_TAXABLE_INCOME_NAMES = [ 'Employee Bonus', 'Director Bonus' ]
   SCHEDULE = [
-               [  2500.01,   5000.0,   2500.0, 0.00,  -400.0,  -800.0],
-               [  5000.01,  20000.0,   5000.0, 0.02,  -400.0,  -800.0],
-               [ 20000.01,  35000.0,  20000.0, 0.06,  -100.0,  -500.0],
-               [ 35000.01,  50000.0,  35000.0, 0.11,  1200.0,  1200.0],
-               [ 50000.01,  70000.0,  50000.0, 0.19,  2850.0,  2850.0],
-               [ 70000.01, 100000.0,  70000.0, 0.24,  6650.0,  6650.0],
-               [100000.01, 999.0**9, 100000.0, 0.26, 13850.0, 13850.0]
+               [  5000.01,   20000.0,   5000.0,  0.01,   -400.0,   -800.0],
+               [ 20000.01,   35000.0,  20000.0,  0.03,   -250.0,   -650.0],
+               [ 35000.01,   50000.0,  35000.0,  0.08,    600.0,    600.0],
+               [ 50000.01,   70000.0,  50000.0,  0.14,   1800.0,   1800.0],
+               [ 70000.01,  100000.0,  70000.0,  0.21,   4600.0,   4600.0],
+               [100000.01,  250000.0, 100000.0,  0.24,  10900.0,  10900.0],
+               [250000.01,  400000.0, 250000.0, 0.245,  46900.0,  46900.0],
+               [400000.01,  600000.0, 400000.0,  0.25,  83650.0,  83650.0],
+               [600000.01, 1000000.0, 600000.0,  0.26, 133650.0, 133650.0]
              ]
 
   def initialize payslip
@@ -29,8 +31,9 @@ class PcbCalculationService
     if !resident_employee?
       non_resident_pcb_current_month
     else
-      nearest_five_cents(resident_pcb_current_month + resident_addition_pcb)
+      pcb = nearest_five_cents(resident_pcb_current_month + resident_addition_pcb)
     end
+    pcb > 0 ? pcb : 0
   end
 
   def resident_employee?
@@ -164,7 +167,7 @@ class PcbCalculationService
   def estimated_future_epf
     val = (EPF_INSURANCE_DEDUCTION_LIMIT - current_month_epf - current_year_epf)/remaning_working_month_in_a_year
     k2 = val >= EPF_INSURANCE_DEDUCTION_LIMIT ? current_year_epf : val
-    if current_month_epf + current_year_epf + (k2 * remaning_working_month_in_a_year) <= 6000
+    if current_month_epf + current_year_epf + (k2 * remaning_working_month_in_a_year) <= EPF_INSURANCE_DEDUCTION_LIMIT
       k2
     else
       0

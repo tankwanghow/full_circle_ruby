@@ -60,6 +60,11 @@ class SocsoContributionService
       grab_row_where_salary_between[4]
     end
   end
+  
+  def socso_employer_only
+    pd = Date.parse("#{@payslip.pay_date}-#{@payslip.pay_date}-01")
+    grab_row_where_salary_between[4]
+  end
 
   def socso_employee
     pd = Date.parse("#{@payslip.pay_date}-#{@payslip.pay_date}-01")
